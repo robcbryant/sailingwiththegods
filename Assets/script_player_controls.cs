@@ -2002,4 +2002,154 @@ public class script_player_controls : MonoBehaviour {
 		rayCheck_playBirdSong = playBirdSong;	
 	}
 	
+	public void KeepNearestWindAndCurrentZonesOn(){
+	//All this function does is send out two raycasts in 8 directions, one for wind zones and one for water current zones.
+	//If it hits one, it sends a flag to keep it turned on.
+		float maxDistance = 25f;
+		float hitDistance = 0;
+		float distCoastLine = .1f;
+		float distStopCurrent = 4f;
+		bool stopShip = false;
+		bool stopCurrents = false;
+		bool playBirdSong = false;
+		//set the layer mask to only check for collisions on layer 10 ("terrain")
+		int terrainLayerMask = 1 << 10;
+		RaycastHit hitInfo;
+		Vector3 rayOrigin = transform.position + new Vector3(0,-.23f,0);
+		//12 O clock
+		//Debug.DrawRay(rayOrigin, transform.forward*maxDistance, Color.yellow);
+		if (Physics.Raycast(rayOrigin, transform.forward, out hitInfo, maxDistance, terrainLayerMask )){
+			//Debug.Log ("Hit coastline");
+			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
+				//If less than 1km~ stop ship movement
+				stopShip = true;// Debug.Log ("Stopping Ship on Coast Line");
+			}
+			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
+				//If within 4km~ turn off currents
+				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
+			}
+			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
+				//if within 15km~ turn on seagulls
+				playBirdSong = true;
+			}
+			//1.5 o Clock
+		}
+		if (Physics.Raycast(rayOrigin, transform.forward + transform.right, out hitInfo, maxDistance, terrainLayerMask)){
+			//Debug.Log ("Hit coastline");
+			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
+				//If less than 1km~ stop ship movement
+				stopShip = true;//Debug.Log ("Stopping Ship on Coast Line");
+			}
+			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
+				//If within 4km~ turn off currents
+				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
+			}
+			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
+				//if within 15km~ turn on seagulls
+				playBirdSong = true;
+			}
+			//3 o clock
+		} 
+		if (Physics.Raycast(rayOrigin, transform.right, out hitInfo, maxDistance, terrainLayerMask)){
+			//Debug.Log ("Hit coastline");
+			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
+				//If less than 1km~ stop ship movement
+				stopShip = true;//Debug.Log ("Stopping Ship on Coast Line");
+			}
+			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
+				//If within 4km~ turn off currents
+				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
+			}
+			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
+				//if within 15km~ turn on seagulls
+				playBirdSong = true;
+			}
+			//4.5 o clock	
+		} 
+		if (Physics.Raycast(rayOrigin, -transform.forward + transform.right, out hitInfo, maxDistance, terrainLayerMask)){
+			//Debug.Log ("Hit coastline");
+			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
+				//If less than 1km~ stop ship movement
+				stopShip = true;//Debug.Log ("Stopping Ship on Coast Line");
+			}
+			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
+				//If within 4km~ turn off currents
+				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
+			}
+			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
+				//if within 15km~ turn on seagulls
+				playBirdSong = true;
+			}
+			//6 o clock	
+		} 
+		if (Physics.Raycast(rayOrigin, -transform.forward, out hitInfo, maxDistance, terrainLayerMask)){
+			//Debug.Log ("Hit coastline");
+			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
+				//If less than 1km~ stop ship movement
+				stopShip = true;//Debug.Log ("Stopping Ship on Coast Line");
+			}
+			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
+				//If within 4km~ turn off currents
+				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
+			}
+			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
+				//if within 15km~ turn on seagulls
+				playBirdSong = true;
+			}
+			//7.5 o clock		
+		} 
+		if (Physics.Raycast(rayOrigin, -transform.forward - transform.right, out hitInfo, maxDistance, terrainLayerMask)){
+			//Debug.Log ("Hit coastline");
+			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
+				//If less than 1km~ stop ship movement
+				stopShip = true;//Debug.Log ("Stopping Ship on Coast Line");
+			}
+			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
+				//If within 4km~ turn off currents
+				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
+			}
+			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
+				//if within 15km~ turn on seagulls
+				playBirdSong = true;
+			}
+			//9 o clock	
+		} 
+		if (Physics.Raycast(rayOrigin, -transform.right, out hitInfo, maxDistance, terrainLayerMask)){
+			//Debug.Log ("Hit coastline");
+			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
+				//If less than 1km~ stop ship movement
+				stopShip = true;//Debug.Log ("Stopping Ship on Coast Line");
+			}
+			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
+				//If within 4km~ turn off currents
+				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
+			}
+			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
+				//if within 15km~ turn on seagulls
+				playBirdSong = true;
+			}
+			//10.5 o clock		
+		} 
+		if (Physics.Raycast(rayOrigin, transform.forward - transform.right, out hitInfo, maxDistance, terrainLayerMask)){
+			//Debug.Log ("Hit coastline");
+			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
+				//If less than 1km~ stop ship movement
+				stopShip = true;//Debug.Log ("Stopping Ship on Coast Line");
+			}
+			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
+				//If within 4km~ turn off currents
+				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
+			}
+			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
+				//if within 15km~ turn on seagulls
+				playBirdSong = true;
+			}
+		}
+		
+		//now set the main bool flags to the temp flags
+		rayCheck_stopShip = stopShip;
+		rayCheck_stopCurrents = stopCurrents;
+		rayCheck_playBirdSong = playBirdSong;	
+	}
+	
 }
