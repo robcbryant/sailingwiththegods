@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
 public class script_player_controls : MonoBehaviour {
 
@@ -96,7 +97,8 @@ public class script_player_controls : MonoBehaviour {
 	
 	public AudioSource SFX_birdsong;
 	
-	
+	List<string> windZoneNamesToTurnOn = new List<string>();
+	List<string> currentZoneNamesToTurnOn = new List<string>();
 	
 	// Use this for initialization
 	void Start () {
@@ -133,6 +135,10 @@ public class script_player_controls : MonoBehaviour {
 	
 	//DEBUG
 	MGV.DEBUG_currentQuestLeg = ship.mainQuest.currentQuestSegment;
+	
+	//Start the infinite loop of checking for wind and water current zones
+		StartCoroutine(waterCurrentZoneMaintenance());
+		StartCoroutine(WindZoneMaintenance());
 	}
 	
 	// Update is called once per frame
@@ -638,10 +644,12 @@ public class script_player_controls : MonoBehaviour {
 		if(trigger.transform.tag == "currentDirectionVector"){
 		 	currentWaterDirectionVector = trigger.transform.GetChild(0).GetChild(0).up.normalized;
 			currentWaterDirectionMagnitude = trigger.transform.GetChild(0).GetComponent<script_WaterWindCurrentVector>().currentMagnitude;
+			KeepNearestWaterZonesOn(trigger.transform.name);
 		} 
 		if (trigger.transform.tag == "windDirectionVector"){
 			currentWindDirectionVector = trigger.transform.GetChild (0).transform.forward.normalized;
 			currentWindDirectionMagnitude = trigger.transform.GetChild(0).GetComponent<script_WaterWindCurrentVector>().currentMagnitude;
+			KeepNearestWindZonesOn(trigger.transform.name);
 		}
 		if (trigger.transform.tag == "settlement_dock_area"){
 		//Here we first figure out what kind of 'settlement' we arrive at, e.g. is it just a point of interest or is it a actual dockable settlement
@@ -2002,154 +2010,97 @@ public class script_player_controls : MonoBehaviour {
 		rayCheck_playBirdSong = playBirdSong;	
 	}
 	
-	public void KeepNearestWindAndCurrentZonesOn(){
-	//All this function does is send out two raycasts in 8 directions, one for wind zones and one for water current zones.
-	//If it hits one, it sends a flag to keep it turned on.
-		float maxDistance = 25f;
-		float hitDistance = 0;
-		float distCoastLine = .1f;
-		float distStopCurrent = 4f;
-		bool stopShip = false;
-		bool stopCurrents = false;
-		bool playBirdSong = false;
-		//set the layer mask to only check for collisions on layer 10 ("terrain")
-		int terrainLayerMask = 1 << 10;
-		RaycastHit hitInfo;
-		Vector3 rayOrigin = transform.position + new Vector3(0,-.23f,0);
-		//12 O clock
-		//Debug.DrawRay(rayOrigin, transform.forward*maxDistance, Color.yellow);
-		if (Physics.Raycast(rayOrigin, transform.forward, out hitInfo, maxDistance, terrainLayerMask )){
-			//Debug.Log ("Hit coastline");
-			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
-				//If less than 1km~ stop ship movement
-				stopShip = true;// Debug.Log ("Stopping Ship on Coast Line");
-			}
-			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
-				//If within 4km~ turn off currents
-				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
-			}
-			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
-				//if within 15km~ turn on seagulls
-				playBirdSong = true;
-			}
-			//1.5 o Clock
+	public void KeepNearestWindZonesOn(string playerZoneName){
+	//This function turns on the surrounding wind/water zones of the current wind/water zone
+	//It assumes the zones have a x,y coordinate system for their object 'name'
+	//If the zone name containing the player ship is  6_8  (x_y), then we turn on the surrounding cells using simple math
+		//Clear the current list
+		windZoneNamesToTurnOn.Clear();
+		
+		char[] lineDelimiter = new char[] { '_' };
+		int x = 0;
+		int y = 0;
+		string[] xy = playerZoneName.Split(lineDelimiter);
+		x = int.Parse(xy[0]);
+		y = int.Parse(xy[1]);
+		
+		//Add the new matrix of named objects that surround the player
+		windZoneNamesToTurnOn.Add((x-1) + "_" + (y-1));		windZoneNamesToTurnOn.Add((x) + "_" + (y-1));		windZoneNamesToTurnOn.Add((x+1) + "_" + (y-1));
+		windZoneNamesToTurnOn.Add((x-1) + "_" + (y));		windZoneNamesToTurnOn.Add((x) + "_" + (y));		    windZoneNamesToTurnOn.Add((x+1) + "_" + (y));
+		windZoneNamesToTurnOn.Add((x-1) + "_" + (y+1));		windZoneNamesToTurnOn.Add((x) + "_" + (y+1));		windZoneNamesToTurnOn.Add((x+1) + "_" + (y+1));
+		
+	
+		foreach(string zoneName in windZoneNamesToTurnOn){
+			GameObject.Find(zoneName).SetActive(true);
 		}
-		if (Physics.Raycast(rayOrigin, transform.forward + transform.right, out hitInfo, maxDistance, terrainLayerMask)){
-			//Debug.Log ("Hit coastline");
-			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
-				//If less than 1km~ stop ship movement
-				stopShip = true;//Debug.Log ("Stopping Ship on Coast Line");
+	}
+
+	
+	public void KeepNearestWaterZonesOn(string playerZoneName){
+		//This function turns on the surrounding wind/water zones of the current wind/water zone
+		//It assumes the zones have a x,y coordinate system for their object 'name'
+		//If the zone name containing the player ship is  6_8  (x_y), then we turn on the surrounding cells using simple math
+		//Clear the current list
+		currentZoneNamesToTurnOn.Clear();
+		
+		char[] lineDelimiter = new char[] { '_' };
+		int x = 0;
+		int y = 0;
+		string[] xy = playerZoneName.Split(lineDelimiter);
+		x = int.Parse(xy[0]);
+		y = int.Parse(xy[1]);
+		
+		//Add the new matrix of named objects that surround the player
+		currentZoneNamesToTurnOn.Add((x-1) + "_" + (y-1));		currentZoneNamesToTurnOn.Add((x) + "_" + (y-1));		currentZoneNamesToTurnOn.Add((x+1) + "_" + (y-1));
+		currentZoneNamesToTurnOn.Add((x-1) + "_" + (y));		currentZoneNamesToTurnOn.Add((x) + "_" + (y));		    currentZoneNamesToTurnOn.Add((x+1) + "_" + (y));
+		currentZoneNamesToTurnOn.Add((x-1) + "_" + (y+1));		currentZoneNamesToTurnOn.Add((x) + "_" + (y+1));		currentZoneNamesToTurnOn.Add((x+1) + "_" + (y+1));
+		
+		
+		foreach(string zoneName in currentZoneNamesToTurnOn){
+			GameObject.Find(zoneName).SetActive(true);
+		}
+	}		
+			
+				
+						
+	IEnumerator WindZoneMaintenance(){
+		//This loops indefinitely--it should always be running while the game is on
+		//Having an infinite loop is dangerous--but I think it should be safe. I'll have to keep an eye
+		//on memory leaks etc.
+		while(true){
+			for(int i = 0; i < MGV.windZoneParent.transform.childCount; i++){
+				Transform currentChild = MGV.windZoneParent.transform.GetChild(i);
+				foreach(string zoneID in windZoneNamesToTurnOn){
+					if (currentChild.name == zoneID){
+						currentChild.GetChild(0).gameObject.SetActive(true);
+						break;
+					}else
+						currentChild.GetChild(0).gameObject.SetActive(false);
+				}
+				yield return null;
 			}
-			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
-				//If within 4km~ turn off currents
-				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
-			}
-			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
-				//if within 15km~ turn on seagulls
-				playBirdSong = true;
-			}
-			//3 o clock
-		} 
-		if (Physics.Raycast(rayOrigin, transform.right, out hitInfo, maxDistance, terrainLayerMask)){
-			//Debug.Log ("Hit coastline");
-			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
-				//If less than 1km~ stop ship movement
-				stopShip = true;//Debug.Log ("Stopping Ship on Coast Line");
-			}
-			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
-				//If within 4km~ turn off currents
-				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
-			}
-			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
-				//if within 15km~ turn on seagulls
-				playBirdSong = true;
-			}
-			//4.5 o clock	
-		} 
-		if (Physics.Raycast(rayOrigin, -transform.forward + transform.right, out hitInfo, maxDistance, terrainLayerMask)){
-			//Debug.Log ("Hit coastline");
-			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
-				//If less than 1km~ stop ship movement
-				stopShip = true;//Debug.Log ("Stopping Ship on Coast Line");
-			}
-			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
-				//If within 4km~ turn off currents
-				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
-			}
-			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
-				//if within 15km~ turn on seagulls
-				playBirdSong = true;
-			}
-			//6 o clock	
-		} 
-		if (Physics.Raycast(rayOrigin, -transform.forward, out hitInfo, maxDistance, terrainLayerMask)){
-			//Debug.Log ("Hit coastline");
-			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
-				//If less than 1km~ stop ship movement
-				stopShip = true;//Debug.Log ("Stopping Ship on Coast Line");
-			}
-			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
-				//If within 4km~ turn off currents
-				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
-			}
-			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
-				//if within 15km~ turn on seagulls
-				playBirdSong = true;
-			}
-			//7.5 o clock		
-		} 
-		if (Physics.Raycast(rayOrigin, -transform.forward - transform.right, out hitInfo, maxDistance, terrainLayerMask)){
-			//Debug.Log ("Hit coastline");
-			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
-				//If less than 1km~ stop ship movement
-				stopShip = true;//Debug.Log ("Stopping Ship on Coast Line");
-			}
-			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
-				//If within 4km~ turn off currents
-				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
-			}
-			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
-				//if within 15km~ turn on seagulls
-				playBirdSong = true;
-			}
-			//9 o clock	
-		} 
-		if (Physics.Raycast(rayOrigin, -transform.right, out hitInfo, maxDistance, terrainLayerMask)){
-			//Debug.Log ("Hit coastline");
-			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
-				//If less than 1km~ stop ship movement
-				stopShip = true;//Debug.Log ("Stopping Ship on Coast Line");
-			}
-			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
-				//If within 4km~ turn off currents
-				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
-			}
-			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
-				//if within 15km~ turn on seagulls
-				playBirdSong = true;
-			}
-			//10.5 o clock		
-		} 
-		if (Physics.Raycast(rayOrigin, transform.forward - transform.right, out hitInfo, maxDistance, terrainLayerMask)){
-			//Debug.Log ("Hit coastline");
-			if(hitInfo.distance >= 0 && hitInfo.distance <= distCoastLine){
-				//If less than 1km~ stop ship movement
-				stopShip = true;//Debug.Log ("Stopping Ship on Coast Line");
-			}
-			if(hitInfo.distance > distCoastLine && hitInfo.distance <= distStopCurrent){
-				//If within 4km~ turn off currents
-				stopCurrents = true;//Debug.Log ("Stopping Ocean Currents");
-			}
-			if(hitInfo.distance > distStopCurrent && hitInfo.distance <= maxDistance){
-				//if within 15km~ turn on seagulls
-				playBirdSong = true;
+		}
+	
+	}
+	
+	IEnumerator waterCurrentZoneMaintenance(){
+		//This loops indefinitely--it should always be running while the game is on
+		//Having an infinite loop is dangerous--but I think it should be safe. I'll have to keep an eye
+		//on memory leaks etc.
+		while(true){
+			for(int i = 0; i < MGV.currentZoneParent.transform.childCount; i++){
+				Transform currentChild = MGV.currentZoneParent.transform.GetChild(i);
+				foreach(string zoneID in currentZoneNamesToTurnOn){
+					if (currentChild.name == zoneID){
+						currentChild.GetChild(0).gameObject.SetActive(true);
+						break;
+					}else
+						currentChild.GetChild(0).gameObject.SetActive(false);
+				}
+				yield return null;
 			}
 		}
 		
-		//now set the main bool flags to the temp flags
-		rayCheck_stopShip = stopShip;
-		rayCheck_stopCurrents = stopCurrents;
-		rayCheck_playBirdSong = playBirdSong;	
 	}
 	
 }

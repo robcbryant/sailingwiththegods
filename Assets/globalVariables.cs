@@ -451,6 +451,7 @@ public class Settlement {
 	public int typeOfSettlement;
 	public string description;
 	public List<int> networks;
+	public string prefabName;
 	
 	public Settlement(int settlementID, string name, Vector2 location_longXlatY, float elevation, int population){
 		this.settlementID = settlementID;
@@ -891,8 +892,15 @@ public class globalVariables : MonoBehaviour {
 		settlement_masterList_parent = Instantiate(new GameObject(), Vector3.zero, transform.rotation) as GameObject;
 		settlement_masterList_parent.name = "Settlement Master List";
 		foreach (Settlement settlement in settlement_masterList) {
-		//Debug.Log (settlement.name);
-			GameObject currentSettlement = Instantiate(Resources.Load("PF_settlement", typeof(GameObject))) as GameObject;
+			GameObject currentSettlement;
+			//Here we add a model/prefab to the settlement based on it's
+			try{ 
+				Debug.Log ("BEFORE TRYING TO LOAD SETTLEMENT PREFAB    " + settlement.prefabName);
+				currentSettlement = Instantiate(Resources.Load("City Models/" + settlement.prefabName, typeof(GameObject))) as GameObject;
+				Debug.Log ("AFTER TRYING TO LOAD SETTLEMENT PREFAB    " + settlement.prefabName);
+			} catch {
+				currentSettlement = Instantiate(Resources.Load("City Models/PF_settlement", typeof(GameObject))) as GameObject;
+			}
 			//We need to check if the settlement has an adjusted position or not--if it does then use it, otherwise use the given lat long coordinate
 			if (settlement.adjustedGamePosition.x == 0){
 				Vector2 tempXY = Convert_WebMercator_UnityWorld( ConvertWGS1984ToWebMercator( settlement.location_longXlatY) );
@@ -950,13 +958,16 @@ public class globalVariables : MonoBehaviour {
 			//load the settlement type, e.g. port, no port
 			settlement_masterList[lineCount-1].typeOfSettlement = int.Parse(records[26]);
 			//add resources to settlement (records length - 2 is confusing, but there are items after the last resource--can probably change this later)
-			for(int recordIndex = 11; recordIndex < records.Length - 2; recordIndex++){
+			for(int recordIndex = 11; recordIndex < records.Length - 3; recordIndex++){
 				settlement_masterList[lineCount-1].cargo[recordIndex-11].probabilityOfAvailability = float.Parse(records[recordIndex]);
 				//TODO The probability values are 1-100 and population affects the amount
 				//  Population/2 x (probabilityOfResource/100)
 				float amount = (settlement_masterList[lineCount-1].population / 2) * (settlement_masterList[lineCount-1].cargo[recordIndex-11].probabilityOfAvailability / 1.5f);
 				settlement_masterList[lineCount-1].cargo[recordIndex-11].amount_kg = amount;
 			}
+			//Add model/prefab name to settlement
+			settlement_masterList[lineCount-1].prefabName = records[records.Length-2];
+			Debug.Log ("********PREFAB NAME:     " + settlement_masterList[lineCount-1].prefabName);
 			//Add description to settlement
 			settlement_masterList[lineCount-1].description = records[records.Length-1];
 			
@@ -1312,6 +1323,7 @@ public class globalVariables : MonoBehaviour {
 			newZone.AddComponent<BoxCollider>();
 			newZone.GetComponent<BoxCollider>().isTrigger = true;
 			newZone.GetComponent<BoxCollider>().size = new Vector3(1,10,1);
+			newZone.layer = 20;
 			rotater.AddComponent<script_WaterWindCurrentVector>();
 			rotater.transform.position = newZone.transform.position;
 			rotater.transform.rotation = newZone.transform.rotation;
@@ -1354,6 +1366,7 @@ public class globalVariables : MonoBehaviour {
 				newZone.AddComponent<BoxCollider>();
 				newZone.GetComponent<BoxCollider>().isTrigger = true;
 				newZone.GetComponent<BoxCollider>().size = new Vector3(1,10,1);
+				newZone.layer = 19;
 				rotater.AddComponent<script_WaterWindCurrentVector>();
 				rotater.transform.position = newZone.transform.position;
 				rotater.transform.rotation = newZone.transform.rotation;
