@@ -688,30 +688,30 @@ public class script_GUI : MonoBehaviour {
 		//##################################################################
 		// DEBUG GUI
 		//###################################################################
-
-//		//map zoom in and out button
-//		if(GUI.Button(new Rect(50,30,100,20), "ZOOM IN")){
-//			MGV.camera_Mapview.transform.position += -Vector3.up * 20;
-//		}
-//		//map zoom in and out button
-//		if(GUI.Button(new Rect(170,30,100,20), "ZOOM OUT")){
-//			MGV.camera_Mapview.transform.position += Vector3.up * 20;
-//		}
-		//		//This saves the current water zone information
-//		if(GUI.Button(new Rect(1500,100,150,20), "Save Water Zones")){
-//			MGV.SaveWaterCurrentZones();
-//		}
-//		
-//		//This teleports player ship to given settlement ID
-//		GUI.Box (new Rect(1450, 123, 200, 30), "");
-//		MGV.DEBUG_settlementWarpID = GUI.TextField (new Rect (1570,125,60,20), MGV.DEBUG_settlementWarpID,3);
-//		if(GUI.Button(new Rect(1460,125,80,20), "Warp")){
-//			MGV.playerShip.transform.position = GetSettlementFromID(int.Parse(MGV.DEBUG_settlementWarpID)).theGameObject.transform.position;
-//		}
-//		if(GUI.Button(new Rect(1460,145,80,20), "Save Loc")){
-//			MGV.Tool_SaveCurrentSettlementPositionsToFile();
-//		}
-//		
+		if (MGV.DEBUG_MODE_ON){
+			//map zoom in and out button
+			if(GUI.Button(new Rect(50,30,100,20), "ZOOM IN")){
+				MGV.camera_Mapview.transform.position += -Vector3.up * 20;
+			}
+			//map zoom in and out button
+			if(GUI.Button(new Rect(170,30,100,20), "ZOOM OUT")){
+				MGV.camera_Mapview.transform.position += Vector3.up * 20;
+			}
+					//This saves the current water zone information
+			if(GUI.Button(new Rect(1500,100,150,20), "Save Water Zones")){
+				MGV.SaveWaterCurrentZones();
+			}
+			
+			//This teleports player ship to given settlement ID
+			GUI.Box (new Rect(1450, 123, 200, 30), "");
+			MGV.DEBUG_settlementWarpID = GUI.TextField (new Rect (1570,125,60,20), MGV.DEBUG_settlementWarpID,3);
+			if(GUI.Button(new Rect(1460,125,80,20), "Warp")){
+				MGV.playerShip.transform.position = GetSettlementFromID(int.Parse(MGV.DEBUG_settlementWarpID)).theGameObject.transform.position;
+			}
+			if(GUI.Button(new Rect(1460,145,80,20), "Save Loc")){
+				MGV.Tool_SaveCurrentSettlementPositionsToFile();
+			}
+		}
 		
 		
 		
