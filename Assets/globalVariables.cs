@@ -221,7 +221,7 @@ public class PlayerJourneyLog {
 		this.CSVheader = "Unique_Machine_ID,timestamp,originE,originN,originZ,endE,endN,endZ," +
 					     "Water_kg,Food_kg,Grain_kg,Wine_kg,Timber_kg,Gold_kg,Silver_kg," +
 						 "Copper_kg,Tin_kg,Obsidian_kg,Lead_kg,Slaves_kg,Goats_kg,Sheep_kg,Luxury_kg,Is_Leaving_Port,PortID,PortName," +
-						 "CrewMemberIDs,UnityXYZ,Current_Questleg,ShipHP,Clout,PlayerNetwork,DaysStarving,DaysThirsty,Currency,LoanAmount,LoanOriginID,CaptainsLog,CurrentNavigatorTarget\n";
+				"CrewMemberIDs,UnityXYZ,Current_Questleg,ShipHP,Clout,PlayerNetwork,DaysStarving,DaysThirsty,Currency,LoanAmount,LoanOriginID,CurrentNavigatorTarget,CaptainsLog\n";
 	}
 	
 	public void AddRoute(PlayerRoute routeToAdd, script_player_controls playerShipVars, string captainsLog){
@@ -284,13 +284,14 @@ public class PlayerJourneyLog {
 			//Add Loan Origin City
 			if (playerShip.currentLoan != null) CSVstring += "," + playerShip.currentLoan.settlementOfOrigin;
 			else CSVstring += ",-1";
+			//Add Current Navigator Target
+			CSVstring += "," + playerShip.currentNavigatorTarget;
 			//Add Captains Log: first we need to switch commas in the log to a "|" so it doesn't hurt the delimeters TODO This could be nicer but is fine for now until we get a better database setup
 			//--also need tp scrub newlines
 			string scrubbedLog  = captainsLog.Replace(',','^');
 			scrubbedLog  = scrubbedLog.Replace('\n','*');
 			CSVstring += "," + scrubbedLog;
-			//Add Current Navigator Target
-			CSVstring += "," + playerShip.currentNavigatorTarget;
+
 			//Add a new row to match the route of all these attributes
 			this.otherAttributes.Add(CSVstring);
 	
@@ -345,58 +346,7 @@ public class PlayerJourneyLog {
 				//Add the Resources to the line record
 				CSVfile += cargoLog[i];
 				CSVfile += otherAttributes[i];
-//				//Add the applicable port docking info
-//				//If it isn't -1, then it's a port stop
-//				if(routeLog[i].settlementID != -1){
-//				CSVfile += "," + routeLog[i].isLeaving + "," + routeLog[i].settlementID + "," + routeLog[i].settlementName;
-//				} else {
-//					CSVfile += "," + -1 + "," + -1 + "," + -1;
-//				}
-//				
-//				//"CrewMemberIDs,UnityXYZ,Current_Questleg,ShipHP,Clout,PlayerNetwork,DaysStarving,DaysThirsty,Currency,LoanAmount,LoanOriginID,CaptainsLog,CurrentNavigatorTarget\n";
-//				
-//				//Add the crewID's 
-//				CSVfile += ",";
-//				for (int index = 0; index < playerShip.crewRoster.Count; index++){
-//					Debug.Log ("ID: "  + playerShip.crewRoster[index].ID);
-//					CSVfile += playerShip.crewRoster[index].ID;
-//					if(i < playerShip.crewRoster.Count - 1) CSVfile += "_";
-//				}
-//				
-//				//Add the Unity XYZ coordinate of ship
-//				Vector3 playerLocation = playerShipVars.transform.position;
-//				CSVfile += "," + playerLocation.x + "_" + playerLocation.y + "_" + playerLocation.z;
-//				//Add the current questleg
-//				CSVfile += "," + playerShip.mainQuest.currentQuestSegment;
-//				//Add Ship HP
-//				CSVfile += "," + playerShip.health;
-//				//Add Player Clout
-//				CSVfile += "," + playerShip.playerClout;
-//				//Add Player Networks
-//				CSVfile += ",";
-//				for (int index = 0; index < playerShip.networks.Count; index++){
-//					CSVfile += playerShip.networks[index];
-//					if(i < playerShip.networks.Count - 1) CSVfile += "_";
-//				}
-//				//Add Days Starving
-//				CSVfile += "," + playerShipVars.numOfDaysWithoutFood;
-//				//Add Days Thirsty
-//				CSVfile += "," + playerShipVars.numOfDaysWithoutWater;
-//				//Add currency
-//				CSVfile += "," + playerShip.currency;
-//				//Add Loan Amount Owed
-//				if (playerShip.currentLoan != null) CSVfile += "," + playerShip.currentLoan.amount;
-//				else CSVfile += ",-1";
-//				//Add Loan Origin City
-//				if (playerShip.currentLoan != null) CSVfile += "," + playerShip.currentLoan.settlementOfOrigin;
-//				else CSVfile += ",-1";
-//				//Add Captains Log: first we need to switch commas in the log to a "|" so it doesn't hurt the delimeters TODO This could be nicer but is fine for now until we get a better database setup
-//				//--also need tp scrub newlines
-//				string scrubbedLog  = captainsLog.Replace(',','^');
-//				scrubbedLog  = scrubbedLog.Replace('\n','*');
-//				CSVfile += "," + scrubbedLog;
-//				//Add Current Navigator Target
-//				CSVfile += "," + playerShip.currentNavigatorTarget;
+
 
 				//Add a newline if not on last route
 				if (i != (routeLog.Count -1)) CSVfile += "\n";
@@ -875,8 +825,8 @@ public class globalVariables : MonoBehaviour {
 		Vector2 convertedCoordinate;
 		convertedCoordinate.x = (WTM_Coordinate.x - (rasterMapOriginMeter.x - unityOrigin)) / unityWorldUnitResolution;
 		convertedCoordinate.y = (WTM_Coordinate.y - (rasterMapOriginMeter.y - unityOrigin)) / unityWorldUnitResolution;	
-		Debug.Log (convertedCoordinate.x + " : " + convertedCoordinate.y);
-		Debug.Log (WTM_Coordinate.x + " : " + WTM_Coordinate.y);
+		//Debug.Log (convertedCoordinate.x + " : " + convertedCoordinate.y);
+		//Debug.Log (WTM_Coordinate.x + " : " + WTM_Coordinate.y);
 		return convertedCoordinate;	
 	}
 	
@@ -895,9 +845,9 @@ public class globalVariables : MonoBehaviour {
 			GameObject currentSettlement;
 			//Here we add a model/prefab to the settlement based on it's
 			try{ 
-				Debug.Log ("BEFORE TRYING TO LOAD SETTLEMENT PREFAB    " + settlement.prefabName);
+				//Debug.Log ("BEFORE TRYING TO LOAD SETTLEMENT PREFAB    " + settlement.prefabName);
 				currentSettlement = Instantiate(Resources.Load("City Models/" + settlement.prefabName, typeof(GameObject))) as GameObject;
-				Debug.Log ("AFTER TRYING TO LOAD SETTLEMENT PREFAB    " + settlement.prefabName);
+				//Debug.Log ("AFTER TRYING TO LOAD SETTLEMENT PREFAB    " + settlement.prefabName);
 			} catch {
 				currentSettlement = Instantiate(Resources.Load("City Models/PF_settlement", typeof(GameObject))) as GameObject;
 			}
@@ -912,6 +862,7 @@ public class globalVariables : MonoBehaviour {
 			currentSettlement.tag = "settlement"; 
 			currentSettlement.name = settlement.name;
 			currentSettlement.layer = 8;
+			Debug.Log ("*********************************************  <<>>>" + settlement.settlementID );
 			currentSettlement.GetComponent<script_settlement_functions>().thisSettlement = settlement;
 			currentSettlement.transform.SetParent(settlement_masterList_parent.transform);
 			settlement.theGameObject = currentSettlement;
@@ -926,19 +877,19 @@ public class globalVariables : MonoBehaviour {
 		int totalLines = 0;
 		string line;
 		
-		TextAsset settlementList = (TextAsset)Resources.Load("settlement_list_newgame", typeof(TextAsset));
-		//StreamReader reader = new StreamReader(settlementList.text);
+		string filename = "settlement_list_newgame";
 		
-		string[] fileByLine = settlementList.text.Split(splitFile, StringSplitOptions.None);
+		string filetext = TryLoadFromGameFolder(filename);
+		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
 		//subtract one to account for the header line
 		settlement_masterList = new Settlement[fileByLine.Length - 1];
 		//start at index 1 to skip the record headers we have to then subtract 
 		//one when adding NEW settlements to the list to ensure we start at ZERO and not ONE
 		for (int lineCount = 1; lineCount < fileByLine.Length; lineCount++)
 		{
-			//Debug.Log("-->" + fileByLine[lineCount]);
+			Debug.Log("-->" + fileByLine[lineCount]);
 			string[] records = fileByLine[lineCount].Split(lineDelimiter, StringSplitOptions.None);
-			//Debug.Log (records[1] + "  " + records[2] + " " + records[3] + " " + records[4]);
+			Debug.Log (records[1] + "  " + records[2] + " " + records[3] + " " + records[4]);
 			//NAME | LAT LONG | POPULATION | ELEVATION
 			int id; 			if (records[0] == null) id = -1; else id = int.Parse(records[0]);
 			string name;		if (records[1] == null) name = "NO NAME"; else name = records[1]; 
@@ -967,7 +918,7 @@ public class globalVariables : MonoBehaviour {
 			}
 			//Add model/prefab name to settlement
 			settlement_masterList[lineCount-1].prefabName = records[records.Length-2];
-			Debug.Log ("********PREFAB NAME:     " + settlement_masterList[lineCount-1].prefabName);
+			//Debug.Log ("********PREFAB NAME:     " + settlement_masterList[lineCount-1].prefabName);
 			//Add description to settlement
 			settlement_masterList[lineCount-1].description = records[records.Length-1];
 			
@@ -1062,13 +1013,16 @@ public class globalVariables : MonoBehaviour {
 		string filePath = Application.dataPath + "/";
 		
 		string fileNameServer = "";
-		if (DEBUG_MODE_ON) fileNameServer += "DEBUG_DATA_" + SystemInfo.deviceUniqueIdentifier + "_player_data_" + System.DateTime.UtcNow.ToString("HH.mm.ss, dd MMMM, yyyy") + ".csv";
-		else fileNameServer += SystemInfo.deviceUniqueIdentifier + "_player_data_" + System.DateTime.UtcNow.ToString("HH.mm.ss, dd MMMM, yyyy") + ".csv";
+		if (DEBUG_MODE_ON) fileNameServer += "DEBUG_DATA_" + SystemInfo.deviceUniqueIdentifier + "_player_data_" + System.DateTime.UtcNow.ToString("HH-mm-ss_dd_MMMM_yyyy") + ".csv";
+		else fileNameServer += SystemInfo.deviceUniqueIdentifier + "_player_data_" + System.DateTime.UtcNow.ToString("HH-mm-ss_dd_MMMM_yyyy") + ".csv";
 		
 		string fileName = "player_save_game.txt";
-		System.IO.File.WriteAllText(Application.persistentDataPath +"/" +SystemInfo.deviceUniqueIdentifier + "_player_data_" + System.DateTime.UtcNow.ToString("HH.mm.ss, dd MMMM, yyyy") + ".csv", delimitedData);
+		System.IO.File.WriteAllText(Application.persistentDataPath +"/" +SystemInfo.deviceUniqueIdentifier + "_player_data_" + System.DateTime.UtcNow.ToString("HH-mm-ss_dd_MMMM_yyyy") + ".csv", delimitedData);
 		System.IO.File.WriteAllText(filePath + fileName, delimitedData);
-		System.IO.File.WriteAllText(filePath + fileNameServer, delimitedData);
+		//TODO Temporary addition for joanna to remove the captains log from the server upload
+		string fileToUpload = RemoveCaptainsLogForJoanna(delimitedData);
+		Debug.Log (fileToUpload);
+		System.IO.File.WriteAllText(filePath + fileNameServer, fileToUpload);
 		SaveUserGameDataToServer(filePath,fileNameServer);
 	
 	}
@@ -1079,6 +1033,7 @@ public class globalVariables : MonoBehaviour {
 		string pass = "%Mgn~WxH+CRzj>4Z";
 		string host = "34.193.207.222";
 		string initialPath = "";
+		
 		
 		FtpWebRequest FTPRequest = null;
 		FtpWebResponse FTPResponse = null;
@@ -1104,6 +1059,11 @@ public class globalVariables : MonoBehaviour {
 		
 		// Notify server about size of uploaded file
 		request.ContentLength = file.Length;
+		
+		//Make sure we have a timeout for the connection because the default is Infinite--for instance, if the
+		//player is offline, the timeout will never happen if there isn't a value set. We'll set it
+		//to 5 seconds(5000ms) as a time
+		request.Timeout = 5000;
 		
 		// Set buffer size to 2KB.
 		var bufferLength = 2048;
@@ -1134,7 +1094,7 @@ public class globalVariables : MonoBehaviour {
 		} catch (Exception e) {
 			Debug.LogError("Error uploading file: " + e.Message);
 			showNotification = true;
-			notificationMessage = "ERROR: No Upload--" + e.Message;
+			notificationMessage = "ERROR: No Upload--The server timed out or you currently do not have a stable internet connection\n" + e.Message;
 			return;
 		}
 		
@@ -1142,6 +1102,28 @@ public class globalVariables : MonoBehaviour {
 		showNotification = true;
 		notificationMessage = "File: '" + localFile + "' successfully uploaded to the server!";
 	}
+	
+	
+	//TODO: This is an incredibly specific function that won't be needed later
+	public string RemoveCaptainsLogForJoanna(string file){
+		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
+		string newFile = "";
+		string[] fileByLine = file.Split(splitFile, StringSplitOptions.None);
+		
+		//For each line of the save file (the row)
+		for (int row = 0; row < fileByLine.Length; row++)
+		{
+			int index = fileByLine[row].LastIndexOf(",");
+			newFile += fileByLine[row].Substring(0, index);
+			Debug.Log (fileByLine[row]); 
+			Debug.Log (fileByLine[row].Substring(0, index));
+		}	
+		
+		return newFile;
+	
+	}
+	
+	
 	
 	public bool CheckForNetworkMatchBetweenTwoSettlements(int cityA, int cityB){
 		int INDEPENDENT = 0;
@@ -1160,7 +1142,7 @@ public class globalVariables : MonoBehaviour {
 	public void GenerateProbableInfoListOfSettlementsInCurrentNetwork(){
 		List<Settlement> networkSettlements = new List<Settlement>();
 		int settlementListLimit = 0;
-		Debug.Log ("DEBUG: " + currentSettlement.settlementID);
+		//Debug.Log ("DEBUG: " + currentSettlement.settlementID);
 		foreach(Settlement city in settlement_masterList){
 			if (city.name != currentSettlement.name && CheckForNetworkMatchBetweenTwoSettlements(currentSettlement.settlementID, city.settlementID) && settlementListLimit < 5){
 				int numOfResourcesToShow = 0;
@@ -1208,7 +1190,7 @@ public class globalVariables : MonoBehaviour {
 	}
 	
 	public void RestartGame(){
-		Debug.Log ("Quest Seg: " + playerShipVariables.ship.mainQuest.currentQuestSegment);
+		//Debug.Log ("Quest Seg: " + playerShipVariables.ship.mainQuest.currentQuestSegment);
 		//First we need to save the game that just ended
 		SaveUserGameData();
 		//Then we need to re-initialize all the player's variables
@@ -1231,10 +1213,10 @@ public class globalVariables : MonoBehaviour {
 		playerShipVariables.dayCounterStarving = 0;
 		playerShipVariables.dayCounterThirsty = 0;
 		
-		Debug.Log ("Quest Seg: " + playerShipVariables.ship.mainQuest.currentQuestSegment);
+		//Debug.Log ("Quest Seg: " + playerShipVariables.ship.mainQuest.currentQuestSegment);
 		
 		//Take player back to title screen
-		Debug.Log ("GOING TO TITLE SCREEN");
+		//Debug.Log ("GOING TO TITLE SCREEN");
 		camera_titleScreen.SetActive(true);
 		bg_titleScreen.SetActive(true);
 		bg_startScreen.SetActive(false);
@@ -1257,9 +1239,10 @@ public class globalVariables : MonoBehaviour {
 		int totalLines = 0;
 		string line;
 		
-		TextAsset windRoseList = (TextAsset)Resources.Load("windroses_january", typeof(TextAsset));
+		string filename = "windroses_january";
 		
-		string[] fileByLine = windRoseList.text.Split(splitFile, StringSplitOptions.None);
+		string filetext = TryLoadFromGameFolder(filename);
+		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
 		
 		//For each line of the wind rose file (the row)
 		for (int row = 0; row < fileByLine.Length; row++)
@@ -1287,12 +1270,16 @@ public class globalVariables : MonoBehaviour {
 			int row = int.Parse ( zoneID.Split('_')[1]);
 		
 			//Find the matching wind rose in the month of january
-			float speed = windrose_January[col,row].speed;
-			float direction = windrose_January[col,row].direction;
+			float speed = 1;
+			float direction = UnityEngine.Random.Range(0f,90f);
+			if (windrose_January[col,row] != null){
+				speed = windrose_January[col,row].speed;
+				direction = windrose_January[col,row].direction;
+			}
 			windZoneParent.transform.GetChild(currentZone).GetChild(0).transform.eulerAngles = new Vector3(0,-1f*(direction-90f),0); //We subtract 90 because Unity's 'zero' is set at 90 degrees and Unity's positive angle is CW and not CCW like normal trig
 			windZoneParent.transform.GetChild(currentZone).GetChild(0).GetComponent<script_WaterWindCurrentVector>().currentMagnitude = speed;
-			if (speed == 0) windZoneParent.transform.GetChild (currentZone).gameObject.SetActive(false);
-			else windZoneParent.transform.GetChild (currentZone).gameObject.SetActive(true);
+			//if (speed == 0) windZoneParent.transform.GetChild (currentZone).GetChild(0).gameObject.SetActive(false);
+			//else windZoneParent.transform.GetChild (currentZone).GetChild(0).gameObject.SetActive(true);
 		}
 	
 	}
@@ -1304,12 +1291,13 @@ public class globalVariables : MonoBehaviour {
 	//		--0_0
 	//			--Particle Rotater
 	//				--Wind particle system
+		windrose_January = new WindRose[64,32];
 		windZoneParent = new GameObject();
 		windZoneParent.name = "WindZones Parent Object";
-		float originX = 1445;
-		float originZ = 2454; //Unity's 2D top-down Y axis is Z
+		float originX = 0;
+		float originZ = 4096; //Unity's 2D top-down Y axis is Z
 		float zoneHeight = 128;
-		float zoneWidth = 98;
+		float zoneWidth = 64;
 		
 		for (int col = 0; col < windrose_January.GetLength(0); col++){
 			for(int row = 0; row < windrose_January.GetLength(1); row++){
@@ -1322,7 +1310,7 @@ public class globalVariables : MonoBehaviour {
 			newZone.tag = "windDirectionVector";
 			newZone.AddComponent<BoxCollider>();
 			newZone.GetComponent<BoxCollider>().isTrigger = true;
-			newZone.GetComponent<BoxCollider>().size = new Vector3(1,10,1);
+			newZone.GetComponent<BoxCollider>().size = new Vector3(.95f,10,.95f);
 			newZone.layer = 20;
 			rotater.AddComponent<script_WaterWindCurrentVector>();
 			rotater.transform.position = newZone.transform.position;
@@ -1334,7 +1322,7 @@ public class globalVariables : MonoBehaviour {
 			windParticles.transform.parent = rotater.transform;
 			rotater.transform.parent = newZone.transform;
 			newZone.transform.parent = windZoneParent.transform;
-
+			rotater.SetActive(false);
 			}
 		}
 	}
@@ -1346,13 +1334,13 @@ public class globalVariables : MonoBehaviour {
 		//		--0_0
 		//			--Particle Rotater
 		//				--Wind particle system
-		currentRose_January = new CurrentRose[40,40];
+		currentRose_January = new CurrentRose[128,64];
 		currentZoneParent = new GameObject();
 		currentZoneParent.name = "CurrentZones Parent Object";
-		float originX = 1445;
-		float originZ = 2454; //Unity's 2D top-down Y axis is Z
-		float zoneHeight = 24;
-		float zoneWidth = 24;
+		float originX = 0;
+		float originZ = 4096; //Unity's 2D top-down Y axis is Z
+		float zoneHeight = 64;
+		float zoneWidth = 32;
 		
 		for (int col = 0; col < currentRose_January.GetLength(0); col++){
 			for(int row = 0; row < currentRose_January.GetLength(1); row++){
@@ -1365,7 +1353,7 @@ public class globalVariables : MonoBehaviour {
 				newZone.tag = "currentDirectionVector";
 				newZone.AddComponent<BoxCollider>();
 				newZone.GetComponent<BoxCollider>().isTrigger = true;
-				newZone.GetComponent<BoxCollider>().size = new Vector3(1,10,1);
+				newZone.GetComponent<BoxCollider>().size = new Vector3(.95f,10,.95f);
 				newZone.layer = 19;
 				rotater.AddComponent<script_WaterWindCurrentVector>();
 				rotater.transform.position = newZone.transform.position;
@@ -1377,6 +1365,7 @@ public class globalVariables : MonoBehaviour {
 				currentParticles.transform.parent = rotater.transform;
 				rotater.transform.parent = newZone.transform;
 				newZone.transform.parent = currentZoneParent.transform;
+				rotater.SetActive(false);
 				
 			}
 		}
@@ -1403,7 +1392,7 @@ public class globalVariables : MonoBehaviour {
 			else waterRoseData += ",";
 		}
 		//Debug.Log(waterRoseData);
-		StreamWriter sw = new StreamWriter(@"H:\Samothrace Sailing\Assets\Resources\waterzones_january.txt");
+		StreamWriter sw = new StreamWriter(@Application.persistentDataPath +"/"+"waterzones_january.txt");
 		sw.Write(waterRoseData);
 		sw.Close();
 		
@@ -1416,9 +1405,10 @@ public class globalVariables : MonoBehaviour {
 		int totalLines = 0;
 		string line;
 		
-		TextAsset waterZoneList = (TextAsset)Resources.Load("waterzones_january", typeof(TextAsset));
+		string filename = "waterzones_january";
 		
-		string[] fileByLine = waterZoneList.text.Split(splitFile, StringSplitOptions.None);
+		string filetext = TryLoadFromGameFolder(filename);
+		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
 		
 		//For each line of the wind rose file (the row)
 		for (int row = 0; row < fileByLine.Length; row++)
@@ -1446,12 +1436,17 @@ public class globalVariables : MonoBehaviour {
 			int row = int.Parse ( zoneID.Split('_')[1]);
 			
 			//Find the matching current rose in the month of january
-			float speed = currentRose_January[col,row].speed;
-			float direction = currentRose_January[col,row].direction;
+			float speed = 1;
+			float direction = UnityEngine.Random.Range(0f,90f);
+			if (currentRose_January[col,row] != null){
+			    speed = currentRose_January[col,row].speed;
+			    direction = currentRose_January[col,row].direction;
+			}
 			currentZoneParent.transform.GetChild(currentZone).GetChild(0).transform.eulerAngles = new Vector3(0,-1f*(direction-90f),0); //We subtract 90 because Unity's 'zero' is set at 90 degrees and Unity's positive angle is CW and not CCW like normal trig
 			currentZoneParent.transform.GetChild(currentZone).GetChild(0).GetComponent<script_WaterWindCurrentVector>().currentMagnitude = speed;
-			if (speed == 0) currentZoneParent.transform.GetChild (currentZone).gameObject.SetActive(false);
-			else currentZoneParent.transform.GetChild (currentZone).gameObject.SetActive(true);
+			//if (speed == 0) currentZoneParent.transform.GetChild (currentZone).GetChild(0).gameObject.SetActive(false);
+			//else currentZoneParent.transform.GetChild (currentZone).GetChild(0).gameObject.SetActive(true);
+			Debug.Log ("Turning water on?");
 		}
 	
 	}
@@ -1462,11 +1457,11 @@ public class globalVariables : MonoBehaviour {
 		char[] lineDelimiter = new char[] { '@' };
 		int totalLines = 0;
 		string line;
+		string filename = "captains_log_database";
 		
-		TextAsset captainsLogList = (TextAsset)Resources.Load("captains_log_database", typeof(TextAsset));
+		string filetext = TryLoadFromGameFolder(filename);
+		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
 		
-		string[] fileByLine = captainsLogList.text.Split(splitFile, StringSplitOptions.None);
-		//Debug.Log (fileByLine.Length);
 		captainsLogEntries = new CaptainsLogEntry[fileByLine.Length];
 		//For each line of the wind rose file (the row)
 		for (int row = 0; row < fileByLine.Length; row++)
@@ -1506,10 +1501,10 @@ public class globalVariables : MonoBehaviour {
 		char[] lineDelimiterB = new char[] { '_' };
 		int totalLines = 0;
 		string line;
+		string filename = "main_questline_database";
 		
-		TextAsset mainQuestLineList = (TextAsset)Resources.Load("main_questline_database", typeof(TextAsset));
-		
-		string[] fileByLine = mainQuestLineList.text.Split(splitFile, StringSplitOptions.None);
+		string filetext = TryLoadFromGameFolder(filename);
+		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
 		
 		//start at index 1 to skip the record headers
 		//For each line of the main quest file (the row)
@@ -1519,7 +1514,7 @@ public class globalVariables : MonoBehaviour {
 			//Debug.Log (row);
 			//Debug.Log
 			//let's parse out all the crew roster changes
-			Debug.Log ("LOADQUEST--Leg: " + records[0] + " )( removals: " + records[6]);
+			//Debug.Log ("LOADQUEST--Leg: " + records[0] + " )( removals: " + records[6]);
 			string[] crewRosterAdd = records[5].Split(lineDelimiterB, StringSplitOptions.None);
 			string[] crewRosterRemove = records[6].Split(lineDelimiterB, StringSplitOptions.None);
 			string[] mentionedSpots = records[4].Split(lineDelimiterB, StringSplitOptions.None);
@@ -1539,8 +1534,8 @@ public class globalVariables : MonoBehaviour {
 			//now let's see if we're on the last segment of the questline
 			bool isEnd = false;
 			if (row == fileByLine.Length-1) isEnd = true;
-			Debug.Log("***************************");
-			Debug.Log (records[1]);
+			//Debug.Log("***************************");
+			//Debug.Log (records[1]);
 			//now add the segment to the main questline
 			mainQuest.questSegments.Add (new QuestSegment(int.Parse(records[0]),int.Parse(records[1]),records[2],records[3], crewToAdd, crewToRemove, isEnd, mentionedPlaces));
 		}
@@ -1846,7 +1841,8 @@ public class globalVariables : MonoBehaviour {
 		//if no matches(this shouldn't be possible--return a fake settlement rather than a null
 		//	--this is more sophisticated than a null--it won't crash but the error is obvious.
 		//Debug.Log("ERROR: DIDNT FIND ID MATCH IN GetSettlementFromID Function: Looking for settlement ID:  "  + ID);
-		return new Settlement(-1, "ERROR: DIDNT FIND ID MATCH IN GetSettlementFromID Function", -1);
+		
+		return new Settlement(-1, "ERROR", -1);
 	}
 	
 	public bool CheckIfShipBackAtLoanOriginPort(){
@@ -1882,9 +1878,10 @@ public class globalVariables : MonoBehaviour {
 		int totalLines = 0;
 		string line;
 		
-		TextAsset rosterList = (TextAsset)Resources.Load("crewmembers_database", typeof(TextAsset));
+		string filename = "crewmembers_database";
 		
-		string[] fileByLine = rosterList.text.Split(splitFile, StringSplitOptions.None);
+		string filetext = TryLoadFromGameFolder(filename);
+		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
 		
 		//start at index 1 to skip the record headers
 		//For each line of the main quest file (the row)
@@ -2037,6 +2034,7 @@ public class globalVariables : MonoBehaviour {
 		string writeToFile = "";
 		for (int i = 0; i < settlement_masterList_parent.transform.childCount; i++){
 			ID = settlement_masterList_parent.transform.GetChild(i).GetComponent<script_settlement_functions>().thisSettlement.settlementID.ToString();
+			if(ID == "309"){Debug.Log ("We At 309!!!!!!");}
 			unityX = settlement_masterList_parent.transform.GetChild(i).transform.position.x.ToString();
 			unityY = settlement_masterList_parent.transform.GetChild(i).transform.position.y.ToString();
 			unityZ = settlement_masterList_parent.transform.GetChild(i).transform.position.z.ToString();
@@ -2047,7 +2045,7 @@ public class globalVariables : MonoBehaviour {
 		}
 		
 		//Write the string to file now
-		StreamWriter sw = new StreamWriter(@"H:\Samothrace Sailing\Assets\Resources\settlement_unity_position_offsets.txt");
+		StreamWriter sw = new StreamWriter(@"H:\sailingwiththegods\Assets\Resources\settlement_unity_position_offsets.txt");
 		sw.Write(writeToFile);
 		sw.Close();
 	}
@@ -2057,11 +2055,11 @@ public class globalVariables : MonoBehaviour {
 		char[] lineDelimiter = new char[] { ',' };
 		int currentID = 0;
 		string line;
+		string filename = "settlement_unity_position_offsets";
 		
-		TextAsset adjustmentList = (TextAsset)Resources.Load("settlement_unity_position_offsets", typeof(TextAsset));
-		//Debug.Log (adjustmentList.text);
-		string[] fileByLine = adjustmentList.text.Split(splitFile, StringSplitOptions.None);
-
+		string filetext = TryLoadFromGameFolder(filename);
+		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
+		
 		for (int row = 0; row < fileByLine.Length; row++)
 		{
 			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
@@ -2070,6 +2068,30 @@ public class globalVariables : MonoBehaviour {
 		}
 		
 	}
+	public string TryLoadFromGameFolder(string filename){
+		try {
+			WWW localFile = new WWW ("file://"+Application.dataPath+"/" + filename +".txt");
+			
+			while (!localFile.isDone){
+				Debug.Log ("Progress of Load File: " + localFile.progress);
+			}
+			string[] splitFile = new string[] { "\r\n", "\r", "\n" };
+			Debug.Log (Application.dataPath+"/" + filename +".txt");
+			Debug.Log (localFile.text);
+			if (localFile.text == ""){
+				TextAsset file = (TextAsset)Resources.Load(filename, typeof(TextAsset));
+				return file.text;
+			} 
+			return localFile.text;
+			
+		} catch(Exception error){
+			ShowANotificationMessage("Sorry! No file: "+ filename + " was found in the game directory '" + Application.dataPath + "' or the save file is corrupt!\nError Code: " + error);
+			TextAsset file = (TextAsset)Resources.Load(filename, typeof(TextAsset));
+			return file.text;
+		}
+	
+	}
+	
 	
 	public void AdjustPlayerClout(int cloutAdjustment){
 		int clout = (int) playerShipVariables.ship.playerClout;
@@ -2133,14 +2155,17 @@ public class globalVariables : MonoBehaviour {
 					}
 			}
 		}
+		//Check if this is the player's hometown
+		if (cityID == playerShipVariables.ship.originSettlement) return true;
+		
 		
 		//Then Check are any crewmembers are part of the network
 		foreach (CrewMember thisCrewMember in playerShipVariables.ship.crewRoster){
 				Settlement crewOriginCity = GetSettlementFromID(thisCrewMember.originCity);
+				if (crewOriginCity.name != "ERROR"){
 				
 				//First check if the crewman is part of this towns network
 				//	--we have to run through each network in the settlement's list against the networks in the crewman's origin city's list
-				//	--We don't need to check for matching origin cities because they will always be in network regardless
 				//TODO it will probably be useful down the road to ahve a crewman's origin city give extra information / bonuses beyond a network bonus
 				foreach (int cityNetID in thisSettlement.networks){
 					foreach(int crewCityNetID in crewOriginCity.networks){
@@ -2150,6 +2175,9 @@ public class globalVariables : MonoBehaviour {
 						}
 					}
 				}
+			}
+			//Check if this is the crewman's hometown
+			if (cityID == thisCrewMember.originCity) return true;
 		}
 		
 		//If we don't come up with any matches anywhere then return false
@@ -2169,10 +2197,11 @@ public class globalVariables : MonoBehaviour {
 		char[] lineDelimiter = new char[] { '@' };
 		int totalLines = 0;
 		string line;
+		string filename = "available_networks";
 		
-		TextAsset networkList = (TextAsset)Resources.Load("available_networks", typeof(TextAsset));
-		
-		string[] fileByLine = networkList.text.Split(splitFile, StringSplitOptions.None);
+		string filetext = TryLoadFromGameFolder(filename);
+		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
+
 
 		//start at index 1 to skip the record headers we have to then subtract 
 		//one when adding NEW entries to the list to ensure we start at ZERO and not ONE
@@ -2218,132 +2247,133 @@ public class globalVariables : MonoBehaviour {
 		
 		//Look for a save game file and tell the player if none is found.
 		try {
-			WWW saveFile = new WWW ("file://"+Application.dataPath+"/player_save_game.txt");
-			
-			while (!saveFile.isDone){
-				Debug.Log ("Progress of Load File: " + saveFile.progress);
-			}
-			
-			//	TextAsset saveGame = (TextAsset)Resources.Load("player_save_game", typeof(TextAsset));
-			string[] fileByLine = saveFile.text.Split(splitFile, StringSplitOptions.None);
-	
-			//start at index 1 to skip the record headers we have to then subtract 
-			//one when adding NEW entries to the list to ensure we start at ZERO and not ONE
-			//all past routes will be stored as text, but the last route(last line of file) will also be done this way, but will additionally be parsed out for editing in-game values
-			for (int lineCount = 1; lineCount < fileByLine.Length; lineCount++){
-				string[] records = fileByLine[lineCount].Split (lineDelimiter, StringSplitOptions.None);
+				WWW saveFile = new WWW ("file://"+Application.dataPath+"/player_save_game.txt");
 				
-				//First Add the basic route
-				Vector3 origin = new Vector3(float.Parse(records[2]),float.Parse(records[3]),float.Parse(records[4]));
-				Vector3 destination = new Vector3(float.Parse(records[5]),float.Parse(records[6]),float.Parse(records[7]));
-				float numOfDays = float.Parse(records[1]);
-				
-				loadedJourney.routeLog.Add (new PlayerRoute (origin, destination, numOfDays));
-				
-				//Next add the cargo manifest
-				string CSVcargo = "";
-				for (int i = 8; i < 23; i++){
-					CSVcargo += "," + records[i];
+				while (!saveFile.isDone){
+					Debug.Log ("Progress of Load File: " + saveFile.progress);
 				}
-				loadedJourney.cargoLog.Add (CSVcargo);
 				
-				//Next add the other attributes string
-				string CSVotherAtt = "";
-				for (int i = 23; i < 39; i++){
-					CSVotherAtt += "," + records[i];
+				//	TextAsset saveGame = (TextAsset)Resources.Load("player_save_game", typeof(TextAsset));
+				string[] fileByLine = saveFile.text.Split(splitFile, StringSplitOptions.None);
+		
+				//start at index 1 to skip the record headers we have to then subtract 
+				//one when adding NEW entries to the list to ensure we start at ZERO and not ONE
+				//all past routes will be stored as text, but the last route(last line of file) will also be done this way, but will additionally be parsed out for editing in-game values
+				for (int lineCount = 1; lineCount < fileByLine.Length; lineCount++){
+					string[] records = fileByLine[lineCount].Split (lineDelimiter, StringSplitOptions.None);
+					
+					//First Add the basic route
+					Vector3 origin = new Vector3(float.Parse(records[2]),float.Parse(records[3]),float.Parse(records[4]));
+					Vector3 destination = new Vector3(float.Parse(records[5]),float.Parse(records[6]),float.Parse(records[7]));
+					float numOfDays = float.Parse(records[1]);
+					
+					loadedJourney.routeLog.Add (new PlayerRoute (origin, destination, numOfDays));
+					
+					//Next add the cargo manifest
+					string CSVcargo = "";
+					for (int i = 8; i < 23; i++){
+						CSVcargo += "," + records[i];
+					}
+					loadedJourney.cargoLog.Add (CSVcargo);
+					
+					//Next add the other attributes string
+					string CSVotherAtt = "";
+					for (int i = 23; i < 39; i++){
+						CSVotherAtt += "," + records[i];
+					}
+					loadedJourney.otherAttributes.Add (CSVotherAtt);
+					
+					//Update Ship Position
+					string[] XYZ = records[27].Split (recordDelimiter, StringSplitOptions.None);
+					loadedJourney.routeLog[loadedJourney.routeLog.Count-1].UnityXYZEndPoint = new Vector3(float.Parse (XYZ[0]),float.Parse (XYZ[1]),float.Parse (XYZ[2]));
+					
 				}
-				loadedJourney.otherAttributes.Add (CSVotherAtt);
+				playerShipVariables.journey = loadedJourney;
+				
+				//Now use the last line of data to update the current player status and load the game
+				int playerIndex = fileByLine.Length-1;
+				string[] playerVars = fileByLine[fileByLine.Length-1].Split (lineDelimiter,StringSplitOptions.None);
+				
+				//Update in game Time
+				ship.totalNumOfDaysTraveled = float.Parse(playerVars[1]);
+				//Update Sky to match time
+				playerShipVariables.UpdateDayNightCycle(IS_NOT_NEW_GAME);
+				
+				//Update all Cargo Holds
+				int fileStartIndex = 8;
+				foreach (Resource resource in ship.cargo){
+					resource.amount_kg = float.Parse(playerVars[fileStartIndex]);
+					fileStartIndex++;
+				}
+				
+				//Update all Crewmen
+				List<CrewMember> updatedCrew = new List<CrewMember>();
+				string[] parsedCrew = playerVars[26].Split(recordDelimiter,StringSplitOptions.None);
+				foreach(string crewID in parsedCrew){
+					updatedCrew.Add (GetCrewMemberFromID(int.Parse(crewID)));
+				}
+				ship.crewRoster = updatedCrew;
 				
 				//Update Ship Position
-				string[] XYZ = records[27].Split (recordDelimiter, StringSplitOptions.None);
-				loadedJourney.routeLog[loadedJourney.routeLog.Count-1].UnityXYZEndPoint = new Vector3(float.Parse (XYZ[0]),float.Parse (XYZ[1]),float.Parse (XYZ[2]));
+				string[] parsedXYZ = playerVars[27].Split (recordDelimiter, StringSplitOptions.None);
+				playerShip.transform.position = new Vector3(float.Parse (parsedXYZ[0]),float.Parse (parsedXYZ[1]),float.Parse (parsedXYZ[2]));
+			
+				//Update Current Quest Leg
+				ship.mainQuest.currentQuestSegment = int.Parse(playerVars[28]);
 				
-			}
-			playerShipVariables.journey = loadedJourney;
-			
-			//Now use the last line of data to update the current player status and load the game
-			int playerIndex = fileByLine.Length-1;
-			string[] playerVars = fileByLine[fileByLine.Length-1].Split (lineDelimiter,StringSplitOptions.None);
-			
-			//Update in game Time
-			ship.totalNumOfDaysTraveled = float.Parse(playerVars[1]);
-			//Update Sky to match time
-			playerShipVariables.UpdateDayNightCycle(IS_NOT_NEW_GAME);
-			
-			//Update all Cargo Holds
-			int fileStartIndex = 8;
-			foreach (Resource resource in ship.cargo){
-				resource.amount_kg = float.Parse(playerVars[fileStartIndex]);
-				fileStartIndex++;
-			}
-			
-			//Update all Crewmen
-			List<CrewMember> updatedCrew = new List<CrewMember>();
-			string[] parsedCrew = playerVars[26].Split(recordDelimiter,StringSplitOptions.None);
-			foreach(string crewID in parsedCrew){
-				updatedCrew.Add (GetCrewMemberFromID(int.Parse(crewID)));
-			}
-			ship.crewRoster = updatedCrew;
-			
-			//Update Ship Position
-			string[] parsedXYZ = playerVars[27].Split (recordDelimiter, StringSplitOptions.None);
-			playerShip.transform.position = new Vector3(float.Parse (parsedXYZ[0]),float.Parse (parsedXYZ[1]),float.Parse (parsedXYZ[2]));
+				//Update Ship Health
+				ship.health = float.Parse(playerVars[29]);
+				
+				//Update player clout
+				ship.playerClout = float.Parse (playerVars[30]);
+				
+				//Update player networks
+				List<int> loadedNetworks = new List<int>();
+				string[] parsedNetworks = playerVars[31].Split(recordDelimiter,StringSplitOptions.None);
+				foreach(string netID in parsedNetworks){
+					loadedNetworks.Add (int.Parse (netID));
+				}
+				ship.networks = loadedNetworks;
+				
+				//Update player starving and thirsty day counters
+				playerShipVariables.dayCounterStarving = int.Parse(playerVars[32]);
+				playerShipVariables.dayCounterThirsty =  int.Parse(playerVars[33]);
+				
+				//Update Currency
+				ship.currency = int.Parse (playerVars[34]);
+				
+				//Add any Loans
+				//--If Loan exists then add otherwise make null
+				if(int.Parse(playerVars[35]) != -1) {
+					//TODO right now we aren't storing the loan variable properly so relaly a loaded game means a player can cheat currently--whoops--and have plenty of time to pay it back and their interest disappears. Need to put on fix list
+					ship.currentLoan = new Loan(float.Parse (playerVars[35]), 0f, 0f, int.Parse(playerVars[36]));
+				} else {
+					ship.currentLoan = null;
+				}
+				
+				//Add Current Navigator Destination
+				int targetID = int.Parse (playerVars[37]);
+				if (targetID != -1){
+					ship.currentNavigatorTarget = targetID;
+					//change location of beacon
+					Vector3 location = Vector3.zero;
+					for( int x = 0; x < settlement_masterList_parent.transform.childCount; x++) 
+						if (settlement_masterList_parent.transform.GetChild(x).GetComponent<script_settlement_functions>().thisSettlement.settlementID == targetID)
+							location = settlement_masterList_parent.transform.GetChild(x).position;
+					navigatorBeacon.transform.position = location;
+					navigatorBeacon.GetComponent<LineRenderer>().SetPosition(0, new Vector3(location.x, 0, location.z));
+					navigatorBeacon.GetComponent<LineRenderer>().SetPosition(1, location + new Vector3(0,400,0));
+					playerShipVariables.UpdateNavigatorBeaconAppearenceBasedOnDistance();
+				} else {
+					ship.currentNavigatorTarget = -1;
+				}
+				
+				//Add Captains Log
+				string restoreCommasAndNewLines = playerVars[38].Replace('^', ',');
+				currentCaptainsLog = restoreCommasAndNewLines.Replace('*', '\n');
+				Debug.Log (currentCaptainsLog);
 		
-			//Update Current Quest Leg
-			ship.mainQuest.currentQuestSegment = int.Parse(playerVars[28]);
-			
-			//Update Ship Health
-			ship.health = float.Parse(playerVars[29]);
-			
-			//Update player clout
-			ship.playerClout = float.Parse (playerVars[30]);
-			
-			//Update player networks
-			List<int> loadedNetworks = new List<int>();
-			string[] parsedNetworks = playerVars[31].Split(recordDelimiter,StringSplitOptions.None);
-			foreach(string netID in parsedNetworks){
-				loadedNetworks.Add (int.Parse (netID));
-			}
-			ship.networks = loadedNetworks;
-			
-			//Update player starving and thirsty day counters
-			playerShipVariables.dayCounterStarving = int.Parse(playerVars[32]);
-			playerShipVariables.dayCounterThirsty =  int.Parse(playerVars[33]);
-			
-			//Update Currency
-			ship.currency = int.Parse (playerVars[34]);
-			
-			//Add any Loans
-			//--If Loan exists then add otherwise make null
-			if(int.Parse(playerVars[35]) != -1) {
-				//TODO right now we aren't storing the loan variable properly so relaly a loaded game means a player can cheat currently--whoops--and have plenty of time to pay it back and their interest disappears. Need to put on fix list
-				ship.currentLoan = new Loan(float.Parse (playerVars[35]), 0f, 0f, int.Parse(playerVars[36]));
-			} else {
-				ship.currentLoan = null;
-			}
-			
-			//Add Captains Log
-			string restoreCommasAndNewLines = playerVars[37].Replace('^', ',');
-			currentCaptainsLog = restoreCommasAndNewLines.Replace('*', '\n');
-			Debug.Log (currentCaptainsLog);
-	
-			//Add Current Navigator Destination
-			int targetID = int.Parse (playerVars[38]);
-			if (targetID != -1){
-				ship.currentNavigatorTarget = targetID;
-				//change location of beacon
-				Vector3 location = Vector3.zero;
-				for( int x = 0; x < settlement_masterList_parent.transform.childCount; x++) 
-					if (settlement_masterList_parent.transform.GetChild(x).GetComponent<script_settlement_functions>().thisSettlement.settlementID == targetID)
-						location = settlement_masterList_parent.transform.GetChild(x).position;
-				navigatorBeacon.transform.position = location;
-				navigatorBeacon.GetComponent<LineRenderer>().SetPosition(0, new Vector3(location.x, 0, location.z));
-				navigatorBeacon.GetComponent<LineRenderer>().SetPosition(1, location + new Vector3(0,400,0));
-				playerShipVariables.UpdateNavigatorBeaconAppearenceBasedOnDistance();
-			} else {
-				ship.currentNavigatorTarget = -1;
-			}
-			
+
 		} catch(Exception error){
 			ShowANotificationMessage("Sorry! No load game 'player_save_game.txt' was found in the game directory '" + Application.dataPath + "' or the save file is corrupt!\nError Code: " + error);
 			return false;

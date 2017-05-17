@@ -99,6 +99,9 @@ public class script_player_controls : MonoBehaviour {
 	
 	List<string> windZoneNamesToTurnOn = new List<string>();
 	List<string> currentZoneNamesToTurnOn = new List<string>();
+	GameObject currentWindZone;
+	GameObject currentWaterZone;
+	
 	
 	// Use this for initialization
 	void Start () {
@@ -107,7 +110,7 @@ public class script_player_controls : MonoBehaviour {
 	cameraController = MGV.mainCamera.GetComponent<CharacterController>();
 	shipTransform = transform.GetChild(0);
 	ship = new Ship("Argo",7.408f,100,500f);
-	ship.networkID = 1;
+	ship.networkID = 246;
 	journey = new PlayerJourneyLog();
 	lastPlayerShipPosition = transform.position;
 	ship.mainQuest = MGV.LoadMainQuestLine();
@@ -139,6 +142,8 @@ public class script_player_controls : MonoBehaviour {
 	//Start the infinite loop of checking for wind and water current zones
 		StartCoroutine(waterCurrentZoneMaintenance());
 		StartCoroutine(WindZoneMaintenance());
+		
+	CheckCurrentWaterWindZones();	
 	}
 	
 	// Update is called once per frame
@@ -654,6 +659,7 @@ public class script_player_controls : MonoBehaviour {
 		if (trigger.transform.tag == "settlement_dock_area"){
 		//Here we first figure out what kind of 'settlement' we arrive at, e.g. is it just a point of interest or is it a actual dockable settlement
 		//if it's a dockable settlement, then allow the docking menu to be accessed, otherwise run quest functions etc.
+			Debug.Log (trigger.transform.parent.GetComponent<script_settlement_functions>().thisSettlement);
 			if(trigger.transform.parent.GetComponent<script_settlement_functions>().thisSettlement.typeOfSettlement == 1){
 			getSettlementDockButtonReady = true;
 			MGV.currentSettlement = trigger.transform.parent.gameObject.GetComponent<script_settlement_functions>().thisSettlement;
@@ -1310,9 +1316,14 @@ public class script_player_controls : MonoBehaviour {
 	void UpdateShipSpeed(){
 		//Figure out the crew modifier for speed -- we need to make the crew a ratio to subtract 
 		//	--crew modifier is ((totalPossibleCrew / 100) * current#OfCrew ) / 10 --this gives a percentage of crew available
-		//	--we multiply this percentage by the ship speed e.g. 7.5km/h  * (50% crew--.5)
+		//	--we use a curve: (x-.25)^2*3 to figure out the reduced speed impact so the speed impact isn't a direct 1:1 effect on speed.
 		// 	--and then subtract that amount from the total speed to get our modifier
-		shipSpeed_CrewModifier =  ship.speed - (ship.speed * ((((float)ship.crewCapacity/100f) * (float)ship.crewRoster.Count) / 10) ); 
+		float finalcreweffect = ((((float)ship.crewCapacity/100f) * (float)ship.crewRoster.Count) / 10f);
+		finalcreweffect -= .25f;
+		finalcreweffect *= finalcreweffect;
+		finalcreweffect *= 3f;
+		if (finalcreweffect > 1f) finalcreweffect = 1f;
+		shipSpeed_CrewModifier =  ship.speed - (ship.speed * finalcreweffect); 
 		//Debug.Log (ship.speed + "  *  (" + ship.crewCapacity/100f + " * " + ship.crewRoster.Count);
 		
 		//Figure out the Hunger and Thirst modifier for speed
@@ -1454,8 +1465,8 @@ public class script_player_controls : MonoBehaviour {
 		//Blending Day to Night
 		if(timeOfDay >= .25f && timeOfDay <= 0.5f) {
 			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", GetRange(timeOfDay, .5f, .25f, 0, 1f));
-			RenderSettings.ambientIntensity = (timeOfDay*-2.12f) + 1.06f;
-			MGV.mainLightSource.intensity = (timeOfDay*-3.12f) + 1.56f;
+			RenderSettings.ambientIntensity = GetRange(timeOfDay, .25f, .5f, .53f, .16f);
+			MGV.mainLightSource.intensity = GetRange(timeOfDay, .25f, .5f, .78f, .16f);
 			MGV.mainLightSource.color = Color.Lerp(colorDay, colorNight, GetRange(timeOfDay, .5f, .25f, 1, 0));
 			//Fade Out Water Colors
 			MGV.mat_water.color = Color.Lerp(waterColorDay, waterColorNight, GetRange(timeOfDay, .5f, .25f, 1f, 0));
@@ -1484,8 +1495,8 @@ public class script_player_controls : MonoBehaviour {
 		//Blending Night to Day
 		if(timeOfDay > 0.75f && timeOfDay <= 1f) {
 			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", GetRange(timeOfDay, 1f, .75f, 1f, 0));
-			RenderSettings.ambientIntensity = (timeOfDay*2.12f) - 1.59f;
-			MGV.mainLightSource.intensity = (timeOfDay*3.12f)-2.34f;
+			RenderSettings.ambientIntensity = GetRange(timeOfDay, .75f, 1f, .16f, .53f);
+			MGV.mainLightSource.intensity = GetRange(timeOfDay, .75f, 1f, .16f, .78f);
 			MGV.mainLightSource.color = Color.Lerp(colorNight, colorDay, GetRange(timeOfDay, 1f, .75f, 1, 0));
 			//Fade In Water Colors
 			MGV.mat_water.color = Color.Lerp(waterColorNight, waterColorDay, GetRange(timeOfDay, 1f, .75f, 1f, 0));
@@ -2031,7 +2042,11 @@ public class script_player_controls : MonoBehaviour {
 		
 	
 		foreach(string zoneName in windZoneNamesToTurnOn){
-			GameObject.Find(zoneName).SetActive(true);
+			//TODO:This is a quick and dirty way to make sure we don't get errors when on game world edge trying to turn zones on/off that don't exist
+			try{
+				Debug.Log ("WIND" + zoneName);
+			MGV.windZoneParent.transform.Find(zoneName).transform.GetChild(0).gameObject.SetActive(true);
+			} catch{}
 		}
 	}
 
@@ -2057,11 +2072,31 @@ public class script_player_controls : MonoBehaviour {
 		
 		
 		foreach(string zoneName in currentZoneNamesToTurnOn){
-			GameObject.Find(zoneName).SetActive(true);
+			//TODO:This is a quick and dirty way to make sure we don't get errors when on game world edge trying to turn zones on/off that don't exist
+			try{
+			MGV.currentZoneParent.transform.Find(zoneName).transform.GetChild(0).gameObject.SetActive(true);
+			Debug.Log ("WATER " + zoneName + " : " + GameObject.Find(zoneName).transform.GetChild(0).name + "  -->ON<--");
+			} catch {}
 		}
 	}		
 			
-				
+	public void CheckCurrentWaterWindZones(){
+		//This function only needs to run once to initialize
+		int windLayerMask = 1 << 20;
+		int waterLayerMask = 1 << 19;
+		RaycastHit hitInfo;
+		//Fire Water Collider Check
+		if (Physics.Raycast(transform.position, transform.forward, out hitInfo, 200, waterLayerMask )){
+		Debug.Log ("********" + hitInfo.transform.name);
+			hitInfo.transform.GetChild(0).gameObject.SetActive(true);
+		}
+		//Fire Wind Collider Check
+		if (Physics.Raycast(transform.position, transform.forward, out hitInfo, 200, windLayerMask )){
+			Debug.Log ("********" + hitInfo.transform.name);
+			hitInfo.transform.GetChild(0).gameObject.SetActive(true);
+		}
+	
+	}			
 						
 	IEnumerator WindZoneMaintenance(){
 		//This loops indefinitely--it should always be running while the game is on
@@ -2094,8 +2129,10 @@ public class script_player_controls : MonoBehaviour {
 					if (currentChild.name == zoneID){
 						currentChild.GetChild(0).gameObject.SetActive(true);
 						break;
-					}else
+					}else{
 						currentChild.GetChild(0).gameObject.SetActive(false);
+						//Debug.Log ("WATER " + zoneID + " : " + currentChild.name + "  -->OFF<--");
+					}
 				}
 				yield return null;
 			}
