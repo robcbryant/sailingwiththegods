@@ -242,7 +242,7 @@ public class script_GUI : MonoBehaviour {
 												  "Use the mouse to move the cursor around the world. If the spinning cursor turns blue, then you can select that location to sail to. If the cursor is red, then the player does not have a line of sight " + 
 												  "to that location, or the cursor is over land or obstacles in the sea.");
 			GUI.Label (new Rect (50,395,440,500), "Your goal, as a new captain, is to sail the dangerous waters of the ancient Mediterranean! Be wary of pirates, storms, and dying at sea! Learn to put together "+
-												  "a good crew to reach distant lands and trade along the way. Trading is essential for resupplying your crew with food and water, gaining clout and prestige, repairing "+
+												  "a good crew to reach distant lands and trade along the way. Trading is essential for resupplying your crew with Provisions and water, gaining clout and prestige, repairing "+
 												  "one's ship, and replacing crew who were lost asea. Keep an eye on the winds and water currents--a captain should plan their routes accordingly "+
 												  "to reach their destinations more easily. Never be afraid to furl sails and ride the currents against the wind! Sticking close to the coastlines will also keep the ship away "+
 												  "from the stronger sea currents. If a captain knows the stars, look for them at night to steer by. You'll find north close to Ursa Minor in the ancient era "+
@@ -336,8 +336,6 @@ public class script_GUI : MonoBehaviour {
 				if (MGV.isInNetwork) MGV.currentPortTax = 0;
 				else MGV.currentPortTax = GetTaxRateOnCurrentShipManifest();
 				
-				//Add a day to the total journey
-				MGV.playerShipVariables.ship.totalNumOfDaysTraveled += 1;
 				foreach (int i in MGV.playerShipVariables.ship.playerJournal.knownSettlements) Debug.Log ("(*) " +i);
 				MGV.showPortDockingNotification = false;
 				
@@ -348,7 +346,15 @@ public class script_GUI : MonoBehaviour {
 			}
 			if(GUI.Button(new Rect(830,480,100,40), "Leave")){
 				MGV.showPortDockingNotification = false;
-			}					
+			}	
+			
+	} else if(MGV.showNonPortDockingNotification){
+		GUI.Box(new Rect (540,250,590,300), "You have found " + MGV.currentSettlement.name + "!");
+		GUI.Label(new Rect (540,257,590,300), "                   _______________________________________________________________");
+		GUI.Label(new Rect (540,280,550,300), MGV.currentSettlement.description);		
+		if(GUI.Button(new Rect(830,480,100,40), "Leave")){
+			MGV.showNonPortDockingNotification = false;
+		}		
 	//=====================================================================================================================================	
 	//IF WE AREN'T AT THE TITLE SCREEN OR START SCREEN OR SPECIAL NOTIFICATION WINDOW
 	} else {
@@ -360,11 +366,13 @@ public class script_GUI : MonoBehaviour {
 		//	CAPTAINS LOG GUI ELEMENT
 		//###########################################
 		//TODO I need to make a for loop that turns every log entry into another label because there is currently a limit to how many characters are allowed in a string to pass to the Label(it's a lot but not enough)
-		GUI.Box (new Rect(0,580,840,140), "");
-		captainsLogScrollPosition = GUI.BeginScrollView(new Rect(0,580,820,130), captainsLogScrollPosition, new Rect(0,580,800,(MGV.currentCaptainsLog.Length/170)*130),false,true);
-		GUI.Label (new Rect (10,580,780,(MGV.currentCaptainsLog.Length/170)*130), MGV.currentCaptainsLog);	
-		GUI.EndScrollView();
-		
+		//Only show this if the help menu is off--otherwise the GUI layer textures will block the help screen camera sprite b/c the GUI layer is ALWAYS on top
+		if(!MGV.showHelpGUI){
+			GUI.Box (new Rect(0,580,840,140), "");
+			captainsLogScrollPosition = GUI.BeginScrollView(new Rect(0,580,820,130), captainsLogScrollPosition, new Rect(0,580,800,(MGV.currentCaptainsLog.Length/170)*130),false,true);
+			GUI.Label (new Rect (10,580,780,(MGV.currentCaptainsLog.Length/170)*130), MGV.currentCaptainsLog);	
+			GUI.EndScrollView();
+		}
 		// ######################
 		// 	SHIP STATS GUI
 		// ######################
@@ -372,45 +380,14 @@ public class script_GUI : MonoBehaviour {
 		GUI.Box (new Rect(gui_stat_left,gui_stat_top,gui_stat_w,gui_stat_h), "Ship Stats");
 		GUI.Label (new Rect (gui_stat_left+10,gui_stat_top + 20,gui_stat_w,gui_stat_h),  MGV.playerShipVariables.ship.cargo[0].name + " :\t" + (int)MGV.playerShipVariables.ship.cargo[0].amount_kg + "kg");
 		GUI.Label (new Rect (gui_stat_left+125,gui_stat_top + 20,gui_stat_w,gui_stat_h), "# of Days Traveled: " + (Mathf.Round(MGV.playerShipVariables.ship.totalNumOfDaysTraveled * 1000.0f) / 1000.0f) + ",  " + GetCurrentMonth());
-		GUI.Label (new Rect (gui_stat_left+10,gui_stat_top + 40,gui_stat_w,gui_stat_h), MGV.playerShipVariables.ship.cargo[1].name + " :\t" + (int)MGV.playerShipVariables.ship.cargo[1].amount_kg + "kg");
+		GUI.Label (new Rect (gui_stat_left+10,gui_stat_top + 40,gui_stat_w,gui_stat_h), MGV.playerShipVariables.ship.cargo[1].name + " :" + (int)MGV.playerShipVariables.ship.cargo[1].amount_kg + "kg");
 		GUI.Label (new Rect (gui_stat_left+10,gui_stat_top + 60,gui_stat_w,gui_stat_h), (int)MGV.playerShipVariables.ship.health + "hp"); 
 		GUI.Label (new Rect (gui_stat_left+125,gui_stat_top + 40,gui_stat_w,gui_stat_h), "Speed: " + (Mathf.Round(MGV.playerShipVariables.current_shipSpeed_Magnitude * 1000.0f) / 1000.0f) + "km/h");
 		GUI.Label (new Rect (gui_stat_left+240,gui_stat_top + 40,gui_stat_w,gui_stat_h), "Clout: " + MGV.GetCloutTitleEquivalency((int)(Mathf.Round(MGV.playerShipVariables.ship.playerClout * 1000.0f) / 1000.0f)));
 		GUI.Label (new Rect (gui_stat_left+10,gui_stat_top + 80,gui_stat_w,gui_stat_h),  "Crew members:   " + MGV.playerShipVariables.ship.crew);
 		GUI.Label (new Rect (gui_stat_left+170,gui_stat_top + 60,gui_stat_w,gui_stat_h),  "# Days Thirsty:\t" + MGV.playerShipVariables.dayCounterThirsty);
 		GUI.Label (new Rect (gui_stat_left+170,gui_stat_top + 80,gui_stat_w,gui_stat_h),  "# Days Starving:\t" + MGV.playerShipVariables.dayCounterStarving);
-		// ######################
-		// 	Date And Time GUI
-		// ######################
-//		GUI.Box (new Rect(gui_stat_left,10,200,gui_stat_h), "Date of World");
-//		
-//		GUI.Label (new Rect (gui_stat_left+10,30,60,gui_stat_h),  "Year");
-//		MGV.TD_year = GUI.TextField (new Rect (gui_stat_left+10,40,60,20), MGV.TD_year, 5);
-//		GUI.Label (new Rect (gui_stat_left+70,30,60,gui_stat_h),  "Month");
-//		MGV.TD_month = GUI.TextField (new Rect (gui_stat_left+70,40,60,20), MGV.TD_month, 2);
-//		GUI.Label (new Rect (gui_stat_left+130,30,60,gui_stat_h),  "Day");
-//		MGV.TD_day = GUI.TextField (new Rect (gui_stat_left+130,40,60,20), MGV.TD_day, 2);
-//		
-//		GUI.Label (new Rect (gui_stat_left+10,60,60,gui_stat_h),  "Hour");
-//		MGV.TD_hour = GUI.TextField (new Rect (gui_stat_left+10,70,60,20), MGV.TD_hour, 5);
-//		GUI.Label (new Rect (gui_stat_left+70,60,60,gui_stat_h),  "Minute");
-//		MGV.TD_minute = GUI.TextField (new Rect (gui_stat_left+70,70,60,20), MGV.TD_minute, 2);
-//		GUI.Label (new Rect (gui_stat_left+130,60,60,gui_stat_h),  "Second");
-//		MGV.TD_second = GUI.TextField (new Rect (gui_stat_left+130,70,60,20), MGV.TD_second, 2);
-//		GUI.Label (new Rect (gui_stat_left+30,90,200,20),  "Toggle Celestial Grids");
-//		MGV.TD_showCelestialGrids = GUI.Toggle(new Rect (gui_stat_left+10,90,100,20), MGV.TD_showCelestialGrids, "");
-//		//set the celestial grids gameobjects as active or inactive  state based on toggle
-//		MGV.skybox_eclipticGrid.SetActive(MGV.TD_showCelestialGrids);
-//		MGV.skybox_celestialGrid.SetActive(MGV.TD_showCelestialGrids);
-		
-		//#############################
-		//  SETTLEMENT INFO GUI
-		//#############################
-//		if (MGV.showSettlementInfoGUI){
-//			GUI.Box (new Rect(10,10,20*xUnit,80*yUnit), "Settlement Data");
-//			GUI.Label (new Rect (30,40,20*xUnit, 80*yUnit), MGV.currentSettlementGameObject.GetComponent<script_settlement_functions>().thisSettlement.ToString());
-//		}
-		
+
 		
 		//################################################
 		//THIS IS THE SETTLEMENT DOCKING BUTTON
@@ -422,25 +399,18 @@ public class script_GUI : MonoBehaviour {
 				MGV.isInNetwork = MGV.CheckIfCityIDIsPartOfNetwork(MGV.currentSettlement.settlementID);
 				//Figure out the tax on the cargo hold
 				MGV.currentPortTax = GetTaxRateOnCurrentShipManifest();
-//				//Check if current Settlement is part of the main quest line
-//				MGV.CheckIfCurrentSettlementIsPartOfMainQuest(MGV.currentSettlement.settlementID);
-//				
-//				MGV.playerShipVariables.ship.playerJournal.AddNewSettlementToLog(MGV.currentSettlement.settlementID);
-//				//Determine what settlements are available to the player in the tavern
-//				MGV.GenerateProbableInfoListOfSettlementsInCurrentNetwork();
-//				MGV.GenerateListOfAvailableCrewAtCurrentPort();
-//				MGV.showSettlementTradeGUI = true;
-//				MGV.showSettlementTradeButton = false;
-//				MGV.controlsLocked = true;
-//				//Figure out the tax on the cargo hold
-//				MGV.currentPortTax = GetTaxRateOnCurrentShipManifest();
-//				//Debug.Log ("TaxNeutral: " + MGV.currentSettlement.tax_neutral + "  TaxNetwork: " + MGV.currentSettlement.tax_network);
-//				//Add a day to the total journey
-//				MGV.playerShipVariables.ship.totalNumOfDaysTraveled += 1;
-//				foreach (int i in MGV.playerShipVariables.ship.playerJournal.knownSettlements) Debug.Log ("(*) " +i);
 				
 			}
 			//Show a blank working button if not
+		} else if (MGV.showNonPortDockButton){
+			if(GUI.Button(new Rect(850,580,200,130), "CHECK OUT \n" + MGV.currentSettlement.name)){
+				MGV.showNonPortDockingNotification = true;
+				//Figure out if this settlement is part of the player's network
+				MGV.isInNetwork = MGV.CheckIfCityIDIsPartOfNetwork(MGV.currentSettlement.settlementID);
+				//Figure out the tax on the cargo hold
+				MGV.currentPortTax = GetTaxRateOnCurrentShipManifest();
+				
+			}		
 		} else {
 			if(GUI.Button(new Rect(850,580,200,130), "DOCKING \n CURRENTLY \n UNAVAILABLE")){
 			}
@@ -448,55 +418,63 @@ public class script_GUI : MonoBehaviour {
 		}
 		
 		if (!MGV.showSettlementTradeGUI){
-				//################################################
+		//################################################
 		//THIS IS THE UNFURLING / FURLING OF SAILS BUTTON
 
 			if(MGV.sailsAreUnfurled){
-				if(GUI.Button(new Rect(1060,580,120,25), "FURL SAILS")){
+				if(GUI.Button(new Rect(1060,578,120,25), "FURL SAILS")){
 					MGV.sailsAreUnfurled = false;
 					foreach(GameObject sail in MGV.sails)
 						sail.SetActive(false);
-					//MGV.sailA.SetActive(false);
-					//MGV.sailB.SetActive(false);
 				}
 			} else {
-				if(GUI.Button(new Rect(1060,580,120,25), "UNFURL SAILS")){
+				if(GUI.Button(new Rect(1060,578,120,25), "UNFURL SAILS")){
 					MGV.sailsAreUnfurled = true;
 					foreach(GameObject sail in MGV.sails)
 						sail.SetActive(true);
-					//MGV.sailA.SetActive(true);
-					//MGV.sailB.SetActive(true);
 				}
 			}
 			
 			//################################################
 			//THIS IS THE DROP ANCHOR BUTTON
 			
-			if(GUI.Button(new Rect(1060,610,120,25), "DROP ANCHOR")){
-				MGV.playerShipVariables.rayCheck_stopShip = true;
+			if(GUI.Button(new Rect(1060,604,120,25), "DROP ANCHOR")){
+				//If the controls are locked--we are traveling so force it to stop
+				if(MGV.controlsLocked && !MGV.showSettlementTradeGUI)
+					MGV.playerShipVariables.rayCheck_stopShip = true;
 			}
 			
+			//################################################
+			//THIS IS THE DROP ANCHOR BUTTON
+			
+			if(GUI.Button(new Rect(1060,630,120,25), "REST")){
+				//If the controls are locked--we are traveling so force it to stop
+				if(MGV.controlsLocked && !MGV.showSettlementTradeGUI)
+					MGV.playerShipVariables.rayCheck_stopShip = true;
+				//Run a script on the player controls that fast forwards time by a quarter day
+				MGV.isPassingTime = true;
+				MGV.controlsLocked = true;
+				StartCoroutine(MGV.playerShipVariables.WaitForTimePassing(.25f, false));
+			}	
+		
 			//################################################
 			//THIS IS THE SAVE DATA BUTTON
 			
 		
-				if(GUI.Button(new Rect(1060,640,120,25), "SAVE DATA")){
+				if(GUI.Button(new Rect(1060,656,120,25), "SAVE DATA")){
 					MGV.notificationMessage = "Saved Data File 'player_data.csv' To: " + Application.dataPath + "/player_data.csv" ;
 					MGV.showNotification = true;
 					MGV.SaveUserGameData();
 				}
 			
 			
-			if(GUI.Button(new Rect(1060,670,120,25), "RESTART GAME")){
+			if(GUI.Button(new Rect(1060,682,120,25), "RESTART GAME")){
 				MGV.RestartGame();
 			}
 		
 		}
 		
-		
-		
-		
-		
+
 		
 		//#############################
 		//  SETTLEMENT TRADE MENU GUI
@@ -510,7 +488,10 @@ public class script_GUI : MonoBehaviour {
 				if (CheckIfPlayerCanAffordToPayPortTaxes()){
 					MGV.showSettlementTradeGUI = false;
 					MGV.showSettlementTradeButton = true;
-					MGV.controlsLocked = false;
+					//MGV.controlsLocked = false;
+					//Start Our time passage
+					MGV.isPassingTime = true;
+					StartCoroutine(MGV.playerShipVariables.WaitForTimePassing(.25f, true));
 					MGV.justLeftPort = true;
 					MGV.playerShipVariables.ship.currency -= MGV.currentPortTax;
 					//Be sure to reset the tavern menu to the original tavern state
@@ -525,6 +506,7 @@ public class script_GUI : MonoBehaviour {
 					MGV.notificationMessage = "Not Enough Drachma to pay the port tax and leave!";
 				}
 			}
+			
 			//Show Port Tax
 			GUI.Label (new Rect (gui_city_left + 240,50,150, 50), "Cargo Tax to Leave: \n\t" + MGV.currentPortTax + "drachma");
 			
@@ -555,14 +537,7 @@ public class script_GUI : MonoBehaviour {
 	
 
 			
-//			// Shows Button for hiring crew members
-//			if (MGV.playerShipVariables.ship.crewRoster.Count < MGV.playerShipVariables.ship.crewCapacity){
-//				GUI.Label (new Rect (gui_ship_left+310,gui_ship_top + 60,gui_row_width, 20), "Cost: " + GetCostToHireCrewMember() + "drachma");
-//				if(GUI.Button(new Rect(gui_ship_left+310,gui_ship_top + 30,100,25), "Hire Crew")){
-//					MGV.playerShipVariables.ship.crew += 1;
-//				}
-//
-//			}
+
 			
 			float gui_network_left = 1050;
 			float gui_network_top = 20;
@@ -646,24 +621,52 @@ public class script_GUI : MonoBehaviour {
 				
 
 			//END OF SCROLLBAR WINDOW
-			//GUI.EndScrollView();
-			
-			//###########################################
-			//	Hire a Navigator GUI ELEMENT
-			//###########################################
-				//if (MGV.hireNavigatorGUIOn){
-				
-				//	GUI.Box (new Rect(gui_network_left,gui_network_top + 250,gui_network_width,gui_network_height - 250), "Hire Navigator");
-				//	hireNavigatorScrollPosition = GUI.BeginScrollView(new Rect(gui_network_left,gui_network_top+340,gui_network_width,gui_network_height-400), hireNavigatorScrollPosition, new Rect(gui_network_left,gui_network_top+340,gui_network_width-20,1000),false,true);
-					
-					
-					
-					
-				//	GUI.EndScrollView();
-				//}
+
 
 		}
 		
+
+
+			if(!MGV.showHelpGUI){
+				if(GUI.Button(new Rect(10,10,120,25), "?")){
+					MGV.showHelpGUI = true;
+					//Adjust the attributes of the GUI splash screen so it only shows the left portion of the background
+					MGV.bg_startScreen.transform.localPosition = new Vector3(-6.18f, 0, 1);
+					MGV.bg_startScreen.transform.localScale = new Vector3(5.69f, 10.2f, 0);
+					MGV.bg_startScreen.GetComponent<MeshRenderer>().sharedMaterial.SetTextureScale("_MainTex", new Vector2(0.315f, 1f));
+					MGV.bg_startScreen.SetActive(true);
+				}
+			}
+			
+			if (MGV.showHelpGUI){
+				if(GUI.Button(new Rect(10,10,120,25), "X")){
+					MGV.showHelpGUI = false;
+					//reset the splash screen to its defaults so that it will be normal again if the player restarts a new game
+					MGV.bg_startScreen.SetActive(false);
+					MGV.bg_startScreen.transform.localPosition = new Vector3(0, 0, 1);
+					MGV.bg_startScreen.transform.localScale = new Vector3(18.09f, 10.2f, 0);
+					MGV.bg_startScreen.GetComponent<MeshRenderer>().sharedMaterial.SetTextureScale("_MainTex", new Vector2(1f, 1f));
+				}
+				//===================================================
+				//HERE WE DISPLAY THE HELP INFO
+				GUI.Label (new Rect (260,120,220,500),"Use the arrow keys to rotate the camera view in the game.\n\n" +
+				           "Use the mouse wheel to zoom in and out from the player's ship.\n\n" +
+				           "Use the left mouse button to select things.\n\n" +
+				           "Use the mouse to move the cursor around the world. If the spinning cursor turns blue, then you can select that location to sail to. If the cursor is red, then the player does not have a line of sight " + 
+				           "to that location, or the cursor is over land or obstacles in the sea.");
+				GUI.Label (new Rect (50,395,440,500), "Your goal, as a new captain, is to sail the dangerous waters of the ancient Mediterranean! Be wary of pirates, storms, and dying at sea! Learn to put together "+
+				           "a good crew to reach distant lands and trade along the way. Trading is essential for resupplying your crew with Provisions and water, gaining clout and prestige, repairing "+
+				           "one's ship, and replacing crew who were lost asea. Keep an eye on the winds and water currents--a captain should plan their routes accordingly "+
+				           "to reach their destinations more easily. Never be afraid to furl sails and ride the currents against the wind! Sticking close to the coastlines will also keep the ship away "+
+				           "from the stronger sea currents. If a captain knows the stars, look for them at night to steer by. You'll find north close to Ursa Minor in the ancient era "+
+				           "where axial precession has changed the skies! There are no maps and sophisticated navigation here. Learn the landscape and skies to find your way...or perhaps hire a navigator for a hint. "+
+				           "Expand your knowledge of the world, and its many places by traveling to new ports and settlements! Knowledge is key and so is experience! Good luck!");
+				
+			}
+
+
+
+
 
 
 		
@@ -681,6 +684,11 @@ public class script_GUI : MonoBehaviour {
 				MGV.isGameOver = false;
 			}
 		}
+		
+		
+		
+		
+		
 		
 		
 		
@@ -711,6 +719,30 @@ public class script_GUI : MonoBehaviour {
 			if(GUI.Button(new Rect(1460,145,80,20), "Save Loc")){
 				MGV.Tool_SaveCurrentSettlementPositionsToFile();
 			}
+				// ######################
+				// 	Date And Time GUI
+				// ######################
+						GUI.Box (new Rect(gui_stat_left,10,200,gui_stat_h), "Date of World");
+						
+						GUI.Label (new Rect (gui_stat_left+10,30,60,gui_stat_h),  "Year");
+						MGV.TD_year = GUI.TextField (new Rect (gui_stat_left+10,40,60,20), MGV.TD_year, 5);
+						GUI.Label (new Rect (gui_stat_left+70,30,60,gui_stat_h),  "Month");
+						MGV.TD_month = GUI.TextField (new Rect (gui_stat_left+70,40,60,20), MGV.TD_month, 2);
+						GUI.Label (new Rect (gui_stat_left+130,30,60,gui_stat_h),  "Day");
+						MGV.TD_day = GUI.TextField (new Rect (gui_stat_left+130,40,60,20), MGV.TD_day, 2);
+						
+						GUI.Label (new Rect (gui_stat_left+10,60,60,gui_stat_h),  "Hour");
+						MGV.TD_hour = GUI.TextField (new Rect (gui_stat_left+10,70,60,20), MGV.TD_hour, 5);
+						GUI.Label (new Rect (gui_stat_left+70,60,60,gui_stat_h),  "Minute");
+						MGV.TD_minute = GUI.TextField (new Rect (gui_stat_left+70,70,60,20), MGV.TD_minute, 2);
+						GUI.Label (new Rect (gui_stat_left+130,60,60,gui_stat_h),  "Second");
+						MGV.TD_second = GUI.TextField (new Rect (gui_stat_left+130,70,60,20), MGV.TD_second, 2);
+						GUI.Label (new Rect (gui_stat_left+30,90,200,20),  "Toggle Celestial Grids");
+						MGV.TD_showCelestialGrids = GUI.Toggle(new Rect (gui_stat_left+10,90,100,20), MGV.TD_showCelestialGrids, "");
+						//set the celestial grids gameobjects as active or inactive  state based on toggle
+						MGV.skybox_eclipticGrid.SetActive(MGV.TD_showCelestialGrids);
+						MGV.skybox_celestialGrid.SetActive(MGV.TD_showCelestialGrids);
+				
 		}
 		
 		
@@ -811,7 +843,7 @@ public class script_GUI : MonoBehaviour {
 		float taxRateToApply = 0f;
 		//Now we need to figure out the tax on the total price of the cargo--which is based on the settlements in/out of network tax
 		// total price / 100 * tax rate = amount player owes to settlement for docking
-		if(MGV.CheckIfCityIDIsPartOfNetwork(MGV.currentSettlement.settlementID))
+		if(MGV.isInNetwork)
 			taxRateToApply = MGV.currentSettlement.tax_network;
 		else
 			taxRateToApply = MGV.currentSettlement.tax_neutral;
@@ -823,14 +855,6 @@ public class script_GUI : MonoBehaviour {
 		return (int) ((totalPriceOfGoods / 100) * taxRateToApply);
 	}
 	
-//	int GetRepairsCostBasedOnNetworkInfluence(float numOfHPToProcess){
-//		int baseModifier = 2;
-//		if(MGV.playerShipVariables.ship.networkID == MGV.currentSettlement.network.ID){
-//			return Mathf.CeilToInt(MGV.currentSettlement.tax_network * baseModifier * numOfHPToProcess);
-//		} else {
-//			return Mathf.CeilToInt(MGV.currentSettlement.tax_neutral * baseModifier * numOfHPToProcess);
-//		}
-//	}
 	
 	int GetCostToHireCrewMember(){
 		//The cost of a crew member is determined by clout and whether or not you're network
@@ -840,8 +864,8 @@ public class script_GUI : MonoBehaviour {
 		//apply / subtract the clout modifier
 		cost -= (baseCost/100) * ((MGV.playerShipVariables.ship.playerClout - 50f) / 200);//divide by 200 instead of 100 b/c at most only 25% of the cost can be reduced through clout
 		//apply /subtract the network modifier
-		if(MGV.playerShipVariables.ship.networkID == MGV.currentSettlement.network.ID)
-			cost -= (baseCost/100) * (MGV.currentSettlement.network.influence/2);//at most only %50 of the base cost can be subtracted
+		if(MGV.isInNetwork)
+			cost -= (baseCost/100) * (MGV.GetRange(MGV.currentSettlement.population, 0, 10000f, 0, .50f));//at most only %50 of the base cost can be subtracted
 		else //if out of network
 			cost += (baseCost/100) * .25f;
 			
@@ -1266,7 +1290,7 @@ public class script_GUI : MonoBehaviour {
 			int newLineCount = 1;
 			
 			float scrollViewOrganicHeight;
-			if(MGV.currentlyAvailableCrewMembersAtPort.Count * 50 < 200) scrollViewOrganicHeight = 200f; else scrollViewOrganicHeight = MGV.currentlyAvailableCrewMembersAtPort.Count * 50;
+			if(MGV.currentlyAvailableCrewMembersAtPort.Count * 50 < 200) scrollViewOrganicHeight = 200f; else scrollViewOrganicHeight = MGV.currentlyAvailableCrewMembersAtPort.Count * 170;
 			scrollPosition = GUI.BeginScrollView(new Rect(gui_network_left,gui_network_top + 300,gui_network_width,200), scrollPosition, new Rect(gui_network_left,gui_network_top+300,gui_network_width-20,(scrollViewOrganicHeight)),false,true);
 			
 			//Create a list of 5 crew members to hire
@@ -1275,8 +1299,9 @@ public class script_GUI : MonoBehaviour {
 				string title = MGV.GetCloutTitleEquivalency(currentMember.clout) + " " + currentMember.name + ", the " + MGV.GetJobClassEquivalency(currentMember.typeOfCrew) + " from " +GetSettlementFromID(currentMember.originCity).name + ".";
 				int costToHire = hireCrewCosts[i]; 
 				GUI.Label (new Rect (gui_network_left + 5,gui_network_top + 280+ (25*newLineCount),gui_network_width, 20), title);
-				GUI.Label (new Rect (gui_network_left + 5,gui_network_top + 280+ (25*(newLineCount+1)),gui_network_width, 20), "Hire this crew member for: " + costToHire + " ?");
-				if (GUI.Button (new Rect (gui_network_left + 215,gui_network_top + 280+ (25*(newLineCount+1)),80, 20), "YES" ) ){
+				GUI.Label (new Rect (gui_network_left + 5,gui_network_top + 280+ (25*(newLineCount+1)),gui_network_width - 40, 80), currentMember.backgroundInfo);
+				GUI.Label (new Rect (gui_network_left + 5,gui_network_top + 280+ (25*(newLineCount+4)),gui_network_width, 20), "Hire this "+ currentMember.name +" for: " + costToHire + " ?");
+				if (GUI.Button (new Rect (gui_network_left + 215,gui_network_top + 280+ (25*(newLineCount+4)),80, 20), "YES" ) ){
 					//Check to see if player has enough money to hire
 					if(MGV.playerShipVariables.ship.currency >= costToHire){
 						//Now check to see if there is room to hire a new crew member!
@@ -1284,7 +1309,9 @@ public class script_GUI : MonoBehaviour {
 							MGV.playerShipVariables.ship.crewRoster.Add(currentMember);
 							MGV.currentlyAvailableCrewMembersAtPort.Remove(currentMember);
 							//remove matching crew cost from array
-							hireCrewCosts.RemoveAt(i); 
+							hireCrewCosts.RemoveAt(i);
+							//Subtract the cost from the ship's money
+							MGV.playerShipVariables.ship.currency -= costToHire; 
 						//If there isn't room, then let the player know
 						} else {
 							MGV.showNotification = true;
@@ -1296,7 +1323,7 @@ public class script_GUI : MonoBehaviour {
 						MGV.notificationMessage = "You can't afford to hire " + currentMember.name + ".";
 					}
 				}
-				newLineCount = newLineCount + 2;
+				newLineCount = newLineCount + 6;
 			}
 			GUI.EndScrollView();
 		}
@@ -1314,7 +1341,7 @@ public class script_GUI : MonoBehaviour {
 			int newLineCount = 1;
 			
 			float scrollViewOrganicHeight;
-			if(MGV.playerShipVariables.ship.crewRoster.Count * 50 < 200) scrollViewOrganicHeight = 200f; else scrollViewOrganicHeight = MGV.playerShipVariables.ship.crewRoster.Count * 50;
+			if(MGV.playerShipVariables.ship.crewRoster.Count * 50 < 200) scrollViewOrganicHeight = 200f; else scrollViewOrganicHeight = MGV.playerShipVariables.ship.crewRoster.Count * 170;
 			scrollPosition = GUI.BeginScrollView(new Rect(gui_network_left,gui_network_top + 300,gui_network_width,(200)), scrollPosition, new Rect(gui_network_left,gui_network_top+300,gui_network_width-20,(scrollViewOrganicHeight)),false,true);
 			
 			//Create a list of 5 crew members to hire
@@ -1323,14 +1350,15 @@ public class script_GUI : MonoBehaviour {
 				if(currentMember.isKillable){
 					string title = MGV.GetCloutTitleEquivalency(currentMember.clout) + " " + currentMember.name + ", the " + MGV.GetJobClassEquivalency(currentMember.typeOfCrew) + " from " +GetSettlementFromID(currentMember.originCity).name + ".";
 					GUI.Label (new Rect (gui_network_left + 5,gui_network_top + 280+ (25*newLineCount),gui_network_width, 20), title);
-					GUI.Label (new Rect (gui_network_left + 5,gui_network_top + 280+ (25*(newLineCount+1)),gui_network_width, 20), "Fire " + currentMember.name + " ?");
-					if (GUI.Button (new Rect (gui_network_left + 215,gui_network_top + 280+ (25*(newLineCount+1)),80, 20), "YES" ) ){
+					GUI.Label (new Rect (gui_network_left + 5,gui_network_top + 280+ (25*(newLineCount+1)),gui_network_width - 40, 80), currentMember.backgroundInfo);
+					GUI.Label (new Rect (gui_network_left + 5,gui_network_top + 280+ (25*(newLineCount+4)),gui_network_width, 20), "Fire " + currentMember.name + " ?");
+					if (GUI.Button (new Rect (gui_network_left + 215,gui_network_top + 280+ (25*(newLineCount+4)),80, 20), "YES" ) ){
 						MGV.playerShipVariables.ship.crewRoster.Remove (currentMember);
 						MGV.showNotification = true;
 						MGV.notificationMessage = currentMember.name + " looked at you sadly and said before leaving, 'I thought I was doing so well. I'm sorry I let you down. Guess I'll go drink some cheap wine...";						
 							
 					}
-					newLineCount = newLineCount + 2;
+					newLineCount = newLineCount + 6;
 				}
 			}
 			GUI.EndScrollView();

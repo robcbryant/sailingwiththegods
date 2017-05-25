@@ -219,9 +219,9 @@ public class PlayerJourneyLog {
 		this.cargoLog = new List<string>();
 		this.otherAttributes = new List<string>();
 		this.CSVheader = "Unique_Machine_ID,timestamp,originE,originN,originZ,endE,endN,endZ," +
-					     "Water_kg,Food_kg,Grain_kg,Wine_kg,Timber_kg,Gold_kg,Silver_kg," +
-						 "Copper_kg,Tin_kg,Obsidian_kg,Lead_kg,Slaves_kg,Goats_kg,Sheep_kg,Luxury_kg,Is_Leaving_Port,PortID,PortName," +
-				"CrewMemberIDs,UnityXYZ,Current_Questleg,ShipHP,Clout,PlayerNetwork,DaysStarving,DaysThirsty,Currency,LoanAmount,LoanOriginID,CurrentNavigatorTarget,CaptainsLog\n";
+					     "Water_kg,Provisions_kg,Grain_kg,Wine_kg,Timber_kg,Gold_kg,Silver_kg," +
+						 "Copper_kg,Tin_kg,Obsidian_kg,Lead_kg,Slaves_kg,Iron_kg,Bronze_kg,Luxury_kg,Is_Leaving_Port,PortID,PortName," +
+				"CrewMemberIDs,UnityXYZ,Current_Questleg,ShipHP,Clout,PlayerNetwork,DaysStarving,DaysThirsty,Currency,LoanAmount,LoanOriginID,CurrentNavigatorTarget,KnownSettlements,CaptainsLog\n";
 	}
 	
 	public void AddRoute(PlayerRoute routeToAdd, script_player_controls playerShipVars, string captainsLog){
@@ -273,7 +273,7 @@ public class PlayerJourneyLog {
 				if(index < playerShip.networks.Count - 1) CSVstring += "_";
 			}
 			//Add Days Starving
-			CSVstring += "," + playerShipVars.numOfDaysWithoutFood;
+			CSVstring += "," + playerShipVars.numOfDaysWithoutProvisions;
 			//Add Days Thirsty
 			CSVstring += "," + playerShipVars.numOfDaysWithoutWater;
 			//Add currency
@@ -286,6 +286,14 @@ public class PlayerJourneyLog {
 			else CSVstring += ",-1";
 			//Add Current Navigator Target
 			CSVstring += "," + playerShip.currentNavigatorTarget;
+			//Add the list of known settlements in the player's acquired journal settlement knowledge
+			CSVstring += ",";
+			Debug.Log (CSVstring);
+			foreach(int settlementID in playerShip.playerJournal.knownSettlements)
+				CSVstring += settlementID + "_";
+			//remove trailing '_' from list of known settlements
+			CSVstring = CSVstring.Remove(CSVstring.Length-1);
+			Debug.Log ("After substring: " + CSVstring);
 			//Add Captains Log: first we need to switch commas in the log to a "|" so it doesn't hurt the delimeters TODO This could be nicer but is fine for now until we get a better database setup
 			//--also need tp scrub newlines
 			string scrubbedLog  = captainsLog.Replace(',','^');
@@ -358,6 +366,8 @@ public class PlayerJourneyLog {
 		return CSVfile;
 	}
 }
+
+//TODO: I believe the Network class if deprecated......
 public class Network {
 	public string name;
 	public int ID; //unique id for the network
@@ -392,12 +402,10 @@ public class Settlement {
 	public Resource[] cargo;
 	public float tax_neutral;
 	public float tax_network;
-	//public List<Network> networks;
-	//TODO for now, I'm only allowing one network connection for simplicity's sake: in the future we need to account for multiple networks
-	public Network network;
 	public GameObject theGameObject;
 	public int[] networkHintResources;
 	public Vector3 adjustedGamePosition;
+	public float eulerY;
 	public int typeOfSettlement;
 	public string description;
 	public List<int> networks;
@@ -411,7 +419,7 @@ public class Settlement {
 		this.population = population;
 		cargo = new Resource[] {
 		new Resource("Water", 0f ),
-		new Resource("Food", 0f ),
+		new Resource("Provisions", 0f ),
 		new Resource("Grain", 0f ),
 		new Resource("Wine", 0f ),
 		new Resource("Timber", 0f ),
@@ -422,9 +430,9 @@ public class Settlement {
 		new Resource("Obsidian", 0f ),
 		new Resource("Lead", 0f ),
 		new Resource("Slaves", 0f ),
-		new Resource("Goats", 0f ),
-		new Resource("Sheep", 0f ),
-		new Resource("Luxury Items", 0f ),
+		new Resource("Iron", 0f ),
+		new Resource("Bronze", 0f ),
+		new Resource("Prestige Goods", 0f ),
 		};
 		networks = new List<int>();
 	}
@@ -433,13 +441,13 @@ public class Settlement {
 	public Settlement(int id, string name, int networkID){
 		this.settlementID = id;
 		this.name = name;
-		this.network = new Network("NO NETWORK", -1);
-	
-	}
-	
-	//TODO deprecated function
-	public void AddNetwork(string name, int ID, float influence){
-		this.network = new Network(name, ID);
+		this.population = 0;
+		this.elevation = 0;
+		this.tax_network = 0;
+		this.tax_neutral =0;
+		this.description = "FAKE SETTLEMENT--LOOK INTO THIS ERROR";
+		this.networks = new List<int>();
+		
 	}
 	
 	public string ToString() {
@@ -488,7 +496,7 @@ public class Ship {
 		
 		cargo = new Resource[] {
 			new Resource("Water", 100f ),
-			new Resource("Food", 100f ),
+			new Resource("Provisions", 100f ),
 			new Resource("Grain", 0f ),
 			new Resource("Wine", 0f ),
 			new Resource("Timber", 0f ),
@@ -499,9 +507,9 @@ public class Ship {
 			new Resource("Obsidian", 0f ),
 			new Resource("Lead", 0f ),
 			new Resource("Slaves", 0f ),
-			new Resource("Goats", 0f ),
-			new Resource("Sheep", 0f ),
-			new Resource("Luxury Items", 0f ),
+			new Resource("Iron", 0f ),
+			new Resource("Bronze", 0f ),
+			new Resource("Prestige Goods", 0f ),
 		};
 		
 	    this.current_cargo_kg = 0;
@@ -639,7 +647,7 @@ public class globalVariables : MonoBehaviour {
 	public WindRose[,] windrose_January = new WindRose[10,8];
 	public GameObject windZone_Parent;
 	public GameObject windZoneParent;
-	
+
 	public GameObject waterSurface;
 	public GameObject tempTarget;
 	
@@ -686,7 +694,7 @@ public class globalVariables : MonoBehaviour {
 	public GameObject bg_startScreen;
 	
 	public bool isLoadedGame = false;
-	
+	public bool isPassingTime = false;
 	
 	//###################################
 	//	Crew Member Variables
@@ -697,6 +705,7 @@ public class globalVariables : MonoBehaviour {
 	//###################################
 	//	GUI VARIABLES
 	//###################################
+	public bool showHelpGUI = false;
 	public bool showSettlementInfoGUI = false;
 	public bool showSettlementTradeGUI = false;
 	public bool showSettlementTravelInfoGUI = false;
@@ -711,6 +720,8 @@ public class globalVariables : MonoBehaviour {
 	public bool isInNetwork = false;
 	public CrewMember crewMemberWithNetwork;
 	public bool gameDifficulty_Beginner = false;
+	public bool showNonPortDockButton = false;
+	public bool showNonPortDockingNotification = false;
 	//public GameObject camera_beginnerDifficultyMap;
 	
 	//###################################
@@ -858,11 +869,12 @@ public class globalVariables : MonoBehaviour {
 				currentSettlement.transform.position = tempPos;
 			} else {
 				currentSettlement.transform.position = settlement.adjustedGamePosition;
+				currentSettlement.transform.eulerAngles = new Vector3(0,settlement.eulerY,0);
 			}
 			currentSettlement.tag = "settlement"; 
 			currentSettlement.name = settlement.name;
 			currentSettlement.layer = 8;
-			Debug.Log ("*********************************************  <<>>>" + settlement.settlementID );
+			//Debug.Log ("*********************************************  <<>>>" + settlement.settlementID );
 			currentSettlement.GetComponent<script_settlement_functions>().thisSettlement = settlement;
 			currentSettlement.transform.SetParent(settlement_masterList_parent.transform);
 			settlement.theGameObject = currentSettlement;
@@ -887,9 +899,9 @@ public class globalVariables : MonoBehaviour {
 		//one when adding NEW settlements to the list to ensure we start at ZERO and not ONE
 		for (int lineCount = 1; lineCount < fileByLine.Length; lineCount++)
 		{
-			Debug.Log("-->" + fileByLine[lineCount]);
+			//Debug.Log("-->" + fileByLine[lineCount]);
 			string[] records = fileByLine[lineCount].Split(lineDelimiter, StringSplitOptions.None);
-			Debug.Log (records[1] + "  " + records[2] + " " + records[3] + " " + records[4]);
+			//Debug.Log (records[1] + "  " + records[2] + " " + records[3] + " " + records[4]);
 			//NAME | LAT LONG | POPULATION | ELEVATION
 			int id; 			if (records[0] == null) id = -1; else id = int.Parse(records[0]);
 			string name;		if (records[1] == null) name = "NO NAME"; else name = records[1]; 
@@ -1208,7 +1220,7 @@ public class globalVariables : MonoBehaviour {
 		
 		//Reset Other Player Ship Variables
 		playerShipVariables.numOfDaysTraveled = 0;
-		playerShipVariables.numOfDaysWithoutFood = 0;
+		playerShipVariables.numOfDaysWithoutProvisions = 0;
 		playerShipVariables.numOfDaysWithoutWater = 0;
 		playerShipVariables.dayCounterStarving = 0;
 		playerShipVariables.dayCounterThirsty = 0;
@@ -1446,7 +1458,7 @@ public class globalVariables : MonoBehaviour {
 			currentZoneParent.transform.GetChild(currentZone).GetChild(0).GetComponent<script_WaterWindCurrentVector>().currentMagnitude = speed;
 			//if (speed == 0) currentZoneParent.transform.GetChild (currentZone).GetChild(0).gameObject.SetActive(false);
 			//else currentZoneParent.transform.GetChild (currentZone).GetChild(0).gameObject.SetActive(true);
-			Debug.Log ("Turning water on?");
+			//Debug.Log ("Turning water on?");
 		}
 	
 	}
@@ -1620,9 +1632,10 @@ public class globalVariables : MonoBehaviour {
 					
 					//Now add the city name of the next journey quest to the players known settlements
 					playerShipVariables.ship.playerJournal.AddNewSettlementToLog(playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].destinationID);
-					
+					Debug.Log ("next seg: " + playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].destinationID);
 					//Now add the mentioned places attached to this quest leg
 					foreach (int i in playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].mentionedPlaces){
+					Debug.Log ("mentioning: " + i);
 						//Make sure we don't add any null values--a -1 represents no mentions of any settlements
 						if (i != -1)
 							playerShipVariables.ship.playerJournal.AddNewSettlementToLog(i);
@@ -1658,9 +1671,9 @@ public class globalVariables : MonoBehaviour {
 	//	--size that isn't already on board the ship and returns it. This may not return a full list if the requested number is too high--it will return
 	//	--the most it has available
 		List<CrewMember> availableCrew = new List<CrewMember>();
-		
-		foreach (CrewMember thisMember in masterCrewList){
-			//Make sure the crewmember isn't a quest related crewman
+		int numOfIterations = 0;
+		while (numberOfCrewmanNeeded != availableCrew.Count){
+			CrewMember thisMember = masterCrewList[UnityEngine.Random.Range(0,masterCrewList.Count)];
 			if (!thisMember.isPartOfMainQuest){
 				//Now make sure this crewmember isn't already in the current crew
 				foreach (CrewMember boatCrewMan in playerShipVariables.ship.crewRoster){
@@ -1671,9 +1684,25 @@ public class globalVariables : MonoBehaviour {
 					}
 				}
 			}
-			//Break from the main loop if we've hit enough crewman that have been requested
-			if (availableCrew.Count == numberOfCrewmanNeeded) break;
+			//Break from the main loop if we've tried enough crewman
+			if (masterCrewList.Count == numOfIterations) break;
+			numOfIterations++;
 		}
+//		for (int i = 0; i < masterCrewList.Count in masterCrewList){
+//			//Make sure the crewmember isn't a quest related crewman
+//			if (!thisMember.isPartOfMainQuest){
+//				//Now make sure this crewmember isn't already in the current crew
+//				foreach (CrewMember boatCrewMan in playerShipVariables.ship.crewRoster){
+//					//If we don't have a match, add the crewman to the list and break from the loop
+//					if(thisMember.ID != boatCrewMan.ID){
+//						availableCrew.Add (thisMember);
+//						break;
+//					}
+//				}
+//			}
+//			//Break from the main loop if we've hit enough crewman that have been requested
+//			if (availableCrew.Count == numberOfCrewmanNeeded) break;
+//		}
 		
 		//Return the final List of crewman--it might not be the full amount requested if there aren't enough to pull form
 		return availableCrew;
@@ -1840,8 +1869,7 @@ public class globalVariables : MonoBehaviour {
 		}
 		//if no matches(this shouldn't be possible--return a fake settlement rather than a null
 		//	--this is more sophisticated than a null--it won't crash but the error is obvious.
-		//Debug.Log("ERROR: DIDNT FIND ID MATCH IN GetSettlementFromID Function: Looking for settlement ID:  "  + ID);
-		
+		Debug.Log("ERROR: DIDNT FIND ID MATCH IN GetSettlementFromID Function: Looking for settlement ID:  "  + ID);
 		return new Settlement(-1, "ERROR", -1);
 	}
 	
@@ -1888,12 +1916,7 @@ public class globalVariables : MonoBehaviour {
 		for (int row = 1; row < fileByLine.Length; row++)
 		{
 			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
-		//	Debug.Log ("Load Master Crew List    " + row);
-		//	Debug.Log (records[0]);
-		//	Debug.Log(int.Parse(records[0]));
-		//	Debug.Log(int.Parse(records[2]));
-		//	Debug.Log(int.Parse(records[3]));
-		//	Debug.Log(int.Parse(records[4]));
+
 			bool isKillable = false;
 			bool isPartOfMainQuest = false;
 			if (int.Parse(records[6]) == 1) isKillable = true;
@@ -1980,7 +2003,7 @@ public class globalVariables : MonoBehaviour {
 		//Let's increase the ships cargo capacity
 		playerShipVariables.ship.cargo_capicity_kg = 1200f;
 		
-		//Let's increase the ships food and water base to reflect 28 crew members
+		//Let's increase the ships Provisions and water base to reflect 28 crew members
 		playerShipVariables.ship.cargo[0].amount_kg = 300f;
 		playerShipVariables.ship.cargo[1].amount_kg = 300f;
 		
@@ -2031,14 +2054,16 @@ public class globalVariables : MonoBehaviour {
 		string unityX = "";
 		string unityY = "";
 		string unityZ = "";
+		string unityEulerY = "";
 		string writeToFile = "";
 		for (int i = 0; i < settlement_masterList_parent.transform.childCount; i++){
 			ID = settlement_masterList_parent.transform.GetChild(i).GetComponent<script_settlement_functions>().thisSettlement.settlementID.ToString();
-			if(ID == "309"){Debug.Log ("We At 309!!!!!!");}
+			//if(ID == "309"){Debug.Log ("We At 309!!!!!!");}
 			unityX = settlement_masterList_parent.transform.GetChild(i).transform.position.x.ToString();
 			unityY = settlement_masterList_parent.transform.GetChild(i).transform.position.y.ToString();
 			unityZ = settlement_masterList_parent.transform.GetChild(i).transform.position.z.ToString();
-			string test = ((ID + "," + unityX + "," + unityY + "," + unityZ));
+			unityEulerY = settlement_masterList_parent.transform.GetChild(i).transform.eulerAngles.y.ToString();
+			string test = ((ID + "," + unityX + "," + unityY + "," + unityZ + "," + unityEulerY));
 			//perform a quick check to make sure we aren't at the end of the file: if we are don't add a new line
 			if (i != settlement_masterList_parent.transform.childCount-1) test += "\n";
 			writeToFile += test;
@@ -2064,10 +2089,13 @@ public class globalVariables : MonoBehaviour {
 		{
 			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
 			currentID = int.Parse(records[0]);
-			GetSettlementFromID(currentID).adjustedGamePosition = new Vector3(float.Parse(records[1]),float.Parse(records[2]),float.Parse(records[3]));
+			Settlement thisSettlement = GetSettlementFromID(currentID);
+			thisSettlement.adjustedGamePosition = new Vector3(float.Parse(records[1]),float.Parse(records[2]),float.Parse(records[3]));
+			thisSettlement.eulerY = float.Parse(records[4]);
 		}
 		
 	}
+	
 	public string TryLoadFromGameFolder(string filename){
 		try {
 			WWW localFile = new WWW ("file://"+Application.dataPath+"/" + filename +".txt");
@@ -2085,6 +2113,7 @@ public class globalVariables : MonoBehaviour {
 			return localFile.text;
 			
 		} catch(Exception error){
+			Debug.Log ("Sorry! No file: "+ filename + " was found in the game directory '" + Application.dataPath + "' or the save file is corrupt!\nError Code: " + error);
 			ShowANotificationMessage("Sorry! No file: "+ filename + " was found in the game directory '" + Application.dataPath + "' or the save file is corrupt!\nError Code: " + error);
 			TextAsset file = (TextAsset)Resources.Load(filename, typeof(TextAsset));
 			return file.text;
@@ -2117,6 +2146,7 @@ public class globalVariables : MonoBehaviour {
 		//if the player's clout is reduced below 0 after the adjustment, then increase it to 0 again
 		if (playerShipVariables.ship.playerClout < 0) playerShipVariables.ship.playerClout = 0;
 	}
+	
 	
 	public void AdjustCrewsClout(int cloutAdjustment){
 		foreach(CrewMember crew in playerShipVariables.ship.crewRoster){
@@ -2161,6 +2191,7 @@ public class globalVariables : MonoBehaviour {
 		
 		//Then Check are any crewmembers are part of the network
 		foreach (CrewMember thisCrewMember in playerShipVariables.ship.crewRoster){
+				Debug.Log (thisCrewMember.name);
 				Settlement crewOriginCity = GetSettlementFromID(thisCrewMember.originCity);
 				if (crewOriginCity.name != "ERROR"){
 				
@@ -2367,9 +2398,16 @@ public class globalVariables : MonoBehaviour {
 				} else {
 					ship.currentNavigatorTarget = -1;
 				}
-				
+				//Add the Known Settlements
+
+				string[] parsedKnowns = playerVars[38].Split(recordDelimiter,StringSplitOptions.None);
+				Debug.Log ("PARSED KNOWNS: " + playerVars[38]);
+				foreach(string settlementID in parsedKnowns){
+				Debug.Log ("PARSED KNOWNS: " + settlementID);
+					ship.playerJournal.knownSettlements.Add(int.Parse(settlementID));
+				}
 				//Add Captains Log
-				string restoreCommasAndNewLines = playerVars[38].Replace('^', ',');
+				string restoreCommasAndNewLines = playerVars[39].Replace('^', ',');
 				currentCaptainsLog = restoreCommasAndNewLines.Replace('*', '\n');
 				Debug.Log (currentCaptainsLog);
 		
@@ -2395,5 +2433,9 @@ public class globalVariables : MonoBehaviour {
 			}
 		}
 	}
-	
+	public float GetRange(float Xinput, float Xmax, float Xmin, float Ymax, float Ymin){
+		
+		return ( ((Xinput - Xmin) / (Xmax - Xmin)) * (Ymax - Ymin) ) + Ymin;
+		
+	}	
 }///////// END OF FILE

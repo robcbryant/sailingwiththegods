@@ -26,7 +26,7 @@ public class script_player_controls : MonoBehaviour {
 	public float shipSpeed_HungerModifier = 0f;
 	public float shipSpeed_ThirstModifier = 0f;
 	
-	public float dailyFoodKG = .83f; //(NASA)
+	public float dailyProvisionsKG = .83f; //(NASA)
 	public float dailyWaterKG = 5f; //based on nasa estimates of liters(kg) for astronauts--sailing is more physically intensive so I've upped it to 5 liters
 	
 	globalVariables MGV;
@@ -54,7 +54,7 @@ public class script_player_controls : MonoBehaviour {
 	
 	public bool getSettlementDockButtonReady = false;
 	
-	public float numOfDaysWithoutFood = 0;
+	public float numOfDaysWithoutProvisions = 0;
 	public float numOfDaysWithoutWater = 0;
 	
 	public int dayCounterStarving = 0;
@@ -174,8 +174,7 @@ public class script_player_controls : MonoBehaviour {
 		RotateCelestialSky();
 		//Update the earth's precession
 		CalculatePrecessionOfEarth();
-		//Always check the ships coast line check ray casts every update
-		//DetectCoastLinesWithRayCasts();
+
 		//Always Update the current Speed before the logic below
 		UpdateShipSpeed();
 		
@@ -196,18 +195,18 @@ public class script_player_controls : MonoBehaviour {
 					MGV.justLeftPort = false;
 					CheckIfShipLeftPortStarvingOrThirsty();
 					//TODO need to add a check here for notification windows to lock controls
+					
+					//
 				}
 				//check for settlement highlights
-				//MouseCursorCheckForInteractionTrigger();
+
 				CheckForPlayerNavigationCursor();
 				AnimateCursorRing();
 				//check for panning screen
 				CheckCameraRotationControls();
 				//check for zooming in / out
 				CheckZoomControls();
-					
-				//check for click on highlighted settlement
-			
+
 				//show the settlement docking button if in a docking area
 				if(getSettlementDockButtonReady){
 					getSettlementDockButtonReady = false;
@@ -249,6 +248,10 @@ public class script_player_controls : MonoBehaviour {
 						
 					}
 				
+				//Else if we are passing time at rest
+				} else if (MGV.isPassingTime){
+				Debug.Log ("passing time....");
+					CheckCameraRotationControls();
 				//Else we are not at the title screen and just in the game
 				} else {
 					//Check if we're in the menus or not
@@ -276,103 +279,7 @@ public class script_player_controls : MonoBehaviour {
 		}
 		
 	}
-	
-// DEPRECATED FUNCTION   **********************************************************
-//	//--------------------------------------------------------------------------------------
-//	//  this function processes the point in 3d space that the mouse cursor is hovering over
-//	//		and sees if that point coincides with an object that is also an interactive object.
-//	//		If it is an interaction object, it will tell that object to activate or 'highlight'
-//	//--------------------------------------------------------------------------------------
-//	public void MouseCursorCheckForInteractionTrigger(){
-//		// WE NEED TO MAKE SURE THE MOUSE CURSOR IS ACTUALLY OVER THE NAVIGATION MAP BEFORE ANY OTHER ACTION IS PROCESSED
-//		Vector3 main_mouse = MGV.FPVCamera.GetComponent<Camera>().ScreenToViewportPoint (Input.mousePosition);
-//		if (mainCamera.GetComponent<Camera>().rect.Contains (main_mouse)){
-//			//Debug.Log ("Mouse is in map view");
-//							//Debug.Log ("Shooting Ray  " + (Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,1)) - Camera.main.transform.position) * 500 );
-//		//Debug.DrawRay(Camera.main.transform.position, (Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,.05f)) - Camera.main.transform.position) * 500, Color.red);
-//			RaycastHit hitInfo;
-//			Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,1));
-//			//first make sure that the mouse cursor isn't positioned over a GUI element
-//			if (!MGV.mouseCursorUsingGUI){
-//				if (Physics.Raycast(Camera.main.transform.position, (cursorPosition - Camera.main.transform.position), out hitInfo,500f)){
-//					//Once we have the cursor position on the map, we need to check the line of sight between the point and the ship
-//					//we'll draw a raycast from the ship to the point on the map
-//					//first let's make sure we are drawing a line along the water surface so we'll take the cursor point and translate the y value to that of the ship
-//					//Debug.Log (hitInfo.transform.name);
-//					Vector3 target = new Vector3(hitInfo.point.x, .05f, hitInfo.point.z);
-//					RaycastHit obstacle;
-//					Vector3 origin = new Vector3(transform.position.x, .05f, transform.position.z);
-//					if(Physics.Raycast (origin, target - origin, out obstacle, Vector3.Distance(origin, target))){
-//					 //we hit an obstacle so let's draw a red line to the location and not respond to player's clicking left mouse button
-//					 //let's also make sure the obstacle isn't a settlement--in which case, we're fine.
-//						if (obstacle.transform.gameObject.tag != "settlement"){
-//							LineRenderer line = gameObject.GetComponent<LineRenderer>();
-//							line.SetPosition(0,transform.position);
-//							line.SetPosition(1,new Vector3(target.x,target.y+.1f,target.z));
-//							line.SetColors(Color.red, Color.magenta);
-//							//Debug.Log (obstacle.transform.name);
-//							allowPlayerSelectButton = false;
-//						} else {
-//						Debug.Log ("IS A SETTLEMENT");
-//							LineRenderer line = gameObject.GetComponent<LineRenderer>();
-//							line.SetPosition(0,transform.position);
-//							line.SetPosition(1,new Vector3(target.x,target.y+.1f,target.z));
-//							line.SetColors(Color.green, Color.blue);
-//							//Enable the info GUI
-//							MGV.showSettlementInfoGUI = true;
-//							//let's turn on the trigger object's mesh renderer to highlight it the interactive color
-//							//hitInfo.transform.transform.SendMessage("ActivateHighlightOnMouseOver", SendMessageOptions.DontRequireReceiver);
-//							travelingToSettlement = true;
-//							allowPlayerSelectButton = true;
-//						}
-//					//Otherwise--if we DON'T hit an obstacle check to see if we are clicking on a settlement
-//					} else {
-//						allowPlayerSelectButton = true;
-//						//let's draw a line to target location
-//						LineRenderer line = gameObject.GetComponent<LineRenderer>();
-//						line.SetPosition(0,transform.position);
-//						line.SetPosition(1,new Vector3(target.x,target.y+.05f,target.z));
-//						line.SetColors(Color.green, Color.blue);
-//						
-//						// If the object the mouse cursor is over is part of layer 8 (settlements)
-//						if (hitInfo.transform.gameObject.tag == "settlement"){
-//							//Enable the info GUI
-//							MGV.showSettlementInfoGUI = true;
-//							//let's turn on the trigger object's mesh renderer to highlight it the interactive color
-//							//hitInfo.transform.transform.SendMessage("ActivateHighlightOnMouseOver", SendMessageOptions.DontRequireReceiver);
-//							travelingToSettlement = true;
-//						} else {
-//							//Disable the info GUI
-//							MGV.showSettlementInfoGUI = false;
-//							//Disable the selection ring
-//							MGV.selection_ring.SetActive(false);
-//							//Debug.Log (hitInfo.transform.tag);
-//							travelingToSettlement = false;
-//						}
-//		
-//					}
-//					//now let's see if the mouse button was clicked, and if so: start the ship traveling toward the destination
-//					if (Input.GetButton("Select") && allowPlayerSelectButton){
-//						//disable the info GUI
-//						MGV.showSettlementInfoGUI = false;
-//						//lock controls so that the travel function is triggered on the next update cycle
-//						MGV.controlsLocked = true; 
-//						//set the destination: using the players Y value so the ship always stays at a set elevation
-//						currentDestination = new Vector3(target.x, transform.position.y, target.z);
-//						//set the player ship's current position to be logged into the journey log
-//						lastPlayerShipPosition = transform.position;
-//						travel_lastOrigin = transform.position;
-//						numOfDaysTraveled = 0;
-//					}
-//				}
-//			} else {
-//				LineRenderer line = gameObject.GetComponent<LineRenderer>();
-//				line.SetPosition(0,Vector3.zero);
-//				line.SetPosition(1,Vector3.zero);
-//				line.SetColors(Color.green, Color.blue);
-//			}
-//		}
-//	}
+
 	
 	public void CheckForPlayerNavigationCursor(){
 	
@@ -576,8 +483,8 @@ public class script_player_controls : MonoBehaviour {
 			ship.totalNumOfDaysTraveled += numOfDaysTraveledInSegment;
 			
 			//Perform regular updates as the ship travels
-			UpdateShipAtrophyAfterTravelTime(numOfDaysTraveledInSegment);
-			CheckIfFoodOrWaterIsDepleted(numOfDaysTraveledInSegment);
+			UpdateShipAtrophyAfterTravelTime(numOfDaysTraveledInSegment, false);
+			CheckIfProvisionsOrWaterIsDepleted(numOfDaysTraveledInSegment);
 			WillARandomEventHappen();
 			UpdateDayNightCycle(MGV.IS_NOT_NEW_GAME);
 			UpdateNavigatorBeaconAppearenceBasedOnDistance();
@@ -625,13 +532,19 @@ public class script_player_controls : MonoBehaviour {
 	}
 	
 	
-	public void UpdateShipAtrophyAfterTravelTime(float travelTime){
-
-		//deplete food based on number of crew  (NASA - .83kg per astronaut / day
+	public void UpdateShipAtrophyAfterTravelTime(float travelTime, bool isPassingTime){
+	float dailyProvisionsKG = .83f;
+	float dailyWaterKG = 5f;
+	//If we're passing time--then our consumption should be lower due to less physical exertion
+	//--I'm simply cutting this in half for now--TODO: It would be nice to take the time of day into account--
+	//--e.g. the hotter hours should require more expenditure and therefore more resources. 
+	//--Additionally--I would liek to turn off rowing as well as sails--so if one is just sailing without oaring--less resources are used.
+	if (isPassingTime){dailyProvisionsKG /= 2; dailyWaterKG /= 2;}
+		//deplete Provisions based on number of crew  (NASA - .83kg per astronaut / day
 		if(ship.cargo[1].amount_kg <= 0) ship.cargo[1].amount_kg = 0;
-		else ship.cargo[1].amount_kg -= (travelTime * dailyFoodKG) * ship.crew;
+		else ship.cargo[1].amount_kg -= (travelTime * dailyProvisionsKG) * ship.crew;
 		
-		//deplete water based on number of crew (NASA 3kg min a day --we'll use 5 because conditions are harder--possibly 10 from rowing)
+		//deplete water based on number of crew (NASA 3kg minimum a day --we'll use 5 because conditions are harder--possibly 10 from rowing)
 		if(ship.cargo[0].amount_kg <= 0) ship.cargo[0].amount_kg = 0;
 		else ship.cargo[0].amount_kg -= (travelTime * dailyWaterKG) * ship.crew;
 		
@@ -669,8 +582,9 @@ public class script_player_controls : MonoBehaviour {
 			} else if (trigger.transform.parent.GetComponent<script_settlement_functions>().thisSettlement.typeOfSettlement == 0){
 				//change the current settlement to this location (normally this is done by opening the docking menu--but in this case there is no docking menu)
 				MGV.currentSettlement = trigger.transform.parent.GetComponent<script_settlement_functions>().thisSettlement;
-			//Check if current Settlement is part of the main quest line
+				//Check if current Settlement is part of the main quest line
 				MGV.CheckIfCurrentSettlementIsPartOfMainQuest(MGV.currentSettlement.settlementID);
+				MGV.showNonPortDockButton = true;
 			}
 		}
 		if (trigger.transform.tag == "settlement"){
@@ -704,7 +618,7 @@ public class script_player_controls : MonoBehaviour {
 		}
 	}
 	
-	void CheckIfFoodOrWaterIsDepleted(float travelTimeToAddIfDepleted){
+	void CheckIfProvisionsOrWaterIsDepleted(float travelTimeToAddIfDepleted){
 		if (ship.cargo[0].amount_kg <= 0) {
 		 	numOfDaysWithoutWater += travelTimeToAddIfDepleted; 
 		 	CheckToSeeIfCrewWillDieFromThirst();
@@ -714,10 +628,10 @@ public class script_player_controls : MonoBehaviour {
 		}
 		 
 		if (ship.cargo[1].amount_kg <= 0) {
-			 numOfDaysWithoutFood += travelTimeToAddIfDepleted; 
+			 numOfDaysWithoutProvisions += travelTimeToAddIfDepleted; 
 			 CheckToSeeIfCrewWillDieFromStarvation();
 		} else { 
-			numOfDaysWithoutFood = 0;
+			numOfDaysWithoutProvisions = 0;
 			dayCounterStarving = 0;
 		}
 	}
@@ -727,13 +641,13 @@ public class script_player_controls : MonoBehaviour {
 	void CheckToSeeIfCrewWillDieFromStarvation(){
 		//This uses a counter system to determine the number of days in order to make sure the death roll is only rolled
 		//	--ONCE per day, rather than every time the function is called.
-		//Every day without food--the chance of a crew member dying from starvation increases
+		//Every day without Provisions--the chance of a crew member dying from starvation increases
 		//	--The first day starts at 30%, and every day onward increases it by 10%
-		int numOfDays = Mathf.FloorToInt(numOfDaysWithoutFood);
+		int numOfDays = Mathf.FloorToInt(numOfDaysWithoutProvisions);
 		//first check to see if we're at atleast one day
 		if (numOfDays >= 1) {
 			dayCounterStarving ++;
-			numOfDaysWithoutFood = 0;
+			numOfDaysWithoutProvisions = 0;
 			int deathRate = 50 + (dayCounterStarving*10);
 			
 			//If a crewmember dies due to the percentage roll
@@ -1153,10 +1067,10 @@ public class script_player_controls : MonoBehaviour {
 				Debug.Log ("POSITIVE EVENT TRIGGER");
 					//Here are positive random events that can happen while traveling
 					//---------------------------------------------------------------		
-					//friendly ship: offer out of network information--if low on water/food they may offer you some stores and suggest a port to visit
+					//friendly ship: offer out of network information--if low on water/Provisions they may offer you some stores and suggest a port to visit
 					//Abandoned/Raided Ship: crew is dead but you find left over stores to add to your cargo
 					//Favor of the Gods: Your crew feels suddenly uplifted and courageous after the siting of a mysterious event and the ship's base speed is permanently increased by 1km an hour for the next 12 hours.
-					//Poseidon's Bounty: The crew realizes there is an abundance of fish so you stop to cast nets and add additional units of food to your stores.
+					//Poseidon's Bounty: The crew realizes there is an abundance of fish so you stop to cast nets and add additional units of Provisions to your stores.
 					int numOfEvents = Random.Range (1,5);
 					switch (numOfEvents){
 						//=====================	
@@ -1165,8 +1079,8 @@ public class script_player_controls : MonoBehaviour {
 							string finalMessage = "You encounter a ship asea--worried at first that it seems like pirates! Fortunately it appears to be"+
 											      " a friendly ship who says hello!";
 							string messageWaterModifier = "";
-							string messageFoodModifier = "";
-							//First determine if the player is low on food or water
+							string messageProvisionsModifier = "";
+							//First determine if the player is low on Provisions or water
 							//--If the player is low on water
 							if(ship.cargo[0].amount_kg <= 100){
 								//add a random amount of water to the stores between 30 and 60 and modified by clout
@@ -1174,24 +1088,24 @@ public class script_player_controls : MonoBehaviour {
 								messageWaterModifier += " You received " + waterBonus + " kg of water ";
 							
 							}
-							//--If the player is low on food
+							//--If the player is low on Provisions
 							if(ship.cargo[1].amount_kg <= 100){
-								//add a random amount of food to the stores between 30 and 60 and modified by clout
-								int foodBonus = Mathf.FloorToInt( Random.Range (30,60) * aggregateCloutScore);
-								messageFoodModifier += "Thankfully you were given  " + foodBonus + " kg of food ";
+								//add a random amount of Provisions to the stores between 30 and 60 and modified by clout
+								int ProvisionsBonus = Mathf.FloorToInt( Random.Range (30,60) * aggregateCloutScore);
+								messageProvisionsModifier += "Thankfully you were given  " + ProvisionsBonus + " kg of Provisions ";
 								
 							}
 							
 							//Determine which message to show based on what the ship did for you!
 							//If there are stores given--let the player know
-							if (messageWaterModifier != "" || messageFoodModifier !=""){
+							if (messageWaterModifier != "" || messageProvisionsModifier !=""){
 								finalMessage += "They notice you are low on supplies and offer a bit of their own!";
 							} else {
-								finalMessage += "All they can offer are food and water if you are in need, but your stores seem full enough!";
+								finalMessage += "All they can offer are Provisions and water if you are in need, but your stores seem full enough!";
 							}
 							
-							//Now add what food and water they give you to the message
-							finalMessage += messageWaterModifier + messageFoodModifier + " They bid you farewell and wish Poseidon's favor upon you!";
+							//Now add what Provisions and water they give you to the message
+							finalMessage += messageWaterModifier + messageProvisionsModifier + " They bid you farewell and wish Poseidon's favor upon you!";
 							MGV.notificationMessage = finalMessage;
 							MGV.showNotification = true;	
 							break;
@@ -1245,11 +1159,11 @@ public class script_player_controls : MonoBehaviour {
 							amountCanHold = (int) (ship.cargo_capicity_kg - ship.GetTotalCargoAmount());
 						
 							//If there is room on board(There will almost ALWAYS be some room so let's say at least 50kg) then tell the player how much they found
-							//if there is less than 50kg of room, but the ship is low on food, then the crew can have the food
+							//if there is less than 50kg of room, but the ship is low on Provisions, then the crew can have the Provisions
 							if (amountCanHold > 50 || ship.cargo[1].amount_kg <= 100){
 								int amountToAdd = (int) (Random.Range (1,amountCanHold) * aggregateCloutScore);
-								finalMessage += "The crew catches " + amountToAdd + " kg of food from the fish. What luck! Praise be to Poseidon! Hopefully this isn't one of his tricks!";	
-								ship.cargo[2].amount_kg += amountToAdd;
+								finalMessage += "The crew catches " + amountToAdd + " kg of Provisions from the fish. What luck! Praise be to Poseidon! Hopefully this isn't one of his tricks!";	
+								ship.cargo[1].amount_kg += amountToAdd;
 							} else {
 								finalMessage += " Suddenly you stop the crew, shouting that the stores are already full enough! It would be foolish to take the bounty--"+
 								"obviously it is a test by Poseidon on our avarice! We continue on our journey--despite the grumblings of the crew.";
@@ -1274,7 +1188,7 @@ public class script_player_controls : MonoBehaviour {
 							if (amountCanHold > 50 || ship.cargo[0].amount_kg <= 100){
 								int amountToAdd = (int) (Random.Range (1,amountCanHold) * MGV.GetOverallCloutModifier(MGV.currentSettlement.settlementID));
 								finalMessage += "The crew catches " + amountToAdd + " kg of water from the rain. What luck! Praise be to Poseidon! Hopefully this isn't one of his tricks!";	
-								ship.cargo[2].amount_kg += amountToAdd;
+								ship.cargo[0].amount_kg += amountToAdd;
 							} else {
 								finalMessage += " Suddenly you stop the crew, shouting that the stores are already full enough! It would be foolish to take the bounty--"+
 									"obviously it's a gift to Zeus' brother--not to us and not worth the risk! We continue on our journey--despite the grumblings of the crew.";
@@ -1349,13 +1263,13 @@ public class script_player_controls : MonoBehaviour {
 	}
 	
 	void CheckIfShipLeftPortStarvingOrThirsty(){
-	//We need to check to see if there is enough food for a single days journey for all the crew
+	//We need to check to see if there is enough Provisions for a single days journey for all the crew
 	//if there isn't--some of the crew will leave the ship
 	
 	string notificationMessage = "";
-	bool foodDeaths = false;
+	bool ProvisionsDeaths = false;
 	
-		if(ship.cargo[1].amount_kg < dailyFoodKG * ship.crewRoster.Count){
+		if(ship.cargo[1].amount_kg < dailyProvisionsKG * ship.crewRoster.Count){
 			//start a counter of how many crew members die
 			int crewDeathCount = 0;
 			//make sure we roll for each crew member
@@ -1368,12 +1282,12 @@ public class script_player_controls : MonoBehaviour {
 					KillCrewMember();
 					crewDeathCount++;
 					MGV.showNotification = true;
-					foodDeaths = true;
+					ProvisionsDeaths = true;
 				}
 			}
-			notificationMessage += crewDeathCount + " crewmember(s) quit because you left without a full store of food";
+			notificationMessage += crewDeathCount + " crewmember(s) quit because you left without a full store of Provisions";
 		}
-		if (foodDeaths) notificationMessage += ", and ";
+		if (ProvisionsDeaths) notificationMessage += ", and ";
 		//We need to check to see if there is enough water for a single days journey for all the crew
 		//if there isn't--some of the crew will leave the ship
 		if(ship.cargo[0].amount_kg < dailyWaterKG * ship.crewRoster.Count){
@@ -1830,14 +1744,6 @@ public class script_player_controls : MonoBehaviour {
 			cursorRingAnimationClock = Time.time + .06f;
 		}
 		
-		//Now let's animate its scale to create a 'bobbing' effect
-//		if (cursorRingIsGrowing){
-//			if (cursorRing.transform.localScale.x >= .1f + cursorRing.transform.localScale.x) cursorRingIsGrowing = false;
-//			else cursorRing.transform.localScale += new Vector3(.001f,.001f,.001f);
-//		}else {
-//			if (cursorRing.transform.localScale.x <= .05f + cursorRing.transform.localScale.x) cursorRingIsGrowing = true;
-//			else cursorRing.transform.localScale -= new Vector3(.001f,.001f,.001f);
-//		}
 		 //Make sure the cursor's z axis is always facing the player's camera
 		 cursorRing.transform.LookAt(MGV.FPVCamera.transform.position);
 		 //cursorRing.transform.eulerAngles = -cursorRing.transform.eulerAngles; 
@@ -2139,5 +2045,38 @@ public class script_player_controls : MonoBehaviour {
 		}
 		
 	}
+	
+	//This function will run the clock for a given amount of time and adjust the necessary variables
+	//--Like Provisions and water consumption, and skyline changes
+	public IEnumerator WaitForTimePassing(float amountToWait, bool isPort){
+	//Rather than one quick jump of time--let's do a smooth visual passage of time
+	//I'm going to chop it to 180 frames--so roughly 3-4 seconds total
+	
+	//Additionally, we have a bool for isPort--we don't want the passage of time to affect the Provisions and water supplies when at a port
+	//--The assumption is that the crew is on their own at port so the passage of time when leaving a port doe not affect the ship's hp
+	//--nor Provisions stores--it only affects the time of day.
+	float numOfFrames = 180f;
+		float amountPerFrame = amountToWait / numOfFrames;
+		for(int i = 0; i < numOfFrames; i++){
+			ship.totalNumOfDaysTraveled += amountPerFrame;
+			UpdateDayNightCycle(MGV.IS_NOT_NEW_GAME);
+			if (!isPort){
+				UpdateShipAtrophyAfterTravelTime(amountPerFrame, true);
+				CheckIfProvisionsOrWaterIsDepleted(amountPerFrame);		
+			}
+		    yield return null;
+		}
+		MGV.isPassingTime = false;
+		MGV.controlsLocked = false;
+		if (!isPort){//If this isn't a port--then add a journey log at the end
+			//Add a new route to the player journey log
+			journey.AddRoute(new PlayerRoute(transform.position, transform.position, ship.totalNumOfDaysTraveled), gameObject.GetComponent<script_player_controls>(), MGV.currentCaptainsLog);	
+			//Update player ghost route
+			UpdatePlayerGhostRouteLineRenderer(MGV.IS_NOT_NEW_GAME);
+		}
+	}
+	
+	
+	
 	
 }
