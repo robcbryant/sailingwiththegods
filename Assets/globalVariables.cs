@@ -856,9 +856,9 @@ public class globalVariables : MonoBehaviour {
 			GameObject currentSettlement;
 			//Here we add a model/prefab to the settlement based on it's
 			try{ 
-				//Debug.Log ("BEFORE TRYING TO LOAD SETTLEMENT PREFAB    " + settlement.prefabName);
+				Debug.Log ("BEFORE TRYING TO LOAD SETTLEMENT PREFAB    " + settlement.prefabName + "  :   " + settlement.name);
 				currentSettlement = Instantiate(Resources.Load("City Models/" + settlement.prefabName, typeof(GameObject))) as GameObject;
-				//Debug.Log ("AFTER TRYING TO LOAD SETTLEMENT PREFAB    " + settlement.prefabName);
+				Debug.Log ("AFTER TRYING TO LOAD SETTLEMENT PREFAB    " + settlement.prefabName);
 			} catch {
 				currentSettlement = Instantiate(Resources.Load("City Models/PF_settlement", typeof(GameObject))) as GameObject;
 			}
@@ -874,7 +874,7 @@ public class globalVariables : MonoBehaviour {
 			currentSettlement.tag = "settlement"; 
 			currentSettlement.name = settlement.name;
 			currentSettlement.layer = 8;
-			//Debug.Log ("*********************************************  <<>>>" + settlement.settlementID );
+			Debug.Log ("*********************************************  <<>>>" + currentSettlement.name + "   :   " + settlement.settlementID );
 			currentSettlement.GetComponent<script_settlement_functions>().thisSettlement = settlement;
 			currentSettlement.transform.SetParent(settlement_masterList_parent.transform);
 			settlement.theGameObject = currentSettlement;
@@ -930,7 +930,7 @@ public class globalVariables : MonoBehaviour {
 			}
 			//Add model/prefab name to settlement
 			settlement_masterList[lineCount-1].prefabName = records[records.Length-2];
-			//Debug.Log ("********PREFAB NAME:     " + settlement_masterList[lineCount-1].prefabName);
+			Debug.Log ("********PREFAB NAME:     " + settlement_masterList[lineCount-1].prefabName);
 			//Add description to settlement
 			settlement_masterList[lineCount-1].description = records[records.Length-1];
 			
@@ -1478,7 +1478,7 @@ public class globalVariables : MonoBehaviour {
 		//For each line of the wind rose file (the row)
 		for (int row = 0; row < fileByLine.Length; row++)
 		{
-			//Debug.Log(captainsLogEntries.Length + "  :  " + row);
+			Debug.Log(captainsLogEntries.Length + "  :  " + row);
 			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
 			captainsLogEntries[row] = new CaptainsLogEntry(int.Parse(records[0]), records[1]);
 			

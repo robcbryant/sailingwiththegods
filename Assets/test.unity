@@ -3783,7 +3783,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1036831382}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!92 &82666048
 Behaviour:
   m_ObjectHideFlags: 0
@@ -33703,14 +33703,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 979320019}
-  m_LocalRotation: {x: 0, y: -.80200386, z: 0, w: .597318888}
-  m_LocalPosition: {x: -153.969406, y: 13.1870003, z: 190.412155}
-  m_LocalScale: {x: .832639158, y: 1, z: .832639337}
+  m_LocalRotation: {x: .0333769582, y: .609358847, z: .154985249, w: -.776883125}
+  m_LocalPosition: {x: 1892.08813, y: -5.0421257, z: 2572.70703}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 393840606}
   - {fileID: 1188690691}
-  m_Father: {fileID: 1036831382}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 21
 --- !u!20 &979320021
 Camera:
   m_ObjectHideFlags: 0
@@ -35174,7 +35174,6 @@ Transform:
   m_LocalPosition: {x: 1936, y: 10, z: 2282}
   m_LocalScale: {x: 1.20099998, y: 1, z: 1.20100021}
   m_Children:
-  - {fileID: 979320020}
   - {fileID: 82666046}
   - {fileID: 1170192124}
   - {fileID: 1256717000}
@@ -39093,7 +39092,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1036831382}
-  m_RootOrder: 2
+  m_RootOrder: 1
 --- !u!1 &1178127730
 GameObject:
   m_ObjectHideFlags: 0
@@ -40889,7 +40888,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1036831382}
-  m_RootOrder: 3
+  m_RootOrder: 2
 --- !u!20 &1256717001
 Camera:
   m_ObjectHideFlags: 0
@@ -59788,7 +59787,9 @@ MonoBehaviour:
   bg_titleScreen: {fileID: 393840605}
   bg_startScreen: {fileID: 1188690690}
   isLoadedGame: 0
+  isPassingTime: 0
   possibleCrewNames: []
+  showHelpGUI: 0
   showSettlementInfoGUI: 0
   showSettlementTradeGUI: 0
   showSettlementTravelInfoGUI: 0
@@ -59801,6 +59802,8 @@ MonoBehaviour:
   showPortDockingNotification: 0
   isInNetwork: 0
   gameDifficulty_Beginner: 0
+  showNonPortDockButton: 0
+  showNonPortDockingNotification: 0
   skybox_stars: {fileID: 684064609}
   skybox_eclipticGrid: {fileID: 889640289}
   skybox_celestialGrid: {fileID: 973437830}
@@ -65226,7 +65229,7 @@ MonoBehaviour:
   shipSpeed_ShipHPModifier: 0
   shipSpeed_HungerModifier: 0
   shipSpeed_ThirstModifier: 0
-  dailyFoodKG: .829999983
+  dailyProvisionsKG: .829999983
   dailyWaterKG: 5
   cameraController: {fileID: 0}
   lastPlayerShipPosition: {x: 0, y: 0, z: 0}
@@ -65245,7 +65248,7 @@ MonoBehaviour:
   currentWindDirectionMagnitude: 0
   current_shipSpeed_Magnitude: 0
   getSettlementDockButtonReady: 0
-  numOfDaysWithoutFood: 0
+  numOfDaysWithoutProvisions: 0
   numOfDaysWithoutWater: 0
   dayCounterStarving: 0
   dayCounterThirsty: 0
