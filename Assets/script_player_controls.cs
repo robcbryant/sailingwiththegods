@@ -250,7 +250,7 @@ public class script_player_controls : MonoBehaviour {
 				
 				//Else if we are passing time at rest
 				} else if (MGV.isPassingTime){
-				Debug.Log ("passing time....");
+				//Debug.Log ("passing time....");
 					CheckCameraRotationControls();
 				//Else we are not at the title screen and just in the game
 				} else {
@@ -289,7 +289,7 @@ public class script_player_controls : MonoBehaviour {
 		Rect FPVCamRect = MGV.FPVCamera.GetComponent<Camera>().rect;
 		FPVCamRect.y = 0;
 		FPVCamRect.height =1f;
-		if (FPVCamRect.Contains (main_mouse)){
+		if (FPVCamRect.Contains (main_mouse) && !MGV.showNotification && !MGV.showPortDockingNotification && !MGV.showSettlementTradeGUI && !MGV.showSecondaryNotification && !MGV.showSettlementInfoGUI){ 
 			//If the mouse cursor is hovering over the allowed gameplay window, then figure out the position of the mouse in worldspace
 			RaycastHit hitInfo;
 			Ray ray = MGV.FPVCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
@@ -1222,7 +1222,7 @@ public class script_player_controls : MonoBehaviour {
 		//let's make sure the trigger for a new log  / event doesn't happen again until needed by
 		//	by turning it off when the the trigger number changes--which means it won't take effect
 		//	again until the next time the trigger number occurs
-		Debug.Log (Mathf.FloorToInt(tenthPlaceTemp));
+		//Debug.Log (Mathf.FloorToInt(tenthPlaceTemp));
 		if(Mathf.FloorToInt(tenthPlaceTemp) != 5 && Mathf.FloorToInt (tenthPlaceTemp) != 9) MGV.isPerformingRandomEvent = false;
 		
 	}
@@ -1608,6 +1608,7 @@ public class script_player_controls : MonoBehaviour {
 	}
 	
 	public void UpdatePlayerGhostRouteLineRenderer(bool isANewGame){
+		
 		//Update the Line Renderer with the last route position added. If a new game we initially set the origin point to the players position
 		//We have to take this offset into account later because the player route array will always have 1 less in the array because it doesn't have the origin position as a separate route index(it's not a route)
 		//	--rather than use Count-1 to get the last index of the line renderer, we can just use Count from the route log
@@ -1617,11 +1618,23 @@ public class script_player_controls : MonoBehaviour {
 		//TODO this is a quick and dirty fix to load games--the origin point is already established in a loaded game so if we add 1 to the index, it creates a 'blank' Vector.zero route index in the ghost trail
 		} else if (MGV.isLoadedGame) {
 			MGV.playerGhostRoute.GetComponent<LineRenderer>().SetVertexCount(journey.routeLog.Count);
-			MGV.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count-1, journey.routeLog[journey.routeLog.Count-1].theRoute[1] - new Vector3(0,transform.position.y,0));
+			//TODO This is a quick fix--we use a 0,0,0 to designate the settlement as a stopping points rather than a normal one. This ruins the ghost trail however so we will just use position [0] instead --which just makes no visual diference in the trail
+			if (journey.routeLog[journey.routeLog.Count-1].theRoute[1].x < 1)
+				MGV.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count-1, journey.routeLog[journey.routeLog.Count-1].theRoute[0] - new Vector3(0,transform.position.y,0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position			
+			else
+				MGV.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count-1, journey.routeLog[journey.routeLog.Count-1].theRoute[1] - new Vector3(0,transform.position.y,0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
+			
 		//if it isn't a loaded game then do the original code
 		} else {
 			MGV.playerGhostRoute.GetComponent<LineRenderer>().SetVertexCount(journey.routeLog.Count+1);//we add one here because the route list never includes the origin position--so we add it manually for a new game
-			MGV.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count, journey.routeLog[journey.routeLog.Count-1].theRoute[1] - new Vector3(0,transform.position.y,0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
+			//TODO This is a quick fix--we use a 0,0,0 to designate the settlement as a stopping points rather than a normal one. This ruins the ghost trail however so we will just use position [0] instead --which just makes no visual diference in the trail
+			
+			if (journey.routeLog[journey.routeLog.Count-1].theRoute[1].x < 1){
+				MGV.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count, journey.routeLog[journey.routeLog.Count-1].theRoute[0] - new Vector3(0,transform.position.y,0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
+				
+		    }else{
+				MGV.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count, journey.routeLog[journey.routeLog.Count-1].theRoute[1] - new Vector3(0,transform.position.y,0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
+			}
 		}
 	}
 	
