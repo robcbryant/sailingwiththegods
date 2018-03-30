@@ -1378,64 +1378,64 @@ public class script_player_controls : MonoBehaviour {
 		Color brightSky = new Color(203f/255f,239f/255f,254f/255f);
 		//Blending Day to Night
 		if(timeOfDay >= .25f && timeOfDay <= 0.5f) {
-			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", GetRange(timeOfDay, .5f, .25f, 0, 1f));
-			RenderSettings.ambientIntensity = GetRange(timeOfDay, .25f, .5f, .53f, .16f);
-			MGV.mainLightSource.intensity = GetRange(timeOfDay, .25f, .5f, .78f, .16f);
-			MGV.mainLightSource.color = Color.Lerp(colorDay, colorNight, GetRange(timeOfDay, .5f, .25f, 1, 0));
+			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", MGV.GetRange(timeOfDay, .5f, .25f, 0, 1f));
+			RenderSettings.ambientIntensity = MGV.GetRange(timeOfDay, .25f, .5f, .53f, .16f);
+			MGV.mainLightSource.intensity = MGV.GetRange(timeOfDay, .25f, .5f, .78f, .16f);
+			MGV.mainLightSource.color = Color.Lerp(colorDay, colorNight, MGV.GetRange(timeOfDay, .5f, .25f, 1, 0));
 			//Fade Out Water Colors
-			MGV.mat_water.color = Color.Lerp(waterColorDay, waterColorNight, GetRange(timeOfDay, .5f, .25f, 1f, 0));
+			MGV.mat_water.color = Color.Lerp(waterColorDay, waterColorNight, MGV.GetRange(timeOfDay, .5f, .25f, 1f, 0));
 			//Fade Out Water Current Sprite Colors to Black
-			MGV.mat_waterCurrents.color = Color.Lerp(Color.white, currentColorNight, GetRange(timeOfDay, .5f, .25f, 1f, 0));
+			MGV.mat_waterCurrents.color = Color.Lerp(Color.white, currentColorNight, MGV.GetRange(timeOfDay, .5f, .25f, 1f, 0));
 			//Fade Out Sky/Atmosphere Color
-			MGV.skybox_horizonColor.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, GetRange(timeOfDay, .5f, .25f, 0, 1f), 1f, GetRange(timeOfDay, .5f, .25f, 0, 1f));
+			MGV.skybox_horizonColor.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, MGV.GetRange(timeOfDay, .5f, .25f, 0, 1f), 1f, MGV.GetRange(timeOfDay, .5f, .25f, 0, 1f));
 			//Fade Out Sun Color
-			MGV.skybox_sun.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, GetRange(timeOfDay, .5f, .25f, 70f/255f, 1f), GetRange(timeOfDay, .5f, .25f, 0, 1f));
+			MGV.skybox_sun.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, MGV.GetRange(timeOfDay, .5f, .25f, 70f/255f, 1f), MGV.GetRange(timeOfDay, .5f, .25f, 0, 1f));
 			//Fade Out Clouds
-			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(GetRange(timeOfDay, .5f, .25f, 30f/255f, 1f),GetRange(timeOfDay, .5f, .25f, 30f/255f, 1f),GetRange(timeOfDay, .5f, .25f, 50f/255f, 1f));
+			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(MGV.GetRange(timeOfDay, .5f, .25f, 30f/255f, 1f),MGV.GetRange(timeOfDay, .5f, .25f, 30f/255f, 1f),MGV.GetRange(timeOfDay, .5f, .25f, 50f/255f, 1f));
 			//Fade In Moon(transparency to opaque)
-			MGV.skybox_moon.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f,1f,1f,GetRange(timeOfDay, .5f, .25f, 1f, 28f/255f));
+			MGV.skybox_moon.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f,1f,1f,MGV.GetRange(timeOfDay, .5f, .25f, 1f, 28f/255f));
 			//Fade in Dark Fog: This breaks up the fog colro fade into two shades to better match the sunset
 			if(timeOfDay >= .25f && timeOfDay <= 0.35f) {
-				RenderSettings.fogColor = Color.Lerp(brightSky, deepPurple, GetRange(timeOfDay, .35f, .25f, 1f, 0));
-				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(brightSky, deepPurple, GetRange(timeOfDay, .35f, .25f, 1f, 0));
+				RenderSettings.fogColor = Color.Lerp(brightSky, deepPurple, MGV.GetRange(timeOfDay, .35f, .25f, 1f, 0));
+				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(brightSky, deepPurple, MGV.GetRange(timeOfDay, .35f, .25f, 1f, 0));
 			}  else {
 				//Also we';; turn on the city lights here right as sunset
 				MGV.cityLightsParent.SetActive(true);
-				RenderSettings.fogColor = Color.Lerp(deepPurple, waterColorNight, GetRange(timeOfDay, .5f, .35f, 1f, 0));
-				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(deepPurple, waterColorNight, GetRange(timeOfDay, .5f, .35f, 1f, 0));
+				RenderSettings.fogColor = Color.Lerp(deepPurple, waterColorNight, MGV.GetRange(timeOfDay, .5f, .35f, 1f, 0));
+				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(deepPurple, waterColorNight, MGV.GetRange(timeOfDay, .5f, .35f, 1f, 0));
 			}
 		
 		}
 		//Blending Night to Day
 		if(timeOfDay > 0.75f && timeOfDay <= 1f) {
-			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", GetRange(timeOfDay, 1f, .75f, 1f, 0));
-			RenderSettings.ambientIntensity = GetRange(timeOfDay, .75f, 1f, .16f, .53f);
-			MGV.mainLightSource.intensity = GetRange(timeOfDay, .75f, 1f, .16f, .78f);
-			MGV.mainLightSource.color = Color.Lerp(colorNight, colorDay, GetRange(timeOfDay, 1f, .75f, 1, 0));
+			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", MGV.GetRange(timeOfDay, 1f, .75f, 1f, 0));
+			RenderSettings.ambientIntensity = MGV.GetRange(timeOfDay, .75f, 1f, .16f, .53f);
+			MGV.mainLightSource.intensity = MGV.GetRange(timeOfDay, .75f, 1f, .16f, .78f);
+			MGV.mainLightSource.color = Color.Lerp(colorNight, colorDay, MGV.GetRange(timeOfDay, 1f, .75f, 1, 0));
 			//Fade In Water Colors
-			MGV.mat_water.color = Color.Lerp(waterColorNight, waterColorDay, GetRange(timeOfDay, 1f, .75f, 1f, 0));
+			MGV.mat_water.color = Color.Lerp(waterColorNight, waterColorDay, MGV.GetRange(timeOfDay, 1f, .75f, 1f, 0));
 			//Fade Out Water Current Sprite Colors to Black
-			MGV.mat_waterCurrents.color = Color.Lerp(currentColorNight, Color.white, GetRange(timeOfDay, 1f, .75f, 1f, 0));
+			MGV.mat_waterCurrents.color = Color.Lerp(currentColorNight, Color.white, MGV.GetRange(timeOfDay, 1f, .75f, 1f, 0));
 			//Fade In Sky/Atmosphere Color
-			MGV.skybox_horizonColor.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, GetRange(timeOfDay, 1f, .75f, 1f, 0), 1f, GetRange(timeOfDay, 1f, .75f, 1f, 0));
+			MGV.skybox_horizonColor.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, MGV.GetRange(timeOfDay, 1f, .75f, 1f, 0), 1f, MGV.GetRange(timeOfDay, 1f, .75f, 1f, 0));
 			//Fade In Sun Color
-			MGV.skybox_sun.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, GetRange(timeOfDay, 1f, .75f, 1f, 70f/255f), GetRange(timeOfDay, 1f, .75f, 1f, 0));
+			MGV.skybox_sun.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, MGV.GetRange(timeOfDay, 1f, .75f, 1f, 70f/255f), MGV.GetRange(timeOfDay, 1f, .75f, 1f, 0));
 			//Fade In Clouds
-			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(GetRange(timeOfDay, 1f, .75f, 1f, 30f/255f),GetRange(timeOfDay, 1f, .75f, 1f, 30f/255f),GetRange(timeOfDay, 1f, .75f, 1f, 50f/255f));
+			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(MGV.GetRange(timeOfDay, 1f, .75f, 1f, 30f/255f),MGV.GetRange(timeOfDay, 1f, .75f, 1f, 30f/255f),MGV.GetRange(timeOfDay, 1f, .75f, 1f, 50f/255f));
 			//Fade out Moon(opaque to transparency)
-			MGV.skybox_moon.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f,1f,1f,GetRange(timeOfDay, 1f, .75f, 28f/255f, 1f));
+			MGV.skybox_moon.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f,1f,1f,MGV.GetRange(timeOfDay, 1f, .75f, 28f/255f, 1f));
 			//Fade in Normal Fog: This breaks up the fog colro fade into two shades to better match the sunrise
 			if(timeOfDay >= .75f && timeOfDay <= 0.85f) {
-				RenderSettings.fogColor = Color.Lerp(waterColorNight, deepPurple, GetRange(timeOfDay, .85f, .75f, 1f, 0));
-				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(waterColorNight, deepPurple, GetRange(timeOfDay, .85f, .75f, 1f, 0));
+				RenderSettings.fogColor = Color.Lerp(waterColorNight, deepPurple, MGV.GetRange(timeOfDay, .85f, .75f, 1f, 0));
+				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(waterColorNight, deepPurple, MGV.GetRange(timeOfDay, .85f, .75f, 1f, 0));
 			}  else {
 				//Also we';; turn off the city lights here right as sun rises
 				MGV.cityLightsParent.SetActive(false);
-				RenderSettings.fogColor = Color.Lerp(deepPurple, brightSky, GetRange(timeOfDay, 1f, .85f, 1f, 0));
-				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(deepPurple, brightSky, GetRange(timeOfDay, 1f, .85f, 1f, 0));
+				RenderSettings.fogColor = Color.Lerp(deepPurple, brightSky, MGV.GetRange(timeOfDay, 1f, .85f, 1f, 0));
+				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(deepPurple, brightSky, MGV.GetRange(timeOfDay, 1f, .85f, 1f, 0));
 			}		}
 		//------------------------ Rotate the sky for day night cycle
-		targetAngle = GetRange(timeOfDay, 1f, 0, 360+testAngle, testAngle);
+		targetAngle = MGV.GetRange(timeOfDay, 1f, 0, 360+testAngle, testAngle);
 		MGV.skybox_MAIN_CELESTIAL_SPHERE.transform.Rotate(0, targetAngle - initialAngle, 0, Space.Self);
 //		//Debug.Log (initialAngle +  "***********" + targetAngle);
 		RotateClouds(targetAngle - initialAngle);
@@ -1444,13 +1444,7 @@ public class script_player_controls : MonoBehaviour {
 
 		
 	}
-	
-	float GetRange(float Xinput, float Xmax, float Xmin, float Ymax, float Ymin){
 
-	return ( ((Xinput - Xmin) / (Xmax - Xmin)) * (Ymax - Ymin) ) + Ymin;
-
-	}
-	
 	public void RotateCelestialSky(){
 		//We need to get the players latitude to determine the vertical angle of the celestial globe
 		//	--This is the angle of the north celestial pole from the horizon line
@@ -1459,7 +1453,7 @@ public class script_player_controls : MonoBehaviour {
 		Transform celestialSphere = MGV.skybox_MAIN_CELESTIAL_SPHERE.transform;
 		float latitude = playerLatLong.y;
 		
-		float targetAngle  = GetRange(latitude, 90f, -90f, 0, -180);//(90 - latitude);
+		float targetAngle  = MGV.GetRange(latitude, 90f, -90f, 0, -180);//(90 - latitude);
 		float angleChange = initialCelestialAngle - targetAngle;
 		initialCelestialAngle = targetAngle;
 		
@@ -1713,13 +1707,13 @@ public class script_player_controls : MonoBehaviour {
 		//	that if it is 100. We'll be using the same formula to fade the celestial sphere colors.
 		
 		//Update size
-		float calculatedWidth = GetRange(distance, 0, 100f, .1f, 5f);
+		float calculatedWidth = MGV.GetRange(distance, 0, 100f, .1f, 5f);
 		MGV.navigatorBeacon.GetComponent<LineRenderer>().SetWidth(calculatedWidth, calculatedWidth);
 		
 		Color colorEnd = new Color(6f/255f,167f/255f,1f,0);
 		
 		//Update transparency
-		float alpha = GetRange(distance, 0, 100f, 0, 1f);
+		float alpha = MGV.GetRange(distance, 0, 100f, 0, 1f);
 		MGV.navigatorBeacon.GetComponent<LineRenderer>().SetColors(new Color (88f/255f,1f,211/255f,alpha),colorEnd);
 	}
 	

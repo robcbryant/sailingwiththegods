@@ -1,3 +1,34 @@
+//=======================================================================================================================================
+//
+//  script_GUI.cs   -- Main GUI code interface
+//
+//    --This script handles all of the GUI interactions with the player. There is a main update loop that
+//      acts as a listener for any changes in the player controls, or through click listeners on any GUI
+//      buttons that are enabled here.
+//
+//    --The first block handles setting variables for all of the required GUI attached GameObjects in the scene
+//
+//    --The second block handles the main loop that looks for the changes
+//
+//    --The last block contains all relevant functions called on by the main loop
+//
+//
+//      Note: Anything GUI related should pass through this script. This script can access both the player GameObject variabels
+//          and the global variables GameObject (MGV) that are being updated outside this script, e.g. a trade menu here may need
+//          access to a set of variables stored in the player ship's object in the player GameObject, as well as global functions
+//          stored in the global variables GameObject to process that information. Eventually I would like to keep most of the
+//          processing to the global variables script, and keep this script as ONLY a delivery system of pre-processed information 
+//
+//======================================================================================================================================
+
+
+
+
+
+
+
+
+
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,22 +38,32 @@ using UnityEngine.UI;
 
 public class script_GUI : MonoBehaviour {
 
-	globalVariables MGV;
-	public GameObject GUI_port_menu;
-	public GameObject all_trade_rows;
-	//public GameObject all_exchange_rate_labels;
-	//public GameObject all_cargo_quantities;
-	public GameObject player_currency;
-	public GameObject player_current_cargo;
-	public GameObject player_max_cargo;
+//======================================================================================================================================================================
+//======================================================================================================================================================================
+//  SETUP ALL VARIABLES FOR THE GUI
+//======================================================================================================================================================================
+//======================================================================================================================================================================
+
+
+	//-----------------------------------------------------------
+	// Title Screen Variables
+	//-----------------------------------------------------------
+		public GameObject title_start;
+		public GameObject title_newgame_button;
+		public GameObject title_newgame_beginner_button;
+		public GameObject title_loadgame_button;
+		public GameObject title_loadgame_beginner_button;
+		public GameObject title_crew_select;
+		public GameObject title_crew_select_story;
+		public GameObject title_crew_select_start_game;
 
 	//-----------------------------------------------------------
 	// Game Over Notification Variables
 	//-----------------------------------------------------------
-	public GameObject gameover_main;
-	public GameObject gameover_message;
-	public GameObject gameover_restart;
-    
+        public GameObject gameover_main;
+        public GameObject gameover_message;
+        public GameObject gameover_restart;
+        
     
     //-----------------------------------------------------------
 	// Player Non-Port Notification Variables
@@ -122,45 +163,6 @@ public class script_GUI : MonoBehaviour {
 	
 	
 	
-	public GUISkin myGuiSkin;
-	GUIStyle style_background = new GUIStyle();
-	GUIStyle style_button = new GUIStyle();
-	GUIStyle style_label = new GUIStyle();
-	
-	float gui_city_left = 20;
-	float gui_city_top = 20;
-	float gui_city_width = 430;
-	float gui_city_height = 550;
-	
-	float gui_ship_left = 460;
-	float gui_ship_top = 20;
-	float gui_ship_width = 430;
-	float gui_ship_height = 550;
-	
-	float gui_row_width = 310;
-	float gui_row_height = 20;
-	
-	public float screenX;
-	public float screenY;
-	public float xUnit;
-	public float yUnit;
-	
-	float gui_stat_left = 1200;
-	float gui_stat_top = 580;
-	float gui_stat_w = 400;
-	float gui_stat_h = 120;
-	
-	
-	float originalHeight = 720;
-	float originalWidth = 1680;
-	
-	public bool showNotification = false;
-	//string notificationMessage = "testing message";
-	
-	Vector2 scrollPosition = new Vector2(0,0);
-	Vector2 captainsLogScrollPosition = Vector2.zero;
-	Vector2 hireNavigatorScrollPosition = Vector2.zero;
-	
 	//****************************************************************
 	//GUI INFORMATION PANEL VARIABLES
 	//****************************************************************
@@ -191,49 +193,102 @@ public class script_GUI : MonoBehaviour {
 	//---------------------
 	//HIRE CREW PANEL VARIABLES
 	List<int> hireCrewCosts = new List<int>();
-	//---------------------
-	//FIRE CREW PANEL VARIABLES
-	
+
 	//---------------------
 	//REPAIR SHIP PANEL VARIABLES
 	int costToRepair;
-	
-	
-	// Use this for initialization
+
+    
+    //===================================
+    // OTHER VARS
+    globalVariables MGV;
+    public GameObject GUI_port_menu;
+    public GameObject all_trade_rows;
+    public GameObject player_currency;
+    public GameObject player_current_cargo;
+    public GameObject player_max_cargo;
+    
+    public GUISkin myGuiSkin;
+    GUIStyle style_background = new GUIStyle();
+    GUIStyle style_button = new GUIStyle();
+    GUIStyle style_label = new GUIStyle();
+    
+    float gui_city_left = 20;
+    float gui_city_top = 20;
+    float gui_city_width = 430;
+    float gui_city_height = 550;
+    
+    float gui_ship_left = 460;
+    float gui_ship_top = 20;
+    float gui_ship_width = 430;
+    float gui_ship_height = 550;
+    
+    float gui_row_width = 310;
+    float gui_row_height = 20;
+    
+    public float screenX;
+    public float screenY;
+    public float xUnit;
+    public float yUnit;
+    
+    float gui_stat_left = 1200;
+    float gui_stat_top = 580;
+    float gui_stat_w = 400;
+    float gui_stat_h = 120;
+    
+    
+    float originalHeight = 720;
+    float originalWidth = 1680;
+    
+    public bool showNotification = false;
+    
+    Vector2 scrollPosition = new Vector2(0,0);
+    Vector2 captainsLogScrollPosition = Vector2.zero;
+    Vector2 hireNavigatorScrollPosition = Vector2.zero;    
+    
+    
+    
+//======================================================================================================================================================================
+//  INITIALIZE ANY NECESSARY VARIABLES
+//======================================================================================================================================================================
 	void Start () {
-	MGV = GameObject.FindGameObjectWithTag("global_variables").GetComponent<globalVariables>();
-
-	style_background.fontSize = (int) yUnit * 3;
-	style_background.normal.textColor = Color.white;
-	style_background.normal.background = MakeTex( 2, 2, new Color( 0f, .5f, .5f, 0.8f ) );
-	
-	style_button.fontSize = (int) yUnit * 3;
-	style_button.normal.textColor = Color.white;
-	style_button.hover.background = MakeTex( 2, 2, new Color( 0f, .9f, .9f, 0.8f ) );
-	style_button.active.background = MakeTex( 2, 2, new Color( 0f, .3f, .3f, 0.8f ) );
-	style_button.normal.background = MakeTex( 2, 2, new Color( 0f, .8f, .8f, 0.8f ) );
-	
-	style_label.fontSize = (int) yUnit * 3;
-	style_label.normal.textColor = Color.white;
-	
-	xUnit = Screen.width / 100f;
-	yUnit = Screen.height / 100f;
-		
-
-	
+        MGV = GameObject.FindGameObjectWithTag("global_variables").GetComponent<globalVariables>();
+        style_background.fontSize = (int) yUnit * 3;
+        style_background.normal.textColor = Color.white;
+        style_button.fontSize = (int) yUnit * 3;
+        style_button.normal.textColor = Color.white;
+        style_label.fontSize = (int) yUnit * 3;
+        style_label.normal.textColor = Color.white;
+        xUnit = Screen.width / 100f;
+        yUnit = Screen.height / 100f;
 	}
+
+    
+    
+    
+    
+    
+    
+    
+//======================================================================================================================================================================
+//======================================================================================================================================================================
+//  START OF THE MAIN UPDATE LOOP
+//======================================================================================================================================================================
+//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 	
-	void OnGUI(){
-	//This is NEW--his is a quick/easy way to make sure the necessary labels are constantly updated without too much
+void OnGUI(){
+
+
+
+	//This is NEW--This is a quick/easy way to make sure the necessary labels are constantly updated without too much
 	//	--overhead to worry about.
-		updateLabelsForPlayerVariables();
-	
-	
-	
-	
-	
-	
+    updateLabelsForPlayerVariables();
+
 	//************************************************************
+    //
+    // THE Rest of this until the Title menu will be deprecated once the title menu is switched over to the new GUI system
+    //
+    //
 	// This code controls the screen scaling of the GUI interface!
 	//		It finishes at the end of OnGUI() with a Reset on the Matrix
 	//************************************************************
@@ -246,7 +301,7 @@ public class script_GUI : MonoBehaviour {
 	//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 		
 	
-	GUI.skin = myGuiSkin;
+        GUI.skin = myGuiSkin;
 		//############################
 		// UPDATE SCREEN RATIO SIZING
 		//############################
@@ -259,321 +314,176 @@ public class script_GUI : MonoBehaviour {
 		style_label.fontSize = (int) (yUnit * 2f);
 		style_button.fontSize = (int) (yUnit * 2f);
 	
-	
-	
+
+
+
+	//=====================================================================================================================================	
+	//  IF WE ARE AT THE TITLE SCREEN OR START SCREEN
+	//=====================================================================================================================================	
+
+	if (!MGV.runningMainGameGUI) {
+
 	//=====================================================================================================================================
 	// IF WE ARE AT THE TITLE SCREEN
-	if (MGV.isTitleScreen){	
-			//Show background fade out
-			if (MGV.showNotification){
-				ShowNotification(MGV.notificationMessage);
-				MGV.showNotification = false;	
-			}
-			
-			if(GUI.Button(new Rect(1060,330,400,40), "-----NEW GAME : Normal-----")){
-				MGV.isTitleScreen = false;
-				MGV.isStartScreen = true;
-				MGV.bg_titleScreen.SetActive(false);
-				MGV.bg_startScreen.SetActive(true);
-				MGV.FillNewGameCrewRosterAvailability();
-				MGV.gameDifficulty_Beginner = false;
-			}
-			if(GUI.Button(new Rect(1060,380,400,40), "-----NEW GAME : Beginner(Map)-----")){
-				MGV.isTitleScreen = false;
-				MGV.isStartScreen = true;
-				MGV.bg_titleScreen.SetActive(false);
-				MGV.bg_startScreen.SetActive(true);
-				MGV.FillNewGameCrewRosterAvailability();
-				MGV.gameDifficulty_Beginner = true;
-			}
-			if(GUI.Button(new Rect(1060,430,400,40), "-----LOAD GAME-----")){
-				//if a successful load continue--otherwise stay on title screen
-				if (MGV.LoadSavedGame()){
-					MGV.isLoadedGame = true;
-					MGV.isTitleScreen = false;
-					MGV.isStartScreen = false;
-					MGV.bg_titleScreen.SetActive(false);
-					MGV.bg_startScreen.SetActive(false);
-					MGV.camera_titleScreen.SetActive(false);
-					//Turn on the environment fog
-					RenderSettings.fog = true;
-					//Now turn on the main player controls camera
-					MGV.FPVCamera.SetActive(true);
-					//Turn on the player distance fog wall
-					MGV.playerShipVariables.fogWall.SetActive(true);
-					//Now enable the controls
-					MGV.controlsLocked = false;
-					//For the argonautica, let's set the crew capacity to 30
-					MGV.playerShipVariables.ship.crewCapacity = 30;
-					MGV.playerShipVariables.ship.crew = MGV.playerShipVariables.ship.crewRoster.Count;
-					//Let's increase the ships cargo capacity
-					MGV.playerShipVariables.ship.cargo_capicity_kg = 1200f;
-					//Set the player's initial position to the new position
-					MGV.playerShipVariables.lastPlayerShipPosition = MGV.playerShip.transform.position;
-					//Update Ghost Route
-					MGV.LoadSavedGhostRoute();
-					//Setup Difficulty Level
-					MGV.gameDifficulty_Beginner = false;
-					MGV.SetupBeginnerGameDifficulty();
-					//Turn on the ship HUD
-					player_hud_parent.SetActive(true);
-										
-					MGV.controlsLocked = false;
-				}
-				
-			}
-			if(GUI.Button(new Rect(1060,480,400,40), "-----LOAD GAME : Beginner(Map)-----")){
-				//if a successful load continue--otherwise stay on title screen
-				if (MGV.LoadSavedGame()){
-					MGV.isLoadedGame = true;
-					MGV.isTitleScreen = false;
-					MGV.isStartScreen = false;
-					MGV.bg_titleScreen.SetActive(false);
-					MGV.bg_startScreen.SetActive(false);
-					MGV.camera_titleScreen.SetActive(false);
-					//Turn on the environment fog
-					RenderSettings.fog = true;
-					//Now turn on the main player controls camera
-					MGV.FPVCamera.SetActive(true);
-					//Turn on the player distance fog wall
-					MGV.playerShipVariables.fogWall.SetActive(true);
-					//Now enable the controls
-					MGV.controlsLocked = false;
-					//For the argonautica, let's set the crew capacity to 30
-					MGV.playerShipVariables.ship.crewCapacity = 30;
-					MGV.playerShipVariables.ship.crew = MGV.playerShipVariables.ship.crewRoster.Count;
-					//Let's increase the ships cargo capacity
-					MGV.playerShipVariables.ship.cargo_capicity_kg = 1200f;
-					//Set the player's initial position to the new position
-					MGV.playerShipVariables.lastPlayerShipPosition = MGV.playerShip.transform.position;
-					//Update Ghost Route
-					MGV.LoadSavedGhostRoute();
-					//Setup Difficulty Level
-					MGV.gameDifficulty_Beginner = true;
-					MGV.SetupBeginnerGameDifficulty();
-					//Turn on the ship HUD
-					player_hud_parent.SetActive(true);
-										
-					MGV.controlsLocked = false;
-				}
-				
-			}
-			
-			
-			
-			//=====================================================================================================================================	
-	// IF WE ARE AT THE START SCREEN	-- SHOW START SCREEN GUI
-	} else if (MGV.isStartScreen){
+	if (MGV.isTitleScreen) {	
+		title_start.SetActive (true);
+		title_newgame_button.GetComponent<Button> ().onClick.AddListener (() => GUI_startNewGame (1));
+		title_newgame_beginner_button.GetComponent<Button> ().onClick.AddListener (() => GUI_startNewGame (0));
+		title_loadgame_button.GetComponent<Button> ().onClick.AddListener (() => GUI_loadGame (1));
+		title_loadgame_beginner_button.GetComponent<Button> ().onClick.AddListener (() => GUI_loadGame (0));
+		MGV.isTitleScreen = false;
 
-			//===========================================================
-			//HERE WE GIVE THE FIRST LEG OF THE ARGONAUTICA QUEST / INTRO
-			GUI.Label (new Rect (540,150,340,500),"Welcome to the Argonautica Jason! Find your way through the dangerous seas to complete your quest! You have found yourself at Pagasae, where King Pelias has given you the task of sailing across "+
-												  "the Aegean and the Black Sea to retrieve the Golden Fleece.  This is the hide of the flying ram that brought Phrixus from Boetia to Aea. The hide now hangs on a tree on the other side of the Black "+
-												  "Sea in the city of Aea. The great lord Aeetes prizes the fleece, and a very large dragon guards it. \n\nThe task seems impossible! But you do not sail alone, Jason. You have assembled a group of the most "+
-												  "powerful warriors, sailors, and prophets in Greece to help you in your quest.  Most are the sons of royal families, and each one has a unique skill. Once the heroes have all arrived, your crew stocks "+
-												  "the ships and the people of Pagasae greet you all.");
+	}		
 			
-			//======================================================================
-			//HERE WE DISPLAY A LIST OF CREW FOR THE PLAYER TO CONSTRUCT A CREW FROM
+	//=====================================================================================================================================	
+	// IF WE ARE AT THE START SCREEN	-- SHOW START SCREEN GUI
+	 
+	
+	if (MGV.isStartScreen) {
+
+				//===========================================================
+				//HERE WE GIVE THE FIRST LEG OF THE ARGONAUTICA QUEST / INTRO
+				GUI.Label (new Rect (540, 150, 340, 500), "Welcome to the Argonautica Jason! Find your way through the dangerous seas to complete your quest! You have found yourself at Pagasae, where King Pelias has given you the task of sailing across " +
+					"the Aegean and the Black Sea to retrieve the Golden Fleece.  This is the hide of the flying ram that brought Phrixus from Boetia to Aea. The hide now hangs on a tree on the other side of the Black " +
+					"Sea in the city of Aea. The great lord Aeetes prizes the fleece, and a very large dragon guards it. \n\nThe task seems impossible! But you do not sail alone, Jason. You have assembled a group of the most " +
+					"powerful warriors, sailors, and prophets in Greece to help you in your quest.  Most are the sons of royal families, and each one has a unique skill. Once the heroes have all arrived, your crew stocks " +
+					"the ships and the people of Pagasae greet you all.");
 			
-			//Update the number of currently selected crewmen
-			int numOfCrew = 0;
-			foreach(bool i in MGV.newGameCrewSelectList) if(i) numOfCrew++;
-			GUI.Label (new Rect (960,145,590,500),"It's up to you, Jason, to select your crew! Certain members, integral to your journey, must be chosen...the others are up to you! How do you build a good crew?ou start with 20 crewmen, but it is best to hire men at port and keep as close to a full crew of 30 as possible.Keep in mind that one man working hard at the oars drinks about 5 kg of water a day and eats about 0.7 kg of food a day, so you’ll need to stock up!");
-			GUI.Label (new Rect (960,220,590,500),"You currently have "+ numOfCrew +" / 20 crewmembers!\n___________________________________________________________________________________");
+				//======================================================================
+				//HERE WE DISPLAY A LIST OF CREW FOR THE PLAYER TO CONSTRUCT A CREW FROM
+			
+				//Update the number of currently selected crewmen
+				int numOfCrew = 0;
+				foreach (bool i in MGV.newGameCrewSelectList)
+					if (i)
+						numOfCrew++;
+				GUI.Label (new Rect (960, 145, 590, 500), "It's up to you, Jason, to select your crew! Certain members, integral to your journey, must be chosen...the others are up to you! How do you build a good crew?ou start with 20 crewmen, but it is best to hire men at port and keep as close to a full crew of 30 as possible.Keep in mind that one man working hard at the oars drinks about 5 kg of water a day and eats about 0.7 kg of food a day, so you’ll need to stock up!");
+				GUI.Label (new Rect (960, 220, 590, 500), "You currently have " + numOfCrew + " / 20 crewmembers!\n___________________________________________________________________________________");
 			
 			
-			//_____________________________________
-			//START OF THE CREW ROSTER SCROLL VIEW
-			scrollPosition = GUI.BeginScrollView(new Rect( 960,250,620,380), scrollPosition, new Rect(960,250,600,4000),false,true);
+				//_____________________________________
+				//START OF THE CREW ROSTER SCROLL VIEW
+				scrollPosition = GUI.BeginScrollView (new Rect (960, 250, 620, 380), scrollPosition, new Rect (960, 250, 600, 4000), false, true);
 				
-				for(int i = 0; i < MGV.newGameAvailableCrew.Count; i++){
+				for (int i = 0; i < MGV.newGameAvailableCrew.Count; i++) {
 					//If the crewmember is necessary for the quest--lock the selection in as true
-					if(!MGV.newGameAvailableCrew[i].isKillable){
-						MGV.newGameCrewSelectList[i] = GUI.Toggle (new Rect (960,250 + (i*100),50,50),true,"");
-					//Otherwise let the player toggle on/off the selection
+					if (!MGV.newGameAvailableCrew [i].isKillable) {
+						MGV.newGameCrewSelectList [i] = GUI.Toggle (new Rect (960, 250 + (i * 100), 50, 50), true, "");
+						//Otherwise let the player toggle on/off the selection
 					} else {
 						//We also need to run a check on whether or not we have 30 members--if we do, then hide the check box if it's 'false'
-						if(numOfCrew != 20 || MGV.newGameCrewSelectList[i]){
-							MGV.newGameCrewSelectList[i] = GUI.Toggle (new Rect (960,250 + (i*100),50,50),MGV.newGameCrewSelectList[i],"");
+						if (numOfCrew != 20 || MGV.newGameCrewSelectList [i]) {
+							MGV.newGameCrewSelectList [i] = GUI.Toggle (new Rect (960, 250 + (i * 100), 50, 50), MGV.newGameCrewSelectList [i], "");
 						}
 					}
 					//Show the Crewmember's information / backstory
-					string title = MGV.GetCloutTitleEquivalency(MGV.newGameAvailableCrew[i].clout) + " " + MGV.newGameAvailableCrew[i].name + ", the " + MGV.GetJobClassEquivalency(MGV.newGameAvailableCrew[i].typeOfCrew) + " from " +GetSettlementFromID(MGV.newGameAvailableCrew[i].originCity).name + ".";
-					GUI.Label (new Rect (1010,255 + (i*100),520,60),title);
-					GUI.Label (new Rect (1010,257 + (i*100),520,60),"___________________________________________________________________");
-					GUI.Label (new Rect (1010,270 + (i*100),520,100),MGV.newGameAvailableCrew[i].backgroundInfo);
+					string title = MGV.GetCloutTitleEquivalency (MGV.newGameAvailableCrew [i].clout) + " " + MGV.newGameAvailableCrew [i].name + ", the " + MGV.GetJobClassEquivalency (MGV.newGameAvailableCrew [i].typeOfCrew) + " from " + MGV.GetSettlementFromID (MGV.newGameAvailableCrew [i].originCity).name + ".";
+					GUI.Label (new Rect (1010, 255 + (i * 100), 520, 60), title);
+					GUI.Label (new Rect (1010, 257 + (i * 100), 520, 60), "___________________________________________________________________");
+					GUI.Label (new Rect (1010, 270 + (i * 100), 520, 100), MGV.newGameAvailableCrew [i].backgroundInfo);
 
 				
 				
 				}						
 				
-			GUI.EndScrollView();
+				GUI.EndScrollView ();
 			
-			if(numOfCrew == 20 || MGV.DEBUG_MODE_ON){
-				if(GUI.Button(new Rect(1060,640,400,40), "-----START GAME-----")){
-					MGV.startGameButton_isPressed = true;
-					//Turn on the ship HUD
-					player_hud_parent.SetActive(true);
+				if (numOfCrew == 20 || MGV.DEBUG_MODE_ON) {
+					if (GUI.Button (new Rect (1060, 640, 400, 40), "-----START GAME-----")) {
+						MGV.startGameButton_isPressed = true;
+						//Turn on the ship HUD
+						player_hud_parent.SetActive (true);
+					}
 				}
-			}
-	//======================================================================
-	//WE ARE SHOWING A YES / NO  PORT TAX NOTIFICATION POP UP	
-	} else if(MGV.showPortDockingNotification){
 	
-		MGV.showPortDockingNotification = false;
-		GUI_ShowPortDockingNotification();
-			
-			
-	} else if(MGV.showNonPortDockingNotification){
-		MGV.showNonPortDockingNotification = false;
-		GUI_ShowNonPortDockingNotification();
+
+		}
+
+
 	//=====================================================================================================================================	
-	//IF WE AREN'T AT THE TITLE SCREEN OR START SCREEN OR SPECIAL NOTIFICATION WINDOW
-	} else {
+	//  IF WE AREN'T AT THE TITLE SCREEN OR START SCREEN
+	//=====================================================================================================================================	
+	} else if (MGV.runningMainGameGUI) {
+        
+        //----------------------------------------------------------------------------------------------------------
+        //      ALL static GUI elements go here for normail gameplay, e.g. ship stats, etc.
+        //----------------------------------------------------------------------------------------------------------
+        
+        //`````````````````````````````````````````````````````````````````
+        //  CAPTAINS LOG
+        hud_captainsLog.GetComponent<Text>().text = MGV.currentCaptainsLog;
+ 		//`````````````````````````````````````````````````````````````````
+		// 	SHIP STATS GUI
+        hud_waterStores.GetComponent<Text>().text = ((int)MGV.playerShipVariables.ship.cargo[0].amount_kg).ToString ();
+        hud_provisions.GetComponent<Text>().text = ((int)MGV.playerShipVariables.ship.cargo[1].amount_kg).ToString ();
+        hud_shipHealth.GetComponent<Text>().text = ((int)MGV.playerShipVariables.ship.health).ToString ();
+        hud_daysTraveled.GetComponent<Text>().text = (Mathf.Round(MGV.playerShipVariables.ship.totalNumOfDaysTraveled * 1000.0f) / 1000.0f).ToString ();
+        hud_daysThirsty.GetComponent<Text>().text = (MGV.playerShipVariables.dayCounterThirsty).ToString ();
+        hud_daysStarving.GetComponent<Text>().text = (MGV.playerShipVariables.dayCounterStarving).ToString ();
+        hud_currentSpeed.GetComponent<Text>().text = (Mathf.Round(MGV.playerShipVariables.current_shipSpeed_Magnitude * 1000.0f) / 1000.0f).ToString ();
+        hud_crewmember_count.GetComponent<Text>().text =(MGV.playerShipVariables.ship.crew).ToString ();
+        hud_playerClout.GetComponent<Text>().text = MGV.GetCloutTitleEquivalency((int)(Mathf.Round(MGV.playerShipVariables.ship.playerClout * 1000.0f) / 1000.0f));			
+		//`````````````````````````````````````````````````````````````````
+		// DOCKING BUTTON -- other GUI button click handlers are done in the editor--These are done here because the button's behavior changes based on other variables. The others do not
+		if (MGV.showSettlementTradeButton){ hud_button_dock.transform.GetChild(0).GetComponent<Text>().text = "CLICK TO \n  DOCK WITH \n" + MGV.currentSettlement.name; hud_button_dock.GetComponent<Button>().onClick.RemoveAllListeners();hud_button_dock.GetComponent<Button>().onClick.AddListener(() => GUI_checkOutOrDockWithPort(true));}
+		else if (MGV.showNonPortDockButton){hud_button_dock.transform.GetChild(0).GetComponent<Text>().text = "CHECK OUT \n" + MGV.currentSettlement.name; hud_button_dock.GetComponent<Button>().onClick.RemoveAllListeners();hud_button_dock.GetComponent<Button>().onClick.AddListener(() => GUI_checkOutOrDockWithPort(true));}
+		else {hud_button_dock.transform.GetChild(0).GetComponent<Text>().text = "DOCKING \n CURRENTLY \n UNAVAILABLE"; hud_button_dock.GetComponent<Button>().onClick.RemoveAllListeners(); }
+		       
+        
+        //----------------------------------------------------------------------------------------------------------
+        //      The remaining part of this block is for listeners that change the GUI based on variable flags
+        //----------------------------------------------------------------------------------------------------------        
+        
+        //`````````````````````````````````````````````````````````````````
+        //WE ARE SHOWING A YES / NO  PORT TAX NOTIFICATION POP UP	?
+        if(MGV.showPortDockingNotification){	
+            MGV.showPortDockingNotification = false;
+            GUI_ShowPortDockingNotification();	
+        } else if(MGV.showNonPortDockingNotification){
+            MGV.showNonPortDockingNotification = false;
+            GUI_ShowNonPortDockingNotification();
+        }
 	
-	
-		//Check to see if we need to show any generic notifications
+        //`````````````````````````````````````````````````````````````````
+		//Check to see if we need to show any generic notifications ?
 		if (MGV.showNotification) {
 			ShowNotification(MGV.notificationMessage);
 			MGV.showNotification = false;
 		}
-
-		hud_captainsLog.GetComponent<Text>().text = MGV.currentCaptainsLog;
-		
-		// ######################
-		// 	SHIP STATS GUI
-		// ######################
-
-			hud_waterStores.GetComponent<Text>().text = ((int)MGV.playerShipVariables.ship.cargo[0].amount_kg).ToString ();
-			hud_provisions.GetComponent<Text>().text = ((int)MGV.playerShipVariables.ship.cargo[1].amount_kg).ToString ();
-			hud_shipHealth.GetComponent<Text>().text = ((int)MGV.playerShipVariables.ship.health).ToString ();
-			hud_daysTraveled.GetComponent<Text>().text = (Mathf.Round(MGV.playerShipVariables.ship.totalNumOfDaysTraveled * 1000.0f) / 1000.0f).ToString ();
-			hud_daysThirsty.GetComponent<Text>().text = (MGV.playerShipVariables.dayCounterThirsty).ToString ();
-			hud_daysStarving.GetComponent<Text>().text = (MGV.playerShipVariables.dayCounterStarving).ToString ();
-			hud_currentSpeed.GetComponent<Text>().text = (Mathf.Round(MGV.playerShipVariables.current_shipSpeed_Magnitude * 1000.0f) / 1000.0f).ToString ();
-			hud_crewmember_count.GetComponent<Text>().text =(MGV.playerShipVariables.ship.crew).ToString ();
-			hud_playerClout.GetComponent<Text>().text = MGV.GetCloutTitleEquivalency((int)(Mathf.Round(MGV.playerShipVariables.ship.playerClout * 1000.0f) / 1000.0f));
-			
-			
-			
-			
-			
-			
-			
-		//################################################
-		// HUD BUTTONS
-		//################################################
-		
-		if (MGV.showSettlementTradeButton){ hud_button_dock.transform.GetChild(0).GetComponent<Text>().text = "CLICK TO \n  DOCK WITH \n" + MGV.currentSettlement.name; hud_button_dock.GetComponent<Button>().onClick.RemoveAllListeners();hud_button_dock.GetComponent<Button>().onClick.AddListener(() => GUI_checkOutOrDockWithPort(true));}
-		else if (MGV.showNonPortDockButton){hud_button_dock.transform.GetChild(0).GetComponent<Text>().text = "CHECK OUT \n" + MGV.currentSettlement.name; hud_button_dock.GetComponent<Button>().onClick.RemoveAllListeners();hud_button_dock.GetComponent<Button>().onClick.AddListener(() => GUI_checkOutOrDockWithPort(true));}
-		else {hud_button_dock.transform.GetChild(0).GetComponent<Text>().text = "DOCKING \n CURRENTLY \n UNAVAILABLE"; hud_button_dock.GetComponent<Button>().onClick.RemoveAllListeners(); }
-		
-			
-
-		
-		if (!MGV.showSettlementTradeGUI){
-			//Disable all navigation buttons
-		
-		} else {
-			//enable all navigation buttons
-		}
-
-
-			if(!MGV.showHelpGUI && !MGV.showSettlementTradeGUI){
-				if(GUI.Button(new Rect(10,10,120,25), "?")){
-					MGV.showHelpGUI = true;
-					//Adjust the attributes of the GUI splash screen so it only shows the left portion of the background
-					MGV.bg_startScreen.transform.localPosition = new Vector3(-6.18f, 0, 1);
-					MGV.bg_startScreen.transform.localScale = new Vector3(5.69f, 10.2f, 0);
-					MGV.bg_startScreen.GetComponent<MeshRenderer>().sharedMaterial.SetTextureScale("_MainTex", new Vector2(0.315f, 1f));
-					MGV.bg_startScreen.SetActive(true);
-				}
-			}
-			
-			if (MGV.showHelpGUI && !MGV.showSettlementTradeGUI){
-				if(GUI.Button(new Rect(10,10,120,25), "X")){
-					MGV.showHelpGUI = false;
-					//reset the splash screen to its defaults so that it will be normal again if the player restarts a new game
-					MGV.bg_startScreen.SetActive(false);
-					MGV.bg_startScreen.transform.localPosition = new Vector3(0, 0, 1);
-					MGV.bg_startScreen.transform.localScale = new Vector3(18.09f, 10.2f, 0);
-					MGV.bg_startScreen.GetComponent<MeshRenderer>().sharedMaterial.SetTextureScale("_MainTex", new Vector2(1f, 1f));
-				}
-
-			}
 						
-		//##############
+		//`````````````````````````````````````````````````````````````````
 		// GAME OVER GUI
-		//##############
 		if (MGV.isGameOver){
 			GUI_ShowGameOverNotification();
 			MGV.isGameOver = false;
 		}
 		
-		
-		
-		
-		
-		
-		
-		
-						
-		//##################################################################
-		// DEBUG GUI
-		//###################################################################
-		if (MGV.DEBUG_MODE_ON){
-			//map zoom in and out button
-			if(GUI.Button(new Rect(50,30,100,20), "ZOOM IN")){
-				MGV.camera_Mapview.transform.position += -Vector3.up * 20;
-			}
-			//map zoom in and out button
-			if(GUI.Button(new Rect(170,30,100,20), "ZOOM OUT")){
-				MGV.camera_Mapview.transform.position += Vector3.up * 20;
-			}
-					//This saves the current water zone information
-			if(GUI.Button(new Rect(1500,100,150,20), "Save Water Zones")){
-				MGV.SaveWaterCurrentZones();
-			}
-			
-			//This teleports player ship to given settlement ID
-			GUI.Box (new Rect(1450, 123, 200, 30), "");
-			MGV.DEBUG_settlementWarpID = GUI.TextField (new Rect (1570,125,60,20), MGV.DEBUG_settlementWarpID,3);
-			if(GUI.Button(new Rect(1460,125,80,20), "Warp")){
-				MGV.playerShip.transform.position = GetSettlementFromID(int.Parse(MGV.DEBUG_settlementWarpID)).theGameObject.transform.position;
-			}
-			if(GUI.Button(new Rect(1460,145,80,20), "Save Loc")){
-				MGV.Tool_SaveCurrentSettlementPositionsToFile();
-			}
-				// ######################
-				// 	Date And Time GUI
-				// ######################
-						GUI.Box (new Rect(gui_stat_left,10,200,gui_stat_h), "Date of World");
-						
-						GUI.Label (new Rect (gui_stat_left+10,30,60,gui_stat_h),  "Year");
-						MGV.TD_year = GUI.TextField (new Rect (gui_stat_left+10,40,60,20), MGV.TD_year, 5);
-						GUI.Label (new Rect (gui_stat_left+70,30,60,gui_stat_h),  "Month");
-						MGV.TD_month = GUI.TextField (new Rect (gui_stat_left+70,40,60,20), MGV.TD_month, 2);
-						GUI.Label (new Rect (gui_stat_left+130,30,60,gui_stat_h),  "Day");
-						MGV.TD_day = GUI.TextField (new Rect (gui_stat_left+130,40,60,20), MGV.TD_day, 2);
-						
-						GUI.Label (new Rect (gui_stat_left+10,60,60,gui_stat_h),  "Hour");
-						MGV.TD_hour = GUI.TextField (new Rect (gui_stat_left+10,70,60,20), MGV.TD_hour, 5);
-						GUI.Label (new Rect (gui_stat_left+70,60,60,gui_stat_h),  "Minute");
-						MGV.TD_minute = GUI.TextField (new Rect (gui_stat_left+70,70,60,20), MGV.TD_minute, 2);
-						GUI.Label (new Rect (gui_stat_left+130,60,60,gui_stat_h),  "Second");
-						MGV.TD_second = GUI.TextField (new Rect (gui_stat_left+130,70,60,20), MGV.TD_second, 2);
-						GUI.Label (new Rect (gui_stat_left+30,90,200,20),  "Toggle Celestial Grids");
-						MGV.TD_showCelestialGrids = GUI.Toggle(new Rect (gui_stat_left+10,90,100,20), MGV.TD_showCelestialGrids, "");
-						//set the celestial grids gameobjects as active or inactive  state based on toggle
-						MGV.skybox_eclipticGrid.SetActive(MGV.TD_showCelestialGrids);
-						MGV.skybox_celestialGrid.SetActive(MGV.TD_showCelestialGrids);
-				
-		}
-		
-		
-		
-		
+        //`````````````````````````````````````````````````````````````````
+        //  DEPRECATED -- This will be moved to buttons in the editor, and the functions will look different
+        if(!MGV.showHelpGUI && !MGV.showSettlementTradeGUI){
+            if(GUI.Button(new Rect(10,10,120,25), "?")){
+                MGV.showHelpGUI = true;
+                //Adjust the attributes of the GUI splash screen so it only shows the left portion of the background
+                MGV.bg_startScreen.transform.localPosition = new Vector3(-6.18f, 0, 1);
+                MGV.bg_startScreen.transform.localScale = new Vector3(5.69f, 10.2f, 0);
+                MGV.bg_startScreen.GetComponent<MeshRenderer>().sharedMaterial.SetTextureScale("_MainTex", new Vector2(0.315f, 1f));
+                MGV.bg_startScreen.SetActive(true);
+            }
+        }
+        
+        if (MGV.showHelpGUI && !MGV.showSettlementTradeGUI){
+            if(GUI.Button(new Rect(10,10,120,25), "X")){
+                MGV.showHelpGUI = false;
+                //reset the splash screen to its defaults so that it will be normal again if the player restarts a new game
+                MGV.bg_startScreen.SetActive(false);
+                MGV.bg_startScreen.transform.localPosition = new Vector3(0, 0, 1);
+                MGV.bg_startScreen.transform.localScale = new Vector3(18.09f, 10.2f, 0);
+                MGV.bg_startScreen.GetComponent<MeshRenderer>().sharedMaterial.SetTextureScale("_MainTex", new Vector2(1f, 1f));
+            }
+
+        }
+        
+        // END OF DEPRECATED FUNCTIONS		
 		
 		///////////////////////////////////////////////////////////////////////////////////////
 		//HERE WE SEND A FLAG TO THE PLAYER CONTROLS TO LET IT KNOW WHETHER OR NOT THE CURSOR IS ON A GUI ELEMENT
@@ -587,40 +497,51 @@ public class script_GUI : MonoBehaviour {
 			//Debug.Log ("Hitting a GUI element");
 		}else MGV.mouseCursorUsingGUI = false;
 		
-	
+
 			
 	
 	}
 	
 	
-	}//End of On.GUI()
-	
-	
+}//End of On.GUI()
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^	
+//======================================================================================================================================================================
+//  END OF MAIN UPDATE LOOP
+//======================================================================================================================================================================
+//======================================================================================================================================================================
+
+
+
+
+
+
+
+
+
+//======================================================================================================================================================================
+//======================================================================================================================================================================
+//  ALL FUNCTIONS
+//======================================================================================================================================================================
+//======================================================================================================================================================================
+
+
+	//=====================================================================================================================================	
+    //  Processing Based Functions (Ideally these will all be moved to the globalvariables  script
+    //=====================================================================================================================================	
 	string GetDirectionsToSettlement(Vector3 target){
 		string directions = "";
-		//float angle = Vector3.Angle(Vector3.right,target -MGV.currentSettlementGameObject.transform.position);
 		float angle =  Mathf.Atan2(target.z-MGV.currentSettlementGameObject.transform.position.z, target.x-MGV.currentSettlementGameObject.transform.position.x) * Mathf.Rad2Deg;
 		if (angle < 0) angle += 360;
-		
-		//Debug.Log (angle);
-		if(angle >=0 && angle < 20)
-			directions += "East:  ";
-		else if(angle >= 20 && angle < 70)
-			directions+= "Northeast:   ";
-		else if(angle >= 70 && angle < 110)		
-			directions+= "North:   ";		
-		else if(angle >= 110 && angle < 160)		
-			directions+= "Northwest:   ";
-		else if(angle >= 160 && angle < 200)		
-			directions+= "West:   ";
-		else if(angle >= 200 && angle < 250)		
-			directions+= "Southwest:   ";
-		else if(angle >= 250 && angle < 290)		
-			directions+= "South:   ";
-		else if(angle >= 290 && angle < 340)		
-			directions+= "Southeast:   ";	
-		else if(angle >= 340 && angle < 360)		
-			directions+= "East:   ";		
+
+		if(angle >=0 && angle < 20)directions += "East:  ";
+		else if(angle >= 20 && angle < 70)  directions+= "Northeast:   ";
+		else if(angle >= 70 && angle < 110)	directions+= "North:   ";		
+		else if(angle >= 110 && angle < 160)directions+= "Northwest:   ";
+		else if(angle >= 160 && angle < 200)directions+= "West:   ";
+		else if(angle >= 200 && angle < 250)directions+= "Southwest:   ";
+		else if(angle >= 250 && angle < 290)directions+= "South:   ";
+		else if(angle >= 290 && angle < 340)directions+= "Southeast:   ";	
+		else if(angle >= 340 && angle < 360)directions+= "East:   ";		
 			
 		float distance = (Vector3.Distance(MGV.currentSettlementGameObject.transform.position, target) * MGV.unityWorldUnitResolution) / 1000;
 		directions += distance + "km";	
@@ -743,81 +664,102 @@ public class script_GUI : MonoBehaviour {
 		//e.g. if the player is selling--they are negative in cargo---but their currency is positive and vice versa.
 		MGV.playerShipVariables.ship.currency += (int)(price * -changeAmount); 
 	}
-	
-
-	
-	Settlement GetSettlementFromID(int ID){
-		foreach (Settlement city in MGV.settlement_masterList){
-			if (city.settlementID == ID){
-				return city;
-			}
 		
-		}
-		
-		//if no matches(this shouldn't be possible--return a fake settlement rather than a null
-		//	--this is more sophisticated than a null--it won't crash but the error is obvious.
-		return new Settlement(-1, "ERROR: DIDNT FIND ID MATCH IN GetSettlementFromID Function", Vector2.zero, -1, -1);
-	}
-	
-	
 	void ShowShipResources(){
-
 		for(int i = 0; i < MGV.playerShipVariables.ship.cargo.Length; i++){
 			Text currentCargoLabel = (Text) all_trade_rows.transform.GetChild(i).GetChild (6).GetComponent<Text>();
 			currentCargoLabel.text = (int)MGV.playerShipVariables.ship.cargo[i].amount_kg + " kg";
 		}
-	}
-	
-	
-	
-	
-	private Texture2D MakeTex( int width, int height, Color col )
-	{
-		Color[] pix = new Color[width * height];
-		for( int i = 0; i < pix.Length; ++i )
-		{
-			pix[ i ] = col;
-		}
-		Texture2D result = new Texture2D( width, height );
-		result.SetPixels( pix );
-		result.Apply();
-		return result;
-	}
+	}	
 	
 	string GetCurrentMonth(){
 		int numOfDaysTraveled = (int) MGV.playerShipVariables.ship.totalNumOfDaysTraveled;
 		string monthName = "";
-		if(numOfDaysTraveled <= 30){
-			monthName = "January";
-		} else if (numOfDaysTraveled <=60) {
-			monthName = "February";
-		} else if (numOfDaysTraveled <=90) {
-			monthName = "March";
-		} else if (numOfDaysTraveled <=120) {
-			monthName = "April";
-		} else if (numOfDaysTraveled <=150) {
-			monthName = "May";
-		} else if (numOfDaysTraveled <=180) {
-			monthName = "June";
-		} else if (numOfDaysTraveled <=210) {
-			monthName = "July";
-		} else if (numOfDaysTraveled <=240) {
-			monthName = "August";
-		} else if (numOfDaysTraveled <=270) {
-			monthName = "September";
-		} else if (numOfDaysTraveled <=300) {
-			monthName = "October";
-		} else if (numOfDaysTraveled <=330) {
-			monthName = "November";
-		} else if (numOfDaysTraveled <=360) {
-			monthName = "December";
-		}
-		
+               if (numOfDaysTraveled <=30)  {monthName = "January";
+		} else if (numOfDaysTraveled <=60)  {monthName = "February";
+		} else if (numOfDaysTraveled <=90)  {monthName = "March";
+		} else if (numOfDaysTraveled <=120) {monthName = "April";
+		} else if (numOfDaysTraveled <=150) {monthName = "May";
+		} else if (numOfDaysTraveled <=180) {monthName = "June";
+		} else if (numOfDaysTraveled <=210) {monthName = "July";
+		} else if (numOfDaysTraveled <=240) {monthName = "August";
+		} else if (numOfDaysTraveled <=270) {monthName = "September";
+		} else if (numOfDaysTraveled <=300) {monthName = "October";
+		} else if (numOfDaysTraveled <=330) {monthName = "November";
+		} else if (numOfDaysTraveled <=360) {monthName = "December";
+		}		
 		return monthName;
-			
-	
 	}
 	
+    
+    
+	//=====================================================================================================================================	
+    //  GUI Interaction Functions are the remaining code below. All of these functions control some aspect of the GUI based on state changes
+    //=====================================================================================================================================	
+
+
+	
+	//-------------------------------------------------------------------------------------------------------------------------
+	//   TITLE SCREEN FUNCTIONS AND COMPONENTS
+
+
+	public void GUI_startNewGame(int difficulty){
+		MGV.isTitleScreen = false;
+		MGV.isStartScreen = true;
+		MGV.bg_titleScreen.SetActive(false);
+		MGV.bg_startScreen.SetActive(true);
+		MGV.FillNewGameCrewRosterAvailability();
+		if (difficulty == 0) MGV.gameDifficulty_Beginner = false;
+		else MGV.gameDifficulty_Beginner = true;
+	}
+	
+	public void GUI_loadGame (int difficulty){
+		MGV.isLoadedGame = true;
+		MGV.isTitleScreen = false;
+		MGV.isStartScreen = false;
+		MGV.bg_titleScreen.SetActive(false);
+		MGV.bg_startScreen.SetActive(false);
+		MGV.camera_titleScreen.SetActive(false);
+		//Turn on the environment fog
+		RenderSettings.fog = true;
+		//Now turn on the main player controls camera
+		MGV.FPVCamera.SetActive(true);
+		//Turn on the player distance fog wall
+		MGV.playerShipVariables.fogWall.SetActive(true);
+		//Now enable the controls
+		MGV.controlsLocked = false;
+		//For the argonautica, let's set the crew capacity to 30
+		MGV.playerShipVariables.ship.crewCapacity = 30;
+		MGV.playerShipVariables.ship.crew = MGV.playerShipVariables.ship.crewRoster.Count;
+		//Let's increase the ships cargo capacity
+		MGV.playerShipVariables.ship.cargo_capicity_kg = 1200f;
+		//Set the player's initial position to the new position
+		MGV.playerShipVariables.lastPlayerShipPosition = MGV.playerShip.transform.position;
+		//Update Ghost Route
+		MGV.LoadSavedGhostRoute();
+		//Setup Difficulty Level
+		if (difficulty == 0) MGV.gameDifficulty_Beginner = false;
+		else MGV.gameDifficulty_Beginner = true;
+		MGV.SetupBeginnerGameDifficulty();
+		
+		//Turn on the ship HUD
+		player_hud_parent.SetActive(true);
+		
+		MGV.controlsLocked = false;
+	}
+
+
+
+
+
+
+
+
+
+
+
+    //-------------------------------------------------------------------------------------------------------------------------
+    //   GAME OVER NOTIFICATIONS AND COMPONENTS
 	
 	public void GUI_ShowGameOverNotification(){
 		MGV.controlsLocked = true;
@@ -836,6 +778,10 @@ public class script_GUI : MonoBehaviour {
 		MGV.RestartGame();
     }
     
+    
+    //-------------------------------------------------------------------------------------------------------------------------
+    //   DOCKING INFO PANEL AND COMPONENTS    
+  
     public void GUI_ShowNonPortDockingNotification(){
 		//Show the non port notification window
 		nonport_info_main.SetActive(true);
@@ -860,9 +806,6 @@ public class script_GUI : MonoBehaviour {
 		string portMessage = "";
 		portMessage += MGV.currentSettlement.description;
 		portMessage += "\n\n";
-		
-		
-		
 		if (MGV.isInNetwork){
 			portMessage += "This Port is part of your network!\n";
 			if (MGV.crewMemberWithNetwork != null) portMessage += "Your crewman, " + MGV.crewMemberWithNetwork.name + " assures you their connections here are strong! They should welcome you openly and waive your port taxes on entering!";
@@ -878,95 +821,77 @@ public class script_GUI : MonoBehaviour {
 			}
 			portMessage += "\n\nThe portmaster informed you that the usual tax of" + MGV.taxRateMessage;
         }
-        
         port_info_notification.GetComponent<Text>().text = portMessage;
-        
         port_info_enter.GetComponent<Button>().onClick.AddListener(() => GUI_EnterPort() );
-        
         port_info_leave.GetComponent<Button>().onClick.AddListener(() => GUI_ExitPortNotification() );
 	}
 
-	
-	public void GUI_ExitPortNotification(){
-		//Turn off both nonport AND port notification windows
-		port_info_main.SetActive(false); 
-		MGV.showPortDockingNotification = false;
-		nonport_info_main.SetActive(false);
-		MGV.showNonPortDockingNotification = false;
-		MGV.controlsLocked = false;
-    }			
-			
-	public void GUI_EnterPort(){
-		port_info_main.SetActive(false);
-		//Check if current Settlement is part of the main quest line
-		MGV.CheckIfCurrentSettlementIsPartOfMainQuest(MGV.currentSettlement.settlementID);
-		//Add this settlement to the player's knowledge base
-		MGV.playerShipVariables.ship.playerJournal.AddNewSettlementToLog(MGV.currentSettlement.settlementID);
-		//Determine what settlements are available to the player in the tavern
-		MGV.GenerateProbableInfoListOfSettlementsInCurrentNetwork();
-		MGV.GenerateListOfAvailableCrewAtCurrentPort();
-		MGV.showSettlementTradeGUI = true;
-		MGV.showSettlementTradeButton = false;
-		MGV.controlsLocked = true;
-		
-		//==========================================================================================================================================================================================================================================================================================
-		
-		//NEW GUI FUNCTIONS FOR SETTING UP TAB CONTENT
-		
-		//Show Port Menu
-		MGV.GUI_PortMenu.SetActive(true);
-		
-		//Load Resource labels
-		ShowShipResources();
-		//Check Button availability
-		GUI_CheckAllResourceButtonsForValidity();
-		ShowSettlementResources();
-		
-		GUI_TAB_SetupLoanManagementPanel();
-		GUI_TAB_SetupAShrinePanel();
-		GUI_TAB_SetupShipRepairInformation();
-		GUI_TAB_SetupTavernInformation();
-		GUI_TAB_SetupCrewManagementPanel();
-		
-		//==========================================================================================================================================================================================================================================================================================
-		
-		
-		//Turn on the sprite game object
-		//MGV.tradeGUI.SetActive(true);
-		
-		//Show the coin image associated with this settlement
-		//Get the settlement ID as a string
-		string currentID = MGV.currentSettlement.settlementID.ToString();
-		Texture currentCoinTex =  (Texture) Resources.Load("settlement_coins/" + currentID);
-		//Now test if it exists, if the settlement does not have a matching texture, then default to a basic one
-		if (currentCoinTex){
-			//Set the texture
-			MGV.coinImage.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.SetTexture("_MainTex",currentCoinTex); 
-		} else {
-			//Set the texture to the default coin texutre
-			MGV.coinImage.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.SetTexture("_MainTex", (Texture) Resources.Load("settlement_coins/default_coin_texture")); 				
-		}
-		
-		
-		//Figure out the tax on the cargo hold
-		if (MGV.isInNetwork) MGV.currentPortTax = 0;
-		else MGV.currentPortTax = GetTaxRateOnCurrentShipManifest();
-		
-		foreach (int i in MGV.playerShipVariables.ship.playerJournal.knownSettlements) Debug.Log ("(*) " +i);
-		MGV.showPortDockingNotification = false;
-		
-		//Add a new route to the player journey log as a port entry
-		MGV.playerShipVariables.journey.AddRoute(new PlayerRoute( MGV.playerShip.transform.position, Vector3.zero, MGV.currentSettlement.settlementID, MGV.currentSettlement.name, false, MGV.playerShipVariables.ship.totalNumOfDaysTraveled), MGV.playerShipVariables, MGV.currentCaptainsLog);
-		//We should also update the ghost trail with this route otherwise itp roduce an empty 0,0,0 position later
-		MGV.playerShipVariables.UpdatePlayerGhostRouteLineRenderer(MGV.IS_NOT_NEW_GAME);
-		
-	}					
+                        //-------------------------------------------------------------------------------------------------------------------------
+                        //   DOCKING INFO PANEL AND COMPONENTS    HELPER FUNCTIONS	
+                        
+                        public void GUI_ExitPortNotification(){
+                            //Turn off both nonport AND port notification windows
+                            port_info_main.SetActive(false); 
+                            MGV.showPortDockingNotification = false;
+                            nonport_info_main.SetActive(false);
+                            MGV.showNonPortDockingNotification = false;
+                            MGV.controlsLocked = false;
+                        }			
+                                
+                        public void GUI_EnterPort(){
+                            //Turn off port welcome screen
+                            MGV.showPortDockingNotification = false;
+                            port_info_main.SetActive(false);
+                            //Check if current Settlement is part of the main quest line
+                            MGV.CheckIfCurrentSettlementIsPartOfMainQuest(MGV.currentSettlement.settlementID);
+                            //Add this settlement to the player's knowledge base
+                            MGV.playerShipVariables.ship.playerJournal.AddNewSettlementToLog(MGV.currentSettlement.settlementID);
+                            //Determine what settlements are available to the player in the tavern
+                            MGV.GenerateProbableInfoListOfSettlementsInCurrentNetwork();
+                            MGV.GenerateListOfAvailableCrewAtCurrentPort();
+                            MGV.showSettlementTradeGUI = true;
+                            MGV.showSettlementTradeButton = false;
+                            MGV.controlsLocked = true;
+                            
+                            //-------------------------------------------------
+                            //NEW GUI FUNCTIONS FOR SETTING UP TAB CONTENT
+                            //Show Port Menu
+                            MGV.GUI_PortMenu.SetActive(true);
+                            
+                            //Load Resource labels
+                            ShowShipResources();
+                            //Check Button availability
+                            GUI_CheckAllResourceButtonsForValidity();
+                            ShowSettlementResources();
+                            //Setup port panels
+                            GUI_TAB_SetupLoanManagementPanel();
+                            GUI_TAB_SetupAShrinePanel();
+                            GUI_TAB_SetupShipRepairInformation();
+                            GUI_TAB_SetupTavernInformation();
+                            GUI_TAB_SetupCrewManagementPanel();
+                            //Show the coin image associated with this settlement
+                            //Get the settlement ID as a string
+                            string currentID = MGV.currentSettlement.settlementID.ToString();
+                            Texture currentCoinTex =  (Texture) Resources.Load("settlement_coins/" + currentID);
+                            //Now test if it exists, if the settlement does not have a matching texture, then default to a basic one
+                            if (currentCoinTex){MGV.coinImage.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.SetTexture("_MainTex",currentCoinTex); } 
+                            else {MGV.coinImage.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.SetTexture("_MainTex", (Texture) Resources.Load("settlement_coins/default_coin_texture"));}
+                            //Figure out the tax on the cargo hold
+                            if (MGV.isInNetwork) MGV.currentPortTax = 0;
+                            else MGV.currentPortTax = GetTaxRateOnCurrentShipManifest();
+                            //Add a new route to the player journey log as a port entry
+                            MGV.playerShipVariables.journey.AddRoute(new PlayerRoute( MGV.playerShip.transform.position, Vector3.zero, MGV.currentSettlement.settlementID, MGV.currentSettlement.name, false, MGV.playerShipVariables.ship.totalNumOfDaysTraveled), MGV.playerShipVariables, MGV.currentCaptainsLog);
+                            //We should also update the ghost trail with this route otherwise itp roduce an empty 0,0,0 position later
+                            MGV.playerShipVariables.UpdatePlayerGhostRouteLineRenderer(MGV.IS_NOT_NEW_GAME);
+                            
+                        }					
 	
 	
-	
+    //=================================================================================================================
+	// NOTIFICATION POP-UP SYSTEM
+	//=================================================================================================================	
 	
 	void ShowNotification(string message){
-		
 		//Declare our message as a string to ensure we have a unique instance passed
 		string notificationMessage = message;
 		
@@ -976,7 +901,6 @@ public class script_GUI : MonoBehaviour {
 		//Clone the first child of the "Current Notifications" parent(This will be the template used to instantiate more notifications as needed
 		GameObject newNotification = Instantiate((GameObject)notice_notificationParent.transform.GetChild(0).gameObject) as GameObject;
 		newNotification.transform.SetParent( (Transform) notice_notificationParent.transform);
-		
 		newNotification.SetActive(true);
 		
 		//Reset its transform values
@@ -988,10 +912,6 @@ public class script_GUI : MonoBehaviour {
 		if (notice_notificationParent.transform.childCount > 2) {
 			newNotification.GetComponent<RectTransform>().localPosition = new Vector3(Random.Range(-600,600),Random.Range(-180,180),0);
 		}
-		
-
-		//Setup the Message Title
-		
 		//Setup the Message Text
 		newNotification.transform.FindChild("ScrollView/Content/Message").GetComponent<Text>().text = notificationMessage;
 		
@@ -1002,7 +922,6 @@ public class script_GUI : MonoBehaviour {
 	}
 	
 	public void GUI_RemoveNotification(GameObject notification){
-
 		//If there are only 2 children (the hidden template notification and the one we are about to delete), then turn off the notification system window and set it to active = false
 		if (notice_notificationParent.transform.childCount == 2) {
 			notice_notificationSystem.SetActive(false);
@@ -1011,34 +930,11 @@ public class script_GUI : MonoBehaviour {
 		GameObject.Destroy(notification);
 	}
 
-	
-		
-			
-				
-					
-						
-							
-									
-	void ShowSoftNotification(int windowID){
-	//TODO DEPRECATED
-	// Soft Notification Windows Auto destroy within a few seconds
-	//	GUI.Box (new Rect(910, 460, 400, 200), "");
-	//	GUI.Label (new Rect(930, 480, 360, 160), MGV.softNotificationMessage);
 
-	}
 	
-	//#####################################################################
-	//	START OF TAVERN MENU PANEL BUILDER FUNCTIONS
-	//#####################################################################
-	
-
-
-
-		
-	//#####################################################################
-	//	END OF TAVERN MENU PANEL BUILDER FUNCTIONS
-	//#####################################################################
-	
+	//=================================================================================================================
+	// HELPER FUNCTIONS FOR IN-PORT TRADE WINDOW
+	//=================================================================================================================	
 	
 	public void ShowSettlementResources(){
 		
@@ -1105,9 +1001,67 @@ public class script_GUI : MonoBehaviour {
 		GUI_CheckAllResourceButtonsForValidity(id);
 		ShowSettlementResources();
 	}
+	//This function, if an ID value IS given, goes through the buttons associated with that resource ID and determines
+	//	--whether or not the buttons should be disabled or not
+	public void GUI_CheckAllResourceButtonsForValidity(int id){
+		Button currentCargoButton_one = (Button) all_trade_rows.transform.GetChild(id).GetChild (4).GetComponent<Button>();
+		Button currentCargoButton_ten = (Button) all_trade_rows.transform.GetChild(id).GetChild (5).GetComponent<Button>();
+		Button currentSettlementButton_one = (Button) all_trade_rows.transform.GetChild(id).GetChild(1).GetComponent<Button>(); 
+		Button currentSettlementButton_ten = (Button) all_trade_rows.transform.GetChild(id).GetChild(2).GetComponent<Button>();
+		
+		if (CheckShipResourceAvailability((int)(1),id)){currentCargoButton_one.interactable = true;} else {currentCargoButton_one.interactable = false;}
+		if (CheckShipResourceAvailability((int)(10),id)){currentCargoButton_ten.interactable = true;} else {currentCargoButton_ten.interactable = false;}
+		if (CheckSettlementResourceAvailability((int)(1),id)){currentSettlementButton_one.interactable = true;} else {currentSettlementButton_one.interactable = false;}
+		if (CheckSettlementResourceAvailability((int)(10),id)){currentSettlementButton_ten.interactable = true;} else {currentSettlementButton_ten.interactable = false;}
+	}
+
+
+	//This Function, if no ID given, goes through ALL id values and their corresponding buttons and determines
+	//	--whether or not the button should be disabled or not
+	public void GUI_CheckAllResourceButtonsForValidity(){
+		for (int id = 0; id < 15; id++){
+			Button currentCargoButton_one = (Button) all_trade_rows.transform.GetChild(id).GetChild (4).GetComponent<Button>();
+			Button currentCargoButton_ten = (Button) all_trade_rows.transform.GetChild(id).GetChild (5).GetComponent<Button>();
+			Button currentSettlementButton_one = (Button) all_trade_rows.transform.GetChild(id).GetChild(1).GetComponent<Button>(); 
+			Button currentSettlementButton_ten = (Button) all_trade_rows.transform.GetChild(id).GetChild(2).GetComponent<Button>();
+			
+			if (CheckShipResourceAvailability((int)(1),id)){currentCargoButton_one.interactable = true;} else {currentCargoButton_one.interactable = false;}
+			if (CheckShipResourceAvailability((int)(10),id)){currentCargoButton_ten.interactable = true;} else {currentCargoButton_ten.interactable = false;}
+			if (CheckSettlementResourceAvailability((int)(1),id)){currentSettlementButton_one.interactable = true;} else {currentSettlementButton_one.interactable = false;}
+			if (CheckSettlementResourceAvailability((int)(10),id)){currentSettlementButton_ten.interactable = true;} else {currentSettlementButton_ten.interactable = false;}
+		}
+	}
+
+
+	//This function updates the player cargo labels after any exchange between money and resources has been made
+	public void updateLabelsForPlayerVariables(){
+		player_currency.GetComponent<Text>().text = MGV.playerShipVariables.ship.currency.ToString();
+		player_current_cargo.GetComponent<Text>().text = Mathf.CeilToInt(MGV.playerShipVariables.ship.GetTotalCargoAmount()).ToString();
+		player_max_cargo.GetComponent<Text>().text = Mathf.CeilToInt(MGV.playerShipVariables.ship.cargo_capicity_kg).ToString();
+	
+	}
+	
+	//This function activates the docking element when the dock button is clicked. A bool is passed to determine whether or not the button is responsive
+	public void GUI_checkOutOrDockWithPort(bool isAvailable){
+		if (isAvailable){
+			MGV.showPortDockingNotification = true;
+			//Figure out if this settlement is part of the player's network
+			MGV.isInNetwork = MGV.CheckIfCityIDIsPartOfNetwork(MGV.currentSettlement.settlementID);
+			//Figure out the tax on the cargo hold
+			MGV.currentPortTax = GetTaxRateOnCurrentShipManifest();
+		}
+		//Else do nothing
+	}
+
+
+    //============================================================================================================================================================================
+    //============================================================================================================================================================================
+    //  THESE CONSTRUCT ALL OF THE PANELS WITHIN THE PORT MENU GUI SYSTEM
+    //============================================================================================================================================================================
+
 	
 	//=================================================================================================================
-	// SETUP THE LOAN MANAGEMENT PANEL
+	// SETUP THE CREW MANAGEMENT PANEL
 	//=================================================================================================================	
 	public void GUI_TAB_SetupCrewManagementPanel(){
 		
@@ -1135,7 +1089,7 @@ public class script_GUI : MonoBehaviour {
 				memberName.text = currentMember.name;
 				memberJob.text = MGV.GetJobClassEquivalency(currentMember.typeOfCrew);
 				memberCost.text = (currentMember.clout *2).ToString();//TODO Temporary solution--need to add a clout check modifier
-				memberHome.text = GetSettlementFromID(currentMember.originCity).name;
+				memberHome.text = MGV.GetSettlementFromID(currentMember.originCity).name;
 				memberClout.text = MGV.GetCloutTitleEquivalency(currentMember.clout);
 
 
@@ -1170,7 +1124,7 @@ public class script_GUI : MonoBehaviour {
 			
 			memberName.text = currentMember.name;
 			memberJob.text = MGV.GetJobClassEquivalency(currentMember.typeOfCrew);
-			memberHome.text = GetSettlementFromID(currentMember.originCity).name;
+			memberHome.text = MGV.GetSettlementFromID(currentMember.originCity).name;
 			memberClout.text = MGV.GetCloutTitleEquivalency(currentMember.clout);
 			
 			
@@ -1180,7 +1134,8 @@ public class script_GUI : MonoBehaviour {
 		}
 		
 	}
-	
+                        //----------------------------------------------------------------------------
+                        //----------------------------CREW PANEL HELPER FUNCTIONS		
 						
 						public void GUI_FireCrewMember(CrewMember crewman, GameObject currentRow){
 							GameObject.Destroy(currentRow);
@@ -1403,7 +1358,7 @@ public void GUI_TAB_SetupAShrinePanel(){
 		//First clear the settlement list
 		relevantSettlements.Clear ();
 		foreach(int settlementID in MGV.playerShipVariables.ship.playerJournal.knownSettlements){
-			Settlement settlement = GetSettlementFromID(settlementID);
+			Settlement settlement = MGV.GetSettlementFromID(settlementID);
 				//make sure not to list the current settlement the player is at
 				if(MGV.currentSettlement.settlementID != settlementID){	
 					//First let's get a clone of our hidden row in the tavern scroll view
@@ -1523,7 +1478,8 @@ public void GUI_TAB_SetupAShrinePanel(){
 	}
 	
 	
-	
+                    //----------------------------------------------------------------------------
+                    //----------------------------SHIP REPAIR PANEL HELPER FUNCTIONS		
 					public void GUI_RepairShipByOneHP(){
 						MGV.playerShipVariables.ship.health += 1f;
 						//make sure the hp can't go above 100
@@ -1548,68 +1504,16 @@ public void GUI_TAB_SetupAShrinePanel(){
 						GUI_TAB_SetupShipRepairInformation();		
 					}	
 	
-	
-	
 
-	
-	
-	
-	//This function, if an ID value IS given, goes through the buttons associated with that resource ID and determines
-	//	--whether or not the buttons should be disabled or not
-	public void GUI_CheckAllResourceButtonsForValidity(int id){
-		Button currentCargoButton_one = (Button) all_trade_rows.transform.GetChild(id).GetChild (4).GetComponent<Button>();
-		Button currentCargoButton_ten = (Button) all_trade_rows.transform.GetChild(id).GetChild (5).GetComponent<Button>();
-		Button currentSettlementButton_one = (Button) all_trade_rows.transform.GetChild(id).GetChild(1).GetComponent<Button>(); 
-		Button currentSettlementButton_ten = (Button) all_trade_rows.transform.GetChild(id).GetChild(2).GetComponent<Button>();
-		
-		if (CheckShipResourceAvailability((int)(1),id)){currentCargoButton_one.interactable = true;} else {currentCargoButton_one.interactable = false;}
-		if (CheckShipResourceAvailability((int)(10),id)){currentCargoButton_ten.interactable = true;} else {currentCargoButton_ten.interactable = false;}
-		if (CheckSettlementResourceAvailability((int)(1),id)){currentSettlementButton_one.interactable = true;} else {currentSettlementButton_one.interactable = false;}
-		if (CheckSettlementResourceAvailability((int)(10),id)){currentSettlementButton_ten.interactable = true;} else {currentSettlementButton_ten.interactable = false;}
-	}
+    
+    
 
+    //============================================================================================================================================================================
+    //============================================================================================================================================================================
+	// ADDITIONAL FUNCTIONS FOR GUI BUTTONS (These are linked from the Unity Editor)
+    //============================================================================================================================================================================
 
-	//This Function, if no ID given, goes through ALL id values and their corresponding buttons and determines
-	//	--whether or not the button should be disabled or not
-	public void GUI_CheckAllResourceButtonsForValidity(){
-		for (int id = 0; id < 15; id++){
-			Button currentCargoButton_one = (Button) all_trade_rows.transform.GetChild(id).GetChild (4).GetComponent<Button>();
-			Button currentCargoButton_ten = (Button) all_trade_rows.transform.GetChild(id).GetChild (5).GetComponent<Button>();
-			Button currentSettlementButton_one = (Button) all_trade_rows.transform.GetChild(id).GetChild(1).GetComponent<Button>(); 
-			Button currentSettlementButton_ten = (Button) all_trade_rows.transform.GetChild(id).GetChild(2).GetComponent<Button>();
-			
-			if (CheckShipResourceAvailability((int)(1),id)){currentCargoButton_one.interactable = true;} else {currentCargoButton_one.interactable = false;}
-			if (CheckShipResourceAvailability((int)(10),id)){currentCargoButton_ten.interactable = true;} else {currentCargoButton_ten.interactable = false;}
-			if (CheckSettlementResourceAvailability((int)(1),id)){currentSettlementButton_one.interactable = true;} else {currentSettlementButton_one.interactable = false;}
-			if (CheckSettlementResourceAvailability((int)(10),id)){currentSettlementButton_ten.interactable = true;} else {currentSettlementButton_ten.interactable = false;}
-		}
-	}
-
-
-	//This function updates the player cargo labels after any exchange between money and resources has been made
-	public void updateLabelsForPlayerVariables(){
-		player_currency.GetComponent<Text>().text = MGV.playerShipVariables.ship.currency.ToString();
-		player_current_cargo.GetComponent<Text>().text = Mathf.CeilToInt(MGV.playerShipVariables.ship.GetTotalCargoAmount()).ToString();
-		player_max_cargo.GetComponent<Text>().text = Mathf.CeilToInt(MGV.playerShipVariables.ship.cargo_capicity_kg).ToString();
-	
-	}
-	
-	//This function activates the docking element when the dock button is clicked. A bool is passed to determine whether or not the button is responsive
-	public void GUI_checkOutOrDockWithPort(bool isAvailable){
-		if (isAvailable){
-			MGV.showPortDockingNotification = true;
-			//Figure out if this settlement is part of the player's network
-			MGV.isInNetwork = MGV.CheckIfCityIDIsPartOfNetwork(MGV.currentSettlement.settlementID);
-			//Figure out the tax on the cargo hold
-			MGV.currentPortTax = GetTaxRateOnCurrentShipManifest();
-		}
-		//Else do nothing
-	}
-
-
-
-
-
+    //-----------------------------------------------------
 	//THIS IS THE UNFURLING / FURLING OF SAILS BUTTON
 	public void GUI_furlOrUnfurlSails(){
 		if(MGV.sailsAreUnfurled){
@@ -1627,7 +1531,7 @@ public void GUI_TAB_SetupAShrinePanel(){
 	}
 
 	
-	//################################################
+	//-----------------------------------------------------
 	//THIS IS THE DROP ANCHOR BUTTON
 	public void GUI_dropAnchor(){
 		//If the controls are locked--we are traveling so force it to stop
@@ -1635,7 +1539,7 @@ public void GUI_TAB_SetupAShrinePanel(){
 			MGV.playerShipVariables.rayCheck_stopShip = true;
 	}
 	
-	//################################################
+    //-----------------------------------------------------
 	//THIS IS THE REST BUTTON
 	
 	public void GUI_restOverNight(){
@@ -1648,17 +1552,16 @@ public void GUI_TAB_SetupAShrinePanel(){
 		StartCoroutine(MGV.playerShipVariables.WaitForTimePassing(.25f, false));
 	}	
 	
-	//################################################
+	//-----------------------------------------------------
 	//THIS IS THE SAVE DATA BUTTON
-	
-	
 	public void GUI_saveGame(){
 		MGV.notificationMessage = "Saved Data File 'player_save_game.txt' To: " + Application.persistentDataPath + "/" ;
 		MGV.showNotification = true;
 		MGV.SaveUserGameData(false);
 	}
 	
-	
+	//-----------------------------------------------------
+	//THIS IS THE RESTART GAME BUTTON	
 	public void GUI_restartGame(){
 		MGV.RestartGame();
 	}
