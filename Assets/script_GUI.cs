@@ -253,14 +253,14 @@ public class script_GUI : MonoBehaviour {
 //======================================================================================================================================================================
 	void Start () {
         MGV = GameObject.FindGameObjectWithTag("global_variables").GetComponent<globalVariables>();
-        style_background.fontSize = (int) yUnit * 3;
-        style_background.normal.textColor = Color.white;
-        style_button.fontSize = (int) yUnit * 3;
-        style_button.normal.textColor = Color.white;
-        style_label.fontSize = (int) yUnit * 3;
-        style_label.normal.textColor = Color.white;
-        xUnit = Screen.width / 100f;
-        yUnit = Screen.height / 100f;
+//        style_background.fontSize = (int) yUnit * 3;
+//        style_background.normal.textColor = Color.white;
+//        style_button.fontSize = (int) yUnit * 3;
+//        style_button.normal.textColor = Color.white;
+//        style_label.fontSize = (int) yUnit * 3;
+//        style_label.normal.textColor = Color.white;
+//        xUnit = Screen.width / 100f;
+//        yUnit = Screen.height / 100f;
 	}
 
     
@@ -293,26 +293,26 @@ void OnGUI(){
 	//		It finishes at the end of OnGUI() with a Reset on the Matrix
 	//************************************************************
 	
-	Vector2 ratio = new Vector2(Screen.width/originalWidth, Screen.height/originalHeight);
-	Matrix4x4 guiMatrix = Matrix4x4.identity;
-	guiMatrix.SetTRS(new Vector3(1,1,1), Quaternion.identity, new Vector3(ratio.x, ratio.y, 1) );
-	GUI.matrix = guiMatrix;
-	
-	//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-		
-	
-        GUI.skin = myGuiSkin;
+//	Vector2 ratio = new Vector2(Screen.width/originalWidth, Screen.height/originalHeight);
+//	Matrix4x4 guiMatrix = Matrix4x4.identity;
+//	guiMatrix.SetTRS(new Vector3(1,1,1), Quaternion.identity, new Vector3(ratio.x, ratio.y, 1) );
+//	GUI.matrix = guiMatrix;
+//	
+//	//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//		
+//	
+//        GUI.skin = myGuiSkin;
 		//############################
 		// UPDATE SCREEN RATIO SIZING
 		//############################
 		//This portions out the screen in percent. Each x or y unit is = to 1% of the screen in that dimension
-		screenX = Screen.width;
-		screenY = Screen.height;
-		xUnit = Screen.width / 100f;
-		yUnit = Screen.height / 100f;
-		style_background.fontSize = (int) (yUnit * 2f);
-		style_label.fontSize = (int) (yUnit * 2f);
-		style_button.fontSize = (int) (yUnit * 2f);
+//		screenX = Screen.width;
+//		screenY = Screen.height;
+//		xUnit = Screen.width / 100f;
+//		yUnit = Screen.height / 100f;
+//		style_background.fontSize = (int) (yUnit * 2f);
+//		style_label.fontSize = (int) (yUnit * 2f);
+//		style_button.fontSize = (int) (yUnit * 2f);
 	
 
 
@@ -706,8 +706,8 @@ void OnGUI(){
 	public void GUI_startNewGame(int difficulty){
 		MGV.isTitleScreen = false;
 		MGV.isStartScreen = true;
-		MGV.bg_titleScreen.SetActive(false);
-		MGV.bg_startScreen.SetActive(true);
+		title_start.SetActive(false);
+		title_crew_select.SetActive(true);
 		MGV.FillNewGameCrewRosterAvailability();
 		if (difficulty == 0) MGV.gameDifficulty_Beginner = false;
 		else MGV.gameDifficulty_Beginner = true;
@@ -717,8 +717,8 @@ void OnGUI(){
 		MGV.isLoadedGame = true;
 		MGV.isTitleScreen = false;
 		MGV.isStartScreen = false;
-		MGV.bg_titleScreen.SetActive(false);
-		MGV.bg_startScreen.SetActive(false);
+		title_start.SetActive(false);
+		title_crew_select.SetActive(false);
 		MGV.camera_titleScreen.SetActive(false);
 		//Turn on the environment fog
 		RenderSettings.fog = true;

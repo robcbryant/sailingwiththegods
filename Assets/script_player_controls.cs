@@ -282,11 +282,12 @@ public class script_player_controls : MonoBehaviour {
 
 	
 	public void CheckForPlayerNavigationCursor(){
-	
+
 		Vector3 main_mouse = MGV.FPVCamera.GetComponent<Camera>().ScreenToViewportPoint (Input.mousePosition);
-		
+		Debug.Log (main_mouse);
 		//Here we are first checking to see if the mouse cursor is over the actual gameplay window
 		Rect FPVCamRect = MGV.FPVCamera.GetComponent<Camera>().rect;
+		Debug.Log (FPVCamRect);
 		FPVCamRect.y = 0;
 		FPVCamRect.height =1f;
 		if (FPVCamRect.Contains (main_mouse) && !MGV.showNotification && !MGV.showPortDockingNotification && !MGV.showSettlementTradeGUI && !MGV.showSecondaryNotification && !MGV.showSettlementInfoGUI){ 
@@ -294,7 +295,7 @@ public class script_player_controls : MonoBehaviour {
 			RaycastHit hitInfo;
 			Ray ray = MGV.FPVCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
 			Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow);
-			
+			Debug.Log ("I guess?");
 				if (Physics.Raycast(ray.origin, ray.direction, out hitInfo,100f)){
 					//if we get a hit, then turn the cursor ring on
 					cursorRing.SetActive(true);
