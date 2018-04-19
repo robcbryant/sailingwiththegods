@@ -198,8 +198,7 @@ public class script_player_controls : MonoBehaviour {
 					
 					//
 				}
-				//check for settlement highlights
-
+				//If we aren't locking the controls for a GUI pop up then look for player cursor
 				CheckForPlayerNavigationCursor();
 				AnimateCursorRing();
 				//check for panning screen
@@ -256,7 +255,7 @@ public class script_player_controls : MonoBehaviour {
 				} else {
 					//Check if we're in the menus or not
 					//	-If we aren't in the settlement menu then we know we're traveling
-					if (!MGV.showSettlementTradeGUI){
+					if (!MGV.menuControlsLock ){
 						//If the ship is dead in the water--don't do anything
 						if (shipSpeed_Actual != 0)
 							TravelToSelectedTarget(currentDestination);
@@ -284,17 +283,17 @@ public class script_player_controls : MonoBehaviour {
 	public void CheckForPlayerNavigationCursor(){
 
 		Vector3 main_mouse = MGV.FPVCamera.GetComponent<Camera>().ScreenToViewportPoint (Input.mousePosition);
-		Debug.Log (main_mouse);
+		//Debug.Log (main_mouse);
 		//Here we are first checking to see if the mouse cursor is over the actual gameplay window
 		Rect FPVCamRect = MGV.FPVCamera.GetComponent<Camera>().rect;
-		Debug.Log (FPVCamRect);
+		//Debug.Log (FPVCamRect);
 		FPVCamRect.y = 0;
 		FPVCamRect.height =1f;
-		if (FPVCamRect.Contains (main_mouse) && !MGV.showNotification && !MGV.showPortDockingNotification && !MGV.showSettlementTradeGUI && !MGV.showSecondaryNotification && !MGV.showSettlementInfoGUI){ 
+		if (FPVCamRect.Contains (main_mouse)){ 
 			//If the mouse cursor is hovering over the allowed gameplay window, then figure out the position of the mouse in worldspace
 			RaycastHit hitInfo;
 			Ray ray = MGV.FPVCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-			Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow);
+			//Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow);
 			Debug.Log ("I guess?");
 				if (Physics.Raycast(ray.origin, ray.direction, out hitInfo,100f)){
 					//if we get a hit, then turn the cursor ring on
@@ -434,7 +433,9 @@ public class script_player_controls : MonoBehaviour {
 			destination = new Vector3(destination.x, shipTransform.position.y, destination.z);
 			Vector3 temprot = Vector3.RotateTowards(shipTransform.forward, Vector3.Normalize(destination - shipTransform.position), .1f, 0.0F);
 			Vector3 targetDirection = Vector3.Normalize(destination - shipTransform.position);
-				//Debug.Log (targetDirection + "         ==?   " + shipTransform.forward );
+			Debug.Log (targetDirection + "         ==?   " + shipTransform.forward );
+			Debug.Log (destination);
+			Debug.Log ("TRAVELING");
 			//We use Mathf Approximately to compare float values and end the rotation sequence when the ships direction matches the target's direction
 			if (MGV.FastApproximately(targetDirection.x, shipTransform.forward.x, .01f) && 
 			    MGV.FastApproximately(targetDirection.y, shipTransform.forward.y, .01f) && 

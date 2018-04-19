@@ -51,6 +51,41 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
+          name: _OcclusionMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _EmissionMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _DetailMask
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _DetailAlbedoMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _MetallicGlossMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
           name: _CubeMap
         second:
           m_Texture: {fileID: 8900000, guid: d5ec67b1ab17c624398baed7aac30cc1, type: 3}
@@ -96,41 +131,6 @@ Material:
           name: _DownTex
         second:
           m_Texture: {fileID: 2800000, guid: a7f5476e98c220b42b0654df3d52737d, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _OcclusionMap
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _EmissionMap
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _DetailMask
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _DetailAlbedoMap
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _MetallicGlossMap
-        second:
-          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -224,18 +224,6 @@ Material:
         second: .0199999996
       data:
         first:
-          name: _YRotation
-        second: 0
-      data:
-        first:
-          name: _Blend
-        second: 1
-      data:
-        first:
-          name: _Rotation
-        second: 0
-      data:
-        first:
           name: _ZWrite
         second: 1
       data:
@@ -270,6 +258,18 @@ Material:
         first:
           name: _Metallic
         second: 0
+      data:
+        first:
+          name: _YRotation
+        second: 0
+      data:
+        first:
+          name: _Blend
+        second: 1
+      data:
+        first:
+          name: _Rotation
+        second: 0
     m_Colors:
       data:
         first:
@@ -289,11 +289,11 @@ Material:
         second: {r: .368999988, g: .349000007, b: .340999991, a: 1}
       data:
         first:
-          name: _Tint
+          name: _EmissionColorUI
         second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
-          name: _EmissionColorUI
+          name: _Tint
         second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:

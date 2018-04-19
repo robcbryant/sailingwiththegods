@@ -82,6 +82,7 @@ public class script_GUI : MonoBehaviour {
 		public GameObject port_info_notification;
 		public GameObject port_info_enter;
 		public GameObject port_info_leave;
+		public GameObject port_info_taxes;		
 				
 	//-----------------------------------------------------------
 	// Player Notification Variables
@@ -253,14 +254,22 @@ public class script_GUI : MonoBehaviour {
 //======================================================================================================================================================================
 	void Start () {
         MGV = GameObject.FindGameObjectWithTag("global_variables").GetComponent<globalVariables>();
-//        style_background.fontSize = (int) yUnit * 3;
-//        style_background.normal.textColor = Color.white;
-//        style_button.fontSize = (int) yUnit * 3;
-//        style_button.normal.textColor = Color.white;
-//        style_label.fontSize = (int) yUnit * 3;
-//        style_label.normal.textColor = Color.white;
-//        xUnit = Screen.width / 100f;
-//        yUnit = Screen.height / 100f;
+		style_background.fontSize = (int) yUnit * 3;
+		style_background.normal.textColor = Color.white;
+		style_background.normal.background = MakeTex( 2, 2, new Color( 0f, .5f, .5f, 0.8f ) );
+		
+		style_button.fontSize = (int) yUnit * 3;
+		style_button.normal.textColor = Color.white;
+		style_button.hover.background = MakeTex( 2, 2, new Color( 0f, .9f, .9f, 0.8f ) );
+		style_button.active.background = MakeTex( 2, 2, new Color( 0f, .3f, .3f, 0.8f ) );
+		style_button.normal.background = MakeTex( 2, 2, new Color( 0f, .8f, .8f, 0.8f ) );
+		
+		style_label.fontSize = (int) yUnit * 3;
+		style_label.normal.textColor = Color.white;
+		
+		xUnit = Screen.width / 100f;
+		yUnit = Screen.height / 100f;
+		
 	}
 
     
@@ -293,27 +302,32 @@ void OnGUI(){
 	//		It finishes at the end of OnGUI() with a Reset on the Matrix
 	//************************************************************
 	
-//	Vector2 ratio = new Vector2(Screen.width/originalWidth, Screen.height/originalHeight);
-//	Matrix4x4 guiMatrix = Matrix4x4.identity;
-//	guiMatrix.SetTRS(new Vector3(1,1,1), Quaternion.identity, new Vector3(ratio.x, ratio.y, 1) );
-//	GUI.matrix = guiMatrix;
-//	
-//	//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-//		
-//	
-//        GUI.skin = myGuiSkin;
+		//************************************************************
+		// This code controls the screen scaling of the GUI interface!
+		//		It finishes at the end of OnGUI() with a Reset on the Matrix
+		//************************************************************
+		
+		Vector2 ratio = new Vector2(Screen.width/originalWidth, Screen.height/originalHeight);
+		Matrix4x4 guiMatrix = Matrix4x4.identity;
+		guiMatrix.SetTRS(new Vector3(1,1,1), Quaternion.identity, new Vector3(ratio.x, ratio.y, 1) );
+		GUI.matrix = guiMatrix;
+		
+		//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		
+		
+		GUI.skin = myGuiSkin;
 		//############################
 		// UPDATE SCREEN RATIO SIZING
 		//############################
 		//This portions out the screen in percent. Each x or y unit is = to 1% of the screen in that dimension
-//		screenX = Screen.width;
-//		screenY = Screen.height;
-//		xUnit = Screen.width / 100f;
-//		yUnit = Screen.height / 100f;
-//		style_background.fontSize = (int) (yUnit * 2f);
-//		style_label.fontSize = (int) (yUnit * 2f);
-//		style_button.fontSize = (int) (yUnit * 2f);
-	
+		screenX = Screen.width;
+		screenY = Screen.height;
+		xUnit = Screen.width / 100f;
+		yUnit = Screen.height / 100f;
+		style_background.fontSize = (int) (yUnit * 2f);
+		style_label.fontSize = (int) (yUnit * 2f);
+		style_button.fontSize = (int) (yUnit * 2f);
+		
 
 
 
@@ -327,10 +341,10 @@ void OnGUI(){
 	// IF WE ARE AT THE TITLE SCREEN
 	if (MGV.isTitleScreen) {	
 		title_start.SetActive (true);
-		title_newgame_button.GetComponent<Button> ().onClick.AddListener (() => GUI_startNewGame (1));
-		title_newgame_beginner_button.GetComponent<Button> ().onClick.AddListener (() => GUI_startNewGame (0));
-		title_loadgame_button.GetComponent<Button> ().onClick.AddListener (() => GUI_loadGame (1));
-		title_loadgame_beginner_button.GetComponent<Button> ().onClick.AddListener (() => GUI_loadGame (0));
+		title_newgame_button.GetComponent<Button> ().onClick.AddListener (() => GUI_startNewGame (0));
+		title_newgame_beginner_button.GetComponent<Button> ().onClick.AddListener (() => GUI_startNewGame (1));
+		title_loadgame_button.GetComponent<Button> ().onClick.AddListener (() => GUI_loadGame (0));
+		title_loadgame_beginner_button.GetComponent<Button> ().onClick.AddListener (() => GUI_loadGame (1));
 		MGV.isTitleScreen = false;
 
 	}		
@@ -391,8 +405,31 @@ void OnGUI(){
 				if (numOfCrew == 20 || MGV.DEBUG_MODE_ON) {
 					if (GUI.Button (new Rect (1060, 640, 400, 40), "-----START GAME-----")) {
 						MGV.startGameButton_isPressed = true;
+						
+						MGV.isLoadedGame = false;
+						MGV.isTitleScreen = false;
+						title_start.SetActive(false);
+						title_crew_select.SetActive(false);
+						MGV.camera_titleScreen.SetActive(false);
+						
+						
+						//Turn on the environment fog
+						RenderSettings.fog = true;
+						//Now turn on the main player controls camera
+						MGV.FPVCamera.SetActive(true);
+						//Turn on the player distance fog wall
+						MGV.playerShipVariables.fogWall.SetActive(true);
+						
+						//Setup Difficulty Level
+						MGV.SetupBeginnerGameDifficulty();
+						
 						//Turn on the ship HUD
-						player_hud_parent.SetActive (true);
+						player_hud_parent.SetActive(true);
+
+						
+
+						
+						
 					}
 				}
 	
@@ -414,6 +451,7 @@ void OnGUI(){
         hud_captainsLog.GetComponent<Text>().text = MGV.currentCaptainsLog;
  		//`````````````````````````````````````````````````````````````````
 		// 	SHIP STATS GUI
+		//Debug.Log ("Updating stats?");
         hud_waterStores.GetComponent<Text>().text = ((int)MGV.playerShipVariables.ship.cargo[0].amount_kg).ToString ();
         hud_provisions.GetComponent<Text>().text = ((int)MGV.playerShipVariables.ship.cargo[1].amount_kg).ToString ();
         hud_shipHealth.GetComponent<Text>().text = ((int)MGV.playerShipVariables.ship.health).ToString ();
@@ -428,8 +466,8 @@ void OnGUI(){
 		if (MGV.showSettlementTradeButton){ hud_button_dock.transform.GetChild(0).GetComponent<Text>().text = "CLICK TO \n  DOCK WITH \n" + MGV.currentSettlement.name; hud_button_dock.GetComponent<Button>().onClick.RemoveAllListeners();hud_button_dock.GetComponent<Button>().onClick.AddListener(() => GUI_checkOutOrDockWithPort(true));}
 		else if (MGV.showNonPortDockButton){hud_button_dock.transform.GetChild(0).GetComponent<Text>().text = "CHECK OUT \n" + MGV.currentSettlement.name; hud_button_dock.GetComponent<Button>().onClick.RemoveAllListeners();hud_button_dock.GetComponent<Button>().onClick.AddListener(() => GUI_checkOutOrDockWithPort(true));}
 		else {hud_button_dock.transform.GetChild(0).GetComponent<Text>().text = "DOCKING \n CURRENTLY \n UNAVAILABLE"; hud_button_dock.GetComponent<Button>().onClick.RemoveAllListeners(); }
-		       
-        
+		
+		   
         //----------------------------------------------------------------------------------------------------------
         //      The remaining part of this block is for listeners that change the GUI based on variable flags
         //----------------------------------------------------------------------------------------------------------        
@@ -438,8 +476,10 @@ void OnGUI(){
         //WE ARE SHOWING A YES / NO  PORT TAX NOTIFICATION POP UP	?
         if(MGV.showPortDockingNotification){	
             MGV.showPortDockingNotification = false;
+			MGV.menuControlsLock = true;
             GUI_ShowPortDockingNotification();	
         } else if(MGV.showNonPortDockingNotification){
+			MGV.menuControlsLock = true;
             MGV.showNonPortDockingNotification = false;
             GUI_ShowNonPortDockingNotification();
         }
@@ -448,12 +488,14 @@ void OnGUI(){
 		//Check to see if we need to show any generic notifications ?
 		if (MGV.showNotification) {
 			ShowNotification(MGV.notificationMessage);
+			MGV.menuControlsLock = true;
 			MGV.showNotification = false;
 		}
 						
 		//`````````````````````````````````````````````````````````````````
 		// GAME OVER GUI
 		if (MGV.isGameOver){
+			MGV.menuControlsLock = true;
 			GUI_ShowGameOverNotification();
 			MGV.isGameOver = false;
 		}
@@ -494,14 +536,18 @@ void OnGUI(){
 		///////////
 		if (new Rect(10,10,150,20).Contains(Event.current.mousePosition)){
 			MGV.mouseCursorUsingGUI = true;
-			//Debug.Log ("Hitting a GUI element");
+			Debug.Log ("Hitting a GUI element");
 		}else MGV.mouseCursorUsingGUI = false;
 		
 
 			
 	
 	}
-	
+		//************************************************************
+		// This code controls the screen scaling of the GUI interface!
+		//		Here is Resets the Matrix at the end of OnGUI()
+		//************************************************************
+		GUI.matrix = Matrix4x4.identity;
 	
 }//End of On.GUI()
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^	
@@ -597,7 +643,7 @@ void OnGUI(){
 		float taxReductionAmount = taxRateToApply * (-1*MGV.GetOverallCloutModifier(MGV.currentSettlement.settlementID));
 		float newTaxRate = taxRateToApply + taxReductionAmount;
 		MGV.taxRateMessage = ": " + taxRateToApply.ToString("0.000") + " was reduced by: " + taxReductionAmount.ToString("0.000") + " because of your crew's clout to a final tax of: "+ newTaxRate.ToString("0.000");
-		
+		MGV.currentPortTax = (int)newTaxRate;
 		
 		return (int) ((totalPriceOfGoods / 100) * taxRateToApply);
 	}
@@ -720,6 +766,10 @@ void OnGUI(){
 		title_start.SetActive(false);
 		title_crew_select.SetActive(false);
 		MGV.camera_titleScreen.SetActive(false);
+		
+		//Load Saved Game
+		MGV.LoadSavedGame();
+		
 		//Turn on the environment fog
 		RenderSettings.fog = true;
 		//Now turn on the main player controls camera
@@ -737,6 +787,8 @@ void OnGUI(){
 		MGV.playerShipVariables.lastPlayerShipPosition = MGV.playerShip.transform.position;
 		//Update Ghost Route
 		MGV.LoadSavedGhostRoute();
+
+		
 		//Setup Difficulty Level
 		if (difficulty == 0) MGV.gameDifficulty_Beginner = false;
 		else MGV.gameDifficulty_Beginner = true;
@@ -746,11 +798,24 @@ void OnGUI(){
 		player_hud_parent.SetActive(true);
 		
 		MGV.controlsLocked = false;
+		//Flag the main GUI scripts to turn on
+		MGV.runningMainGameGUI = true;
 	}
 
 
-
-
+	
+	private Texture2D MakeTex( int width, int height, Color col )
+	{
+		Color[] pix = new Color[width * height];
+		for( int i = 0; i < pix.Length; ++i )
+		{
+			pix[ i ] = col;
+		}
+		Texture2D result = new Texture2D( width, height );
+		result.SetPixels( pix );
+		result.Apply();
+		return result;
+	}
 
 
 
@@ -774,6 +839,7 @@ void OnGUI(){
     
     public void GUI_RestartGame(){
 		gameover_main.SetActive(false);
+		MGV.menuControlsLock = false;
         //Restart from Beginning
 		MGV.RestartGame();
     }
@@ -796,8 +862,7 @@ void OnGUI(){
 	
 	public void GUI_ShowPortDockingNotification(){
 		MGV.controlsLocked = true;
-		Debug.Log ("Locked down all controls");
-	
+		
 		//Show the port notification pop up
 		port_info_main.SetActive(true);
 		//Set the title
@@ -812,15 +877,16 @@ void OnGUI(){
 			else portMessage += "You know this port as captain very well! You expect that your social connections here will soften the port taxes in your favor!";
 		} else {
 			portMessage += "This port is outside your social network!\n";
-			if(MGV.currentPortTax != 0){
-				portMessage += "If you want to dock here, your tax for entering will be " + MGV.currentPortTax + " drachma. \n";
-				//If the port tax will make the player go negative--alert them as they enter
-				if (MGV.playerShipVariables.ship.currency - MGV.currentPortTax < 0) portMessage += "Docking here will put you in debt for " + (MGV.playerShipVariables.ship.currency - MGV.currentPortTax) + "drachma, and you may lose your ship!\n";
-			} else {
-				portMessage += "You only have food and water stores on board, with no taxable goods. Thankfully you will dock for free!";
-			}
-			portMessage += "\n\nThe portmaster informed you that the usual tax of" + MGV.taxRateMessage;
-        }
+		}
+		
+		if(MGV.currentPortTax != 0){
+			portMessage += "If you want to dock here, your tax for entering will be " + MGV.currentPortTax + " drachma. \n";
+			//If the port tax will make the player go negative--alert them as they enter
+			if (MGV.playerShipVariables.ship.currency - MGV.currentPortTax < 0) portMessage += "Docking here will put you in debt for " + (MGV.playerShipVariables.ship.currency - MGV.currentPortTax) + "drachma, and you may lose your ship!\n";
+		} else {
+			portMessage += "You only have food and water stores on board, with no taxable goods. Thankfully you will dock for free!";
+		}
+			
         port_info_notification.GetComponent<Text>().text = portMessage;
         port_info_enter.GetComponent<Button>().onClick.AddListener(() => GUI_EnterPort() );
         port_info_leave.GetComponent<Button>().onClick.AddListener(() => GUI_ExitPortNotification() );
@@ -836,12 +902,14 @@ void OnGUI(){
                             nonport_info_main.SetActive(false);
                             MGV.showNonPortDockingNotification = false;
                             MGV.controlsLocked = false;
+							MGV.menuControlsLock = false;
                         }			
                                 
                         public void GUI_EnterPort(){
                             //Turn off port welcome screen
                             MGV.showPortDockingNotification = false;
                             port_info_main.SetActive(false);
+							port_info_taxes.GetComponent<Text>().text = MGV.currentPortTax.ToString();
                             //Check if current Settlement is part of the main quest line
                             MGV.CheckIfCurrentSettlementIsPartOfMainQuest(MGV.currentSettlement.settlementID);
                             //Add this settlement to the player's knowledge base
@@ -876,9 +944,7 @@ void OnGUI(){
                             //Now test if it exists, if the settlement does not have a matching texture, then default to a basic one
                             if (currentCoinTex){MGV.coinImage.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.SetTexture("_MainTex",currentCoinTex); } 
                             else {MGV.coinImage.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.SetTexture("_MainTex", (Texture) Resources.Load("settlement_coins/default_coin_texture"));}
-                            //Figure out the tax on the cargo hold
-                            if (MGV.isInNetwork) MGV.currentPortTax = 0;
-                            else MGV.currentPortTax = GetTaxRateOnCurrentShipManifest();
+;
                             //Add a new route to the player journey log as a port entry
                             MGV.playerShipVariables.journey.AddRoute(new PlayerRoute( MGV.playerShip.transform.position, Vector3.zero, MGV.currentSettlement.settlementID, MGV.currentSettlement.name, false, MGV.playerShipVariables.ship.totalNumOfDaysTraveled), MGV.playerShipVariables, MGV.currentCaptainsLog);
                             //We should also update the ghost trail with this route otherwise itp roduce an empty 0,0,0 position later
@@ -925,6 +991,7 @@ void OnGUI(){
 		//If there are only 2 children (the hidden template notification and the one we are about to delete), then turn off the notification system window and set it to active = false
 		if (notice_notificationParent.transform.childCount == 2) {
 			notice_notificationSystem.SetActive(false);
+			MGV.menuControlsLock = false;
 		}
 		//Remove the current notification that flagged this event
 		GameObject.Destroy(notification);
@@ -965,6 +1032,7 @@ void OnGUI(){
 			
 			//Turn off the coin image texture
 			MGV.GUI_PortMenu.SetActive(false);
+			MGV.menuControlsLock = false;
 			
 		} else {//Debug.Log ("Not Enough Drachma to Leave the Port!");
 			MGV.showNotification = true;
@@ -1044,11 +1112,11 @@ void OnGUI(){
 	//This function activates the docking element when the dock button is clicked. A bool is passed to determine whether or not the button is responsive
 	public void GUI_checkOutOrDockWithPort(bool isAvailable){
 		if (isAvailable){
-			MGV.showPortDockingNotification = true;
 			//Figure out if this settlement is part of the player's network
 			MGV.isInNetwork = MGV.CheckIfCityIDIsPartOfNetwork(MGV.currentSettlement.settlementID);
 			//Figure out the tax on the cargo hold
 			MGV.currentPortTax = GetTaxRateOnCurrentShipManifest();
+			MGV.showPortDockingNotification = true;
 		}
 		//Else do nothing
 	}

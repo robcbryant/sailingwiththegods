@@ -8037,6 +8037,7 @@ MonoBehaviour:
   port_info_notification: {fileID: 0}
   port_info_enter: {fileID: 0}
   port_info_leave: {fileID: 0}
+  port_info_taxes: {fileID: 0}
   notice_notificationParent: {fileID: 0}
   notiec_notificationTemplate: {fileID: 0}
   notice_notificationSystem: {fileID: 0}
@@ -19802,7 +19803,7 @@ GameObject:
   - 222: {fileID: 296602064}
   - 114: {fileID: 296602063}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51547,6 +51548,7 @@ MonoBehaviour:
   port_info_notification: {fileID: 269188468}
   port_info_enter: {fileID: 1543231987}
   port_info_leave: {fileID: 1664860490}
+  port_info_taxes: {fileID: 296602061}
   notice_notificationParent: {fileID: 951890542}
   notiec_notificationTemplate: {fileID: 155063700}
   notice_notificationSystem: {fileID: 1484736680}
@@ -94805,6 +94807,7 @@ MonoBehaviour:
   showPortTax: 0
   isGameOver: 0
   justLeftPort: 0
+  menuControlsLock: 0
   showNotification: 0
   notificationMessage: 
   showSecondaryNotification: 0

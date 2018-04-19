@@ -761,6 +761,8 @@ public class globalVariables : MonoBehaviour
 	public bool showPortTax = false;
 	public bool isGameOver = false;
 	public bool justLeftPort = false;
+	public bool menuControlsLock = false;
+	
 	
 	//The main notifications are handled by the first two variables
 	//	--to make sure multiple notifications can be seen that might overlap, e.g. the player triggers two notifications in an action
@@ -1980,8 +1982,10 @@ public class globalVariables : MonoBehaviour
 
 		//Now let's add all the initial crew from the start screen selection and start the first leg of the quest
 		for (int i = 0; i < newGameAvailableCrew.Count; i++) {
-			if (newGameCrewSelectList [i])
+			if (newGameCrewSelectList [i]){
 				playerShipVariables.ship.crewRoster.Add (newGameAvailableCrew [i]);
+				Debug.Log (newGameCrewSelectList[i]);	
+			}
 		}
 		//Debug.Log (playerShipVariables.ship.mainQuest.questSegments[0].crewmembersToAdd.Count + "<<<<<<<<<<<<<CREW");
 		//	foreach (int crewID in playerShipVariables.ship.mainQuest.questSegments[0].crewmembersToAdd){
@@ -2036,6 +2040,9 @@ public class globalVariables : MonoBehaviour
 		
 		Debug.Log ("Removing id 31 from crew roster as test to see if an error is thrown");
 		playerShipVariables.ship.crewRoster.Remove (GetCrewMemberFromID (31));
+		
+		//Flag the main GUI scripts to turn on
+		runningMainGameGUI = true;
 	}
     
 	public void FillNewGameCrewRosterAvailability ()
@@ -2219,26 +2226,9 @@ public class globalVariables : MonoBehaviour
 		return title;
 	}
 	
-	public string GetCloutTitleEquivalency (int clout)
-	{
-		//This function simply returns a predefined string based on the number value of the clout provided
-		string title = "";
-             if (clout > 0 && clout <= 10)  title = "The Unknown";
-		else if (clout > 10 && clout <= 20) title = "The Insignificant";
-		else if (clout > 20 && clout <= 30  )title = "The Lesser Known";
-		else if (clout > 30 && clout <= 40) title = "The Common";
-		else if (clout > 40 && clout <= 50) title = "The Known";
-		else if (clout > 50 && clout <= 60) title = "The Well Known";
-		else if (clout > 60 && clout <= 70) title = "The Respected";
-		else if (clout > 70 && clout <= 80) title = "The Famed";
-		else if (clout > 80 && clout <= 95) title = "The Heroic";
-		else if (clout > 95 && clout <= 100)title = "The Legendary";
-		else                                title = "ERROR: clout is not between 0 and 100";
-		
-		return title;
-	}
 
-	public string GetPlayerCloutTitleEquivalency (int clout)
+
+	public string GetCloutTitleEquivalency (int clout)
 	{
 		//This function simply returns a predefined string based on the number value of the clout provided
 		string title = "";
@@ -2408,9 +2398,10 @@ public class globalVariables : MonoBehaviour
 
 	public void AdjustPlayerClout (int cloutAdjustment)
 	{
+		int cloutModifier = 100; //We have a modifier to help link the new system in with the old functions.
 		int clout = (int)playerShipVariables.ship.playerClout;
 		//adjust the players clout by the given amount
-		playerShipVariables.ship.playerClout += cloutAdjustment;
+		playerShipVariables.ship.playerClout += (cloutAdjustment * cloutModifier);
 		//if the player's clout exceeds 100 after the adjustment, then reduce it back to 100 as a cap
 		if (playerShipVariables.ship.playerClout > 5000)
 			playerShipVariables.ship.playerClout = 5000;
@@ -2420,17 +2411,17 @@ public class globalVariables : MonoBehaviour
 		Debug.Log (playerShipVariables.ship.playerClout);
 		//First check if a player reaches a new clout level
 		//If the titles don't match after adjustment then we have a change!
-		if (GetPlayerCloutTitleEquivalency (clout) != GetPlayerCloutTitleEquivalency ((int)playerShipVariables.ship.playerClout)) {
+		if (GetCloutTitleEquivalency (clout) != GetCloutTitleEquivalency ((int)playerShipVariables.ship.playerClout)) {
 			//Next we need to determine whether or not it was a level down or level up
 			//If it was an increase then show a positive message
 			if (clout < (clout + cloutAdjustment)) {
 				Debug.Log ("Gained a level");
 				
-				ShowANotificationMessage ("Congratulations! You have reached a new level of influence! Before this day you were Jason, " + GetPlayerCloutTitleEquivalency (clout) + ".....But now...You have become Jason " + GetPlayerCloutTitleEquivalency ((int)playerShipVariables.ship.playerClout) + "!");				
+				ShowANotificationMessage ("Congratulations! You have reached a new level of influence! Before this day you were Jason, " + GetCloutTitleEquivalency (clout) + ".....But now...You have become Jason " + GetCloutTitleEquivalency ((int)playerShipVariables.ship.playerClout) + "!");				
 				//If it was a decrease then show a negative message to the player
 			} else {
 				Debug.Log ("Lost a level");
-				ShowANotificationMessage ("Unfortunately you sunk to a new low level of respect in the world! Before this day you were Jason, " + GetPlayerCloutTitleEquivalency (clout) + ".....But now...You have become Jason " + GetPlayerCloutTitleEquivalency ((int)playerShipVariables.ship.playerClout) + "!");
+				ShowANotificationMessage ("Unfortunately you sunk to a new low level of respect in the world! Before this day you were Jason, " + GetCloutTitleEquivalency (clout) + ".....But now...You have become Jason " + GetCloutTitleEquivalency ((int)playerShipVariables.ship.playerClout) + "!");
 			}
 		}
 		
@@ -2443,8 +2434,8 @@ public class globalVariables : MonoBehaviour
 			//adjust the crews clout by the given amount
 			crew.clout += cloutAdjustment;
 			//if the crew's clout exceeds 100 after the increase, then reduce it back to 100 as a cap
-			if (crew.clout > 100)
-				crew.clout = 100;
+			if (crew.clout > 5000)
+				crew.clout = 5000;
 			//if the crew's clout is reduced below 0 after the adjustment, then increase it to 0 again
 			if (crew.clout < 0)
 				crew.clout = 0;
@@ -2531,8 +2522,8 @@ public class globalVariables : MonoBehaviour
 		
 		//###### Next we need to cycle through all the crew members and tally up the clout there
 		//	--This will be a 1 - 100 value that is a sum of of percentage of total possible clout
-		//	--e.g. if there are 10 crew members, the total possible clout is 1000--if it adds
-		//	--up to 500, the returned clout is 50--or 50%
+		//	--e.g. if there are 10 crew members, the total possible clout is 50,000--if it adds
+		//	--up to 25,000, the returned clout is 50--or 50%
 		float sumOfCrewClout = 0;
 		foreach (CrewMember member in playerShipVariables.ship.crewRoster) {
 			sumOfCrewClout += member.clout;
