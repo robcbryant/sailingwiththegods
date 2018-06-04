@@ -55,6 +55,11 @@ public class script_GUI : MonoBehaviour {
 		public GameObject title_loadgame_beginner_button;
 		public GameObject title_crew_select;
 		public GameObject title_crew_select_story;
+		public GameObject title_crew_select_info;
+		public GameObject title_crew_select_crew_list;
+		public GameObject title_crew_select_entry_template;
+		public GameObject title_crew_select_is_selected;
+		public GameObject title_crew_select_crew_count;
 		public GameObject title_crew_select_start_game;
 
 	//-----------------------------------------------------------
@@ -355,86 +360,10 @@ void OnGUI(){
 	
 	if (MGV.isStartScreen) {
 
-				//===========================================================
-				//HERE WE GIVE THE FIRST LEG OF THE ARGONAUTICA QUEST / INTRO
-				GUI.Label (new Rect (540, 150, 340, 500), "Welcome to the Argonautica Jason! Find your way through the dangerous seas to complete your quest! You have found yourself at Pagasae, where King Pelias has given you the task of sailing across " +
-					"the Aegean and the Black Sea to retrieve the Golden Fleece.  This is the hide of the flying ram that brought Phrixus from Boetia to Aea. The hide now hangs on a tree on the other side of the Black " +
-					"Sea in the city of Aea. The great lord Aeetes prizes the fleece, and a very large dragon guards it. \n\nThe task seems impossible! But you do not sail alone, Jason. You have assembled a group of the most " +
-					"powerful warriors, sailors, and prophets in Greece to help you in your quest.  Most are the sons of royal families, and each one has a unique skill. Once the heroes have all arrived, your crew stocks " +
-					"the ships and the people of Pagasae greet you all.");
-			
-				//======================================================================
-				//HERE WE DISPLAY A LIST OF CREW FOR THE PLAYER TO CONSTRUCT A CREW FROM
-			
-				//Update the number of currently selected crewmen
-				int numOfCrew = 0;
-				foreach (bool i in MGV.newGameCrewSelectList)
-					if (i)
-						numOfCrew++;
-				GUI.Label (new Rect (960, 145, 590, 500), "It's up to you, Jason, to select your crew! Certain members, integral to your journey, must be chosen...the others are up to you! How do you build a good crew?ou start with 20 crewmen, but it is best to hire men at port and keep as close to a full crew of 30 as possible.Keep in mind that one man working hard at the oars drinks about 5 kg of water a day and eats about 0.7 kg of food a day, so you’ll need to stock up!");
-				GUI.Label (new Rect (960, 220, 590, 500), "You currently have " + numOfCrew + " / 20 crewmembers!\n___________________________________________________________________________________");
-			
-			
-				//_____________________________________
-				//START OF THE CREW ROSTER SCROLL VIEW
-				scrollPosition = GUI.BeginScrollView (new Rect (960, 250, 620, 380), scrollPosition, new Rect (960, 250, 600, 4000), false, true);
-				
-				for (int i = 0; i < MGV.newGameAvailableCrew.Count; i++) {
-					//If the crewmember is necessary for the quest--lock the selection in as true
-					if (!MGV.newGameAvailableCrew [i].isKillable) {
-						MGV.newGameCrewSelectList [i] = GUI.Toggle (new Rect (960, 250 + (i * 100), 50, 50), true, "");
-						//Otherwise let the player toggle on/off the selection
-					} else {
-						//We also need to run a check on whether or not we have 30 members--if we do, then hide the check box if it's 'false'
-						if (numOfCrew != 20 || MGV.newGameCrewSelectList [i]) {
-							MGV.newGameCrewSelectList [i] = GUI.Toggle (new Rect (960, 250 + (i * 100), 50, 50), MGV.newGameCrewSelectList [i], "");
-						}
-					}
-					//Show the Crewmember's information / backstory
-					string title = MGV.GetCloutTitleEquivalency (MGV.newGameAvailableCrew [i].clout) + " " + MGV.newGameAvailableCrew [i].name + ", the " + MGV.GetJobClassEquivalency (MGV.newGameAvailableCrew [i].typeOfCrew) + " from " + MGV.GetSettlementFromID (MGV.newGameAvailableCrew [i].originCity).name + ".";
-					GUI.Label (new Rect (1010, 255 + (i * 100), 520, 60), title);
-					GUI.Label (new Rect (1010, 257 + (i * 100), 520, 60), "___________________________________________________________________");
-					GUI.Label (new Rect (1010, 270 + (i * 100), 520, 100), MGV.newGameAvailableCrew [i].backgroundInfo);
+		
+		
 
-				
-				
-				}						
-				
-				GUI.EndScrollView ();
-			
-				if (numOfCrew == 20 || MGV.DEBUG_MODE_ON) {
-					if (GUI.Button (new Rect (1060, 640, 400, 40), "-----START GAME-----")) {
-						MGV.startGameButton_isPressed = true;
-						
-						MGV.isLoadedGame = false;
-						MGV.isTitleScreen = false;
-						title_start.SetActive(false);
-						title_crew_select.SetActive(false);
-						MGV.camera_titleScreen.SetActive(false);
-						
-						
-						//Turn on the environment fog
-						RenderSettings.fog = true;
-						//Now turn on the main player controls camera
-						MGV.FPVCamera.SetActive(true);
-						//Turn on the player distance fog wall
-						MGV.playerShipVariables.fogWall.SetActive(true);
-						
-						//Setup Difficulty Level
-						MGV.SetupBeginnerGameDifficulty();
-						
-						//Turn on the ship HUD
-						player_hud_parent.SetActive(true);
-
-						
-
-						
-						
-					}
-				}
-	
-
-		}
+	}
 
 
 	//=====================================================================================================================================	
@@ -753,10 +682,16 @@ void OnGUI(){
 		MGV.isTitleScreen = false;
 		MGV.isStartScreen = true;
 		title_start.SetActive(false);
-		title_crew_select.SetActive(true);
+		
 		MGV.FillNewGameCrewRosterAvailability();
+
 		if (difficulty == 0) MGV.gameDifficulty_Beginner = false;
 		else MGV.gameDifficulty_Beginner = true;
+		MGV.SetupBeginnerGameDifficulty();
+
+		title_crew_select.SetActive(true);
+		GUI_SetupStartScreenCrewSelection();
+
 	}
 	
 	public void GUI_loadGame (int difficulty){
@@ -848,6 +783,7 @@ void OnGUI(){
     //-------------------------------------------------------------------------------------------------------------------------
     //   DOCKING INFO PANEL AND COMPONENTS    
   
+
     public void GUI_ShowNonPortDockingNotification(){
 		//Show the non port notification window
 		nonport_info_main.SetActive(true);
@@ -857,9 +793,9 @@ void OnGUI(){
 		nonport_info_notification.GetComponent<Text>().text = MGV.currentSettlement.description;
 		//Setup the okay button
 		nonport_info_okay.GetComponent<Button>().onClick.AddListener(() => GUI_ExitPortNotification() );
-		
 	}
-	
+
+
 	public void GUI_ShowPortDockingNotification(){
 		MGV.controlsLocked = true;
 		
@@ -1120,6 +1056,69 @@ void OnGUI(){
 		}
 		//Else do nothing
 	}
+
+
+	
+	//=================================================================================================================
+	// SETUP THE CREW SELECTION START SCREEN
+	//=================================================================================================================	
+
+	public void GUI_SetupStartScreenCrewSelection(){
+
+		for (int i = 0; i < MGV.newGameAvailableCrew.Count; i++) {
+			Debug.Log ("CREW COUNT   " +i);
+			//We have to re-declare the CrewMember argument here or else when we apply the variable to the onClick() handler
+			//	--all onClick()'s in this loop will reference the last CrewMember instance in the loop rather than their
+			//	--respective iterated instances
+			CrewMember currentMember = MGV.newGameAvailableCrew [i];
+			
+			//First let's get a clone of our hidden row in the tavern scroll view
+			GameObject currentMemberRow = Instantiate((GameObject)title_crew_select_entry_template.transform.gameObject) as GameObject;
+			currentMemberRow.transform.SetParent( (Transform) title_crew_select_crew_list.transform.FindChild("Content"));
+			currentMemberRow.SetActive (true);
+
+			//Set the current clone to active
+			currentMemberRow.SetActive(true);
+			//We have to reset the new row UI object's transform to 1,1,1 because new ones are instantiated with 0,0,0 for some ass reason
+			currentMemberRow.GetComponent<RectTransform>().localScale = Vector3.one;
+			Text memberName = (Text) currentMemberRow.transform.FindChild("Crew Name").GetComponent<Text>();
+			Text memberJob = (Text) currentMemberRow.transform.FindChild("Sailor Job/Job Title").GetComponent<Text>();
+			Text memberHome = (Text) currentMemberRow.transform.FindChild("Home Town/Home Town Name").GetComponent<Text>();
+			Text memberClout = (Text) currentMemberRow.transform.FindChild("Clout/Clout Title").GetComponent<Text>();
+			Button hireMember = (Button) currentMemberRow.transform.FindChild("Hire Button").GetComponent<Button>();
+			Button moreMemberInfo = (Button) currentMemberRow.transform.FindChild("Backstory/Backstory Button").GetComponent<Button>();
+			Button startGame = (Button) title_crew_select_start_game.GetComponent<Button>();
+
+			memberName.text = currentMember.name;
+			memberJob.text = MGV.GetJobClassEquivalency(currentMember.typeOfCrew);
+			memberHome.text = MGV.GetSettlementFromID(currentMember.originCity).name;
+			memberClout.text = MGV.GetCloutTitleEquivalency(currentMember.clout);
+			
+			
+			hireMember.onClick.AddListener(() => GUI_CrewSelectToggle());
+			moreMemberInfo.onClick.AddListener(() => GUI_GetBackgroundInfo(currentMember.backgroundInfo));
+			startGame.onClick.AddListener(() => GUI_GetBackgroundInfo(currentMember.backgroundInfo));
+
+			int numOfCrew = 0;
+			//If the crewmember is necessary for the quest--lock the selection in as true
+			if (!MGV.newGameAvailableCrew [i].isKillable) {
+				MGV.newGameCrewSelectList [i] = GUI.Toggle (new Rect (960, 250 + (i * 100), 50, 50), true, "");
+				//Otherwise let the player toggle on/off the selection
+			} else {
+				//We also need to run a check on whether or not we have 30 members--if we do, then hide the check box if it's 'false'
+				if (numOfCrew != 20 || MGV.newGameCrewSelectList [i]) {
+					MGV.newGameCrewSelectList [i] = GUI.Toggle (new Rect (960, 250 + (i * 100), 50, 50), MGV.newGameCrewSelectList [i], "");
+
+				}
+			}
+		}
+		
+	}
+					public void GUI_CrewSelectToggle(){
+
+					}
+
+
 
 
     //============================================================================================================================================================================
