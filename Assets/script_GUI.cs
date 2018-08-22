@@ -53,6 +53,9 @@ public class script_GUI : MonoBehaviour {
 		public GameObject title_newgame_beginner_button;
 		public GameObject title_loadgame_button;
 		public GameObject title_loadgame_beginner_button;
+		public GameObject title_credits_button;
+		public GameObject title_credits_screen;
+		public GameObject title_credits_exit;
 		public GameObject title_crew_select;
 		public GameObject title_crew_select_story;
 		public GameObject title_crew_select_info;
@@ -87,8 +90,22 @@ public class script_GUI : MonoBehaviour {
 		public GameObject port_info_notification;
 		public GameObject port_info_enter;
 		public GameObject port_info_leave;
-		public GameObject port_info_taxes;		
+		
+		public GameObject port_info_cityName;
+		public GameObject port_info_taxes;	
+		public GameObject port_info_cloutMeter;	
+		public GameObject port_info_playerCities;
+		public GameObject port_info_playerCities_count;
+		public GameObject port_info_monumentsList;
+		public GameObject port_info_crewCities;
+		public GameObject port_info_crewCities_count;
+		public GameObject port_info_crewMakeup;
+		public GameObject port_info_description;
+		public GameObject port_info_coinImage;
+		public GameObject port_info_population;
+		public GameObject port_info_portImage;
 				
+								
 	//-----------------------------------------------------------
 	// Player Notification Variables
 	//-----------------------------------------------------------
@@ -214,43 +231,10 @@ public class script_GUI : MonoBehaviour {
     public GameObject player_current_cargo;
     public GameObject player_max_cargo;
     
-    public GUISkin myGuiSkin;
-    GUIStyle style_background = new GUIStyle();
-    GUIStyle style_button = new GUIStyle();
-    GUIStyle style_label = new GUIStyle();
-    
-    float gui_city_left = 20;
-    float gui_city_top = 20;
-    float gui_city_width = 430;
-    float gui_city_height = 550;
-    
-    float gui_ship_left = 460;
-    float gui_ship_top = 20;
-    float gui_ship_width = 430;
-    float gui_ship_height = 550;
-    
-    float gui_row_width = 310;
-    float gui_row_height = 20;
-    
-    public float screenX;
-    public float screenY;
-    public float xUnit;
-    public float yUnit;
-    
-    float gui_stat_left = 1200;
-    float gui_stat_top = 580;
-    float gui_stat_w = 400;
-    float gui_stat_h = 120;
-    
-    
-    float originalHeight = 720;
-    float originalWidth = 1680;
     
     public bool showNotification = false;
     
-    Vector2 scrollPosition = new Vector2(0,0);
-    Vector2 captainsLogScrollPosition = Vector2.zero;
-    Vector2 hireNavigatorScrollPosition = Vector2.zero;    
+  
     
     
     
@@ -259,21 +243,6 @@ public class script_GUI : MonoBehaviour {
 //======================================================================================================================================================================
 	void Start () {
         MGV = GameObject.FindGameObjectWithTag("global_variables").GetComponent<globalVariables>();
-		style_background.fontSize = (int) yUnit * 3;
-		style_background.normal.textColor = Color.white;
-		style_background.normal.background = MakeTex( 2, 2, new Color( 0f, .5f, .5f, 0.8f ) );
-		
-		style_button.fontSize = (int) yUnit * 3;
-		style_button.normal.textColor = Color.white;
-		style_button.hover.background = MakeTex( 2, 2, new Color( 0f, .9f, .9f, 0.8f ) );
-		style_button.active.background = MakeTex( 2, 2, new Color( 0f, .3f, .3f, 0.8f ) );
-		style_button.normal.background = MakeTex( 2, 2, new Color( 0f, .8f, .8f, 0.8f ) );
-		
-		style_label.fontSize = (int) yUnit * 3;
-		style_label.normal.textColor = Color.white;
-		
-		xUnit = Screen.width / 100f;
-		yUnit = Screen.height / 100f;
 		
 	}
 
@@ -298,43 +267,6 @@ void OnGUI(){
 	//	--overhead to worry about.
     updateLabelsForPlayerVariables();
 
-	//************************************************************
-    //
-    // THE Rest of this until the Title menu will be deprecated once the title menu is switched over to the new GUI system
-    //
-    //
-	// This code controls the screen scaling of the GUI interface!
-	//		It finishes at the end of OnGUI() with a Reset on the Matrix
-	//************************************************************
-	
-		//************************************************************
-		// This code controls the screen scaling of the GUI interface!
-		//		It finishes at the end of OnGUI() with a Reset on the Matrix
-		//************************************************************
-		
-		Vector2 ratio = new Vector2(Screen.width/originalWidth, Screen.height/originalHeight);
-		Matrix4x4 guiMatrix = Matrix4x4.identity;
-		guiMatrix.SetTRS(new Vector3(1,1,1), Quaternion.identity, new Vector3(ratio.x, ratio.y, 1) );
-		GUI.matrix = guiMatrix;
-		
-		//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-		
-		
-		GUI.skin = myGuiSkin;
-		//############################
-		// UPDATE SCREEN RATIO SIZING
-		//############################
-		//This portions out the screen in percent. Each x or y unit is = to 1% of the screen in that dimension
-		screenX = Screen.width;
-		screenY = Screen.height;
-		xUnit = Screen.width / 100f;
-		yUnit = Screen.height / 100f;
-		style_background.fontSize = (int) (yUnit * 2f);
-		style_label.fontSize = (int) (yUnit * 2f);
-		style_button.fontSize = (int) (yUnit * 2f);
-		
-
-
 
 	//=====================================================================================================================================	
 	//  IF WE ARE AT THE TITLE SCREEN OR START SCREEN
@@ -350,6 +282,7 @@ void OnGUI(){
 		title_newgame_beginner_button.GetComponent<Button> ().onClick.AddListener (() => GUI_startNewGame (1));
 		title_loadgame_button.GetComponent<Button> ().onClick.AddListener (() => GUI_loadGame (0));
 		title_loadgame_beginner_button.GetComponent<Button> ().onClick.AddListener (() => GUI_loadGame (1));
+		title_credits_button.GetComponent<Button> ().onClick.AddListener (() => GUI_showCredits());
 		MGV.isTitleScreen = false;
 
 	}		
@@ -364,7 +297,14 @@ void OnGUI(){
 		
 
 	}
-
+	
+	//`````````````````````````````````````````````````````````````````
+	//Check to see if we need to show any generic notifications ?
+	if (MGV.showNotification) {
+		ShowNotification(MGV.notificationMessage);
+		MGV.menuControlsLock = true;
+		MGV.showNotification = false;
+	}
 
 	//=====================================================================================================================================	
 	//  IF WE AREN'T AT THE TITLE SCREEN OR START SCREEN
@@ -429,32 +369,7 @@ void OnGUI(){
 			MGV.isGameOver = false;
 		}
 		
-        //`````````````````````````````````````````````````````````````````
-        //  DEPRECATED -- This will be moved to buttons in the editor, and the functions will look different
-        if(!MGV.showHelpGUI && !MGV.showSettlementTradeGUI){
-            if(GUI.Button(new Rect(10,10,120,25), "?")){
-                MGV.showHelpGUI = true;
-                //Adjust the attributes of the GUI splash screen so it only shows the left portion of the background
-                MGV.bg_startScreen.transform.localPosition = new Vector3(-6.18f, 0, 1);
-                MGV.bg_startScreen.transform.localScale = new Vector3(5.69f, 10.2f, 0);
-                MGV.bg_startScreen.GetComponent<MeshRenderer>().sharedMaterial.SetTextureScale("_MainTex", new Vector2(0.315f, 1f));
-                MGV.bg_startScreen.SetActive(true);
-            }
-        }
         
-        if (MGV.showHelpGUI && !MGV.showSettlementTradeGUI){
-            if(GUI.Button(new Rect(10,10,120,25), "X")){
-                MGV.showHelpGUI = false;
-                //reset the splash screen to its defaults so that it will be normal again if the player restarts a new game
-                MGV.bg_startScreen.SetActive(false);
-                MGV.bg_startScreen.transform.localPosition = new Vector3(0, 0, 1);
-                MGV.bg_startScreen.transform.localScale = new Vector3(18.09f, 10.2f, 0);
-                MGV.bg_startScreen.GetComponent<MeshRenderer>().sharedMaterial.SetTextureScale("_MainTex", new Vector2(1f, 1f));
-            }
-
-        }
-        
-        // END OF DEPRECATED FUNCTIONS		
 		
 		///////////////////////////////////////////////////////////////////////////////////////
 		//HERE WE SEND A FLAG TO THE PLAYER CONTROLS TO LET IT KNOW WHETHER OR NOT THE CURSOR IS ON A GUI ELEMENT
@@ -677,7 +592,10 @@ void OnGUI(){
 	//-------------------------------------------------------------------------------------------------------------------------
 	//   TITLE SCREEN FUNCTIONS AND COMPONENTS
 
-
+	public void GUI_showCredits(){
+		title_credits_screen.SetActive(true);
+	}
+	
 	public void GUI_startNewGame(int difficulty){
 		MGV.isTitleScreen = false;
 		MGV.isStartScreen = true;
@@ -736,22 +654,6 @@ void OnGUI(){
 		//Flag the main GUI scripts to turn on
 		MGV.runningMainGameGUI = true;
 	}
-
-
-	
-	private Texture2D MakeTex( int width, int height, Color col )
-	{
-		Color[] pix = new Color[width * height];
-		for( int i = 0; i < pix.Length; ++i )
-		{
-			pix[ i ] = col;
-		}
-		Texture2D result = new Texture2D( width, height );
-		result.SetPixels( pix );
-		result.Apply();
-		return result;
-	}
-
 
 
 
@@ -873,20 +775,143 @@ void OnGUI(){
                             GUI_TAB_SetupShipRepairInformation();
                             GUI_TAB_SetupTavernInformation();
                             GUI_TAB_SetupCrewManagementPanel();
-                            //Show the coin image associated with this settlement
-                            //Get the settlement ID as a string
-                            string currentID = MGV.currentSettlement.settlementID.ToString();
-                            Texture currentCoinTex =  (Texture) Resources.Load("settlement_coins/" + currentID);
-                            //Now test if it exists, if the settlement does not have a matching texture, then default to a basic one
-                            if (currentCoinTex){MGV.coinImage.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.SetTexture("_MainTex",currentCoinTex); } 
-                            else {MGV.coinImage.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial.SetTexture("_MainTex", (Texture) Resources.Load("settlement_coins/default_coin_texture"));}
-;
+
                             //Add a new route to the player journey log as a port entry
                             MGV.playerShipVariables.journey.AddRoute(new PlayerRoute( MGV.playerShip.transform.position, Vector3.zero, MGV.currentSettlement.settlementID, MGV.currentSettlement.name, false, MGV.playerShipVariables.ship.totalNumOfDaysTraveled), MGV.playerShipVariables, MGV.currentCaptainsLog);
                             //We should also update the ghost trail with this route otherwise itp roduce an empty 0,0,0 position later
                             MGV.playerShipVariables.UpdatePlayerGhostRouteLineRenderer(MGV.IS_NOT_NEW_GAME);
                             
-                        }					
+                            //-------------------------------------------------
+                            // UPDATE PLAYER CLOUT METER
+							GUI_UpdatePlayerCloutMeter();
+							
+							
+							//-------------------------------------------------
+							// OTHER PORT GUI SETUP FUNCTIONS
+							GUI_GetListOfPlayerNetworkCities();
+							GUI_GetListOfCitiesInCrewNetworks();
+							GUI_GetListOfBuiltMonuments();
+							GUI_GetCrewMakeupList();
+							GUI_SetPortCoinImage();
+							GUI_SetPortBGImage();
+							GUI_SetPortPopulation();
+							port_info_cityName.GetComponent<Text>().text = MGV.currentSettlement.name;
+							port_info_description.GetComponent<Text>().text = MGV.currentSettlement.description;
+							
+                        }
+                        
+    					public void GUI_UpdatePlayerCloutMeter(){
+							//-------------------------------------------------
+							// UPDATE PLAYER CLOUT METER
+							// *This assumes the child gameobject elements of the clout meter are in order from lowest to highest. If not--then this will produce undesirable results
+							bool foundMatch = false;
+							for (int i = 0; i < port_info_cloutMeter.transform.childCount; i++){
+								Transform currentCloutMeter = port_info_cloutMeter.transform.GetChild(i);
+								Debug.Log (currentCloutMeter.name + "  =?  " + hud_playerClout.GetComponent<Text>().text);
+								if (currentCloutMeter.name == hud_playerClout.GetComponent<Text>().text){
+									currentCloutMeter.gameObject.SetActive(true);
+									foundMatch = true;
+								} else {
+									if (!foundMatch) currentCloutMeter.gameObject.SetActive (true);
+									else currentCloutMeter.gameObject.SetActive (false);
+								}
+							}
+						}
+						
+						public void GUI_GetListOfPlayerNetworkCities(){
+						//Looks through the player's known settlements and adds it to a "/n" separated list
+							string list = "";
+							int counter = 0;
+							foreach (int knownSettlementID in MGV.playerShipVariables.ship.playerJournal.knownSettlements) {
+								list += MGV.GetSettlementFromID(knownSettlementID).name + "\n";
+								counter++;
+							}
+							port_info_playerCities.GetComponent<Text>().text = list;
+							port_info_playerCities_count.GetComponent<Text>().text = counter.ToString();
+						}
+						
+						public void GUI_GetListOfCitiesInCrewNetworks(){
+						//Looks through the hometowns of all crew and adds them to a list
+							string list = "";
+							int counter = 0;
+							foreach (CrewMember crewman in MGV.playerShipVariables.ship.crewRoster) {
+								list += MGV.GetSettlementFromID(crewman.originCity).name + "\n";
+								counter++;
+							}
+							port_info_crewCities.GetComponent<Text>().text = list;
+							port_info_crewCities_count.GetComponent<Text>().text = counter.ToString();
+						}
+						
+						public void GUI_GetListOfBuiltMonuments(){
+						
+						}
+						
+						public void GUI_GetCrewMakeupList(){
+						//Loops through all crewmembers and counts their jobs to put into a list
+							int sailors = 0;
+							int warriors = 0;
+							int slaves = 0;
+							int seers = 0;
+							string list = "";
+							foreach (CrewMember crewman in MGV.playerShipVariables.ship.crewRoster) {
+								switch(crewman.typeOfCrew){
+								case GV_CONST.CREWTYPE_SAILOR:
+									sailors++;
+									break;
+								case GV_CONST.CREWTYPE_WARRIOR:
+									warriors++;
+									break;
+								case GV_CONST.CREWTYPE_SLAVE:
+									slaves++;
+									break;
+								case GV_CONST.CREWTYPE_SEER:
+									seers++;
+									break;
+								}
+							}
+							list += "Sailors  - " + sailors.ToString() + "\n";
+							list += "Warriors - " + warriors.ToString() + "\n";
+							list += "Seers    - " + slaves.ToString() + "\n";
+							list += "Slaves   - " + seers.ToString() + "\n";
+		
+							port_info_crewMakeup.GetComponent<Text>().text = list;
+						}
+
+						
+						public void GUI_SetPortPopulation(){
+							int pop = MGV.currentSettlement.population;
+				                if ( pop >=0 && pop < 25 )port_info_population.GetComponent<Text>().text = "Village";
+				           else if ( pop >=25 && pop < 50 )port_info_population.GetComponent<Text>().text = "Town";
+				           else if ( pop >=50 && pop < 75 )port_info_population.GetComponent<Text>().text = "City";
+				           else if ( pop >=75 && pop <= 100 )port_info_population.GetComponent<Text>().text = "Metropolis";
+							
+						}
+						
+						public void GUI_SetPortBGImage(){
+							Debug.Log("LOOKING FOR BG CITY-------->   " + MGV.currentSettlement.settlementID.ToString() );
+							//Get the settlement ID as a string
+							string currentID = MGV.currentSettlement.settlementID.ToString();
+							Sprite currentBGTex =  Resources.Load<Sprite>("settlement_portraits/" + currentID);
+							Debug.Log (currentBGTex);
+							//Now test if it exists, if the settlement does not have a matching texture, then default to a basic one
+							if (currentBGTex){ port_info_portImage.GetComponent<Image>().sprite = currentBGTex; } 
+							else {port_info_portImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("settlement_portraits/gui_port_portrait_default");}
+							
+						}
+						
+						public void GUI_SetPortCoinImage(){
+							Debug.Log("LOOKING FOR COIN CITY-------->   " + MGV.currentSettlement.settlementID.ToString() );
+							//Show the coin image associated with this settlement
+							//Get the settlement ID as a string
+							string currentID = MGV.currentSettlement.settlementID.ToString();
+							Sprite currentCoinTex =  Resources.Load<Sprite>("settlement_coins/" + currentID);
+							Debug.Log (currentCoinTex);
+							//Now test if it exists, if the settlement does not have a matching texture, then default to a basic one
+							if (currentCoinTex){port_info_coinImage.GetComponent<Image>().sprite = currentCoinTex; } 
+		    				else {port_info_coinImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("settlement_coins/default_coin_texture");}
+							
+						}
+																
 	
 	
     //=================================================================================================================
@@ -1064,7 +1089,8 @@ void OnGUI(){
 	//=================================================================================================================	
 
 	public void GUI_SetupStartScreenCrewSelection(){
-
+		Button startGame = (Button) title_crew_select_start_game.GetComponent<Button>();
+		startGame.onClick.AddListener(() => GUI_startMainGame());
 		for (int i = 0; i < MGV.newGameAvailableCrew.Count; i++) {
 			Debug.Log ("CREW COUNT   " +i);
 			//We have to re-declare the CrewMember argument here or else when we apply the variable to the onClick() handler
@@ -1087,7 +1113,7 @@ void OnGUI(){
 			Text memberClout = (Text) currentMemberRow.transform.FindChild("Clout/Clout Title").GetComponent<Text>();
 			Button hireMember = (Button) currentMemberRow.transform.FindChild("Hire Button").GetComponent<Button>();
 			Button moreMemberInfo = (Button) currentMemberRow.transform.FindChild("Backstory/Backstory Button").GetComponent<Button>();
-			Button startGame = (Button) title_crew_select_start_game.GetComponent<Button>();
+			
 
 			memberName.text = currentMember.name;
 			memberJob.text = MGV.GetJobClassEquivalency(currentMember.typeOfCrew);
@@ -1095,27 +1121,87 @@ void OnGUI(){
 			memberClout.text = MGV.GetCloutTitleEquivalency(currentMember.clout);
 			
 			
-			hireMember.onClick.AddListener(() => GUI_CrewSelectToggle());
+			
 			moreMemberInfo.onClick.AddListener(() => GUI_GetBackgroundInfo(currentMember.backgroundInfo));
-			startGame.onClick.AddListener(() => GUI_GetBackgroundInfo(currentMember.backgroundInfo));
+			//startGame.onClick.AddListener(() => GUI_GetBackgroundInfo(currentMember.backgroundInfo));
 
 			int numOfCrew = 0;
+			int currentIndex = i;
 			//If the crewmember is necessary for the quest--lock the selection in as true
 			if (!MGV.newGameAvailableCrew [i].isKillable) {
-				MGV.newGameCrewSelectList [i] = GUI.Toggle (new Rect (960, 250 + (i * 100), 50, 50), true, "");
-				//Otherwise let the player toggle on/off the selection
+				MGV.newGameCrewSelectList [i] = true;
+				hireMember.transform.GetChild(0).GetComponent<Text>().text = "X";
+				numOfCrew++;
 			} else {
-				//We also need to run a check on whether or not we have 30 members--if we do, then hide the check box if it's 'false'
-				if (numOfCrew != 20 || MGV.newGameCrewSelectList [i]) {
-					MGV.newGameCrewSelectList [i] = GUI.Toggle (new Rect (960, 250 + (i * 100), 50, 50), MGV.newGameCrewSelectList [i], "");
-
-				}
+				hireMember.onClick.AddListener(() => GUI_CrewSelectToggle(currentIndex));
 			}
+			title_crew_select_crew_count.GetComponent<Text>().text = numOfCrew.ToString();
 		}
 		
 	}
-					public void GUI_CrewSelectToggle(){
-
+					public void GUI_CrewSelectToggle(int crewIndex){
+						Transform currentCrewman = title_crew_select_crew_list.transform.FindChild("Content").GetChild (crewIndex+1).FindChild("Hire Button");
+						if (MGV.newGameCrewSelectList [crewIndex] != true) {
+							currentCrewman.GetChild(0).GetComponent<Text>().text = "X";
+							MGV.newGameCrewSelectList [crewIndex] = true;
+						} else {
+							currentCrewman.GetChild(0).GetComponent<Text>().text = "";
+							MGV.newGameCrewSelectList [crewIndex] = false;						
+						}
+						//Update our crew total!
+						int crewTotal = 0;
+						foreach( bool crew in MGV.newGameCrewSelectList){
+							if (crew) crewTotal++;
+						}
+						title_crew_select_crew_count.GetComponent<Text>().text = crewTotal.ToString();
+						
+						//We also need to run a check on whether or not we have 30 members--if we do, then hide the check box if it's 'false'
+						//We start at index 1 because the 0 position is the template row
+						if (crewTotal >= 30) {
+							for(int x = 1; x < title_crew_select_crew_list.transform.FindChild("Content").childCount; x++){
+								Transform childButton = title_crew_select_crew_list.transform.FindChild("Content").GetChild(x).FindChild("Hire Button");
+								if (!MGV.newGameCrewSelectList[x-1]) childButton.gameObject.SetActive(false);
+							}
+							//Enable our Start Game Button
+							title_crew_select_start_game.SetActive(true);
+						} else {
+							for(int x = 1; x < title_crew_select_crew_list.transform.FindChild("Content").childCount; x++){
+								Transform childButton = title_crew_select_crew_list.transform.FindChild("Content").GetChild(x).FindChild("Hire Button");
+								if (!childButton.gameObject.activeSelf) childButton.gameObject.SetActive(true);
+							}
+							title_crew_select_start_game.SetActive(false);
+						}
+						Debug.Log(crewTotal);
+					}
+					
+					public void GUI_startMainGame() {
+						MGV.camera_titleScreen.SetActive(false);
+						MGV.bg_startScreen.SetActive(false);
+						
+						//Turn on the environment fog
+						RenderSettings.fog = true;
+						
+						//Now turn on the main player controls camera
+						MGV.FPVCamera.SetActive(true);
+						
+						//Turn on the player distance fog wall
+						MGV.playerShipVariables.fogWall.SetActive(true);
+						
+						//Now change titleScreen to false
+						MGV.isTitleScreen = false;
+						MGV.isStartScreen = false;
+						
+						//Now enable the controls
+						MGV.controlsLocked = false;
+						
+						//Initiate the main questline
+						MGV.InitiateMainQuestLineForPlayer();
+						
+						//Reset Start Game Button
+						MGV.startGameButton_isPressed = false;
+						
+						title_crew_select.SetActive(false);
+						player_hud_parent.SetActive(true);
 					}
 
 
