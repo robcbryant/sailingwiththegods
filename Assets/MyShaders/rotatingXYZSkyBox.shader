@@ -1,4 +1,7 @@
-﻿Shader "Skybox/rotatingXYZSkyBox" {
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Skybox/rotatingXYZSkyBox" {
         Properties {
             _CubeMap ("Skybox Cube Map", Cube) = "" {}
         }
@@ -21,8 +24,8 @@
          
             vertexOutput vert(vertexInput v){
                 vertexOutput o;
-                o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
-                o.posWorld = mul(_Object2World, v.vertex);
+                o.pos = UnityObjectToClipPos(v.vertex);
+                o.posWorld = mul(unity_ObjectToWorld, v.vertex);
      
                 fixed3 new_up = normalize(_WorldSpaceLightPos0.xyz);
     //        folowing code from http://stackoverflow.com/questions/32257338/vertex-position-relative-to-normal
