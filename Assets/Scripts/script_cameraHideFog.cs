@@ -1,19 +1,20 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-public class script_cameraHideFog : MonoBehaviour {
+public class script_cameraHideFog : MonoBehaviour
+{
 
 	[SerializeField] bool enableFog = true;
 	public bool revertFogState = false;
-	
-	
-	void OnPreRender(){
+
+
+	void OnPreRender() {
 		revertFogState = RenderSettings.fog;
 		RenderSettings.fog = enableFog;
 	}
-	
-	void OnPostRender(){
+
+	void OnPostRender() {
 		RenderSettings.fog = revertFogState;
 	}
-	
+
 }
