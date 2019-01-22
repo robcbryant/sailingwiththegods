@@ -58,11 +58,8 @@ public class script_GUI : MonoBehaviour {
 		public GameObject title_credits_exit;
 		public GameObject title_credits_text;
 		public GameObject title_crew_select;
-		public GameObject title_crew_select_story;
-		public GameObject title_crew_select_info;
 		public GameObject title_crew_select_crew_list;
 		public GameObject title_crew_select_entry_template;
-		public GameObject title_crew_select_is_selected;
 		public GameObject title_crew_select_crew_count;
 		public GameObject title_crew_select_start_game;
 
@@ -111,7 +108,6 @@ public class script_GUI : MonoBehaviour {
 	// Player Notification Variables
 	//-----------------------------------------------------------
 		public GameObject notice_notificationParent;
-		public GameObject notiec_notificationTemplate;
 		public GameObject notice_notificationSystem;
 	
 	//-----------------------------------------------------------
@@ -131,12 +127,7 @@ public class script_GUI : MonoBehaviour {
 		
 		public GameObject hud_button_dock;
 		public GameObject hud_button_furlSails;
-		public GameObject hud_button_dropAnchor;
-		public GameObject hud_button_rest;
-		public GameObject hud_button_saveGame;
-		public GameObject hud_button_restartGame;
 		public GameObject hud_button_helpwindow;
-		public GameObject hud_button_helpwindow_exit;
 
 		public GameObject hud_captainsLog;
 		
@@ -192,33 +183,6 @@ public class script_GUI : MonoBehaviour {
 	//****************************************************************
 	//GUI INFORMATION PANEL VARIABLES
 	//****************************************************************
-	
-	//This is a general use list of subset Settlements from the master list for any panel to use
-	List<Settlement> relevantSettlements = new List<Settlement>();
-	
-	//---------------------
-	//LOAN PANEL VARIABLES
-	float numOfDaysToPayOffLoan;
-	float baseLoanAmount;
-	int loanAmount;
-	float baseInterestRate;
-	float finalInterestRate;
-	float totalAmountDueAtTerm;
-	
-	//---------------------
-	//NAVIGATOR PANEL VARIABLES
-	List<int> navPanelCosts = new List<int>();
-	//---------------------
-	//ASK ABOUT CITY PANEL VARIABLES
-	List<int> costForHints = new List<int>();
-	
-	//---------------------
-	//BUILD A SHRINE PANEL VARIABLES
-	int costToBuild;
-	
-	//---------------------
-	//HIRE CREW PANEL VARIABLES
-	List<int> hireCrewCosts = new List<int>();
 
 	//---------------------
 	//REPAIR SHIP PANEL VARIABLES
@@ -228,14 +192,12 @@ public class script_GUI : MonoBehaviour {
     //===================================
     // OTHER VARS
     globalVariables MGV;
-    public GameObject GUI_port_menu;
     public GameObject all_trade_rows;
     public GameObject player_currency;
     public GameObject player_current_cargo;
     public GameObject player_max_cargo;
     
     
-    public bool showNotification = false;
     
   
     
@@ -397,22 +359,6 @@ void OnGUI(){
 			GUI_ShowGameIsFinishedNotification();
 			MGV.gameIsFinished = false;
 		}
-
-		
-		///////////////////////////////////////////////////////////////////////////////////////
-		//HERE WE SEND A FLAG TO THE PLAYER CONTROLS TO LET IT KNOW WHETHER OR NOT THE CURSOR IS ON A GUI ELEMENT
-		//and not to perform normal movement control functions while the cursor is over a GUI element
-		// -- right now this only checks if the showsettlement button is being hovered over. I'm using GUI
-		//rather than GUILayout so I can't check for lastRectUsed -- I have to specify a Rectangle of the screen
-		//--  I need to add the FPS camera screen to this later
-		///////////
-		if (new Rect(10,10,150,20).Contains(Event.current.mousePosition)){
-			MGV.mouseCursorUsingGUI = true;
-			Debug.Log ("Hitting a GUI element");
-		}else MGV.mouseCursorUsingGUI = false;
-		
-
-			
 	
 	}
 
@@ -442,25 +388,6 @@ void OnGUI(){
 	//=====================================================================================================================================	
     //  Processing Based Functions (Ideally these will all be moved to the globalvariables  script
     //=====================================================================================================================================	
-	string GetDirectionsToSettlement(Vector3 target){
-		string directions = "";
-		float angle =  Mathf.Atan2(target.z-MGV.currentSettlementGameObject.transform.position.z, target.x-MGV.currentSettlementGameObject.transform.position.x) * Mathf.Rad2Deg;
-		if (angle < 0) angle += 360;
-
-		if(angle >=0 && angle < 20)directions += "East:  ";
-		else if(angle >= 20 && angle < 70)  directions+= "Northeast:   ";
-		else if(angle >= 70 && angle < 110)	directions+= "North:   ";		
-		else if(angle >= 110 && angle < 160)directions+= "Northwest:   ";
-		else if(angle >= 160 && angle < 200)directions+= "West:   ";
-		else if(angle >= 200 && angle < 250)directions+= "Southwest:   ";
-		else if(angle >= 250 && angle < 290)directions+= "South:   ";
-		else if(angle >= 290 && angle < 340)directions+= "Southeast:   ";	
-		else if(angle >= 340 && angle < 360)directions+= "East:   ";		
-			
-		float distance = (Vector3.Distance(MGV.currentSettlementGameObject.transform.position, target) * MGV.unityWorldUnitResolution) / 1000;
-		directions += distance + "km";	
-		return directions;
-	}
 	
 	string GetInfoOnNetworkedSettlementResource(Resource resource){
 		if (resource.amount_kg < 100)
@@ -510,34 +437,9 @@ void OnGUI(){
 		
 		float taxReductionAmount = taxRateToApply * (-1*MGV.GetOverallCloutModifier(MGV.currentSettlement.settlementID));
 		float newTaxRate = taxRateToApply + taxReductionAmount;
-		MGV.taxRateMessage = ": " + taxRateToApply.ToString("0.000") + " was reduced by: " + taxReductionAmount.ToString("0.000") + " because of your crew's clout to a final tax of: "+ newTaxRate.ToString("0.000");
 		MGV.currentPortTax = (int)newTaxRate;
 		
 		return (int) ((totalPriceOfGoods / 100) * taxRateToApply);
-	}
-	
-	
-	int GetCostToHireCrewMember(){
-		//The cost of a crew member is determined by clout and whether or not you're network
-		//the base cost is set to 5 drachma to start, and 5 drachma for each day after
-		float baseCost = 5;
-		float cost = baseCost;
-		//apply / subtract the clout modifier
-		cost -= (baseCost/100) * ((MGV.playerShipVariables.ship.playerClout - 50f) / 200);//divide by 200 instead of 100 b/c at most only 25% of the cost can be reduced through clout
-		//apply /subtract the network modifier
-		if(MGV.isInNetwork)
-			cost -= (baseCost/100) * (MGV.GetRange(MGV.currentSettlement.population, 0, 10000f, 0, .50f));//at most only %50 of the base cost can be subtracted
-		else //if out of network
-			cost += (baseCost/100) * .25f;
-			
-		return Mathf.CeilToInt(cost);	
-	}
-	
-	
-	bool ShowSettlementHintIfInfluenceHighEnough(){
-	//This checks to see if the current settlement's influence is high enough to warrant showing information on a city within the network
-		//specifically--each settlement has an influence probability of 0-100--we match that up on a random num and if it wins then proceed
-		return true;
 	}
 	
 	bool CheckSettlementResourceAvailability(int amountToCheck, int cargoIndex){
@@ -585,27 +487,6 @@ void OnGUI(){
 			currentCargoLabel.text = (int)MGV.playerShipVariables.ship.cargo[i].amount_kg + " kg";
 		}
 	}	
-	
-	string GetCurrentMonth(){
-		int numOfDaysTraveled = (int) MGV.playerShipVariables.ship.totalNumOfDaysTraveled;
-		string monthName = "";
-               if (numOfDaysTraveled <=30)  {monthName = "January";
-		} else if (numOfDaysTraveled <=60)  {monthName = "February";
-		} else if (numOfDaysTraveled <=90)  {monthName = "March";
-		} else if (numOfDaysTraveled <=120) {monthName = "April";
-		} else if (numOfDaysTraveled <=150) {monthName = "May";
-		} else if (numOfDaysTraveled <=180) {monthName = "June";
-		} else if (numOfDaysTraveled <=210) {monthName = "July";
-		} else if (numOfDaysTraveled <=240) {monthName = "August";
-		} else if (numOfDaysTraveled <=270) {monthName = "September";
-		} else if (numOfDaysTraveled <=300) {monthName = "October";
-		} else if (numOfDaysTraveled <=330) {monthName = "November";
-		} else if (numOfDaysTraveled <=360) {monthName = "December";
-		}		
-		return monthName;
-	}
-	
-    
     
 	//=====================================================================================================================================	
     //  GUI Interaction Functions are the remaining code below. All of these functions control some aspect of the GUI based on state changes
@@ -1017,11 +898,12 @@ void OnGUI(){
 	}
 
 
-	
+
 	//=================================================================================================================
 	// HELPER FUNCTIONS FOR IN-PORT TRADE WINDOW
 	//=================================================================================================================	
-	
+
+	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void ShowSettlementResources(){
 		
 		for(int i = 0; i < MGV.currentSettlement.cargo.Length; i++){
@@ -1031,6 +913,7 @@ void OnGUI(){
 		
 	}
 	
+	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_Button_TryToLeavePort(){
 		if (CheckIfPlayerCanAffordToPayPortTaxes()){
 			MGV.showSettlementTradeGUI = false;
@@ -1058,7 +941,8 @@ void OnGUI(){
 			MGV.notificationMessage = "Not Enough Drachma to pay the port tax and leave!";
 		}
 	}
-	
+
+	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_Buy_Resources(string idXamount){
 		int id = int.Parse(idXamount.Split(',')[0]) - 1;
 		float amount = float.Parse (idXamount.Split (',')[1]);
@@ -1073,7 +957,8 @@ void OnGUI(){
 		GUI_CheckAllResourceButtonsForValidity(id);
 		ShowSettlementResources();
 	}
-	
+
+	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_Sell_Resources(string idXamount){
 		int id = int.Parse(idXamount.Split(',')[0]) - 1;
 		float amount = float.Parse (idXamount.Split (',')[1]);
@@ -1088,6 +973,7 @@ void OnGUI(){
 		GUI_CheckAllResourceButtonsForValidity(id);
 		ShowSettlementResources();
 	}
+
 	//This function, if an ID value IS given, goes through the buttons associated with that resource ID and determines
 	//	--whether or not the buttons should be disabled or not
 	public void GUI_CheckAllResourceButtonsForValidity(int id){
@@ -1618,7 +1504,6 @@ public void GUI_TAB_SetupAShrinePanel(){
 		}
 		
 		//First clear the settlement list
-		relevantSettlements.Clear ();
 		foreach(int settlementID in MGV.playerShipVariables.ship.playerJournal.knownSettlements){
 			Settlement settlement = MGV.GetSettlementFromID(settlementID);
 				//make sure not to list the current settlement the player is at
@@ -1744,6 +1629,7 @@ public void GUI_TAB_SetupAShrinePanel(){
 	
                     //----------------------------------------------------------------------------
                     //----------------------------SHIP REPAIR PANEL HELPER FUNCTIONS		
+					// REFERENCED IN BUTTON CLICK UNITYEVENT
 					public void GUI_RepairShipByOneHP(){
 						MGV.playerShipVariables.ship.health += 1f;
 						//make sure the hp can't go above 100
@@ -1757,6 +1643,7 @@ public void GUI_TAB_SetupAShrinePanel(){
 						GUI_TAB_SetupShipRepairInformation();
 					}
 					
+					// REFERENCED IN BUTTON CLICK UNITYEVENT
 					public void GUI_RepairShipByAllHP(){
 						if(Mathf.CeilToInt(MGV.playerShipVariables.ship.health) >= 100){
 							MGV.showNotification = true;
@@ -1766,19 +1653,20 @@ public void GUI_TAB_SetupAShrinePanel(){
 							MGV.playerShipVariables.ship.health = 100f;
 						}
 						GUI_TAB_SetupShipRepairInformation();		
-					}	
-	
+					}
 
-    
-    
 
-    //============================================================================================================================================================================
-    //============================================================================================================================================================================
+
+
+
+	//============================================================================================================================================================================
+	//============================================================================================================================================================================
 	// ADDITIONAL FUNCTIONS FOR GUI BUTTONS (These are linked from the Unity Editor)
-    //============================================================================================================================================================================
+	//============================================================================================================================================================================
 
-    //-----------------------------------------------------
+	//-----------------------------------------------------
 	//THIS IS THE UNFURLING / FURLING OF SAILS BUTTON
+	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_furlOrUnfurlSails(){
 		if(MGV.sailsAreUnfurled){
 			hud_button_furlSails.transform.GetChild(0).GetComponent<Text>().text = "Furl Sails";
@@ -1794,18 +1682,20 @@ public void GUI_TAB_SetupAShrinePanel(){
 		}	
 	}
 
-	
+
 	//-----------------------------------------------------
 	//THIS IS THE DROP ANCHOR BUTTON
+	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_dropAnchor(){
 		//If the controls are locked--we are traveling so force it to stop
 		if(MGV.controlsLocked && !MGV.showSettlementTradeGUI)
 			MGV.playerShipVariables.rayCheck_stopShip = true;
 	}
-	
-    //-----------------------------------------------------
+
+	//-----------------------------------------------------
 	//THIS IS THE REST BUTTON
-	
+
+	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_restOverNight(){
 		//If the controls are locked--we are traveling so force it to stop
 		if(MGV.controlsLocked && !MGV.showSettlementTradeGUI)
@@ -1814,30 +1704,34 @@ public void GUI_TAB_SetupAShrinePanel(){
 		MGV.isPassingTime = true;
 		MGV.controlsLocked = true;
 		StartCoroutine(MGV.playerShipVariables.WaitForTimePassing(.25f, false));
-	}	
-	
+	}
+
 	//-----------------------------------------------------
 	//THIS IS THE SAVE DATA BUTTON
+	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_saveGame(){
 		MGV.notificationMessage = "Saved Data File 'player_save_game.txt' To: " + Application.persistentDataPath + "/" ;
 		MGV.showNotification = true;
 		MGV.SaveUserGameData(false);
 	}
-	
+
 	//-----------------------------------------------------
 	//THIS IS THE RESTART GAME BUTTON	
+	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_restartGame(){
         MGV.RestartGame();
 	}
 
 	//-----------------------------------------------------
 	//THIS IS THE HELP BUTTON	
+	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_showHelpMenu(){
 		hud_button_helpwindow.SetActive (true);
 	}
 
 	//-----------------------------------------------------
 	//THIS IS THE CLOSE HELP BUTTON	
+	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_closeHelpMenu(){
 		hud_button_helpwindow.SetActive (false);
 	}

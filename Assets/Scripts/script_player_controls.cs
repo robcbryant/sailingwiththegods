@@ -7,18 +7,8 @@ public class script_player_controls : MonoBehaviour {
 
 	CharacterController controller;
 
-	public bool FPVModeOn = false;
-	public bool controlsLocked = false;
-
-	public GameObject[] worldBoundaries;
-	public float fieldOfViewAngle = 70f;
-	public float camera_panSpeed = 30f;
-	public float camera_zoomSpeed = 30f;
-	public GameObject mainCamera;
 	public Transform shipTransform;
-	//public GameObject destinationSettlement;
 	
-	public float shipSpeed_Game = 3f;
 	public float shipSpeed_Actual = 7.408f; //km/h
 	public float shipSpeed_Game_Modifier = .75f;
 	public float shipSpeed_CrewModifier = 0f;
@@ -39,10 +29,7 @@ public class script_player_controls : MonoBehaviour {
 	public Vector3 currentDestination;
 	
 	public float numOfDaysTraveled = 0;
-	public float totalDis = 0;
 	public Vector3 originOfTrip;
-	public bool travelingToSettlement = false;
-	public bool allowPlayerSelectButton = false;
 	
 	public Vector3 currentWaterDirectionVector = Vector3.zero;
 	public Vector3 currentWindDirectionVector = Vector3.zero;
@@ -60,35 +47,21 @@ public class script_player_controls : MonoBehaviour {
 	public int dayCounterStarving = 0;
 	public int dayCounterThirsty = 0;
 	
-	public bool rollForThirstDeath = false;
-	public bool rollForHungerDeath = false;
-	
 	public bool notEnoughSpeedToMove = false;
 	
 	float initialAngle = 0f;
 	float initialCelestialAngle = 0f;
 	float targetAngle = 0f;
-	
-	public float testPrecessionAngle = 0f;
-	public double test_numOfJulianCenturies;
-	public float test_processionSpeed;
-	public float test_angle_offset = 0f; //This is to make sure the elliptic disc stays still while the actual stars rotate
-	
-	public bool isPerformingRandomEvent = false;
 
 	public Material cursorRingMaterial;
 	public GameObject cursorRing;
 	public bool cursorRingIsGreen = true;
 	public float cursorRingAnimationClock = 0f;
-	public bool cursorRingIsGrowing = true;
 	
 	
 	public GameObject fogWall;
 	
 	public bool shipTravelStartRotationFinished = false;
-	public float shipTravelStartRotationLerp = .1f;
-	public Quaternion shipTravelStartRotationQuat;
-	public bool shipTravelQuatIsSet = false;
 	
 	
 	public bool rayCheck_stopShip = false;
@@ -99,8 +72,6 @@ public class script_player_controls : MonoBehaviour {
 	
 	List<string> windZoneNamesToTurnOn = new List<string>();
 	List<string> currentZoneNamesToTurnOn = new List<string>();
-	GameObject currentWindZone;
-	GameObject currentWaterZone;
 	
 	
 	// Use this for initialization
@@ -333,8 +304,6 @@ public class script_player_controls : MonoBehaviour {
 				
 							//Now check to see if the player clicks the left mouse button to travel
 							if (Input.GetButton("Select")){
-								//disable the info GUI
-								MGV.showSettlementInfoGUI = false;
 								//lock controls so that the travel function is triggered on the next update cycle
 								MGV.controlsLocked = true; 
 								//set the destination: using the players Y value so the ship always stays at a set elevation
@@ -1483,7 +1452,6 @@ public class script_player_controls : MonoBehaviour {
 		
 	//	double numOfJulianCenturies = test_numOfJulianCenturies;
 		float totalPrecession = CalculateEarthPrecessionAngle(numOfJulianCenturiesBeforeOrAfterJ2000);
-		test_processionSpeed = totalPrecession;
 		float angleArcSec = totalPrecession;//
 		//Debug.Log (angleArcSec/3600);
 	

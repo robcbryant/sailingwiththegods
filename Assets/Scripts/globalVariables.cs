@@ -58,11 +58,6 @@ public class Loan
 	{
 		return (int)(amount + (amount * (interestRate / 100)));
 	}
-	
-	public int GetPassedDueAmount ()
-	{
-		return (int)(amount + (amount * (interestRate * Mathf.Abs (numOfDaysUntilDue - numOfDaysPassedUntilDue + 1))));
-	}
 }
 
 public class QuestSegment
@@ -108,14 +103,10 @@ public class Journal
 {
 	
 	public List<int> knownSettlements;
-	public List<string> captainsLogEntries;
-	public List<string> pastCrewMembers;
 	
 	public Journal ()
 	{
 		this.knownSettlements = new List<int> ();
-		this.captainsLogEntries = new List<string> ();
-		this.pastCrewMembers = new List<string> ();
 	}
 	
 	public void AddNewSettlementToLog (int settlementID)
@@ -133,16 +124,6 @@ public class Journal
 		} else {//if there are no settlements then just add the settlement
 			this.knownSettlements.Add (settlementID);
 		}
-	}
-	
-	public void AddNewLogEntry (string logEntry)
-	{
-		this.captainsLogEntries.Add (logEntry);
-	}
-	
-	public void AddOldCrewMember (string oldMember)
-	{
-		this.pastCrewMembers.Add (oldMember);
 	}
 }
 
@@ -440,22 +421,6 @@ public class PlayerJourneyLog
 	}
 }
 
-//TODO: I believe the Network class if deprecated......
-public class Network
-{
-	public string name;
-	public int ID; //unique id for the network
-	public float influence; //0-100 value for settlements influence over the network
-	
-	public Network (string name, int ID)
-	{
-		this.name = name;
-		this.ID = ID;
-		this.influence = influence;
-	}
-
-}
-
 public class MetaResource 
 {
 	public string name;
@@ -474,7 +439,6 @@ public class MetaResource
 
 public class Resource
 {
-	public MetaResource resourceInfo;
 	public string name;
 	public float amount_kg;
 	public float probabilityOfAvailability = 0;
@@ -547,7 +511,7 @@ public class Settlement
 		
 	}
 	
-	public string ToString ()
+	override public string ToString ()
 	{
 		string mString = this.name + ":\n" + "Population: " + population + "\n\n RESOURCES \n";
 		for (int i = 0; i < this.cargo.Length; i++) {
@@ -723,10 +687,6 @@ public class globalVariables : MonoBehaviour
 	public GameObject selection_ring;
 	public GameObject currentSettlementGameObject;
 	public Settlement currentSettlement;
-	Vector2[] settlementCoordinates = new Vector2[] { 
-		new Vector2 (2841986.600f, 4939000.932f), 
-		new Vector2 (2641255.294f, 4575428.743f) 
-	};
 	
 	
 	//###################################
@@ -734,32 +694,24 @@ public class globalVariables : MonoBehaviour
 	//###################################
 	
 	public List<MetaResource> masterResourceList = new List<MetaResource>();
-	public int saveGameCounter = 0;
 	public bool sailsAreUnfurled = true;
 	public GameObject[] sails = new GameObject[6];
-	public GameObject sailA;
-	public GameObject sailB;
 	public int currentTavernMenuState;
 	public GameObject playerTrajectory;
 	public GameObject playerGhostRoute;
 	public GameObject navigatorBeacon;
-	public bool hireNavigatorGUIOn = false;
 	public string currentCaptainsLog = "";
 	public bool isPerformingRandomEvent = false;
 	public CaptainsLogEntry[] captainsLogEntries;
 	public List<CaptainsLogEntry> currentLogPool = new List<CaptainsLogEntry> ();
 	public WindRose[,] windrose_January = new WindRose[10, 8];
-	public GameObject windZone_Parent;
 	public GameObject windZoneParent;
 	public GameObject waterSurface;
-	public GameObject tempTarget;
 	public CurrentRose[,] currentRose_January;
 	public GameObject currentZoneParent;
 	public List<Settlement> currentNetworkSettlements;//this is not a complete list--but rather a list of settlements generated through probability
 	public List<CrewMember> currentlyAvailableCrewMembersAtPort; // updated every time ship docks at port
-	public List<Network> masterNetworkList = new List<Network> ();
 	public bool controlsLocked = false;
-	public bool showPortTax = false;
 	public bool isGameOver = false;
 	public bool justLeftPort = false;
 	public bool menuControlsLock = false;
@@ -781,7 +733,6 @@ public class globalVariables : MonoBehaviour
 	public string TD_hour = "0";
 	public string TD_minute = "0";
 	public string TD_second = "0";
-	public bool TD_showCelestialGrids = false;
 	public Light mainLightSource;
 	public bool startGameButton_isPressed = false;
 	public bool isTitleScreen = true;
@@ -795,22 +746,14 @@ public class globalVariables : MonoBehaviour
 	//###################################
 	//	Crew Member Variables
 	//###################################
-	public List<string> possibleCrewNames = new List<string> ();
 	public List<CrewMember> masterCrewList = new List<CrewMember> ();
 	
 	//###################################
 	//	GUI VARIABLES
 	//###################################
 	public bool runningMainGameGUI = false;
-	public bool showHelpGUI = false;
-	public bool showSettlementInfoGUI = false;
 	public bool showSettlementTradeGUI = false;
-	public bool showSettlementTravelInfoGUI = false;
 	public bool showSettlementTradeButton = false;
-	public bool mouseCursorUsingGUI = false;
-	public List<float> navPanelCosts = new List<float> ();
-	public int currentNumberOfCrew = 0;
-	public bool testBool = false;
 	public bool[] newGameCrewSelectList = new bool[40];
 	public List<CrewMember> newGameAvailableCrew = new List<CrewMember> ();
 	public bool showPortDockingNotification = false;
@@ -819,10 +762,6 @@ public class globalVariables : MonoBehaviour
 	public bool gameDifficulty_Beginner = false;
 	public bool showNonPortDockButton = false;
 	public bool showNonPortDockingNotification = false;
-	//public GameObject camera_beginnerDifficultyMap;
-	public GameObject tradeGUI;
-	public GameObject coinImage;
-	public string taxRateMessage = "";
 	
 	public GameObject MasterGUISystem;
 	public GameObject GUI_PortMenu;
@@ -837,8 +776,6 @@ public class globalVariables : MonoBehaviour
 	//###################################
 	//	SKYBOX VARIABLES
 	//###################################
-	public GameObject skybox_stars;
-	public GameObject skybox_eclipticGrid;
 	public GameObject skybox_celestialGrid;
 	public GameObject skybox_MAIN_CELESTIAL_SPHERE;
 	public GameObject skybox_ecliptic_sphere;
@@ -852,20 +789,16 @@ public class globalVariables : MonoBehaviour
 	//###################################
 	public Material mat_waterCurrents;
 	public Material mat_water;
-	public Material mat_waterCurent;
 	
 	//###################################
 	//	RANDOM EVENT VARIABLES
 	//###################################
 	public List<int> activeSettlementInfluenceSphereList = new List<int> ();
-	public float numOfDaysLeftForGodSpeedBoost = 0;	
 				
 	//###################################
 	//	DEBUG VARIABLES
 	//###################################
-	public string DEBUG_settlementWarpID = "001";
-	public bool DEBUG_currentQuestLegIncrease = false;
-	public int DEBUG_currentQuestLeg = 0;
+	public int DEBUG_currentQuestLeg = 0;		// only in inspector for debug display
 	public GameObject camera_Mapview;
 	public bool DEBUG_MODE_ON = false;
 
@@ -892,8 +825,8 @@ public class globalVariables : MonoBehaviour
 		playerTrajectory = GameObject.FindGameObjectWithTag ("playerTrajectory");
 		navigatorBeacon = GameObject.FindGameObjectWithTag ("navigatorBeacon");
 		mainLightSource = GameObject.FindGameObjectWithTag ("main_light_source").GetComponent<Light> ();
+
 		//Load all txt database files
-		LoadNetworkList ();
 		LoadMasterCrewRoster ();
 		LoadCaptainsLogEntries ();
 		LoadSettlementList ();
@@ -902,6 +835,7 @@ public class globalVariables : MonoBehaviour
 		LoadResourceList();
 		currentSettlementGameObject = settlement_masterList_parent.transform.GetChild (0).gameObject;
 		currentSettlement = currentSettlementGameObject.GetComponent<script_settlement_functions> ().thisSettlement;
+
 		//Perform other initialization functions
 		BuildWindZoneGameObjects ();
 		BuildCurrentZoneGameObjects ();
@@ -909,6 +843,7 @@ public class globalVariables : MonoBehaviour
 		LoadWaterZonesFromFile ();
 		SetInGameWindZonesToWindRoseData ();
 		SetInGameWaterZonesToCurrentRoseData ();
+
 		//Load the basic log entries into the log pool
 		AddEntriesToCurrentLogPool (0);
 		StartPlayerShipAtOriginCity ();
@@ -1307,26 +1242,6 @@ public class globalVariables : MonoBehaviour
 			return file.text;
 		}
 	
-	}
-
-	public void LoadNetworkList ()
-	{
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
-		char[] lineDelimiter = new char[] { '@' };
-		int totalLines = 0;
-		string line;
-		string filename = "available_networks";
-		
-		string filetext = TryLoadFromGameFolder (filename);
-		string[] fileByLine = filetext.Split (splitFile, StringSplitOptions.None);
-
-
-		//start at index 1 to skip the record headers we have to then subtract 
-		//one when adding NEW entries to the list to ensure we start at ZERO and not ONE
-		for (int lineCount = 1; lineCount < fileByLine.Length; lineCount++) {
-			string[] records = fileByLine [lineCount].Split (lineDelimiter, StringSplitOptions.None);
-			masterNetworkList.Add (new Network (records [1], int.Parse (records [0])));
-		}
 	}
 
 	public void LoadResourceList ()
@@ -1835,6 +1750,8 @@ public class globalVariables : MonoBehaviour
 	
 	}
 
+	// TODO: Apparently this isn't hooked up anymore. Need to fix this tool so we can adjust current directions in the editor
+	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void SaveWaterCurrentZones ()
 	{
 		
@@ -1868,6 +1785,8 @@ public class globalVariables : MonoBehaviour
 	
 	}
 
+	// TODO: Apparently this isn't hooked up anymore. Need to fix this tool so we can adjust the settlement unity position offsets in the editor
+	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void Tool_SaveCurrentSettlementPositionsToFile ()
 	{
 		string ID = "";
@@ -1915,23 +1834,6 @@ public class globalVariables : MonoBehaviour
 		//!TODO This is arbotrarily set to samothrace right now
 		playerShip.transform.position = new Vector3 (1939.846f, .23f, 2313.506f);
 		//mainCamera.transform.position = new Vector3(originCity.transform.position.x, 30f, originCity.transform.position.z);
-	}
-
-	public void RestartPlayerFromBeginning ()
-	{
-		//In theory we should save the data log here--it might be best to attach the logs to the Ship Object
-		//--a new ship/playthrough triggers a new ship log, but the old one is saved to the old ship Object and stored until the dump is made
-		//--really though I think it should be automated--we'll worry about this later though--for now, just reset everything--the player journey
-		//--being separate ACTUALLY means that it will keep appending the new travel data--if we log it with the ship data, it should be easy enough
-		//--to sort through from a database standpoint without the added complexity I just talked about.
-		//TODO--So what I need to do then is just attach a UNIQUE ID to each new ship or 'life' so it's separated in the .csv log file from previous 'tries'
-		
-		//========================================================
-		//Restart the player at the beginning
-		StartPlayerShipAtOriginCity ();
-		playerShipVariables.ship = new Ship ("Argo", 7.408f, 100, 500f);
-		playerShipVariables.ship.networkID = 1;
-
 	}
 	
 	public void RestartGame ()
@@ -2172,16 +2074,6 @@ public class globalVariables : MonoBehaviour
 	{
 		currentlyAvailableCrewMembersAtPort = GenerateRandomCrewMembers (5);
 	}
-	
-	public void RepairShip (int repairAmount)
-	{
-		playerShipVariables.ship.health += repairAmount;
-	}   
-    
-	public void HireCrewMember (CrewMember newCrewMember)
-	{
-		playerShipVariables.ship.crewRoster.Add (newCrewMember);
-	}
 
 	public List<CrewMember> GenerateRandomCrewMembers (int numberOfCrewmanNeeded)
 	{
@@ -2283,18 +2175,6 @@ public class globalVariables : MonoBehaviour
 		}
 		return null;
 	}
-	
-	public Network GetNetworkFromID (int ID)
-	{
-		foreach (Network thisNetwork in masterNetworkList) {
-			if (ID == thisNetwork.ID)
-				return thisNetwork;
-		}
-		
-		//If no network is found return a fake network
-		return new Network ("ERROR: NO NETWORK FOUND FOR ID: " + ID, -1);
-	
-	}    
 
 
 
@@ -2490,16 +2370,6 @@ public class globalVariables : MonoBehaviour
     //====================================================================================================
 	//    OTHER FUNCTIONS
     //====================================================================================================   
-	void GenerateLineRendererPool ()
-	{
-	
-		settlement_connectionPool_parent.transform.position = Vector3.zero;
-		settlement_connectionPool_parent.SetActive (false);
-		for (int i = 0; i < 50; i++) {
-			settlement_connectionPool [i].AddComponent<LineRenderer> ();
-				
-		}
-	}
 	
 	public bool CheckForNetworkMatchBetweenTwoSettlements (int cityA, int cityB)
 	{
