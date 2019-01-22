@@ -18,8 +18,19 @@
 //
 //======================================================================================================================================
 
+/*
+ * TODO:
+ * These are all getting modified on every play through. Need to instance them before changing the material at runtime.
+ *  modified:   Assets/Materials/mat_blue.mat
+ *  modified:   Assets/Materials/mat_cursor_ring.mat
+ *  modified:   Assets/Materials/mat_skybox_clouds_trans 1.mat
+ *  modified:   Assets/Materials/mat_skybox_moon.mat
+ *  modified:   Assets/Materials/mat_skybox_skycolor.mat
+ *  modified:   Assets/Materials/mat_skybox_sun.mat
+ *  modified:   Assets/Materials/mat_water.mat
+ *  modified:   Assets/Materials/mat_water_sprite.mat
+ */
 
- 
 
 
 using UnityEngine;
