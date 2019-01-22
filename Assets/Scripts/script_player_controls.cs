@@ -707,8 +707,6 @@ public class script_player_controls : MonoBehaviour {
 		//These values help determine the half day of travel
 		float tenthPlaceTemp = (ship.totalNumOfDaysTraveled - Mathf.FloorToInt(ship.totalNumOfDaysTraveled));
 		tenthPlaceTemp *= 10;
-		float hundredthPlaceTemp = (tenthPlaceTemp - Mathf.FloorToInt(tenthPlaceTemp)) * 10;
-		int hundredthPlace = Mathf.FloorToInt(hundredthPlaceTemp);
 		//Debug.Log (tenthPlaceTemp + "  " + hundredthPlaceTemp);
 		//If we are at a half day's travel, then see if a random event occurs
 		if ((Mathf.FloorToInt(tenthPlaceTemp) == 5 || Mathf.FloorToInt (tenthPlaceTemp) == 9) && !MGV.isPerformingRandomEvent){
@@ -1302,16 +1300,10 @@ public class script_player_controls : MonoBehaviour {
 	
 	
 	//First let's set up our directional light attributes
-	float intensityDay = .78f;
-	float intensityNight = .78f;
-	float intensityDuskDawn = 0f;
-	
-	float intensityDayAmbient = .53f;
 	float timeModifier = ship.totalNumOfDaysTraveled;
 	
 		Color colorDay = new Color(255f/255f,235f/255f,169f/255f);
 		Color colorNight = new Color(0f/255f,192f/255f,255f/255f);
-		Color colorDuskDawn = new Color(0f/255f,0f/255f,0f/255f);
 	
 		Color waterColorDay = new Color(48f/255f,141f/255f,255f/255f,.97f);
 		Color waterColorNight = new Color(0f/255f,21f/255f,8f/255f,.97f);
@@ -1521,7 +1513,6 @@ public class script_player_controls : MonoBehaviour {
 		//	--divided with 5,028.796195 arcseconds per century)
 		//This is formula (39) on p.581
 	
-	double JDtcb = 2457455.500000; // Julian Date in Time--right now this is set to J2000 epoch
 	double precessionSpeed;
 	
 	//Time in Julian Centuries T = 1  -> 36525 days  (365.25 days X 100) before or after J2000 epoch
@@ -1550,7 +1541,6 @@ public class script_player_controls : MonoBehaviour {
 		double JDN = 0; // Julian Day Number e.g. 20000
 		double JD = 0; //full Julian Date e.g. 20000.5
 		//All years in BC must be converted to Astronomical years: 1 BC == 0, 2 BC == -1, etc. a 1 day ++ increment will work
-		float BCModifier = 0;
 		if (year < 0) year++;
 		
 		float a = Mathf.Floor(14-month/12);	//where a = monthly offset
@@ -1758,7 +1748,6 @@ public class script_player_controls : MonoBehaviour {
 	//We'll shoot starting from the 12 o clock position and work counter clock wise
 	//Every time the function is called the bools are reset to false--they will turn true if ANY ray cast fits the criteria
 		float maxDistance = 25f;
-		float hitDistance = 0;
 		float distCoastLine = .1f;
 		float distStopCurrent = 4f;
 		bool stopShip = false;

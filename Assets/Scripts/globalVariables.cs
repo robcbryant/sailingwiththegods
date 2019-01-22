@@ -676,8 +676,6 @@ public class globalVariables : MonoBehaviour
 	float unityOrigin = 0;//This will always be 0,0 for both x and y
 	public Settlement[] settlement_masterList;
 	public GameObject settlement_masterList_parent;
-	GameObject[] settlement_connectionPool = new GameObject[50];
-	GameObject settlement_connectionPool_parent;
 	public GameObject playerShip;
 	public script_player_controls playerShipVariables;
 	public GameObject mainCamera;
@@ -963,8 +961,6 @@ public class globalVariables : MonoBehaviour
 		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
 		char[] lineDelimiter = new char[] { '@' };
 		char[] recordDelimiter = new char[] { '_' };
-		int totalLines = 0;
-		string line;
 		
 		string filename = "settlement_list_newgame";
 		
@@ -1043,8 +1039,6 @@ public class globalVariables : MonoBehaviour
 	{
 		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
 		char[] lineDelimiter = new char[] { ',' };
-		int totalLines = 0;
-		string line;
 		
 		string filename = "windroses_january";
 		
@@ -1069,8 +1063,6 @@ public class globalVariables : MonoBehaviour
 	{
 		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
 		char[] lineDelimiter = new char[] { ',' };
-		int totalLines = 0;
-		string line;
 		
 		string filename = "waterzones_january";
 		
@@ -1095,8 +1087,6 @@ public class globalVariables : MonoBehaviour
 		
 		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
 		char[] lineDelimiter = new char[] { '@' };
-		int totalLines = 0;
-		string line;
 		string filename = "captains_log_database";
 		
 		string filetext = TryLoadFromGameFolder (filename);
@@ -1123,8 +1113,6 @@ public class globalVariables : MonoBehaviour
 		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
 		char[] lineDelimiter = new char[] { '@' };
 		char[] lineDelimiterB = new char[] { '_' };
-		int totalLines = 0;
-		string line;
 		string filename = "main_questline_database";
 		
 		string filetext = TryLoadFromGameFolder (filename);
@@ -1172,8 +1160,6 @@ public class globalVariables : MonoBehaviour
 		
 		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
 		char[] lineDelimiter = new char[] { '@' };
-		int totalLines = 0;
-		string line;
 		
 		string filename = "crewmembers_database";
 		
@@ -1202,7 +1188,6 @@ public class globalVariables : MonoBehaviour
 		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
 		char[] lineDelimiter = new char[] { ',' };
 		int currentID = 0;
-		string line;
 		string filename = "settlement_unity_position_offsets";
 		
 		string filetext = TryLoadFromGameFolder (filename);
@@ -1226,7 +1211,6 @@ public class globalVariables : MonoBehaviour
 			while (!localFile.isDone) {
 				Debug.Log ("Progress of Load File: " + localFile.progress);
 			}
-			string[] splitFile = new string[] { "\r\n", "\r", "\n" };
 			Debug.Log (Application.dataPath + "/" + filename + ".txt");
 			Debug.Log (localFile.text);
 			if (localFile.text == "") {
@@ -1248,8 +1232,6 @@ public class globalVariables : MonoBehaviour
 	{
 		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
 		char[] lineDelimiter = new char[] { '@' };
-		int totalLines = 0;
-		string line;
 		string filename = "resource_list";
 		
 		string filetext = TryLoadFromGameFolder (filename);
@@ -1271,9 +1253,6 @@ public class globalVariables : MonoBehaviour
 		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
 		char[] lineDelimiter = new char[] { ',' };
 		char[] recordDelimiter = new char[] { '_' };
-		
-		int totalLines = 0;
-		string line;
 		
 		//Look for a save game file and tell the player if none is found.
 		WWW saveFile;
@@ -1329,7 +1308,6 @@ public class globalVariables : MonoBehaviour
 			playerShipVariables.journey = loadedJourney;
 				
 			//Now use the last line of data to update the current player status and load the game
-			int playerIndex = fileByLine.Length - 1;
 			string[] playerVars = fileByLine [fileByLine.Length - 1].Split (lineDelimiter, StringSplitOptions.None);
 				
 			//Update in game Time
@@ -1661,11 +1639,6 @@ public class globalVariables : MonoBehaviour
 		string pass = "%Mgn~WxH+CRzj>4Z";
 		string host = "34.193.207.222";
 		string initialPath = "";
-		
-		
-		FtpWebRequest FTPRequest = null;
-		FtpWebResponse FTPResponse = null;
-		Stream FTPStream = null;
 	
 		FileInfo file = new FileInfo (localPath + localFile);
 		Uri address = new Uri ("ftp://" + host + "/" + Path.Combine (initialPath, file.Name));
@@ -2197,10 +2170,8 @@ public class globalVariables : MonoBehaviour
 		
 		//First determine if the player has finished the entire questline or yet. We'll use the Count without a -1 to make sure the incremented quest leg is higher thant he last available leg
 		if (playerShipVariables.ship.mainQuest.currentQuestSegment < playerShipVariables.ship.mainQuest.questSegments.Count) {
-			int currentQuestBeginning;
 			int currentQuestEnd;
 			int aeaID = 15;
-			int pagasseID = 0;
 			
 			//First we determine which part of the questleg the player is in which determines which part of the quest array the player can access
 			//If the player is in the first half before Aea--then only search for these quest segments, else only search for the last quest segments
