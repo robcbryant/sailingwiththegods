@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,7 +8,7 @@ public class script_mousehover_popup : MonoBehaviour {
 	public int resourceID = 0;
 	bool showPopup = false;
 	public string message = "";
-	string name = "";
+	string resourceName = "";
 	globalVariables MGV;
 	
 	//popup window dimensions
@@ -24,10 +24,10 @@ public class script_mousehover_popup : MonoBehaviour {
 		MGV = (globalVariables)GameObject.FindGameObjectWithTag ("global_variables").GetComponent<globalVariables>();
 		bgSprite = gameObject.transform.parent.GetChild(0);//bg sprite should always be the first index
 		
-		name = MGV.masterResourceList[resourceID].name;
+		resourceName = MGV.masterResourceList[resourceID].name;
 		message = MGV.masterResourceList[resourceID].description;
 		
-        message = name + " : " + message;
+        message = resourceName + " : " + message;
 
         //Figure out needed pop up dimensions. Each Line of text should be no more than 40 chars
         //I went overboard with this--GUI.Labels handle word-wrapping so I don't think I need the string list

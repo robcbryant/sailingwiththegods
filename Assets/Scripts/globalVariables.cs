@@ -1999,7 +1999,7 @@ public class globalVariables : MonoBehaviour
 	public void LoadSavedGhostRoute ()
 	{
 		//For the loadgame function--it just fills the ghost trail with the routes that exist
-		playerGhostRoute.GetComponent<LineRenderer> ().SetVertexCount (playerShipVariables.journey.routeLog.Count);
+		playerGhostRoute.GetComponent<LineRenderer> ().positionCount = playerShipVariables.journey.routeLog.Count;
 		for (int routeIndex = 0; routeIndex < playerShipVariables.journey.routeLog.Count; routeIndex++) {
 			Debug.Log ("GhostRoute Index: " + routeIndex);
 			playerGhostRoute.GetComponent<LineRenderer> ().SetPosition (routeIndex, playerShipVariables.journey.routeLog [routeIndex].UnityXYZEndPoint - new Vector3 (0, playerShip.transform.position.y, 0));

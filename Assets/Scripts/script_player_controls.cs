@@ -1567,11 +1567,11 @@ public class script_player_controls : MonoBehaviour {
 		//We have to take this offset into account later because the player route array will always have 1 less in the array because it doesn't have the origin position as a separate route index(it's not a route)
 		//	--rather than use Count-1 to get the last index of the line renderer, we can just use Count from the route log
 		if(isANewGame){
-			MGV.playerGhostRoute.GetComponent<LineRenderer>().SetVertexCount(1);
+			MGV.playerGhostRoute.GetComponent<LineRenderer>().positionCount = 1;
 			MGV.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(0, transform.position - new Vector3(0,transform.position.y,0)); //We subtract the y value so that the line sits on the surface of the water and not in the air
 		//TODO this is a quick and dirty fix to load games--the origin point is already established in a loaded game so if we add 1 to the index, it creates a 'blank' Vector.zero route index in the ghost trail
 		} else if (MGV.isLoadedGame) {
-			MGV.playerGhostRoute.GetComponent<LineRenderer>().SetVertexCount(journey.routeLog.Count);
+			MGV.playerGhostRoute.GetComponent<LineRenderer>().positionCount = journey.routeLog.Count;
 			//TODO This is a quick fix--we use a 0,0,0 to designate the settlement as a stopping points rather than a normal one. This ruins the ghost trail however so we will just use position [0] instead --which just makes no visual diference in the trail
 			if (journey.routeLog[journey.routeLog.Count-1].theRoute[1].x < 1)
 				MGV.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count-1, journey.routeLog[journey.routeLog.Count-1].theRoute[0] - new Vector3(0,transform.position.y,0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position			
@@ -1580,7 +1580,7 @@ public class script_player_controls : MonoBehaviour {
 			
 		//if it isn't a loaded game then do the original code
 		} else {
-			MGV.playerGhostRoute.GetComponent<LineRenderer>().SetVertexCount(journey.routeLog.Count+1);//we add one here because the route list never includes the origin position--so we add it manually for a new game
+			MGV.playerGhostRoute.GetComponent<LineRenderer>().positionCount = journey.routeLog.Count+1;//we add one here because the route list never includes the origin position--so we add it manually for a new game
 			//TODO This is a quick fix--we use a 0,0,0 to designate the settlement as a stopping points rather than a normal one. This ruins the ghost trail however so we will just use position [0] instead --which just makes no visual diference in the trail
 			
 			if (journey.routeLog[journey.routeLog.Count-1].theRoute[1].x < 1){
@@ -1648,7 +1648,7 @@ public class script_player_controls : MonoBehaviour {
 		
 		//Now draw the actual trajectory to the screen
 		LineRenderer line = MGV.playerTrajectory.GetComponent<LineRenderer>();
-		line.SetVertexCount(trajectoryToDraw.Count);
+		line.positionCount = trajectoryToDraw.Count;
 		for (int i = 0; i < trajectoryToDraw.Count; i++){
 			line.SetPosition(i, trajectoryToDraw[i]);
 		}
@@ -1668,13 +1668,15 @@ public class script_player_controls : MonoBehaviour {
 		
 		//Update size
 		float calculatedWidth = MGV.GetRange(distance, 0, 100f, .1f, 5f);
-		MGV.navigatorBeacon.GetComponent<LineRenderer>().SetWidth(calculatedWidth, calculatedWidth);
+		MGV.navigatorBeacon.GetComponent<LineRenderer>().startWidth = calculatedWidth;
+		MGV.navigatorBeacon.GetComponent<LineRenderer>().endWidth = calculatedWidth;
 		
 		Color colorEnd = new Color(6f/255f,167f/255f,1f,0);
 		
 		//Update transparency
 		float alpha = MGV.GetRange(distance, 0, 100f, 0, 1f);
-		MGV.navigatorBeacon.GetComponent<LineRenderer>().SetColors(new Color (88f/255f,1f,211/255f,alpha),colorEnd);
+		MGV.navigatorBeacon.GetComponent<LineRenderer>().startColor = new Color(88f / 255f, 1f, 211 / 255f, alpha);
+		MGV.navigatorBeacon.GetComponent<LineRenderer>().endColor = colorEnd;
 	}
 	
 	

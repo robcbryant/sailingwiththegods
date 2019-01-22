@@ -4,19 +4,19 @@ using System.Collections.Generic;
 
 public class script_hideLight : MonoBehaviour {
 
-	public Light light;
+	public Light lightComp;
 	
 	void OnPreRender()
 	{
 
-			light.enabled = false;
+			lightComp.enabled = false;
 
 	}
 	
 	void OnPostRender()
 	{
 
-			light.enabled = true;
+			lightComp.enabled = true;
 
 	}
 }
