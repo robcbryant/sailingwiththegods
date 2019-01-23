@@ -791,16 +791,16 @@ public class script_GUI : MonoBehaviour
 		string list = "";
 		foreach (CrewMember crewman in MGV.playerShipVariables.ship.crewRoster) {
 			switch (crewman.typeOfCrew) {
-				case GV_CONST.CREWTYPE_SAILOR:
+				case CrewType.Sailor:
 					sailors++;
 					break;
-				case GV_CONST.CREWTYPE_WARRIOR:
+				case CrewType.Warrior:
 					warriors++;
 					break;
-				case GV_CONST.CREWTYPE_SLAVE:
+				case CrewType.Slave:
 					slaves++;
 					break;
-				case GV_CONST.CREWTYPE_SEER:
+				case CrewType.Seer:
 					seers++;
 					break;
 				default:
@@ -929,8 +929,6 @@ public class script_GUI : MonoBehaviour
 			StartCoroutine(MGV.playerShipVariables.WaitForTimePassing(.25f, true));
 			MGV.justLeftPort = true;
 			MGV.playerShipVariables.ship.currency -= MGV.currentPortTax;
-			//Be sure to reset the tavern menu to the original tavern state
-			MGV.currentTavernMenuState = GV_CONST.TAVERNSTATE_DEFAULT;
 
 			//Add a new route to the player journey log as a port exit
 			MGV.playerShipVariables.journey.AddRoute(new PlayerRoute(new Vector3(MGV.playerShip.transform.position.x, MGV.playerShip.transform.position.y, MGV.playerShip.transform.position.z), Vector3.zero, MGV.currentSettlement.settlementID, MGV.currentSettlement.name, true, MGV.playerShipVariables.ship.totalNumOfDaysTraveled), MGV.playerShipVariables, MGV.currentCaptainsLog);
@@ -1538,7 +1536,7 @@ public class script_GUI : MonoBehaviour
 				portLabel.text = settlement.name;
 				//Let's setup the Navigator hiring information
 				//-- Figure out the Cost to Hire a navigator for this city
-				float initialCost = MGV.GetDistanceBetweenTwoLatLongCoordinates(MGV.currentSettlement.location_longXlatY, settlement.location_longXlatY) / 1000f;
+				float initialCost = CoordinateUtil.GetDistanceBetweenTwoLatLongCoordinates(MGV.currentSettlement.location_longXlatY, settlement.location_longXlatY) / 1000f;
 				int costToHire = Mathf.RoundToInt(initialCost - (initialCost * MGV.GetOverallCloutModifier(settlement.settlementID)));
 				//--Set the button label to show the cost
 				navCostBut.transform.Find("Cost For Navigator").GetComponent<Text>().text = costToHire.ToString() + "Dr";
@@ -1550,7 +1548,7 @@ public class script_GUI : MonoBehaviour
 					//Set the button to Active is we are using it!
 					hintCostBut.interactable = true;
 					//Now figure out the costs for questions for the relevant settlements
-					initialCost = MGV.GetDistanceBetweenTwoLatLongCoordinates(MGV.currentSettlement.location_longXlatY, settlement.location_longXlatY) / 10000f;
+					initialCost = CoordinateUtil.GetDistanceBetweenTwoLatLongCoordinates(MGV.currentSettlement.location_longXlatY, settlement.location_longXlatY) / 10000f;
 					int costForHint = Mathf.RoundToInt(initialCost - (initialCost * MGV.GetOverallCloutModifier(settlement.settlementID)));
 					//--Set the Button label to show the cost
 					hintCostBut.transform.Find("Cost For Hint").GetComponent<Text>().text = costForHint.ToString() + "Dr";

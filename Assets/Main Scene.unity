@@ -2410,11 +2410,8 @@ MonoBehaviour:
   title_credits_exit: {fileID: 0}
   title_credits_text: {fileID: 0}
   title_crew_select: {fileID: 0}
-  title_crew_select_story: {fileID: 0}
-  title_crew_select_info: {fileID: 0}
   title_crew_select_crew_list: {fileID: 0}
   title_crew_select_entry_template: {fileID: 0}
-  title_crew_select_is_selected: {fileID: 0}
   title_crew_select_crew_count: {fileID: 0}
   title_crew_select_start_game: {fileID: 0}
   gameover_main: {fileID: 0}
@@ -2443,7 +2440,6 @@ MonoBehaviour:
   port_info_population: {fileID: 0}
   port_info_portImage: {fileID: 0}
   notice_notificationParent: {fileID: 0}
-  notiec_notificationTemplate: {fileID: 0}
   notice_notificationSystem: {fileID: 0}
   player_hud_parent: {fileID: 0}
   hud_waterStores: {fileID: 0}
@@ -2457,12 +2453,7 @@ MonoBehaviour:
   hud_playerClout: {fileID: 0}
   hud_button_dock: {fileID: 0}
   hud_button_furlSails: {fileID: 0}
-  hud_button_dropAnchor: {fileID: 0}
-  hud_button_rest: {fileID: 0}
-  hud_button_saveGame: {fileID: 0}
-  hud_button_restartGame: {fileID: 0}
   hud_button_helpwindow: {fileID: 0}
-  hud_button_helpwindow_exit: {fileID: 0}
   hud_captainsLog: {fileID: 0}
   tab_shiprepair_shiphealth: {fileID: 0}
   tab_shiprepair_cost_onehp: {fileID: 0}
@@ -2489,12 +2480,10 @@ MonoBehaviour:
   tab_monument_buildStatueButton: {fileID: 0}
   tab_monument_buildShrineButton: {fileID: 0}
   tab_monument_buildTempleButton: {fileID: 0}
-  GUI_port_menu: {fileID: 0}
   all_trade_rows: {fileID: 0}
   player_currency: {fileID: 0}
   player_current_cargo: {fileID: 0}
   player_max_cargo: {fileID: 0}
-  showNotification: 0
 --- !u!4 &118397535
 Transform:
   m_ObjectHideFlags: 0
@@ -9798,7 +9787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dfa26c487c427744a8622b1ea7fcbf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableFog: 0
+  enableFog: 1
   revertFogState: 0
 --- !u!114 &389591797
 MonoBehaviour:
@@ -25627,7 +25616,6 @@ MonoBehaviour:
   player_currency: {fileID: 730688364}
   player_current_cargo: {fileID: 649360263}
   player_max_cargo: {fileID: 1362905705}
-  showNotification: 0
 --- !u!1 &948524690
 GameObject:
   m_ObjectHideFlags: 0
@@ -31923,7 +31911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dfa26c487c427744a8622b1ea7fcbf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableFog: 0
+  enableFog: 1
   revertFogState: 0
 --- !u!20 &1043897174
 Camera:
@@ -45703,18 +45691,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3294930fc940b5408307478080e22c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unityWorldUnitResolution: 1193.9209
-  settlement_masterList_parent: {fileID: 0}
-  playerShip: {fileID: 0}
-  playerShipVariables: {fileID: 0}
-  mainCamera: {fileID: 0}
   FPVCamera: {fileID: 1342733413}
+  camera_Mapview: {fileID: 389591794}
   terrain: {fileID: 601423725}
   cityLightsParent: {fileID: 1935623994}
-  selection_ring: {fileID: 1228304048}
-  currentSettlementGameObject: {fileID: 0}
-  saveGameCounter: 0
-  sailsAreUnfurled: 1
   sails:
   - {fileID: 244388221}
   - {fileID: 960050715}
@@ -45722,26 +45702,38 @@ MonoBehaviour:
   - {fileID: 733858547}
   - {fileID: 627294858}
   - {fileID: 551273449}
-  sailA: {fileID: 244388221}
-  sailB: {fileID: 960050715}
-  currentTavernMenuState: 0
+  MasterGUISystem: {fileID: 946421297}
+  GUI_PortMenu: {fileID: 1448835274}
+  GUI_GameHUD: {fileID: 612486307}
+  selection_ring: {fileID: 1228304048}
+  skybox_celestialGrid: {fileID: 973437830}
+  skybox_MAIN_CELESTIAL_SPHERE: {fileID: 2029454630}
+  skybox_ecliptic_sphere: {fileID: 755328196}
+  skybox_clouds: {fileID: 719543501}
+  skybox_horizonColor: {fileID: 1332575280}
+  skybox_sun: {fileID: 62246446}
+  skybox_moon: {fileID: 1558533032}
+  mat_waterCurrents: {fileID: 2100000, guid: f974bbab1861a384ba658576bf5a0e73, type: 2}
+  mat_water: {fileID: 2100000, guid: bab0ed718bdcb474eb7247c3e71742cd, type: 2}
+  mainCamera: {fileID: 0}
   playerTrajectory: {fileID: 0}
   playerGhostRoute: {fileID: 0}
   navigatorBeacon: {fileID: 0}
-  hireNavigatorGUIOn: 0
-  currentCaptainsLog: 
-  isPerformingRandomEvent: 0
-  windZone_Parent: {fileID: 0}
   windZoneParent: {fileID: 0}
   waterSurface: {fileID: 0}
-  tempTarget: {fileID: 176972744}
   currentZoneParent: {fileID: 0}
+  settlement_masterList_parent: {fileID: 0}
+  currentSettlementGameObject: {fileID: 0}
+  playerShip: {fileID: 0}
+  playerShipVariables: {fileID: 0}
+  sailsAreUnfurled: 1
+  currentCaptainsLog: 
   controlsLocked: 0
-  showPortTax: 0
   isGameOver: 0
   justLeftPort: 0
   menuControlsLock: 0
   gameIsFinished: 0
+  isPerformingRandomEvent: 0
   showNotification: 0
   notificationMessage: 
   showSecondaryNotification: 0
@@ -45755,7 +45747,6 @@ MonoBehaviour:
   TD_hour: 0
   TD_minute: 0
   TD_second: 0
-  TD_showCelestialGrids: 0
   mainLightSource: {fileID: 0}
   startGameButton_isPressed: 0
   isTitleScreen: 1
@@ -45765,48 +45756,18 @@ MonoBehaviour:
   bg_startScreen: {fileID: 153789043}
   isLoadedGame: 0
   isPassingTime: 0
-  possibleCrewNames: []
   runningMainGameGUI: 0
-  showHelpGUI: 0
-  showSettlementInfoGUI: 0
   showSettlementTradeGUI: 0
-  showSettlementTravelInfoGUI: 0
   showSettlementTradeButton: 0
-  mouseCursorUsingGUI: 0
-  navPanelCosts: []
-  currentNumberOfCrew: 0
-  testBool: 0
   newGameCrewSelectList: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
   showPortDockingNotification: 0
   isInNetwork: 0
   gameDifficulty_Beginner: 0
   showNonPortDockButton: 0
   showNonPortDockingNotification: 0
-  tradeGUI: {fileID: 0}
-  coinImage: {fileID: 0}
-  taxRateMessage: 
-  MasterGUISystem: {fileID: 946421297}
-  GUI_PortMenu: {fileID: 1448835274}
-  GUI_GameHUD: {fileID: 612486307}
   updatePlayerCloutMeter: 0
-  skybox_stars: {fileID: 684064609}
-  skybox_eclipticGrid: {fileID: 889640289}
-  skybox_celestialGrid: {fileID: 973437830}
-  skybox_MAIN_CELESTIAL_SPHERE: {fileID: 2029454630}
-  skybox_ecliptic_sphere: {fileID: 755328196}
-  skybox_clouds: {fileID: 719543501}
-  skybox_horizonColor: {fileID: 1332575280}
-  skybox_sun: {fileID: 62246446}
-  skybox_moon: {fileID: 1558533032}
-  mat_waterCurrents: {fileID: 2100000, guid: f974bbab1861a384ba658576bf5a0e73, type: 2}
-  mat_water: {fileID: 2100000, guid: bab0ed718bdcb474eb7247c3e71742cd, type: 2}
-  mat_waterCurent: {fileID: 2100000, guid: f974bbab1861a384ba658576bf5a0e73, type: 2}
   activeSettlementInfluenceSphereList: 
-  numOfDaysLeftForGodSpeedBoost: 0
-  DEBUG_settlementWarpID: 001
-  DEBUG_currentQuestLegIncrease: 0
   DEBUG_currentQuestLeg: 0
-  camera_Mapview: {fileID: 389591794}
   DEBUG_MODE_ON: 0
 --- !u!4 &1660663146
 Transform:
@@ -50796,69 +50757,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8acd5d40e4dd9c24c85ec8ad0b4c24d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FPVModeOn: 0
-  controlsLocked: 0
-  worldBoundaries:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  fieldOfViewAngle: 45
-  camera_panSpeed: 700
-  camera_zoomSpeed: 50
-  mainCamera: {fileID: 1036831381}
-  shipTransform: {fileID: 0}
-  shipSpeed_Game: 0.28
-  shipSpeed_Actual: 7.408
-  shipSpeed_Game_Modifier: 0.28
-  shipSpeed_CrewModifier: 0
-  shipSpeed_ShipHPModifier: 0
-  shipSpeed_HungerModifier: 0
-  shipSpeed_ThirstModifier: 0
-  dailyProvisionsKG: 0.83
-  dailyWaterKG: 5
-  cameraController: {fileID: 0}
   lastPlayerShipPosition: {x: 0, y: 0, z: 0}
   travel_lastOrigin: {x: 0, y: 0, z: 0}
-  currentDestination: {x: 0, y: 0, z: 0}
   numOfDaysTraveled: 0
-  totalDis: 0
   originOfTrip: {x: 0, y: 0, z: 0}
-  travelingToSettlement: 0
-  allowPlayerSelectButton: 0
-  currentWaterDirectionVector: {x: 0, y: 0, z: 0}
-  currentWindDirectionVector: {x: 0, y: 0, z: 0}
-  playerMovementVector: {x: 0, y: 0, z: 0}
-  playerMovementMagnitude: 0
-  currentWaterDirectionMagnitude: 0
-  currentWindDirectionMagnitude: 0
   current_shipSpeed_Magnitude: 0
-  getSettlementDockButtonReady: 0
   numOfDaysWithoutProvisions: 0
   numOfDaysWithoutWater: 0
   dayCounterStarving: 0
   dayCounterThirsty: 0
-  rollForThirstDeath: 0
-  rollForHungerDeath: 0
-  notEnoughSpeedToMove: 0
-  testPrecessionAngle: 0
-  test_numOfJulianCenturies: 0
-  test_processionSpeed: 0
-  test_angle_offset: 0
-  isPerformingRandomEvent: 0
-  cursorRingMaterial: {fileID: 0}
   cursorRing: {fileID: 1928260897}
-  cursorRingIsGreen: 1
-  cursorRingAnimationClock: 0
-  cursorRingIsGrowing: 1
   fogWall: {fileID: 358151443}
-  shipTravelStartRotationFinished: 0
-  shipTravelStartRotationLerp: 0.1
-  shipTravelStartRotationQuat: {x: 0, y: 0, z: 0, w: 0}
-  shipTravelQuatIsSet: 0
   rayCheck_stopShip: 0
-  rayCheck_stopCurrents: 0
-  rayCheck_playBirdSong: 0
   SFX_birdsong: {fileID: 1829480785}
 --- !u!82 &1829480785
 AudioSource:

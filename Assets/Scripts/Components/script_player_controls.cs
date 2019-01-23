@@ -8,66 +8,68 @@ public class script_player_controls : MonoBehaviour
 
 	CharacterController controller;
 
-	public Transform shipTransform;
+	Transform shipTransform;
 
-	public float shipSpeed_Actual = 7.408f; //km/h
-	public float shipSpeed_Game_Modifier = .75f;
-	public float shipSpeed_CrewModifier = 0f;
-	public float shipSpeed_ShipHPModifier = 0f;
-	public float shipSpeed_HungerModifier = 0f;
-	public float shipSpeed_ThirstModifier = 0f;
+	float shipSpeed_Actual = 7.408f; //km/h
+	float shipSpeed_Game_Modifier = .28f;
+	float shipSpeed_CrewModifier = 0f;
+	float shipSpeed_ShipHPModifier = 0f;
+	float shipSpeed_HungerModifier = 0f;
+	float shipSpeed_ThirstModifier = 0f;
 
-	public float dailyProvisionsKG = .83f; //(NASA)
-	public float dailyWaterKG = 5f; //based on nasa estimates of liters(kg) for astronauts--sailing is more physically intensive so I've upped it to 5 liters
+	const float dailyProvisionsKG = .83f; //(NASA)
+	const float dailyWaterKG = 5f; //based on nasa estimates of liters(kg) for astronauts--sailing is more physically intensive so I've upped it to 5 liters
 
 	globalVariables MGV;
-	public CharacterController cameraController;
 
-	public Ship ship;
-	public PlayerJourneyLog journey;
-	public Vector3 lastPlayerShipPosition;
-	public Vector3 travel_lastOrigin;
-	public Vector3 currentDestination;
+	[HideInInspector] public Ship ship;
+	[HideInInspector] public PlayerJourneyLog journey;
+	[HideInInspector] public Vector3 lastPlayerShipPosition;
+	[HideInInspector] public Vector3 travel_lastOrigin;
 
-	public float numOfDaysTraveled = 0;
-	public Vector3 originOfTrip;
+	Vector3 currentDestination;
 
-	public Vector3 currentWaterDirectionVector = Vector3.zero;
-	public Vector3 currentWindDirectionVector = Vector3.zero;
-	public Vector3 playerMovementVector = Vector3.zero;
-	public float playerMovementMagnitude = 0f;
-	public float currentWaterDirectionMagnitude = 0f;
-	public float currentWindDirectionMagnitude = 0f;
-	public float current_shipSpeed_Magnitude = 0f;
+	[HideInInspector] public float numOfDaysTraveled = 0;
+	[HideInInspector] public Vector3 originOfTrip;
 
-	public bool getSettlementDockButtonReady = false;
+	Vector3 currentWaterDirectionVector = Vector3.zero;
+	Vector3 currentWindDirectionVector = Vector3.zero;
+	Vector3 playerMovementVector = Vector3.zero;
+	float currentWaterDirectionMagnitude = 0f;
+	float currentWindDirectionMagnitude = 0f;
 
-	public float numOfDaysWithoutProvisions = 0;
-	public float numOfDaysWithoutWater = 0;
+	[HideInInspector] public float current_shipSpeed_Magnitude = 0f;
 
-	public int dayCounterStarving = 0;
-	public int dayCounterThirsty = 0;
+	bool getSettlementDockButtonReady = false;
 
-	public bool notEnoughSpeedToMove = false;
+	[HideInInspector] public float numOfDaysWithoutProvisions = 0;
+	[HideInInspector] public float numOfDaysWithoutWater = 0;
+
+	[HideInInspector] public int dayCounterStarving = 0;
+	[HideInInspector] public int dayCounterThirsty = 0;
+
+	bool notEnoughSpeedToMove = false;
 
 	float initialAngle = 0f;
 	float initialCelestialAngle = 0f;
 	float targetAngle = 0f;
 
-	public Material cursorRingMaterial;
+
 	public GameObject cursorRing;
-	public bool cursorRingIsGreen = true;
-	public float cursorRingAnimationClock = 0f;
+
+	Material cursorRingMaterial;
+	bool cursorRingIsGreen = true;
+	float cursorRingAnimationClock = 0f;
 
 
 	public GameObject fogWall;
 
-	public bool shipTravelStartRotationFinished = false;
+	bool shipTravelStartRotationFinished = false;
 
 
-	public bool rayCheck_stopShip = false;
-	public bool rayCheck_stopCurrents = false;
-	public bool rayCheck_playBirdSong = false;
+	[HideInInspector] public bool rayCheck_stopShip = false;
+	bool rayCheck_stopCurrents = false;
+	bool rayCheck_playBirdSong = false;
 
 	public AudioSource SFX_birdsong;
 
@@ -79,13 +81,12 @@ public class script_player_controls : MonoBehaviour
 	void Start() {
 		MGV = GameObject.FindGameObjectWithTag("global_variables").GetComponent<globalVariables>();
 		controller = gameObject.GetComponent<CharacterController>();
-		cameraController = MGV.mainCamera.GetComponent<CharacterController>();
 		shipTransform = transform.GetChild(0);
 		ship = new Ship("Argo", 7.408f, 100, 500f);
 		ship.networkID = 246;
 		journey = new PlayerJourneyLog();
 		lastPlayerShipPosition = transform.position;
-		ship.mainQuest = MGV.LoadMainQuestLine();
+		ship.mainQuest = CSVLoader.LoadMainQuestLine();
 
 		//Now teleport the player ship to an appropriate location near the first target
 		transform.position = new Vector3(1702.414f, transform.position.y, 2168.358f);
@@ -417,9 +418,9 @@ public class script_player_controls : MonoBehaviour
 			//Debug.Log (destination);
 			//Debug.Log ("TRAVELING");
 			//We use Mathf Approximately to compare float values and end the rotation sequence when the ships direction matches the target's direction
-			if (MGV.FastApproximately(targetDirection.x, shipTransform.forward.x, .01f) &&
-				MGV.FastApproximately(targetDirection.y, shipTransform.forward.y, .01f) &&
-				MGV.FastApproximately(targetDirection.z, shipTransform.forward.z, .01f)) {
+			if (Utils.FastApproximately(targetDirection.x, shipTransform.forward.x, .01f) &&
+				Utils.FastApproximately(targetDirection.y, shipTransform.forward.y, .01f) &&
+				Utils.FastApproximately(targetDirection.z, shipTransform.forward.z, .01f)) {
 				shipTravelStartRotationFinished = true;
 			}
 			//Lerp the rotation of the ship towards the destination
@@ -456,7 +457,7 @@ public class script_player_controls : MonoBehaviour
 			travel_lastOrigin = transform.position;
 
 			//Debug.Log (current_shipSpeed_Magnitude + "   <current ship speed mag");
-			float numOfDaysTraveledInSegment = ((disTraveled * (MGV.unityWorldUnitResolution / 1000f))
+			float numOfDaysTraveledInSegment = ((disTraveled * (CoordinateUtil.unityWorldUnitResolution / 1000f))
 																/
 													current_shipSpeed_Magnitude) / (24f);
 
@@ -480,8 +481,6 @@ public class script_player_controls : MonoBehaviour
 				playerMovementVector = ((travelDirection * shipSpeed_Actual) + windAndWaterVector) * shipSpeed_Game_Modifier;
 				//Debug.Log (Vector3.Angle(travelDirection, playerMovementVector));
 				if (Vector3.Angle(travelDirection, playerMovementVector) < 160f) {
-					playerMovementMagnitude = playerMovementVector.magnitude;
-
 					controller.Move(playerMovementVector * Time.deltaTime);
 				}
 				else
@@ -743,7 +742,7 @@ public class script_player_controls : MonoBehaviour
 
 				//Count the number of augers on board the ship
 				int numOfAugers = 0;
-				foreach (CrewMember crewman in ship.crewRoster) { if (crewman.typeOfCrew == 5) numOfAugers++; }
+				foreach (CrewMember crewman in ship.crewRoster) { if (crewman.typeOfCrew == CrewType.Guide) numOfAugers++; }
 
 				//Get the 0-1 aggregate clout score. Here we use the current zone of influence's network id to check
 				int currentZoneID = 0;
@@ -776,7 +775,7 @@ public class script_player_controls : MonoBehaviour
 							//The first check is to see if the pirates are part of the same network as the player--if they are, they apologize and leave the player alone
 							//if they aren't in the same network, the player has a base 20% chance of succeeding plus 5% per warrior present on board, plus a max of 20% based on aggregate clout
 							int numOfWarriors = 0;
-							foreach (CrewMember crewman in ship.crewRoster) { if (crewman.typeOfCrew == 1) numOfWarriors++; }
+							foreach (CrewMember crewman in ship.crewRoster) { if (crewman.typeOfCrew == CrewType.Warrior) numOfWarriors++; }
 							//TODO Right now we'll just assume they aren't in the network
 							chanceOfEvent = .2f + (.05f * numOfWarriors) + (.2f * aggregateCloutScore);
 							//Damage the ship regardlesss of the outcome
@@ -1373,67 +1372,67 @@ public class script_player_controls : MonoBehaviour
 		Color brightSky = new Color(203f / 255f, 239f / 255f, 254f / 255f);
 		//Blending Day to Night
 		if (timeOfDay >= .25f && timeOfDay <= 0.5f) {
-			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", MGV.GetRange(timeOfDay, .5f, .25f, 0, 1f));
-			RenderSettings.ambientIntensity = MGV.GetRange(timeOfDay, .25f, .5f, .53f, .16f);
-			MGV.mainLightSource.intensity = MGV.GetRange(timeOfDay, .25f, .5f, .78f, .16f);
-			MGV.mainLightSource.color = Color.Lerp(colorDay, colorNight, MGV.GetRange(timeOfDay, .5f, .25f, 1, 0));
+			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", Utils.GetRange(timeOfDay, .5f, .25f, 0, 1f));
+			RenderSettings.ambientIntensity = Utils.GetRange(timeOfDay, .25f, .5f, .53f, .16f);
+			MGV.mainLightSource.intensity = Utils.GetRange(timeOfDay, .25f, .5f, .78f, .16f);
+			MGV.mainLightSource.color = Color.Lerp(colorDay, colorNight, Utils.GetRange(timeOfDay, .5f, .25f, 1, 0));
 			//Fade Out Water Colors
-			MGV.mat_water.color = Color.Lerp(waterColorDay, waterColorNight, MGV.GetRange(timeOfDay, .5f, .25f, 1f, 0));
+			MGV.mat_water.color = Color.Lerp(waterColorDay, waterColorNight, Utils.GetRange(timeOfDay, .5f, .25f, 1f, 0));
 			//Fade Out Water Current Sprite Colors to Black
-			MGV.mat_waterCurrents.color = Color.Lerp(Color.white, currentColorNight, MGV.GetRange(timeOfDay, .5f, .25f, 1f, 0));
+			MGV.mat_waterCurrents.color = Color.Lerp(Color.white, currentColorNight, Utils.GetRange(timeOfDay, .5f, .25f, 1f, 0));
 			//Fade Out Sky/Atmosphere Color
-			MGV.skybox_horizonColor.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, MGV.GetRange(timeOfDay, .5f, .25f, 0, 1f), 1f, MGV.GetRange(timeOfDay, .5f, .25f, 0, 1f));
+			MGV.skybox_horizonColor.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, Utils.GetRange(timeOfDay, .5f, .25f, 0, 1f), 1f, Utils.GetRange(timeOfDay, .5f, .25f, 0, 1f));
 			//Fade Out Sun Color
-			MGV.skybox_sun.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, MGV.GetRange(timeOfDay, .5f, .25f, 70f / 255f, 1f), MGV.GetRange(timeOfDay, .5f, .25f, 0, 1f));
+			MGV.skybox_sun.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, Utils.GetRange(timeOfDay, .5f, .25f, 70f / 255f, 1f), Utils.GetRange(timeOfDay, .5f, .25f, 0, 1f));
 			//Fade Out Clouds
-			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(MGV.GetRange(timeOfDay, .5f, .25f, 30f / 255f, 1f), MGV.GetRange(timeOfDay, .5f, .25f, 30f / 255f, 1f), MGV.GetRange(timeOfDay, .5f, .25f, 50f / 255f, 1f));
+			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(Utils.GetRange(timeOfDay, .5f, .25f, 30f / 255f, 1f), Utils.GetRange(timeOfDay, .5f, .25f, 30f / 255f, 1f), Utils.GetRange(timeOfDay, .5f, .25f, 50f / 255f, 1f));
 			//Fade In Moon(transparency to opaque)
-			MGV.skybox_moon.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f, MGV.GetRange(timeOfDay, .5f, .25f, 1f, 28f / 255f));
+			MGV.skybox_moon.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f, Utils.GetRange(timeOfDay, .5f, .25f, 1f, 28f / 255f));
 			//Fade in Dark Fog: This breaks up the fog colro fade into two shades to better match the sunset
 			if (timeOfDay >= .25f && timeOfDay <= 0.35f) {
-				RenderSettings.fogColor = Color.Lerp(brightSky, deepPurple, MGV.GetRange(timeOfDay, .35f, .25f, 1f, 0));
-				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(brightSky, deepPurple, MGV.GetRange(timeOfDay, .35f, .25f, 1f, 0));
+				RenderSettings.fogColor = Color.Lerp(brightSky, deepPurple, Utils.GetRange(timeOfDay, .35f, .25f, 1f, 0));
+				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(brightSky, deepPurple, Utils.GetRange(timeOfDay, .35f, .25f, 1f, 0));
 			}
 			else {
 				//Also we';; turn on the city lights here right as sunset
 				MGV.cityLightsParent.SetActive(true);
-				RenderSettings.fogColor = Color.Lerp(deepPurple, waterColorNight, MGV.GetRange(timeOfDay, .5f, .35f, 1f, 0));
-				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(deepPurple, waterColorNight, MGV.GetRange(timeOfDay, .5f, .35f, 1f, 0));
+				RenderSettings.fogColor = Color.Lerp(deepPurple, waterColorNight, Utils.GetRange(timeOfDay, .5f, .35f, 1f, 0));
+				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(deepPurple, waterColorNight, Utils.GetRange(timeOfDay, .5f, .35f, 1f, 0));
 			}
 
 		}
 		//Blending Night to Day
 		if (timeOfDay > 0.75f && timeOfDay <= 1f) {
-			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", MGV.GetRange(timeOfDay, 1f, .75f, 1f, 0));
-			RenderSettings.ambientIntensity = MGV.GetRange(timeOfDay, .75f, 1f, .16f, .53f);
-			MGV.mainLightSource.intensity = MGV.GetRange(timeOfDay, .75f, 1f, .16f, .78f);
-			MGV.mainLightSource.color = Color.Lerp(colorNight, colorDay, MGV.GetRange(timeOfDay, 1f, .75f, 1, 0));
+			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0));
+			RenderSettings.ambientIntensity = Utils.GetRange(timeOfDay, .75f, 1f, .16f, .53f);
+			MGV.mainLightSource.intensity = Utils.GetRange(timeOfDay, .75f, 1f, .16f, .78f);
+			MGV.mainLightSource.color = Color.Lerp(colorNight, colorDay, Utils.GetRange(timeOfDay, 1f, .75f, 1, 0));
 			//Fade In Water Colors
-			MGV.mat_water.color = Color.Lerp(waterColorNight, waterColorDay, MGV.GetRange(timeOfDay, 1f, .75f, 1f, 0));
+			MGV.mat_water.color = Color.Lerp(waterColorNight, waterColorDay, Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0));
 			//Fade Out Water Current Sprite Colors to Black
-			MGV.mat_waterCurrents.color = Color.Lerp(currentColorNight, Color.white, MGV.GetRange(timeOfDay, 1f, .75f, 1f, 0));
+			MGV.mat_waterCurrents.color = Color.Lerp(currentColorNight, Color.white, Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0));
 			//Fade In Sky/Atmosphere Color
-			MGV.skybox_horizonColor.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, MGV.GetRange(timeOfDay, 1f, .75f, 1f, 0), 1f, MGV.GetRange(timeOfDay, 1f, .75f, 1f, 0));
+			MGV.skybox_horizonColor.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0), 1f, Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0));
 			//Fade In Sun Color
-			MGV.skybox_sun.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, MGV.GetRange(timeOfDay, 1f, .75f, 1f, 70f / 255f), MGV.GetRange(timeOfDay, 1f, .75f, 1f, 0));
+			MGV.skybox_sun.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, Utils.GetRange(timeOfDay, 1f, .75f, 1f, 70f / 255f), Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0));
 			//Fade In Clouds
-			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(MGV.GetRange(timeOfDay, 1f, .75f, 1f, 30f / 255f), MGV.GetRange(timeOfDay, 1f, .75f, 1f, 30f / 255f), MGV.GetRange(timeOfDay, 1f, .75f, 1f, 50f / 255f));
+			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(Utils.GetRange(timeOfDay, 1f, .75f, 1f, 30f / 255f), Utils.GetRange(timeOfDay, 1f, .75f, 1f, 30f / 255f), Utils.GetRange(timeOfDay, 1f, .75f, 1f, 50f / 255f));
 			//Fade out Moon(opaque to transparency)
-			MGV.skybox_moon.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f, MGV.GetRange(timeOfDay, 1f, .75f, 28f / 255f, 1f));
+			MGV.skybox_moon.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f, Utils.GetRange(timeOfDay, 1f, .75f, 28f / 255f, 1f));
 			//Fade in Normal Fog: This breaks up the fog colro fade into two shades to better match the sunrise
 			if (timeOfDay >= .75f && timeOfDay <= 0.85f) {
-				RenderSettings.fogColor = Color.Lerp(waterColorNight, deepPurple, MGV.GetRange(timeOfDay, .85f, .75f, 1f, 0));
-				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(waterColorNight, deepPurple, MGV.GetRange(timeOfDay, .85f, .75f, 1f, 0));
+				RenderSettings.fogColor = Color.Lerp(waterColorNight, deepPurple, Utils.GetRange(timeOfDay, .85f, .75f, 1f, 0));
+				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(waterColorNight, deepPurple, Utils.GetRange(timeOfDay, .85f, .75f, 1f, 0));
 			}
 			else {
 				//Also we';; turn off the city lights here right as sun rises
 				MGV.cityLightsParent.SetActive(false);
-				RenderSettings.fogColor = Color.Lerp(deepPurple, brightSky, MGV.GetRange(timeOfDay, 1f, .85f, 1f, 0));
-				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(deepPurple, brightSky, MGV.GetRange(timeOfDay, 1f, .85f, 1f, 0));
+				RenderSettings.fogColor = Color.Lerp(deepPurple, brightSky, Utils.GetRange(timeOfDay, 1f, .85f, 1f, 0));
+				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(deepPurple, brightSky, Utils.GetRange(timeOfDay, 1f, .85f, 1f, 0));
 			}
 		}
 		//------------------------ Rotate the sky for day night cycle
-		targetAngle = MGV.GetRange(timeOfDay, 1f, 0, 360 + testAngle, testAngle);
+		targetAngle = Utils.GetRange(timeOfDay, 1f, 0, 360 + testAngle, testAngle);
 		MGV.skybox_MAIN_CELESTIAL_SPHERE.transform.Rotate(0, targetAngle - initialAngle, 0, Space.Self);
 		//		//Debug.Log (initialAngle +  "***********" + targetAngle);
 		RotateClouds(targetAngle - initialAngle);
@@ -1447,11 +1446,11 @@ public class script_player_controls : MonoBehaviour
 		//We need to get the players latitude to determine the vertical angle of the celestial globe
 		//	--This is the angle of the north celestial pole from the horizon line
 		//	--This is our x Angle of the sphere--0 degrees in Unity is the same as 90 degrees of latitude
-		Vector2 playerLatLong = MGV.ConvertWebMercatorToWGS1984(MGV.Convert_UnityWorld_WebMercator(transform.position));
+		Vector2 playerLatLong = CoordinateUtil.ConvertWebMercatorToWGS1984(CoordinateUtil.Convert_UnityWorld_WebMercator(transform.position));
 		Transform celestialSphere = MGV.skybox_MAIN_CELESTIAL_SPHERE.transform;
 		float latitude = playerLatLong.y;
 
-		float targetAngle = MGV.GetRange(latitude, 90f, -90f, 0, -180);//(90 - latitude);
+		float targetAngle = Utils.GetRange(latitude, 90f, -90f, 0, -180);//(90 - latitude);
 		float angleChange = initialCelestialAngle - targetAngle;
 		initialCelestialAngle = targetAngle;
 
@@ -1707,14 +1706,14 @@ public class script_player_controls : MonoBehaviour
 		//	that if it is 100. We'll be using the same formula to fade the celestial sphere colors.
 
 		//Update size
-		float calculatedWidth = MGV.GetRange(distance, 0, 100f, .1f, 5f);
+		float calculatedWidth = Utils.GetRange(distance, 0, 100f, .1f, 5f);
 		MGV.navigatorBeacon.GetComponent<LineRenderer>().startWidth = calculatedWidth;
 		MGV.navigatorBeacon.GetComponent<LineRenderer>().endWidth = calculatedWidth;
 
 		Color colorEnd = new Color(6f / 255f, 167f / 255f, 1f, 0);
 
 		//Update transparency
-		float alpha = MGV.GetRange(distance, 0, 100f, 0, 1f);
+		float alpha = Utils.GetRange(distance, 0, 100f, 0, 1f);
 		MGV.navigatorBeacon.GetComponent<LineRenderer>().startColor = new Color(88f / 255f, 1f, 211 / 255f, alpha);
 		MGV.navigatorBeacon.GetComponent<LineRenderer>().endColor = colorEnd;
 	}

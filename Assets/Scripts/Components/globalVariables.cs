@@ -44,724 +44,35 @@ using System.Collections.Generic;
 
 //======================================================================================================================================================================
 //======================================================================================================================================================================
-//  SETUP ALL GLOBAL CLASSES
-//======================================================================================================================================================================
-//======================================================================================================================================================================
-
-public class Loan
-{
-	public int amount;
-	public float interestRate;
-	public float numOfDaysUntilDue;
-	public float numOfDaysPassedUntilDue;
-	public int settlementOfOrigin;
-
-	public Loan(int amount, float interestRate, float numOfDaysUntilDue, int settlementOfOrigin) {
-		this.amount = amount;
-		this.interestRate = interestRate;
-		this.numOfDaysUntilDue = numOfDaysUntilDue;
-		this.numOfDaysPassedUntilDue = 0;
-		this.settlementOfOrigin = settlementOfOrigin;
-	}
-
-	public int GetTotalAmountDueWithInterest() {
-		return (int)(amount + (amount * (interestRate / 100)));
-	}
-}
-
-public class QuestSegment
-{
-	public int segmentID;
-	public int destinationID;
-	public bool isFinalSegment;
-	public List<int> crewmembersToAdd;
-	public List<int> crewmembersToRemove;
-	public string descriptionOfQuest;
-	public string descriptionAtCompletion;
-	public List<int> mentionedPlaces;
-
-	public QuestSegment(int segmentID, int destinationID, string descriptionOfQuest, string descriptionAtCompletion, List<int> crewmembersToAdd, List<int> crewmembersToRemove, bool isFinalSegment, List<int> mentionedPlaces) {
-		this.segmentID = segmentID;
-		this.destinationID = destinationID;
-		this.descriptionOfQuest = descriptionOfQuest;
-		this.descriptionAtCompletion = descriptionAtCompletion;
-		this.crewmembersToAdd = crewmembersToAdd;
-		this.crewmembersToRemove = crewmembersToRemove;
-		this.isFinalSegment = isFinalSegment;
-		this.mentionedPlaces = mentionedPlaces;
-	}
-}
-
-public class MainQuestLine
-{
-
-	public List<QuestSegment> questSegments;
-	public int currentQuestSegment;
-
-	public MainQuestLine() {
-		questSegments = new List<QuestSegment>();
-		currentQuestSegment = 0;
-	}
-
-
-}
-
-public class Journal
-{
-
-	public List<int> knownSettlements;
-
-	public Journal() {
-		this.knownSettlements = new List<int>();
-	}
-
-	public void AddNewSettlementToLog(int settlementID) {
-		//Debug.Log ("Adding New SET ID:  -->   " + settlementID);
-		//First Check to see if there are any settlements in the log yet
-		if (knownSettlements.Count > 0) {
-			//check to make sure the id doesn't already exist
-			for (int i = 0; i < knownSettlements.Count; i++) {
-				if (knownSettlements[i] == settlementID)
-					break;//if we find a match break the loop and exit
-				else if (i == knownSettlements.Count - 1)//else if there are no matches and we're at the end of the list, add the ID
-					this.knownSettlements.Add(settlementID);
-			}
-		}
-		else {//if there are no settlements then just add the settlement
-			this.knownSettlements.Add(settlementID);
-		}
-	}
-}
-
-public class CrewMember
-{
-	public int ID;
-	public string name;
-	public int originCity;
-	public int clout;
-	public string backgroundInfo;
-	public bool isKillable;
-	public bool isPartOfMainQuest;
-	public int typeOfCrew;
-	//0= sailor  1= warrior  2= slave  3= passenger 4= navigator 5= auger
-	//A sailor is the base class--no benefits/detriments
-	//	--navigators provide maps to different settlements and decrease negative random events
-	//	--warriors make sure encounters with pirates or other raiding activities go better in your favor
-	//	--slaves have zero clout--few benefits--but they never leave the ship unless they die
-	public CrewMember(int ID, string name, int originCity, int clout, int typeOfCrew, string backgroundInfo, bool isKillable, bool isPartOfMainQuest) {
-		this.ID = ID;
-		this.name = name;
-		this.originCity = originCity;
-		this.clout = clout;
-		this.typeOfCrew = typeOfCrew;
-		this.backgroundInfo = backgroundInfo;
-		this.isKillable = isKillable;
-		this.isPartOfMainQuest = isPartOfMainQuest;
-	}
-
-	//This is a helper class to create a void crewman
-	public CrewMember(int id) {
-		this.ID = id;
-	}
-
-
-
-}
-
-public class CaptainsLogEntry
-{
-	public int settlementID;
-	public string logEntry;
-	public string dateTimeOfEntry;
-
-	public CaptainsLogEntry(int settlementID, string logEntry) {
-		this.settlementID = settlementID;
-		this.logEntry = logEntry;
-	}
-
-}
-
-public class CurrentRose
-{
-	public float direction;
-	public float speed;
-
-	public CurrentRose(float direction, float speed) {
-		this.direction = direction;
-		this.speed = speed;
-
-	}
-}
-
-public class WindRose
-{
-	public float direction;
-	public float speed;
-
-	public WindRose(float direction, float speed) {
-		this.direction = direction;
-		this.speed = speed;
-
-	}
-}
-
-public class PlayerRoute
-{
-	//TODO This method as well as the Player Journey Log is a pretty dirty solution that needs some serious clean up and tightening. It's a bit brute force and messy right now.
-	public Vector3[] theRoute;
-	public int settlementID;
-	public string settlementName;
-	public bool isLeaving;
-	public float timeStampInDays;
-	public Vector3 UnityXYZEndPoint;
-
-	public PlayerRoute(Vector3 origin, Vector3 destination, float timeStampInDays) {
-		this.theRoute = new Vector3[] { origin, destination };
-		this.settlementID = -1;
-		this.timeStampInDays = timeStampInDays;
-		this.UnityXYZEndPoint = destination;
-		Debug.Log("Getting called...." + origin.x + "  " + origin.z);
-
-	}
-
-	public PlayerRoute(Vector3 origin, Vector3 destination, int settlementID, string settlementName, bool isLeaving, float timeStampInDays) {
-		this.theRoute = new Vector3[] { origin, destination };
-		this.settlementID = settlementID;
-		this.isLeaving = isLeaving;
-		this.settlementName = settlementName;
-		this.timeStampInDays = timeStampInDays;
-		this.UnityXYZEndPoint = origin;
-		Debug.Log("Getting called 2...." + origin.x + "  " + origin.z);
-		//TODO this is a dirty fix--under normal route conditions the Unity XYZ is changed to XZY to match 3d geometry conventions (z is up and not forward like in Unity)
-		//TODO --I'm manually making this port stop XZY here so I don't have to change to much of the ConvertJourneyLogToCSVText() function in the PlayerJourneyLog Class
-		//TODO --We only need to change the 'origin' XYZ to XZY because port stops will have Vector3.zero (0,0,0) for the destination values always 
-		//TODO --Maybe it's lazy--but I've been at this for about 15 hours non-stop and I'm running out of sophisticated brain power. Probably the narrative of all this code.
-		//this.theRoute[0] = new Vector3(this.theRoute[0].x,this.theRoute[0].z,this.theRoute[0].y);
-		//this.theRoute[1] = new Vector3(this.theRoute[1].x,this.theRoute[1].z,this.theRoute[1].y);
-	}
-
-}
-
-public class PlayerJourneyLog
-{
-	//TODO This whole function needs retooling--rather htan 3 separate arrays, the PlayerRoute object should store all the necessary variables--In fact this could be replaced with a simple List of Player Routes rather than having two separate objects no apparent reason.
-	public List<PlayerRoute> routeLog;
-	public List<string> cargoLog;
-	//This is a quick dirty solution TODO need to make it a bit easier with current timelines of work
-	public List<string> otherAttributes;
-	public string CSVheader;
-
-	public PlayerJourneyLog() {
-		this.routeLog = new List<PlayerRoute>();
-		this.cargoLog = new List<string>();
-		this.otherAttributes = new List<string>();
-		this.CSVheader = "Unique_Machine_ID,timestamp,originE,originN,originZ,endE,endN,endZ," +
-			"Water_kg,Provisions_kg,Grain_kg,Wine_kg,Timber_kg,Gold_kg,Silver_kg," +
-			"Copper_kg,Tin_kg,Obsidian_kg,Lead_kg,Slaves_kg,Iron_kg,Bronze_kg,Luxury_kg,Is_Leaving_Port,PortID,PortName," +
-			"CrewMemberIDs,UnityXYZ,Current_Questleg,ShipHP,Clout,PlayerNetwork,DaysStarving,DaysThirsty,Currency,LoanAmount,LoanOriginID,CurrentNavigatorTarget,KnownSettlements,CaptainsLog\n";
-	}
-
-	public void AddRoute(PlayerRoute routeToAdd, script_player_controls playerShipVars, string captainsLog) {
-		this.routeLog.Add(routeToAdd);
-		Debug.Log("Getting called 3...." + routeToAdd.theRoute[0].x + "  " + routeToAdd.theRoute[0].z);
-		AddCargoManifest(playerShipVars.ship.cargo);
-		AddOtherAttributes(playerShipVars, captainsLog, routeToAdd);
-	}
-
-	public void AddCargoManifest(Resource[] cargoToAdd) {
-		string CSVstring = "";
-		foreach (Resource resource in cargoToAdd) {
-			CSVstring += "," + resource.amount_kg;
-		}
-		this.cargoLog.Add(CSVstring);
-	}
-
-	public void AddOtherAttributes(script_player_controls playerShipVars, string captainsLog, PlayerRoute currentRoute) {
-		string CSVstring = "";
-		Ship playerShip = playerShipVars.ship;
-		//Add the applicable port docking info
-		//If it isn't -1, then it's a port stop
-		if (currentRoute.settlementID != -1) {
-			CSVstring += "," + currentRoute.isLeaving + "," + currentRoute.settlementID + "," + currentRoute.settlementName;
-		}
-		else {
-			CSVstring += "," + -1 + "," + -1 + "," + -1;
-		}
-
-		//Add the crewID's 
-		CSVstring += ",";
-		for (int index = 0; index < playerShip.crewRoster.Count; index++) {
-			//Debug.Log ("ID: "  + playerShip.crewRoster[index].ID);
-			CSVstring += playerShip.crewRoster[index].ID;
-			if (index < playerShip.crewRoster.Count - 1)
-				CSVstring += "_";
-		}
-
-		//Add the Unity XYZ coordinate of ship
-		Vector3 playerLocation = playerShipVars.transform.position;
-		CSVstring += "," + playerLocation.x + "_" + playerLocation.y + "_" + playerLocation.z;
-		//Add the current questleg
-		CSVstring += "," + playerShip.mainQuest.currentQuestSegment;
-		//Add Ship HP
-		CSVstring += "," + playerShip.health;
-		//Add Player Clout
-		CSVstring += "," + playerShip.playerClout;
-		//Add Player Networks
-		CSVstring += ",";
-		for (int index = 0; index < playerShip.networks.Count; index++) {
-			CSVstring += playerShip.networks[index];
-			if (index < playerShip.networks.Count - 1)
-				CSVstring += "_";
-		}
-		//Add Days Starving
-		CSVstring += "," + playerShipVars.numOfDaysWithoutProvisions;
-		//Add Days Thirsty
-		CSVstring += "," + playerShipVars.numOfDaysWithoutWater;
-		//Add currency
-		CSVstring += "," + playerShip.currency;
-		//Add Loan Amount Owed
-		if (playerShip.currentLoan != null)
-			CSVstring += "," + playerShip.currentLoan.amount;
-		else
-			CSVstring += ",-1";
-		//Add Loan Origin City
-		if (playerShip.currentLoan != null)
-			CSVstring += "," + playerShip.currentLoan.settlementOfOrigin;
-		else
-			CSVstring += ",-1";
-		//Add Current Navigator Target
-		CSVstring += "," + playerShip.currentNavigatorTarget;
-		//Add the list of known settlements in the player's acquired journal settlement knowledge
-		CSVstring += ",";
-		//Debug.Log (CSVstring);
-		foreach (int settlementID in playerShip.playerJournal.knownSettlements)
-			CSVstring += settlementID + "_";
-		//remove trailing '_' from list of known settlements
-		CSVstring = CSVstring.Remove(CSVstring.Length - 1);
-		//Debug.Log ("After substring: " + CSVstring);
-		//Add Captains Log: first we need to switch commas in the log to a "|" so it doesn't hurt the delimeters TODO This could be nicer but is fine for now until we get a better database setup
-		//--also need tp scrub newlines
-		string scrubbedLog = captainsLog.Replace(',', '^');
-		scrubbedLog = scrubbedLog.Replace('\n', '*');
-		CSVstring += "," + scrubbedLog;
-
-		//Add a new row to match the route of all these attributes
-		this.otherAttributes.Add(CSVstring);
-
-	}
-
-	public string ConvertJourneyLogToCSVText() {
-		string CSVfile = "";
-		//Ship playerShip = playerShipVars.ship;
-		//Let's first add the headings to each column
-		CSVfile += this.CSVheader;
-		Debug.Log("Route Count: " + routeLog.Count);
-		//first make sure the route isn't empty--if it is, then return a blank file
-		if (routeLog.Count == 0) {
-			CSVfile = "There is no player data to save currently";
-		}
-		else {
-
-			//Loop through each route in the list and respectively the cargo(they will always be the same size so a single for loop index can handle both at once
-			//	Each loop represents a single line in the CSV file
-			for (int i = 0; i < routeLog.Count; i++) {
-				//First add the player's unique machine ID--this will be different depending on the Operating System of the user, but will always be a consistent unique ID based on the users hardware(assuming there aren't major hardware changes)
-				CSVfile += SystemInfo.deviceUniqueIdentifier + ",";
-				//we're converting it to Web Mercator before saving it
-				Vector3 mercator_origin = new Vector3((routeLog[i].theRoute[0].x * 1193.920898f) + (526320 - 0), (routeLog[i].theRoute[0].z * 1193.920898f) + (2179480 - 0), routeLog[i].theRoute[0].y);
-				Vector3 mercator_end = new Vector3((routeLog[i].theRoute[1].x * 1193.920898f) + (526320 - 0), (routeLog[i].theRoute[1].z * 1193.920898f) + (2179480 - 0), routeLog[i].theRoute[1].y);
-
-				Vector2 longXlatY_origin = GV_CONST.ConvertWebMercatorToWGS1984(new Vector2(mercator_origin.x, mercator_origin.y));
-				Vector2 longXlatY_end = GV_CONST.ConvertWebMercatorToWGS1984(new Vector2(mercator_end.x, mercator_end.y));
-
-
-				//TODO: This needs to be cleaned up below--the lat/long bit so it's not wasting resources on a pointless conversion above
-				//TODO -- Seriously this XYZ / XZY business is a frankenstein monster of confusion--I can't even fathom in my current sleep deprived state why I'm having to put the y as a z here. My god. Someone Save me!
-				//If this isn't a player travel route, but a port stop, then we don't need to worry about the conversion of of lat / long--it's already in lat long
-				if (routeLog[i].settlementID != -1) {
-					longXlatY_origin = new Vector2(routeLog[i].theRoute[0].x, routeLog[i].theRoute[0].z);
-					longXlatY_end = Vector2.zero;
-
-				}
-
-				CSVfile += routeLog[i].timeStampInDays + "," + longXlatY_origin.x + "," + longXlatY_origin.y + "," + mercator_origin.z + "," +
-					longXlatY_end.x + "," + longXlatY_end.y + "," + mercator_end.z;
-
-				/*CSVfile += ((routeLog[i].theRoute[0].x * 1193.920898f) + (526320 - 0)) + "," + 
-						   ((routeLog[i].theRoute[0].z * 1193.920898f) + (2179480 - 0)) + "," + 
-						    routeLog[i].theRoute[0].y + "," +
-						    
-						   ((routeLog[i].theRoute[1].x * 1193.920898f) + (526320 - 0)) + "," + 
-						   ((routeLog[i].theRoute[1].z * 1193.920898f) + (2179480 - 0)) + "," + 
-						   routeLog[i].theRoute[1].y;
-				*/
-
-
-
-				//Add the Resources to the line record
-				CSVfile += cargoLog[i];
-				CSVfile += otherAttributes[i];
-
-
-				//Add a newline if not on last route
-				if (i != (routeLog.Count - 1)) {
-					CSVfile += "\n";
-					//Debug.Log ("Adding a NEW Line?");	
-				}
-
-				//Debug.Log (CSVfile);
-			}
-		}
-
-		return CSVfile;
-	}
-}
-
-public class MetaResource
-{
-	public string name;
-	public int id;
-	public string description;
-
-	public MetaResource(string name, int id, string description) {
-		this.name = name;
-		this.id = id;
-		this.description = description;
-	}
-
-}
-
-
-public class Resource
-{
-	public string name;
-	public float amount_kg;
-	public float probabilityOfAvailability = 0;
-
-	public Resource(string name, float amount_kg) {
-		this.name = name;
-		this.amount_kg = amount_kg;
-	}
-}
-
-public class Settlement
-{
-
-	public int settlementID;
-	public Vector2 location_longXlatY;
-	public string name;
-	public int population;
-	public float elevation;
-	public Resource[] cargo;
-	public float tax_neutral;
-	public float tax_network;
-	public GameObject theGameObject;
-	public int[] networkHintResources;
-	public Vector3 adjustedGamePosition;
-	public float eulerY;
-	public int typeOfSettlement;
-	public string description;
-	public List<int> networks;
-	public string prefabName;
-
-	public Settlement(int settlementID, string name, Vector2 location_longXlatY, float elevation, int population) {
-		this.settlementID = settlementID;
-		this.location_longXlatY = location_longXlatY;
-		this.elevation = elevation;
-		this.name = name;
-		this.population = population;
-		cargo = new Resource[] {
-		new Resource ("Water", 0f),
-		new Resource ("Provisions", 0f),
-		new Resource ("Grain", 0f),
-		new Resource ("Wine", 0f),
-		new Resource ("Timber", 0f),
-		new Resource ("Gold", 0f),
-		new Resource ("Silver", 0f),
-		new Resource ("Copper", 0f),
-		new Resource ("Tin", 0f),
-		new Resource ("Obsidian", 0f),
-		new Resource ("Lead", 0f),
-		new Resource ("Slaves", 0f),
-		new Resource ("Iron", 0f),
-		new Resource ("Bronze", 0f),
-		new Resource ("Prestige Goods", 0f),
-		};
-		networks = new List<int>();
-	}
-
-	//This is a debug class to make a blank settlement for testing
-	public Settlement(int id, string name, int networkID) {
-		this.settlementID = id;
-		this.name = name;
-		this.population = 0;
-		this.elevation = 0;
-		this.tax_network = 0;
-		this.tax_neutral = 0;
-		this.description = "FAKE SETTLEMENT--LOOK INTO THIS ERROR";
-		this.networks = new List<int>();
-
-	}
-
-	override public string ToString() {
-		string mString = this.name + ":\n" + "Population: " + population + "\n\n RESOURCES \n";
-		for (int i = 0; i < this.cargo.Length; i++) {
-			mString += this.cargo[i].name + ":  " + this.cargo[i].amount_kg + "kg\n";
-		}
-
-		return mString;
-	}
-
-}
-
-public class Ship
-{
-
-	public string name;
-	public float speed;
-	public float health;
-	public float cargo_capicity_kg;
-	public float current_cargo_kg;
-	public Resource[] cargo;
-	public int currency;
-	public int crewCapacity;
-	public int crew;
-	public float totalNumOfDaysTraveled;
-	public int networkID;
-	public float playerClout;
-	public List<CaptainsLogEntry> shipCaptainsLog;
-	public List<CrewMember> crewRoster;
-	public Journal playerJournal;
-	public int currentNavigatorTarget;
-	public Loan currentLoan;
-	public MainQuestLine mainQuest;
-	public List<int> networks;
-	public int originSettlement;
-	public string builtMonuments = "";
-
-	public Ship(string name, float speed, int health, float cargo_capcity_kg) {
-
-		this.name = name;
-		this.speed = speed;
-		this.health = health;
-		this.cargo_capicity_kg = cargo_capcity_kg;
-		this.shipCaptainsLog = new List<CaptainsLogEntry>();
-		this.crewRoster = new List<CrewMember>();
-		this.playerJournal = new Journal();
-
-		cargo = new Resource[] {
-			new Resource ("Water", 100f),
-			new Resource ("Provisions", 100f),
-			new Resource ("Grain", 0f),
-			new Resource ("Wine", 0f),
-			new Resource ("Timber", 0f),
-			new Resource ("Gold", 0f),
-			new Resource ("Silver", 0f),
-			new Resource ("Copper", 0f),
-			new Resource ("Tin", 0f),
-			new Resource ("Obsidian", 0f),
-			new Resource ("Lead", 0f),
-			new Resource ("Slaves", 0f),
-			new Resource ("Iron", 0f),
-			new Resource ("Bronze", 0f),
-			new Resource ("Prestige Goods", 0f),
-		};
-
-		this.current_cargo_kg = 0;
-		this.currency = 500;
-		this.crewCapacity = 30;
-		this.crew = 0;
-		this.playerClout = 50f;
-		this.currentNavigatorTarget = -1;
-		this.totalNumOfDaysTraveled = 0;
-		this.networks = new List<int>();
-		this.originSettlement = 246; //TODO Default set to Iolcus--Jason's hometown
-		this.networks.Add(1);//TODO Default set to Samothrace network.
-	}
-
-	public float GetTotalCargoAmount() {
-		float total = 0;
-		foreach (Resource resource in cargo) {
-			total += resource.amount_kg;
-		}
-		return total;
-	}
-}
-
-//####################################################################
-//  This is a list of all constant variables accessible to all scripts
-public static class GV_CONST
-{
-	public const int TAVERNSTATE_DEFAULT = 0;
-	public const int TAVERNSTATE_CITY = 1;
-	public const int TAVERNSTATE_NAVIGATOR = 2;
-	public const int TAVERNSTATE_SHRINE = 3;
-	public const int TAVERNSTATE_LOAN = 4;
-	public const int TAVERNSTATE_HIRECREW = 5;
-	public const int TAVERNSTATE_JOBS = 6;
-	public const int TAVERNSTATE_REPAIRS = 7;
-	public const int TAVERNSTATE_FIRECREW = 8;
-	public const int CREWTYPE_SAILOR = 0;
-	public const int CREWTYPE_WARRIOR = 1;
-	public const int CREWTYPE_SLAVE = 2;
-	public const int CREWTYPE_PASSENGER = 3;
-	public const int CREWTYPE_NAVIGATOR = 4;
-	public const int CREWTYPE_GUIDE = 5;
-	public const int CREWTYPE_ASSISTANT = 6;
-	public const int CREWTYPE_ROYALTY = 7;
-	public const int CREWTYPE_SEER = 8;
-	public const int CREWTYPE_LAWYER = 9;
-
-	public static Vector2 ConvertWebMercatorToWGS1984(Vector2 MercatorEastNorth) {
-		double mercatorX_lon = MercatorEastNorth.x;
-		double mercatorY_lat = MercatorEastNorth.y;
-		//if (Math.Abs(mercatorX_lon) < 180 && Math.Abs(mercatorY_lat) < 90)
-		//		return Vector2.zero;
-
-		//if ((Math.Abs(mercatorX_lon) > 20037508.3427892) )
-		//TODO figure out what to do if the coordinate is OUTSIDE the extents of the projection
-		//TODO	--E.G. if we sail through the north pole and start heading south--unity world coordinates need to reflect this
-		//TODO	--We shouldn't need to worry about this unless we do globe circumnavigation--which we aren't
-		//If we are outside the northern extent
-		//if(Math.Abs(mercatorY_lat) > 20037508.3427892)
-		//	mercatorY_lat = 20037508.3427892 - (mercatorY_lat - 20037508.3427892) - 1;
-		//else if (Math.Abs(mercatorY_lat) < -20037508.3427892)
-
-		double x = mercatorX_lon;
-		double y = mercatorY_lat;
-		double num3 = x / 6378137.0;
-		double num4 = num3 * 57.295779513082323;
-		double num5 = Math.Floor((double)((num4 + 180.0) / 360.0));
-		double num6 = num4 - (num5 * 360.0);
-		double num7 = 1.5707963267948966 - (2.0 * Math.Atan(Math.Exp((-1.0 * y) / 6378137.0)));
-		mercatorX_lon = num6;
-		mercatorY_lat = num7 * 57.295779513082323;
-
-		return new Vector2((float)mercatorX_lon, (float)mercatorY_lat);
-	}
-}
-
-
-
-
-
-
-
-
-//======================================================================================================================================================================
-//======================================================================================================================================================================
 //  SETUP ALL GLOBAL VARIABLES
 //======================================================================================================================================================================
 //======================================================================================================================================================================
 
 public class globalVariables : MonoBehaviour
 {
-	//Easting (x) will always equal Unity X
-	//Northing (y) will always equal Unity Z
-	//Elevation (z) will always equal Unity Y
-	Vector2 rasterMapOriginMeter = new Vector2(526320, 2179480);//in meters
-	public float unityWorldUnitResolution = 1193.920898f;//in meters
-	float unityOrigin = 0;//This will always be 0,0 for both x and y
-	public Settlement[] settlement_masterList;
-	public GameObject settlement_masterList_parent;
-	public GameObject playerShip;
-	public script_player_controls playerShipVariables;
-	public GameObject mainCamera;
+	const int windZoneColumns = 64;
+	const int windZoneRows = 32;
+
+	const int currentZoneColumns = 128;
+	const int currentZoneRows = 64;
+
+	[Header("World Scene Refs")]
 	public GameObject FPVCamera;
+	public GameObject camera_Mapview;
 	public GameObject terrain;
 	public GameObject cityLightsParent;
-	public GameObject selection_ring;
-	public GameObject currentSettlementGameObject;
-	public Settlement currentSettlement;
 
-
-	//###################################
-	//	TODO UNSORTED VARIABLES TODO
-	//###################################
-
-	public List<MetaResource> masterResourceList = new List<MetaResource>();
-	public bool sailsAreUnfurled = true;
+	[Header("Ununorganized Scene Refs")]
 	public GameObject[] sails = new GameObject[6];
-	public int currentTavernMenuState;
-	public GameObject playerTrajectory;
-	public GameObject playerGhostRoute;
-	public GameObject navigatorBeacon;
-	public string currentCaptainsLog = "";
-	public bool isPerformingRandomEvent = false;
-	public CaptainsLogEntry[] captainsLogEntries;
-	public List<CaptainsLogEntry> currentLogPool = new List<CaptainsLogEntry>();
-	public WindRose[,] windrose_January = new WindRose[10, 8];
-	public GameObject windZoneParent;
-	public GameObject waterSurface;
-	public CurrentRose[,] currentRose_January;
-	public GameObject currentZoneParent;
-	public List<Settlement> currentNetworkSettlements;//this is not a complete list--but rather a list of settlements generated through probability
 	public List<CrewMember> currentlyAvailableCrewMembersAtPort; // updated every time ship docks at port
-	public bool controlsLocked = false;
-	public bool isGameOver = false;
-	public bool justLeftPort = false;
-	public bool menuControlsLock = false;
-	public bool gameIsFinished = false;
 
-	//The main notifications are handled by the first two variables
-	//	--to make sure multiple notifications can be seen that might overlap, e.g. the player triggers two notifications in an action
-	//	--there are two and if the first is 'true' or showing a message, it will default to a secondary notification window
-	public bool showNotification = false;
-	public string notificationMessage = "";
-	public bool showSecondaryNotification = false;
-	public string secondaryNotificationMessage = "";
-	public int currentPortTax = 0;
-	public bool IS_NEW_GAME = true;
-	public bool IS_NOT_NEW_GAME = false;
-	public string TD_year = "2000";
-	public string TD_month = "1";
-	public string TD_day = "1";
-	public string TD_hour = "0";
-	public string TD_minute = "0";
-	public string TD_second = "0";
-	public Light mainLightSource;
-	public bool startGameButton_isPressed = false;
-	public bool isTitleScreen = true;
-	public bool isStartScreen = false;
-	public GameObject camera_titleScreen;
-	public GameObject bg_titleScreen;
-	public GameObject bg_startScreen;
-	public bool isLoadedGame = false;
-	public bool isPassingTime = false;
-
-	//###################################
-	//	Crew Member Variables
-	//###################################
-	public List<CrewMember> masterCrewList = new List<CrewMember>();
-
-	//###################################
-	//	GUI VARIABLES
-	//###################################
-	public bool runningMainGameGUI = false;
-	public bool showSettlementTradeGUI = false;
-	public bool showSettlementTradeButton = false;
-	public bool[] newGameCrewSelectList = new bool[40];
-	public List<CrewMember> newGameAvailableCrew = new List<CrewMember>();
-	public bool showPortDockingNotification = false;
-	public bool isInNetwork = false;
-	public CrewMember crewMemberWithNetwork;
-	public bool gameDifficulty_Beginner = false;
-	public bool showNonPortDockButton = false;
-	public bool showNonPortDockingNotification = false;
-
+	[Header("GUI Scene Refs")]
 	public GameObject MasterGUISystem;
 	public GameObject GUI_PortMenu;
 	public GameObject GUI_GameHUD;
-	public bool updatePlayerCloutMeter = false;
+	public GameObject selection_ring;
 
-
-
-
-
-
-	//###################################
-	//	SKYBOX VARIABLES
-	//###################################
+	[Header("Skybox Scene Refs")]
 	public GameObject skybox_celestialGrid;
 	public GameObject skybox_MAIN_CELESTIAL_SPHERE;
 	public GameObject skybox_ecliptic_sphere;
@@ -770,23 +81,107 @@ public class globalVariables : MonoBehaviour
 	public GameObject skybox_sun;
 	public GameObject skybox_moon;
 
-	//###################################
-	//	MATERIALS
-	//###################################
+	[Header("Material Asset Refs")]
+	// TODO: instance these before modifying so they don't change on disk
 	public Material mat_waterCurrents;
 	public Material mat_water;
+
+	// TODO: unorganized variables
+	[HideInInspector] public GameObject mainCamera;
+	[HideInInspector] public GameObject playerTrajectory;
+	[HideInInspector] public GameObject playerGhostRoute;
+	[HideInInspector] public GameObject navigatorBeacon;
+	[HideInInspector] public WindRose[,] windrose_January = new WindRose[10, 8];
+	[HideInInspector] public GameObject windZoneParent;
+	[HideInInspector] public GameObject waterSurface;
+	[HideInInspector] public CurrentRose[,] currentRose_January;
+	[HideInInspector] public GameObject currentZoneParent;
+
+	// settlements
+	[HideInInspector] public Settlement[] settlement_masterList;
+	[HideInInspector] public GameObject settlement_masterList_parent;
+	[HideInInspector] public List<Settlement> currentNetworkSettlements;//this is not a complete list--but rather a list of settlements generated through probability
+	[HideInInspector] public GameObject currentSettlementGameObject;
+	[HideInInspector] public Settlement currentSettlement;
+
+	// ship
+	[HideInInspector] public GameObject playerShip;
+	[HideInInspector] public script_player_controls playerShipVariables;
+	[HideInInspector] public bool sailsAreUnfurled = true;
+
+	// captain's log
+	[HideInInspector] public string currentCaptainsLog = "";
+	[HideInInspector] public CaptainsLogEntry[] captainsLogEntries;
+	[HideInInspector] public List<CaptainsLogEntry> currentLogPool = new List<CaptainsLogEntry>();
+
+	// resources
+	[HideInInspector] public List<MetaResource> masterResourceList = new List<MetaResource>();
+
+	// game state
+	[HideInInspector] public bool controlsLocked = false;
+	[HideInInspector] public bool isGameOver = false;
+	[HideInInspector] public bool justLeftPort = false;
+	[HideInInspector] public bool menuControlsLock = false;
+	[HideInInspector] public bool gameIsFinished = false;
+	[HideInInspector] public bool isPerformingRandomEvent = false;
+
+	//The main notifications are handled by the first two variables
+	//	--to make sure multiple notifications can be seen that might overlap, e.g. the player triggers two notifications in an action
+	//	--there are two and if the first is 'true' or showing a message, it will default to a secondary notification window
+	[HideInInspector] public bool showNotification = false;
+	[HideInInspector] public string notificationMessage = "";
+	[HideInInspector] public bool showSecondaryNotification = false;
+	[HideInInspector] public string secondaryNotificationMessage = "";
+	[HideInInspector] public int currentPortTax = 0;
+	[HideInInspector] public bool IS_NEW_GAME = true;
+	[HideInInspector] public bool IS_NOT_NEW_GAME = false;
+	[HideInInspector] public string TD_year = "2000";
+	[HideInInspector] public string TD_month = "1";
+	[HideInInspector] public string TD_day = "1";
+	[HideInInspector] public string TD_hour = "0";
+	[HideInInspector] public string TD_minute = "0";
+	[HideInInspector] public string TD_second = "0";
+	[HideInInspector] public Light mainLightSource;
+	[HideInInspector] public bool startGameButton_isPressed = false;
+	[HideInInspector] public bool isTitleScreen = true;
+	[HideInInspector] public bool isStartScreen = false;
+	[HideInInspector] public GameObject camera_titleScreen;
+	[HideInInspector] public GameObject bg_titleScreen;
+	[HideInInspector] public GameObject bg_startScreen;
+	[HideInInspector] public bool isLoadedGame = false;
+	[HideInInspector] public bool isPassingTime = false;
+
+	//###################################
+	//	Crew Member Variables
+	//###################################
+	[HideInInspector] public List<CrewMember> masterCrewList = new List<CrewMember>();
+
+	//###################################
+	//	GUI VARIABLES
+	//###################################
+	[HideInInspector] public bool runningMainGameGUI = false;
+	[HideInInspector] public bool showSettlementTradeGUI = false;
+	[HideInInspector] public bool showSettlementTradeButton = false;
+	[HideInInspector] public bool[] newGameCrewSelectList = new bool[40];
+	[HideInInspector] public List<CrewMember> newGameAvailableCrew = new List<CrewMember>();
+	[HideInInspector] public bool showPortDockingNotification = false;
+	[HideInInspector] public bool isInNetwork = false;
+	[HideInInspector] public CrewMember crewMemberWithNetwork;
+	[HideInInspector] public bool gameDifficulty_Beginner = false;
+	[HideInInspector] public bool showNonPortDockButton = false;
+	[HideInInspector] public bool showNonPortDockingNotification = false;
+	[HideInInspector] public bool updatePlayerCloutMeter = false;
 
 	//###################################
 	//	RANDOM EVENT VARIABLES
 	//###################################
-	public List<int> activeSettlementInfluenceSphereList = new List<int>();
+	[HideInInspector] public List<int> activeSettlementInfluenceSphereList = new List<int>();
 
 	//###################################
 	//	DEBUG VARIABLES
 	//###################################
-	public int DEBUG_currentQuestLeg = 0;       // only in inspector for debug display
-	public GameObject camera_Mapview;
-	public bool DEBUG_MODE_ON = false;
+	[ReadOnly] public int DEBUG_currentQuestLeg = 0;
+	[HideInInspector] public bool DEBUG_MODE_ON = false;
 
 
 
@@ -812,20 +207,20 @@ public class globalVariables : MonoBehaviour
 		mainLightSource = GameObject.FindGameObjectWithTag("main_light_source").GetComponent<Light>();
 
 		//Load all txt database files
-		LoadMasterCrewRoster();
-		LoadCaptainsLogEntries();
-		LoadSettlementList();
-		LoadAdjustedSettlementLocations();
+		masterCrewList = CSVLoader.LoadMasterCrewRoster();
+		captainsLogEntries = CSVLoader.LoadCaptainsLogEntries();
+		settlement_masterList = CSVLoader.LoadSettlementList();
+		masterResourceList = CSVLoader.LoadResourceList();
+
 		CreateSettlementsFromList();
-		LoadResourceList();
 		currentSettlementGameObject = settlement_masterList_parent.transform.GetChild(0).gameObject;
 		currentSettlement = currentSettlementGameObject.GetComponent<script_settlement_functions>().thisSettlement;
 
-		//Perform other initialization functions
+		// wind and current init
 		BuildWindZoneGameObjects();
 		BuildCurrentZoneGameObjects();
-		LoadWindRoses();
-		LoadWaterZonesFromFile();
+		windrose_January = CSVLoader.LoadWindRoses(windZoneColumns, windZoneRows);
+		currentRose_January = CSVLoader.LoadWaterZonesFromFile(currentZoneColumns, currentZoneRows);
 		SetInGameWindZonesToWindRoseData();
 		SetInGameWaterZonesToCurrentRoseData();
 
@@ -842,384 +237,12 @@ public class globalVariables : MonoBehaviour
 	//  THE REMAINDER OF THE SCRIPT IS ALL GLOBALLY ACCESSIBLE FUNCTIONS
 	//======================================================================================================================================================================
 	//======================================================================================================================================================================
-
-
-
-	//====================================================================================================
-	//      GEOSPATIAL / PROJECTION FUNCTIONS
-	//====================================================================================================
-
-
-	public Vector2 Convert_WebMercator_UnityWorld(Vector2 WTM_Coordinate) {
-
-		Vector2 convertedCoordinate;
-		convertedCoordinate.x = (WTM_Coordinate.x - (rasterMapOriginMeter.x - unityOrigin)) / unityWorldUnitResolution;
-		convertedCoordinate.y = (WTM_Coordinate.y - (rasterMapOriginMeter.y - unityOrigin)) / unityWorldUnitResolution;
-		//Debug.Log (convertedCoordinate.x + " : " + convertedCoordinate.y);
-		//Debug.Log (WTM_Coordinate.x + " : " + WTM_Coordinate.y);
-		return convertedCoordinate;
-	}
-	public Vector3 Convert_UnityWorld_WebMercator(Vector3 unity_coordinate) {
-
-		Vector3 convertedCoordinate;
-		convertedCoordinate.x = (unity_coordinate.x * unityWorldUnitResolution) + (rasterMapOriginMeter.x - unityOrigin);
-		convertedCoordinate.y = (unity_coordinate.z * unityWorldUnitResolution) + (rasterMapOriginMeter.y - unityOrigin);
-		convertedCoordinate.z = unity_coordinate.y;
-		return convertedCoordinate;
-	}
-	public Vector2 ConvertWGS1984ToWebMercator(Vector2 WGSLongLat) {
-
-
-		if ((Math.Abs(WGSLongLat.x) > 180 || Math.Abs(WGSLongLat.y) > 90))
-			return Vector2.zero;
-
-		double num = WGSLongLat.x * 0.017453292519943295;
-		double x = 6378137.0 * num;
-		double a = WGSLongLat.y * 0.017453292519943295;
-
-		WGSLongLat.x = (float)x;
-		WGSLongLat.y = (float)(3189068.5 * Math.Log((1.0 + Math.Sin(a)) / (1.0 - Math.Sin(a))));
-
-		return WGSLongLat;
-
-	}
-	public Vector2 ConvertWebMercatorToWGS1984(Vector2 MercatorEastNorth) {
-		double mercatorX_lon = MercatorEastNorth.x;
-		double mercatorY_lat = MercatorEastNorth.y;
-		//if (Math.Abs(mercatorX_lon) < 180 && Math.Abs(mercatorY_lat) < 90)
-		//		return Vector2.zero;
-
-		//if ((Math.Abs(mercatorX_lon) > 20037508.3427892) )
-		//TODO figure out what to do if the coordinate is OUTSIDE the extents of the projection
-		//TODO	--E.G. if we sail through the north pole and start heading south--unity world coordinates need to reflect this
-		//TODO	--We shouldn't need to worry about this unless we do globe circumnavigation--which we aren't
-		//If we are outside the northern extent
-		//if(Math.Abs(mercatorY_lat) > 20037508.3427892)
-		//	mercatorY_lat = 20037508.3427892 - (mercatorY_lat - 20037508.3427892) - 1;
-		//else if (Math.Abs(mercatorY_lat) < -20037508.3427892)
-
-		double x = mercatorX_lon;
-		double y = mercatorY_lat;
-		double num3 = x / 6378137.0;
-		double num4 = num3 * 57.295779513082323;
-		double num5 = Math.Floor((double)((num4 + 180.0) / 360.0));
-		double num6 = num4 - (num5 * 360.0);
-		double num7 = 1.5707963267948966 - (2.0 * Math.Atan(Math.Exp((-1.0 * y) / 6378137.0)));
-		mercatorX_lon = num6;
-		mercatorY_lat = num7 * 57.295779513082323;
-
-		return new Vector2((float)mercatorX_lon, (float)mercatorY_lat);
-	}
-	public float GetDistanceBetweenTwoLatLongCoordinates(Vector2 lonXlatY_A, Vector2 lonXlatY_B) {
-		//This distance formula uses a Haversine formula to calculate the distance
-		//It assumes a spherical earth rather than ellipsoidal which can give distance errors of roughly 0.3%
-		//	--source:www.movable-type.co.uk/scripts/latlong.html -- accessed May 24 2016
-		//We need to make sure our angles are in radians
-		float latA = Mathf.Deg2Rad * lonXlatY_A.y;
-		float latB = Mathf.Deg2Rad * lonXlatY_B.y;
-		float changeOfLat = (lonXlatY_B.y - lonXlatY_A.y) * Mathf.Deg2Rad;
-		float changeOfLon = (lonXlatY_B.x - lonXlatY_A.x) * Mathf.Deg2Rad;
-		float earthRadius = 6371000f; // in meters
-
-		//This is the Haversine implementation
-		float a = Mathf.Pow(Mathf.Sin(changeOfLat / 2), 2) +
-			Mathf.Cos(latA) * Mathf.Cos(latB) *
-			Mathf.Pow(Mathf.Sin(changeOfLon / 2), 2);
-		float c = 2 * Mathf.Atan2(Mathf.Sqrt(a), Mathf.Sqrt(1 - a));
-		float distance = earthRadius * c;
-
-		//return the distance
-		return distance;
-	}
-
-
+	
 
 	//====================================================================================================
 	//      CSV / DATA LOADING FUNCTIONS
 	//====================================================================================================
 
-	public void LoadSettlementList() {
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
-		char[] lineDelimiter = new char[] { '@' };
-		char[] recordDelimiter = new char[] { '_' };
-
-		string filename = "settlement_list_newgame";
-
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
-		//subtract one to account for the header line
-		settlement_masterList = new Settlement[fileByLine.Length - 1];
-		//start at index 1 to skip the record headers we have to then subtract 
-		//one when adding NEW settlements to the list to ensure we start at ZERO and not ONE
-		for (int lineCount = 1; lineCount < fileByLine.Length; lineCount++) {
-			//Debug.Log("-->" + fileByLine[lineCount]);
-			string[] records = fileByLine[lineCount].Split(lineDelimiter, StringSplitOptions.None);
-			//Debug.Log (records[1] + "  " + records[2] + " " + records[3] + " " + records[4]);
-			//NAME | LAT LONG | POPULATION | ELEVATION
-			int id;
-			if (records[0] == null)
-				id = -1;
-			else
-				id = int.Parse(records[0]);
-			string name;
-			if (records[1] == null)
-				name = "NO NAME";
-			else
-				name = records[1];
-			Vector2 longXlatY;
-			try {
-				longXlatY = new Vector2(float.Parse(records[3]), float.Parse(records[2]));
-			}
-			catch {
-				longXlatY = Vector2.zero;
-			}
-			float elevation;
-			try {
-				elevation = float.Parse(records[4]);
-			}
-			catch {
-				elevation = 0f;
-			}
-			int population;
-			population = int.Parse(records[5]);
-			settlement_masterList[lineCount - 1] = new Settlement(id, name, longXlatY, elevation, population);
-
-			//Grab the networks it belongs to
-			//List<int> networks = new List<int>();
-			string[] parsedNetworks = records[7].Split(recordDelimiter, StringSplitOptions.None);
-			foreach (string networkID in parsedNetworks)
-				settlement_masterList[lineCount - 1].networks.Add(int.Parse(networkID));
-
-			//load settlement's in/out network taxes
-			settlement_masterList[lineCount - 1].tax_neutral = float.Parse(records[9]);
-			settlement_masterList[lineCount - 1].tax_network = float.Parse(records[10]);
-			//load the settlement type, e.g. port, no port
-			settlement_masterList[lineCount - 1].typeOfSettlement = int.Parse(records[26]);
-			//add resources to settlement (records length - 2 is confusing, but there are items after the last resource--can probably change this later)
-			for (int recordIndex = 11; recordIndex < records.Length - 3; recordIndex++) {
-				settlement_masterList[lineCount - 1].cargo[recordIndex - 11].probabilityOfAvailability = float.Parse(records[recordIndex]);
-				//TODO The probability values are 1-100 and population affects the amount
-				//  Population/2 x (probabilityOfResource/100)
-				float amount = (settlement_masterList[lineCount - 1].population / 2) * (settlement_masterList[lineCount - 1].cargo[recordIndex - 11].probabilityOfAvailability / 1.5f);
-				settlement_masterList[lineCount - 1].cargo[recordIndex - 11].amount_kg = amount;
-			}
-			//Add model/prefab name to settlement
-			settlement_masterList[lineCount - 1].prefabName = records[records.Length - 2];
-			Debug.Log("********PREFAB NAME:     " + settlement_masterList[lineCount - 1].prefabName);
-			//Add description to settlement
-			settlement_masterList[lineCount - 1].description = records[records.Length - 1];
-
-			//Debug.Log (settlement_masterList[lineCount-1].ToString());
-			//Vector2 test = ConvertWGS1984ToWebMercator(longXlatY);
-			//Debug.Log (records[1] + " : " + test.x + " , " + test.y);
-
-
-		}
-
-	}
-
-	public void LoadWindRoses() {
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
-		char[] lineDelimiter = new char[] { ',' };
-
-		string filename = "windroses_january";
-
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
-
-		//For each line of the wind rose file (the row)
-		for (int row = 0; row < fileByLine.Length; row++) {
-			//Debug.Log("-->" + fileByLine[lineCount]);
-			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
-			//Now loop through each column of the line and assign it to a windrose within January
-			for (int col = 0; col < records.Length / 2; col++) {
-				float direction = float.Parse(records[col * 2]);//there are double the amount of columns in the file--these formulas account for that
-				float speed = float.Parse(records[(col * 2) + 1]);
-				windrose_January[col, row] = new WindRose(direction, speed);
-				//Debug.Log (col + " " + row + "   :   " + windrose_January[col,row].direction + " -> " + windrose_January[col,row].speed);
-			}
-		}
-	}
-
-	public void LoadWaterZonesFromFile() {
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
-		char[] lineDelimiter = new char[] { ',' };
-
-		string filename = "waterzones_january";
-
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
-
-		//For each line of the wind rose file (the row)
-		for (int row = 0; row < fileByLine.Length; row++) {
-			//Debug.Log("-->" + fileByLine[lineCount]);
-			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
-			//Now loop through each column of the line and assign it to a windrose within January
-			for (int col = 0; col < records.Length / 2; col++) {
-				float direction = float.Parse(records[col * 2]);//there are double the amount of columns in the file--these formulas account for that
-				float speed = float.Parse(records[(col * 2) + 1]);
-				currentRose_January[col, row] = new CurrentRose(direction, speed);
-				//Debug.Log (col + " " + row + "   :   " + currentRose_January[col,row].direction + " -> " + currentRose_January[col,row].speed);
-			}
-		}
-	}
-	public void LoadCaptainsLogEntries() {
-
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
-		char[] lineDelimiter = new char[] { '@' };
-		string filename = "captains_log_database";
-
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
-
-		captainsLogEntries = new CaptainsLogEntry[fileByLine.Length];
-		//For each line of the wind rose file (the row)
-		for (int row = 0; row < fileByLine.Length; row++) {
-			//Debug.Log (captainsLogEntries.Length + "  :  " + row);
-			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
-			captainsLogEntries[row] = new CaptainsLogEntry(int.Parse(records[0]), records[1]);
-
-		}
-
-		//Debugging
-		//for (int i = 0; i < captainsLogEntries.Length; i++)
-		//Debug.Log (captainsLogEntries[i].settlementID + "  :  " + captainsLogEntries[i].logEntry);
-	}
-
-	//This loads the main quest line from a CSV file in the resources
-	public MainQuestLine LoadMainQuestLine() {
-		MainQuestLine mainQuest = new MainQuestLine();
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
-		char[] lineDelimiter = new char[] { '@' };
-		char[] lineDelimiterB = new char[] { '_' };
-		string filename = "main_questline_database";
-
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
-
-		//start at index 1 to skip the record headers
-		//For each line of the main quest file (the row)
-		for (int row = 1; row < fileByLine.Length; row++) {
-			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
-			//Debug.Log (row);
-			//Debug.Log
-			//let's parse out all the crew roster changes
-			//Debug.Log ("LOADQUEST--Leg: " + records[0] + " )( removals: " + records[6]);
-			string[] crewRosterAdd = records[5].Split(lineDelimiterB, StringSplitOptions.None);
-			string[] crewRosterRemove = records[6].Split(lineDelimiterB, StringSplitOptions.None);
-			string[] mentionedSpots = records[4].Split(lineDelimiterB, StringSplitOptions.None);
-
-			List<int> crewToAdd = new List<int>();
-			foreach (string id in crewRosterAdd) {
-				crewToAdd.Add(int.Parse(id));
-			}
-			List<int> crewToRemove = new List<int>();
-			foreach (string id in crewRosterRemove) {
-				crewToRemove.Add(int.Parse(id));
-			}
-			List<int> mentionedPlaces = new List<int>();
-			foreach (string id in mentionedSpots) {
-				mentionedPlaces.Add(int.Parse(id));
-			}
-			//now let's see if we're on the last segment of the questline
-			bool isEnd = false;
-			if (row == fileByLine.Length - 1)
-				isEnd = true;
-			//Debug.Log("***************************");
-			//Debug.Log (records[1]);
-			//now add the segment to the main questline
-			mainQuest.questSegments.Add(new QuestSegment(int.Parse(records[0]), int.Parse(records[1]), records[2], records[3], crewToAdd, crewToRemove, isEnd, mentionedPlaces));
-		}
-
-		return mainQuest;
-	}
-
-	public void LoadMasterCrewRoster() {
-
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
-		char[] lineDelimiter = new char[] { '@' };
-
-		string filename = "crewmembers_database";
-
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
-
-		//start at index 1 to skip the record headers
-		//For each line of the main quest file (the row)
-		for (int row = 1; row < fileByLine.Length; row++) {
-			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
-
-			bool isKillable = false;
-			bool isPartOfMainQuest = false;
-			if (int.Parse(records[6]) == 1)
-				isKillable = true;
-			if (int.Parse(records[7]) == 1)
-				isPartOfMainQuest = true;
-			//Let's add a crewmember to the master roster
-			masterCrewList.Add(new CrewMember(int.Parse(records[0]), records[1], int.Parse(records[2]), int.Parse(records[3]), int.Parse(records[4]), records[5], isKillable, isPartOfMainQuest));
-		}
-
-	}
-
-	public void LoadAdjustedSettlementLocations() {
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
-		char[] lineDelimiter = new char[] { ',' };
-		int currentID = 0;
-		string filename = "settlement_unity_position_offsets";
-
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
-
-		for (int row = 0; row < fileByLine.Length; row++) {
-			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
-			currentID = int.Parse(records[0]);
-			Settlement thisSettlement = GetSettlementFromID(currentID);
-			thisSettlement.adjustedGamePosition = new Vector3(float.Parse(records[1]), float.Parse(records[2]), float.Parse(records[3]));
-			thisSettlement.eulerY = float.Parse(records[4]);
-		}
-
-	}
-
-	public string TryLoadFromGameFolder(string filename) {
-		try {
-			WWW localFile = new WWW("file://" + Application.dataPath + "/" + filename + ".txt");
-
-			while (!localFile.isDone) {
-				Debug.Log("Progress of Load File: " + localFile.progress);
-			}
-			Debug.Log(Application.dataPath + "/" + filename + ".txt");
-			Debug.Log(localFile.text);
-			if (localFile.text == "") {
-				TextAsset file = (TextAsset)Resources.Load(filename, typeof(TextAsset));
-				return file.text;
-			}
-			return localFile.text;
-
-		}
-		catch (Exception error) {
-			Debug.Log("Sorry! No file: " + filename + " was found in the game directory '" + Application.dataPath + "' or the save file is corrupt!\nError Code: " + error);
-			ShowANotificationMessage("Sorry! No file: " + filename + " was found in the game directory '" + Application.dataPath + "' or the save file is corrupt!\nError Code: " + error);
-			TextAsset file = (TextAsset)Resources.Load(filename, typeof(TextAsset));
-			return file.text;
-		}
-
-	}
-
-	public void LoadResourceList() {
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
-		char[] lineDelimiter = new char[] { '@' };
-		string filename = "resource_list";
-
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
-
-
-		//start at index 1 to skip the record headers we have to then subtract 
-		for (int lineCount = 1; lineCount < fileByLine.Length; lineCount++) {
-			string[] records = fileByLine[lineCount].Split(lineDelimiter, StringSplitOptions.None);
-			masterResourceList.Add(new MetaResource(records[1], int.Parse(records[0]), records[2]));
-		}
-	}
 
 	public bool LoadSavedGame() {
 		PlayerJourneyLog loadedJourney = new PlayerJourneyLog();
@@ -1402,7 +425,7 @@ public class globalVariables : MonoBehaviour
 			}
 			//We need to check if the settlement has an adjusted position or not--if it does then use it, otherwise use the given lat long coordinate
 			if (settlement.adjustedGamePosition.x == 0) {
-				Vector2 tempXY = Convert_WebMercator_UnityWorld(ConvertWGS1984ToWebMercator(settlement.location_longXlatY));
+				Vector2 tempXY = CoordinateUtil.Convert_WebMercator_UnityWorld(CoordinateUtil.ConvertWGS1984ToWebMercator(settlement.location_longXlatY));
 				Vector3 tempPos = new Vector3(tempXY.x, terrain.GetComponent<Terrain>().SampleHeight(new Vector3(tempXY.x, 0, tempXY.y)), tempXY.y);
 				currentSettlement.transform.position = tempPos;
 			}
@@ -1427,7 +450,6 @@ public class globalVariables : MonoBehaviour
 		//		--0_0
 		//			--Particle Rotater
 		//				--Wind particle system
-		windrose_January = new WindRose[64, 32];
 		windZoneParent = new GameObject();
 		windZoneParent.name = "WindZones Parent Object";
 		float originX = 0;
@@ -1435,8 +457,8 @@ public class globalVariables : MonoBehaviour
 		float zoneHeight = 128;
 		float zoneWidth = 64;
 
-		for (int col = 0; col < windrose_January.GetLength(0); col++) {
-			for (int row = 0; row < windrose_January.GetLength(1); row++) {
+		for (int col = 0; col < windZoneColumns; col++) {
+			for (int row = 0; row < windZoneRows; row++) {
 				GameObject newZone = new GameObject();
 				GameObject rotater = new GameObject();
 				GameObject windParticles;// = Instantiate(new GameObject(), Vector3.zero, transform.rotation) as GameObject;
@@ -1470,7 +492,6 @@ public class globalVariables : MonoBehaviour
 		//		--0_0
 		//			--Particle Rotater
 		//				--Wind particle system
-		currentRose_January = new CurrentRose[128, 64];
 		currentZoneParent = new GameObject();
 		currentZoneParent.name = "CurrentZones Parent Object";
 		float originX = 0;
@@ -1478,8 +499,8 @@ public class globalVariables : MonoBehaviour
 		float zoneHeight = 64;
 		float zoneWidth = 32;
 
-		for (int col = 0; col < currentRose_January.GetLength(0); col++) {
-			for (int row = 0; row < currentRose_January.GetLength(1); row++) {
+		for (int col = 0; col < currentZoneColumns; col++) {
+			for (int row = 0; row < currentZoneRows; row++) {
 				GameObject newZone = new GameObject();
 				GameObject rotater = new GameObject();
 				GameObject currentParticles;// = Instantiate(new GameObject(), Vector3.zero, transform.rotation) as GameObject;
@@ -1789,7 +810,7 @@ public class globalVariables : MonoBehaviour
 		playerShipVariables.ship.networkID = 246;
 		playerShipVariables.journey = new PlayerJourneyLog();
 		playerShipVariables.lastPlayerShipPosition = transform.position;
-		playerShipVariables.ship.mainQuest = LoadMainQuestLine();
+		playerShipVariables.ship.mainQuest = CSVLoader.LoadMainQuestLine();
 
 		//Setup the day/night cycle
 		playerShipVariables.UpdateDayNightCycle(IS_NEW_GAME);
@@ -2046,21 +1067,21 @@ public class globalVariables : MonoBehaviour
 	//    LOOKUP / DICTIONARY FUNCTIONS
 	//====================================================================================================   
 
-	public string GetJobClassEquivalency(int jobCode) {
+	public string GetJobClassEquivalency(CrewType jobCode) {
 		//This function simply returns a predefined string based on the number code of a crewmembers job
 		//	--based on their constant values held in the global variables 
 		string title = "";
 		switch (jobCode) {
-			case GV_CONST.CREWTYPE_SAILOR: title = "Sailor"; break;
-			case GV_CONST.CREWTYPE_WARRIOR: title = "Warrior"; break;
-			case GV_CONST.CREWTYPE_SLAVE: title = "Slave"; break;
-			case GV_CONST.CREWTYPE_PASSENGER: title = "Passenger"; break;
-			case GV_CONST.CREWTYPE_NAVIGATOR: title = "Navigator"; break;
-			case GV_CONST.CREWTYPE_ASSISTANT: title = "Assistant"; break;
-			case GV_CONST.CREWTYPE_GUIDE: title = "Guide"; break;
-			case GV_CONST.CREWTYPE_LAWYER: title = "Lawyer"; break;
-			case GV_CONST.CREWTYPE_ROYALTY: title = "Royalty"; break;
-			case GV_CONST.CREWTYPE_SEER: title = "Seer"; break;
+			case CrewType.Sailor: title = "Sailor"; break;
+			case CrewType.Warrior: title = "Warrior"; break;
+			case CrewType.Slave: title = "Slave"; break;
+			case CrewType.Passenger: title = "Passenger"; break;
+			case CrewType.Navigator: title = "Navigator"; break;
+			case CrewType.Assistant: title = "Assistant"; break;
+			case CrewType.Guide: title = "Guide"; break;
+			case CrewType.Lawyer: title = "Lawyer"; break;
+			case CrewType.Royalty: title = "Royalty"; break;
+			case CrewType.Seer: title = "Seer"; break;
 		}
 		return title;
 	}
@@ -2421,10 +1442,6 @@ public class globalVariables : MonoBehaviour
 
 	}
 
-	public bool FastApproximately(float a, float b, float threshold) {
-		return ((a < b) ? (b - a) : (a - b)) <= threshold;
-	}
-
 
 	public bool CheckIfCityIDIsPartOfNetwork(int cityID) {
 		//Debug.Log ("CITY PART OF NETWORK CEHCK: " + cityID);
@@ -2490,11 +1507,6 @@ public class globalVariables : MonoBehaviour
 	}
 
 
-	public float GetRange(float Xinput, float Xmax, float Xmin, float Ymax, float Ymin) {
-
-		return (((Xinput - Xmin) / (Xmax - Xmin)) * (Ymax - Ymin)) + Ymin;
-
-	}
 
 
 
