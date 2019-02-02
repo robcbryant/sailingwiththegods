@@ -56,6 +56,18 @@ public class globalVariables : MonoBehaviour
 	const int currentZoneColumns = 128;
 	const int currentZoneRows = 64;
 
+	// TODO: Is this a bug? These never change.
+	public const bool IS_NEW_GAME = true;
+	public const bool IS_NOT_NEW_GAME = false;
+
+	// TODO: Is this a bug? These never change.
+	public const string TD_year = "2000";
+	public const string TD_month = "1";
+	public const string TD_day = "1";
+	public const string TD_hour = "0";
+	public const string TD_minute = "0";
+	public const string TD_second = "0";
+
 	[Header("World Scene Refs")]
 	public GameObject FPVCamera;
 	public GameObject camera_Mapview;
@@ -103,6 +115,7 @@ public class globalVariables : MonoBehaviour
 	[HideInInspector] public List<Settlement> currentNetworkSettlements;//this is not a complete list--but rather a list of settlements generated through probability
 	[HideInInspector] public GameObject currentSettlementGameObject;
 	[HideInInspector] public Settlement currentSettlement;
+	[HideInInspector] public int currentPortTax = 0;		// this is derived from the currentSettlement. could be a getter on settlement object
 
 	// ship
 	[HideInInspector] public GameObject playerShip;
@@ -124,7 +137,9 @@ public class globalVariables : MonoBehaviour
 	[HideInInspector] public bool menuControlsLock = false;
 	[HideInInspector] public bool gameIsFinished = false;
 	[HideInInspector] public bool isPerformingRandomEvent = false;
+	[HideInInspector] public bool isPassingTime = false;
 
+	// notifications
 	//The main notifications are handled by the first two variables
 	//	--to make sure multiple notifications can be seen that might overlap, e.g. the player triggers two notifications in an action
 	//	--there are two and if the first is 'true' or showing a message, it will default to a secondary notification window
@@ -132,16 +147,11 @@ public class globalVariables : MonoBehaviour
 	[HideInInspector] public string notificationMessage = "";
 	[HideInInspector] public bool showSecondaryNotification = false;
 	[HideInInspector] public string secondaryNotificationMessage = "";
-	[HideInInspector] public int currentPortTax = 0;
-	[HideInInspector] public bool IS_NEW_GAME = true;
-	[HideInInspector] public bool IS_NOT_NEW_GAME = false;
-	[HideInInspector] public string TD_year = "2000";
-	[HideInInspector] public string TD_month = "1";
-	[HideInInspector] public string TD_day = "1";
-	[HideInInspector] public string TD_hour = "0";
-	[HideInInspector] public string TD_minute = "0";
-	[HideInInspector] public string TD_second = "0";
+
+	// environment
 	[HideInInspector] public Light mainLightSource;
+
+	// title and start screens
 	[HideInInspector] public bool startGameButton_isPressed = false;
 	[HideInInspector] public bool isTitleScreen = true;
 	[HideInInspector] public bool isStartScreen = false;
@@ -149,7 +159,6 @@ public class globalVariables : MonoBehaviour
 	[HideInInspector] public GameObject bg_titleScreen;
 	[HideInInspector] public GameObject bg_startScreen;
 	[HideInInspector] public bool isLoadedGame = false;
-	[HideInInspector] public bool isPassingTime = false;
 
 	//###################################
 	//	Crew Member Variables

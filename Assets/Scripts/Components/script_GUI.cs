@@ -711,7 +711,7 @@ public class script_GUI : MonoBehaviour
 		//Add a new route to the player journey log as a port entry
 		MGV.playerShipVariables.journey.AddRoute(new PlayerRoute(MGV.playerShip.transform.position, Vector3.zero, MGV.currentSettlement.settlementID, MGV.currentSettlement.name, false, MGV.playerShipVariables.ship.totalNumOfDaysTraveled), MGV.playerShipVariables, MGV.currentCaptainsLog);
 		//We should also update the ghost trail with this route otherwise itp roduce an empty 0,0,0 position later
-		MGV.playerShipVariables.UpdatePlayerGhostRouteLineRenderer(MGV.IS_NOT_NEW_GAME);
+		MGV.playerShipVariables.UpdatePlayerGhostRouteLineRenderer(globalVariables.IS_NOT_NEW_GAME);
 
 		//-------------------------------------------------
 		// UPDATE PLAYER CLOUT METER
@@ -933,7 +933,7 @@ public class script_GUI : MonoBehaviour
 			//Add a new route to the player journey log as a port exit
 			MGV.playerShipVariables.journey.AddRoute(new PlayerRoute(new Vector3(MGV.playerShip.transform.position.x, MGV.playerShip.transform.position.y, MGV.playerShip.transform.position.z), Vector3.zero, MGV.currentSettlement.settlementID, MGV.currentSettlement.name, true, MGV.playerShipVariables.ship.totalNumOfDaysTraveled), MGV.playerShipVariables, MGV.currentCaptainsLog);
 			//We should also update the ghost trail with this route otherwise itp roduce an empty 0,0,0 position later
-			MGV.playerShipVariables.UpdatePlayerGhostRouteLineRenderer(MGV.IS_NOT_NEW_GAME);
+			MGV.playerShipVariables.UpdatePlayerGhostRouteLineRenderer(globalVariables.IS_NOT_NEW_GAME);
 
 			//Turn off the coin image texture
 			MGV.GUI_PortMenu.SetActive(false);

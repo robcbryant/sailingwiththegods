@@ -487,7 +487,6 @@ public class Settlement
 
 public class Ship
 {
-
 	public string name;
 	public float speed;
 	public float health;
