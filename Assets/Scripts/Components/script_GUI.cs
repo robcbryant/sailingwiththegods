@@ -402,6 +402,7 @@ public class script_GUI : MonoBehaviour
 
 	}
 
+	// given the amount of this cargo in the current settlment, returns the price of it at this settlement based on scarcity
 	int GetPriceOfResource(float amount) {
 		//Price = 1000 * 1.2^(-.1*x)
 		int price = (int)Mathf.Floor(1000 * Mathf.Pow(1.2f, (-.1f * amount)));
