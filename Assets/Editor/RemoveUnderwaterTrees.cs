@@ -22,7 +22,7 @@ public static class RemoveUnderwaterTrees
 		var newTreeInstances = new List<TreeInstance>();
 
 		// calculate the normalized Water Level
-		var normalizedWaterLevel = -0.15f;
+		var normalizedWaterLevel = 0.001f;
 
 		// cycle through each tree
 		for (var t = 0; t < treeInstances.Length; t++ )
