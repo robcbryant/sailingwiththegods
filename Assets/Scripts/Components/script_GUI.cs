@@ -44,25 +44,7 @@ public class script_GUI : MonoBehaviour
 	//  SETUP ALL VARIABLES FOR THE GUI
 	//======================================================================================================================================================================
 	//======================================================================================================================================================================
-
-
-	//-----------------------------------------------------------
-	// Title Screen Variables
-	//-----------------------------------------------------------
-	public GameObject title_start;
-	public GameObject title_newgame_button;
-	public GameObject title_newgame_beginner_button;
-	public GameObject title_loadgame_button;
-	public GameObject title_loadgame_beginner_button;
-	public GameObject title_credits_button;
-	public GameObject title_credits_screen;
-	public GameObject title_credits_exit;
-	public GameObject title_credits_text;
-	public GameObject title_crew_select;
-	public GameObject title_crew_select_crew_list;
-	public GameObject title_crew_select_entry_template;
-	public GameObject title_crew_select_crew_count;
-	public GameObject title_crew_select_start_game;
+	
 
 	//-----------------------------------------------------------
 	// Game Over Notification Variables
@@ -130,8 +112,6 @@ public class script_GUI : MonoBehaviour
 	public GameObject hud_button_furlSails;
 	public GameObject hud_button_helpwindow;
 
-	public GameObject hud_captainsLog;
-
 	//-----------------------------------------------------------
 	// Port Menu TAB Content Panel Variables
 	//-----------------------------------------------------------
@@ -192,7 +172,7 @@ public class script_GUI : MonoBehaviour
 
 	//===================================
 	// OTHER VARS
-	globalVariables MGV;
+	GameVars GameVars;
 	public GameObject all_trade_rows;
 	public GameObject player_currency;
 	public GameObject player_current_cargo;
@@ -208,7 +188,7 @@ public class script_GUI : MonoBehaviour
 	//  INITIALIZE ANY NECESSARY VARIABLES
 	//======================================================================================================================================================================
 	void Start() {
-		MGV = GameObject.FindGameObjectWithTag("global_variables").GetComponent<globalVariables>();
+		GameVars = Globals.GameVars;
 
 	}
 
@@ -233,8 +213,8 @@ public class script_GUI : MonoBehaviour
 		//	--overhead to worry about.
 		updateLabelsForPlayerVariables();
 
-		if (MGV.updatePlayerCloutMeter) {
-			MGV.updatePlayerCloutMeter = false;
+		if (GameVars.updatePlayerCloutMeter) {
+			GameVars.updatePlayerCloutMeter = false;
 			GUI_UpdatePlayerCloutMeter();
 		}
 
@@ -242,37 +222,21 @@ public class script_GUI : MonoBehaviour
 		//  IF WE ARE AT THE TITLE SCREEN OR START SCREEN
 		//=====================================================================================================================================	
 
-		if (!MGV.runningMainGameGUI) {
+		if (!GameVars.runningMainGameGUI) {
 
 			//=====================================================================================================================================
 			// IF WE ARE AT THE TITLE SCREEN
-			if (MGV.isTitleScreen) {
+			if (GameVars.isTitleScreen) {
 
-				title_start.SetActive(true);
-
-				title_newgame_button.GetComponent<Button>().onClick.RemoveAllListeners();
-				title_newgame_beginner_button.GetComponent<Button>().onClick.RemoveAllListeners();
-				title_loadgame_button.GetComponent<Button>().onClick.RemoveAllListeners();
-				title_loadgame_beginner_button.GetComponent<Button>().onClick.RemoveAllListeners();
-				title_credits_button.GetComponent<Button>().onClick.RemoveAllListeners();
-				title_newgame_button.GetComponent<Button>().onClick.RemoveAllListeners();
-				title_newgame_button.GetComponent<Button>().onClick.AddListener(() => GUI_startNewGame(0));
-				title_newgame_beginner_button.GetComponent<Button>().onClick.AddListener(() => GUI_startNewGame(1));
-				title_loadgame_button.GetComponent<Button>().onClick.AddListener(() => GUI_loadGame(0));
-				title_loadgame_beginner_button.GetComponent<Button>().onClick.AddListener(() => GUI_loadGame(1));
-				title_credits_button.GetComponent<Button>().onClick.AddListener(() => GUI_showCredits());
-				title_credits_exit.GetComponent<Button>().onClick.AddListener(() => GUI_hideCredits());
-				title_credits_text.GetComponent<Text>().text = (Resources.Load("game_credits_message") as TextAsset).text;
-
-				MGV.isTitleScreen = false;
-
+				Globals.UI.Show<TitleScreen, GameViewModel>(new GameViewModel());
+				GameVars.isTitleScreen = false;			// TODO: Make this based on an event rather than this hacky one-time execution style.
 			}
 
 			//=====================================================================================================================================	
 			// IF WE ARE AT THE START SCREEN	-- SHOW START SCREEN GUI
 
 
-			if (MGV.isStartScreen) {
+			if (GameVars.isStartScreen) {
 
 
 
@@ -281,41 +245,38 @@ public class script_GUI : MonoBehaviour
 
 			//`````````````````````````````````````````````````````````````````
 			//Check to see if we need to show any generic notifications ?
-			if (MGV.showNotification) {
-				ShowNotification(MGV.notificationMessage);
-				MGV.menuControlsLock = true;
-				MGV.showNotification = false;
+			if (GameVars.showNotification) {
+				ShowNotification(GameVars.notificationMessage);
+				GameVars.menuControlsLock = true;
+				GameVars.showNotification = false;
 			}
 
 			//=====================================================================================================================================	
 			//  IF WE AREN'T AT THE TITLE SCREEN OR START SCREEN
 			//=====================================================================================================================================	
 		}
-		else if (MGV.runningMainGameGUI) {
+		else if (GameVars.runningMainGameGUI) {
 
 			//----------------------------------------------------------------------------------------------------------
 			//      ALL static GUI elements go here for normail gameplay, e.g. ship stats, etc.
 			//----------------------------------------------------------------------------------------------------------
 
 			//`````````````````````````````````````````````````````````````````
-			//  CAPTAINS LOG
-			hud_captainsLog.GetComponent<Text>().text = MGV.currentCaptainsLog;
-			//`````````````````````````````````````````````````````````````````
 			// 	SHIP STATS GUI
 			//Debug.Log ("Updating stats?");
-			hud_waterStores.GetComponent<Text>().text = ((int)MGV.playerShipVariables.ship.cargo[0].amount_kg).ToString();
-			hud_provisions.GetComponent<Text>().text = ((int)MGV.playerShipVariables.ship.cargo[1].amount_kg).ToString();
-			hud_shipHealth.GetComponent<Text>().text = ((int)MGV.playerShipVariables.ship.health).ToString();
-			hud_daysTraveled.GetComponent<Text>().text = (Mathf.Round(MGV.playerShipVariables.ship.totalNumOfDaysTraveled * 1000.0f) / 1000.0f).ToString();
-			hud_daysThirsty.GetComponent<Text>().text = (MGV.playerShipVariables.dayCounterThirsty).ToString();
-			hud_daysStarving.GetComponent<Text>().text = (MGV.playerShipVariables.dayCounterStarving).ToString();
-			hud_currentSpeed.GetComponent<Text>().text = (Mathf.Round(MGV.playerShipVariables.current_shipSpeed_Magnitude * 1000.0f) / 1000.0f).ToString();
-			hud_crewmember_count.GetComponent<Text>().text = (MGV.playerShipVariables.ship.crew).ToString();
-			hud_playerClout.GetComponent<Text>().text = MGV.GetCloutTitleEquivalency((int)(Mathf.Round(MGV.playerShipVariables.ship.playerClout * 1000.0f) / 1000.0f));
+			hud_waterStores.GetComponent<Text>().text = ((int)GameVars.playerShipVariables.ship.cargo[0].amount_kg).ToString();
+			hud_provisions.GetComponent<Text>().text = ((int)GameVars.playerShipVariables.ship.cargo[1].amount_kg).ToString();
+			hud_shipHealth.GetComponent<Text>().text = ((int)GameVars.playerShipVariables.ship.health).ToString();
+			hud_daysTraveled.GetComponent<Text>().text = (Mathf.Round(GameVars.playerShipVariables.ship.totalNumOfDaysTraveled * 1000.0f) / 1000.0f).ToString();
+			hud_daysThirsty.GetComponent<Text>().text = (GameVars.playerShipVariables.dayCounterThirsty).ToString();
+			hud_daysStarving.GetComponent<Text>().text = (GameVars.playerShipVariables.dayCounterStarving).ToString();
+			hud_currentSpeed.GetComponent<Text>().text = (Mathf.Round(GameVars.playerShipVariables.current_shipSpeed_Magnitude * 1000.0f) / 1000.0f).ToString();
+			hud_crewmember_count.GetComponent<Text>().text = (GameVars.playerShipVariables.ship.crew).ToString();
+			hud_playerClout.GetComponent<Text>().text = GameVars.GetCloutTitleEquivalency((int)(Mathf.Round(GameVars.playerShipVariables.ship.playerClout * 1000.0f) / 1000.0f));
 			//`````````````````````````````````````````````````````````````````
 			// DOCKING BUTTON -- other GUI button click handlers are done in the editor--These are done here because the button's behavior changes based on other variables. The others do not
-			if (MGV.showSettlementTradeButton) { hud_button_dock.transform.GetChild(0).GetComponent<Text>().text = "CLICK TO \n  DOCK WITH \n" + MGV.currentSettlement.name; hud_button_dock.GetComponent<Button>().onClick.RemoveAllListeners(); hud_button_dock.GetComponent<Button>().onClick.AddListener(() => GUI_checkOutOrDockWithPort(true)); }
-			else if (MGV.showNonPortDockButton) { hud_button_dock.transform.GetChild(0).GetComponent<Text>().text = "CHECK OUT \n" + MGV.currentSettlement.name; hud_button_dock.GetComponent<Button>().onClick.RemoveAllListeners(); hud_button_dock.GetComponent<Button>().onClick.AddListener(() => GUI_checkOutOrDockWithPort(true)); }
+			if (GameVars.showSettlementTradeButton) { hud_button_dock.transform.GetChild(0).GetComponent<Text>().text = "CLICK TO \n  DOCK WITH \n" + GameVars.currentSettlement.name; hud_button_dock.GetComponent<Button>().onClick.RemoveAllListeners(); hud_button_dock.GetComponent<Button>().onClick.AddListener(() => GUI_checkOutOrDockWithPort(true)); }
+			else if (GameVars.showNonPortDockButton) { hud_button_dock.transform.GetChild(0).GetComponent<Text>().text = "CHECK OUT \n" + GameVars.currentSettlement.name; hud_button_dock.GetComponent<Button>().onClick.RemoveAllListeners(); hud_button_dock.GetComponent<Button>().onClick.AddListener(() => GUI_checkOutOrDockWithPort(true)); }
 			else { hud_button_dock.transform.GetChild(0).GetComponent<Text>().text = "DOCKING \n CURRENTLY \n UNAVAILABLE"; hud_button_dock.GetComponent<Button>().onClick.RemoveAllListeners(); }
 
 
@@ -325,31 +286,31 @@ public class script_GUI : MonoBehaviour
 
 			//`````````````````````````````````````````````````````````````````
 			//WE ARE SHOWING A YES / NO  PORT TAX NOTIFICATION POP UP	?
-			if (MGV.showPortDockingNotification) {
-				MGV.showPortDockingNotification = false;
-				MGV.menuControlsLock = true;
+			if (GameVars.showPortDockingNotification) {
+				GameVars.showPortDockingNotification = false;
+				GameVars.menuControlsLock = true;
 				GUI_ShowPortDockingNotification();
 			}
-			else if (MGV.showNonPortDockingNotification) {
-				MGV.menuControlsLock = true;
-				MGV.showNonPortDockingNotification = false;
+			else if (GameVars.showNonPortDockingNotification) {
+				GameVars.menuControlsLock = true;
+				GameVars.showNonPortDockingNotification = false;
 				GUI_ShowNonPortDockingNotification();
 			}
 
 			//`````````````````````````````````````````````````````````````````
 			//Check to see if we need to show any generic notifications ?
-			if (MGV.showNotification) {
-				ShowNotification(MGV.notificationMessage);
-				MGV.menuControlsLock = true;
-				MGV.showNotification = false;
+			if (GameVars.showNotification) {
+				ShowNotification(GameVars.notificationMessage);
+				GameVars.menuControlsLock = true;
+				GameVars.showNotification = false;
 			}
 
 			//`````````````````````````````````````````````````````````````````
 			// GAME OVER GUI
-			if (MGV.isGameOver) {
-				MGV.menuControlsLock = true;
+			if (GameVars.isGameOver) {
+				GameVars.menuControlsLock = true;
 				GUI_ShowGameOverNotification();
-				MGV.isGameOver = false;
+				GameVars.isGameOver = false;
 			}
 
 
@@ -357,10 +318,10 @@ public class script_GUI : MonoBehaviour
 
 			//`````````````````````````````````````````````````````````````````
 			// WIN THE GAME GUI
-			if (MGV.gameIsFinished) {
-				MGV.menuControlsLock = true;
+			if (GameVars.gameIsFinished) {
+				GameVars.menuControlsLock = true;
 				GUI_ShowGameIsFinishedNotification();
-				MGV.gameIsFinished = false;
+				GameVars.gameIsFinished = false;
 			}
 
 		}
@@ -412,7 +373,7 @@ public class script_GUI : MonoBehaviour
 	}
 
 	bool CheckIfPlayerCanAffordToPayPortTaxes() {
-		if (MGV.playerShipVariables.ship.currency >= MGV.currentPortTax) return true; else return false;
+		if (GameVars.playerShipVariables.ship.currency >= GameVars.currentPortTax) return true; else return false;
 	}
 
 	int GetTaxRateOnCurrentShipManifest() {
@@ -420,10 +381,10 @@ public class script_GUI : MonoBehaviour
 		float totalPriceOfGoods = 0f;
 
 		//Loop through each resource in the settlement's cargo and figure out the price of that resource 
-		for (int setIndex = 2; setIndex < MGV.currentSettlement.cargo.Length; setIndex++) {
-			float currentResourcePrice = GetPriceOfResource(MGV.currentSettlement.cargo[setIndex].amount_kg);
+		for (int setIndex = 2; setIndex < GameVars.currentSettlement.cargo.Length; setIndex++) {
+			float currentResourcePrice = GetPriceOfResource(GameVars.currentSettlement.cargo[setIndex].amount_kg);
 			//with this price, let's check the ships cargo at the same index position and calculate its worth and add it to the total
-			totalPriceOfGoods += (currentResourcePrice * MGV.playerShipVariables.ship.cargo[setIndex].amount_kg);
+			totalPriceOfGoods += (currentResourcePrice * GameVars.playerShipVariables.ship.cargo[setIndex].amount_kg);
 			//Debug.Log (MGV.currentSettlement.cargo[setIndex].name + totalPriceOfGoods);
 
 
@@ -432,16 +393,16 @@ public class script_GUI : MonoBehaviour
 		float taxRateToApply = 0f;
 		//Now we need to figure out the tax on the total price of the cargo--which is based on the settlements in/out of network tax
 		// total price / 100 * tax rate = amount player owes to settlement for docking
-		if (MGV.isInNetwork)
-			taxRateToApply = MGV.currentSettlement.tax_network;
+		if (GameVars.isInNetwork)
+			taxRateToApply = GameVars.currentSettlement.tax_network;
 		else
-			taxRateToApply = MGV.currentSettlement.tax_neutral;
+			taxRateToApply = GameVars.currentSettlement.tax_neutral;
 
 		//Add the players clout modifier. It will be a 0-100 percent reduction of the current tax rate
 
-		float taxReductionAmount = taxRateToApply * (-1 * MGV.GetOverallCloutModifier(MGV.currentSettlement.settlementID));
+		float taxReductionAmount = taxRateToApply * (-1 * GameVars.GetOverallCloutModifier(GameVars.currentSettlement.settlementID));
 		float newTaxRate = taxRateToApply + taxReductionAmount;
-		MGV.currentPortTax = (int)newTaxRate;
+		GameVars.currentPortTax = (int)newTaxRate;
 
 		return (int)((totalPriceOfGoods / 100) * taxRateToApply);
 	}
@@ -451,12 +412,12 @@ public class script_GUI : MonoBehaviour
 		//	1 Does the city have the resource for the player to buy?
 		//	2 Does the player have the currency to buy the resource?
 		//	3 Does the player have the cargo hold space to buy the resource?
-		float resourceAmount = MGV.currentSettlement.cargo[cargoIndex].amount_kg;
+		float resourceAmount = GameVars.currentSettlement.cargo[cargoIndex].amount_kg;
 		float price = GetPriceOfResource(resourceAmount);
 
 		if (resourceAmount >= amountToCheck
-			&& (price * amountToCheck) < MGV.playerShipVariables.ship.currency
-			&& (MGV.playerShipVariables.ship.cargo_capicity_kg - MGV.playerShipVariables.ship.GetTotalCargoAmount()) >= amountToCheck)
+			&& (price * amountToCheck) < GameVars.playerShipVariables.ship.currency
+			&& (GameVars.playerShipVariables.ship.cargo_capicity_kg - GameVars.playerShipVariables.ship.GetTotalCargoAmount()) >= amountToCheck)
 			return true;
 		else
 			return false;
@@ -465,7 +426,7 @@ public class script_GUI : MonoBehaviour
 	bool CheckShipResourceAvailability(int amountToCheck, int cargoIndex) {
 		//This function checks 1 thing(s):
 		//	1 Does the player have cargo to sell?
-		if (MGV.playerShipVariables.ship.cargo[cargoIndex].amount_kg >= amountToCheck)
+		if (GameVars.playerShipVariables.ship.cargo[cargoIndex].amount_kg >= amountToCheck)
 			return true;
 		else
 			return false;
@@ -473,112 +434,34 @@ public class script_GUI : MonoBehaviour
 	}
 
 	void ChangeSettlementCargo(int cargoIndex, float changeAmount) {
-		MGV.currentSettlement.cargo[cargoIndex].amount_kg += changeAmount;
+		GameVars.currentSettlement.cargo[cargoIndex].amount_kg += changeAmount;
 	}
 
 	void ChangeShipCargo(int cargoIndex, float changeAmount) {
-		float price = GetPriceOfResource(MGV.currentSettlement.cargo[cargoIndex].amount_kg);
-		Debug.Log(cargoIndex + "  :  " + MGV.playerShipVariables.ship.cargo[cargoIndex].amount_kg + "  :  " + changeAmount);
-		MGV.playerShipVariables.ship.cargo[cargoIndex].amount_kg += changeAmount;
+		float price = GetPriceOfResource(GameVars.currentSettlement.cargo[cargoIndex].amount_kg);
+		Debug.Log(cargoIndex + "  :  " + GameVars.playerShipVariables.ship.cargo[cargoIndex].amount_kg + "  :  " + changeAmount);
+		GameVars.playerShipVariables.ship.cargo[cargoIndex].amount_kg += changeAmount;
 		//we use a (-) change amount here because the changeAmount reflects the direction of the goods
 		//e.g. if the player is selling--they are negative in cargo---but their currency is positive and vice versa.
-		MGV.playerShipVariables.ship.currency += (int)(price * -changeAmount);
+		GameVars.playerShipVariables.ship.currency += (int)(price * -changeAmount);
 	}
 
 	void ShowShipResources() {
-		for (int i = 0; i < MGV.playerShipVariables.ship.cargo.Length; i++) {
+		for (int i = 0; i < GameVars.playerShipVariables.ship.cargo.Length; i++) {
 			Text currentCargoLabel = (Text)all_trade_rows.transform.GetChild(i).GetChild(6).GetComponent<Text>();
-			currentCargoLabel.text = (int)MGV.playerShipVariables.ship.cargo[i].amount_kg + " kg";
+			currentCargoLabel.text = (int)GameVars.playerShipVariables.ship.cargo[i].amount_kg + " kg";
 		}
 	}
 
 	//=====================================================================================================================================	
 	//  GUI Interaction Functions are the remaining code below. All of these functions control some aspect of the GUI based on state changes
 	//=====================================================================================================================================	
-
-
-
-	//-------------------------------------------------------------------------------------------------------------------------
-	//   TITLE SCREEN FUNCTIONS AND COMPONENTS
-
-	public void GUI_showCredits() {
-		title_credits_screen.SetActive(true);
-	}
-	public void GUI_hideCredits() {
-		title_credits_screen.SetActive(false);
-	}
-
-
-	public void GUI_startNewGame(int difficulty) {
-		MGV.isTitleScreen = false;
-		MGV.isStartScreen = true;
-		title_start.SetActive(false);
-
-		MGV.FillNewGameCrewRosterAvailability();
-
-		if (difficulty == 0) MGV.gameDifficulty_Beginner = false;
-		else MGV.gameDifficulty_Beginner = true;
-		MGV.SetupBeginnerGameDifficulty();
-
-		title_crew_select.SetActive(true);
-		GUI_SetupStartScreenCrewSelection();
-
-	}
-
-	public void GUI_loadGame(int difficulty) {
-		if (MGV.LoadSavedGame()) {
-			MGV.isLoadedGame = true;
-			MGV.isTitleScreen = false;
-			MGV.isStartScreen = false;
-			title_start.SetActive(false);
-			title_crew_select.SetActive(false);
-			MGV.camera_titleScreen.SetActive(false);
-
-
-
-			//Turn on the environment fog
-			RenderSettings.fog = true;
-			//Now turn on the main player controls camera
-			MGV.FPVCamera.SetActive(true);
-			//Turn on the player distance fog wall
-			MGV.playerShipVariables.fogWall.SetActive(true);
-			//Now enable the controls
-			MGV.controlsLocked = false;
-			//For the argonautica, let's set the crew capacity to 30
-			MGV.playerShipVariables.ship.crewCapacity = 30;
-			MGV.playerShipVariables.ship.crew = MGV.playerShipVariables.ship.crewRoster.Count;
-			//Let's increase the ships cargo capacity
-			MGV.playerShipVariables.ship.cargo_capicity_kg = 1200f;
-			//Set the player's initial position to the new position
-			MGV.playerShipVariables.lastPlayerShipPosition = MGV.playerShip.transform.position;
-			//Update Ghost Route
-			MGV.LoadSavedGhostRoute();
-
-
-			//Setup Difficulty Level
-			if (difficulty == 0) MGV.gameDifficulty_Beginner = false;
-			else MGV.gameDifficulty_Beginner = true;
-			MGV.SetupBeginnerGameDifficulty();
-
-			//Turn on the ship HUD
-			player_hud_parent.SetActive(true);
-
-			MGV.controlsLocked = false;
-			//Flag the main GUI scripts to turn on
-			MGV.runningMainGameGUI = true;
-		}
-	}
-
-
-
-
-
-
+	
 	//-------------------------------------------------------------------------------------------------------------------------
 	//   GAME OVER NOTIFICATIONS AND COMPONENTS
 
 	public void GUI_ShowGameOverNotification() {
-		MGV.controlsLocked = true;
+		GameVars.controlsLocked = true;
 		//Set the notification window as active
 		gameover_main.SetActive(true);
 		//Setup the GameOver Message
@@ -590,7 +473,7 @@ public class script_GUI : MonoBehaviour
 	}
 
 	public void GUI_ShowGameIsFinishedNotification() {
-		MGV.controlsLocked = true;
+		GameVars.controlsLocked = true;
 		//Set the notification window as active
 		gameover_main.SetActive(true);
 		//Setup the GameOver Message
@@ -604,9 +487,9 @@ public class script_GUI : MonoBehaviour
 
 	public void GUI_RestartGame() {
 		gameover_main.SetActive(false);
-		MGV.menuControlsLock = false;
+		GameVars.menuControlsLock = false;
 		//Restart from Beginning
-		MGV.RestartGame();
+		GameVars.RestartGame();
 	}
 
 
@@ -618,9 +501,9 @@ public class script_GUI : MonoBehaviour
 		//Show the non port notification window
 		nonport_info_main.SetActive(true);
 		//Set the title
-		nonport_info_name.GetComponent<Text>().text = MGV.currentSettlement.name;
+		nonport_info_name.GetComponent<Text>().text = GameVars.currentSettlement.name;
 		//Set the description
-		nonport_info_notification.GetComponent<Text>().text = MGV.currentSettlement.description;
+		nonport_info_notification.GetComponent<Text>().text = GameVars.currentSettlement.description;
 		//Setup the okay button
 		nonport_info_okay.GetComponent<Button>().onClick.RemoveAllListeners();
 		nonport_info_okay.GetComponent<Button>().onClick.AddListener(() => GUI_ExitPortNotification());
@@ -628,29 +511,29 @@ public class script_GUI : MonoBehaviour
 
 
 	public void GUI_ShowPortDockingNotification() {
-		MGV.controlsLocked = true;
+		GameVars.controlsLocked = true;
 
 		//Show the port notification pop up
 		port_info_main.SetActive(true);
 		//Set the title
-		port_info_name.GetComponent<Text>().text = MGV.currentSettlement.name;
+		port_info_name.GetComponent<Text>().text = GameVars.currentSettlement.name;
 		//Setup the message for the scroll view
 		string portMessage = "";
-		portMessage += MGV.currentSettlement.description;
+		portMessage += GameVars.currentSettlement.description;
 		portMessage += "\n\n";
-		if (MGV.isInNetwork) {
+		if (GameVars.isInNetwork) {
 			portMessage += "This Port is part of your network!\n";
-			if (MGV.crewMemberWithNetwork != null) portMessage += "Your crewman, " + MGV.crewMemberWithNetwork.name + " assures you their connections here are strong! They should welcome you openly and waive your port taxes on entering!";
+			if (GameVars.crewMemberWithNetwork != null) portMessage += "Your crewman, " + GameVars.crewMemberWithNetwork.name + " assures you their connections here are strong! They should welcome you openly and waive your port taxes on entering!";
 			else portMessage += "You know this port as captain very well! You expect that your social connections here will soften the port taxes in your favor!";
 		}
 		else {
 			portMessage += "This port is outside your social network!\n";
 		}
 
-		if (MGV.currentPortTax != 0) {
-			portMessage += "If you want to dock here, your tax for entering will be " + MGV.currentPortTax + " drachma. \n";
+		if (GameVars.currentPortTax != 0) {
+			portMessage += "If you want to dock here, your tax for entering will be " + GameVars.currentPortTax + " drachma. \n";
 			//If the port tax will make the player go negative--alert them as they enter
-			if (MGV.playerShipVariables.ship.currency - MGV.currentPortTax < 0) portMessage += "Docking here will put you in debt for " + (MGV.playerShipVariables.ship.currency - MGV.currentPortTax) + "drachma, and you may lose your ship!\n";
+			if (GameVars.playerShipVariables.ship.currency - GameVars.currentPortTax < 0) portMessage += "Docking here will put you in debt for " + (GameVars.playerShipVariables.ship.currency - GameVars.currentPortTax) + "drachma, and you may lose your ship!\n";
 		}
 		else {
 			portMessage += "You only have food and water stores on board, with no taxable goods. Thankfully you will dock for free!";
@@ -669,33 +552,33 @@ public class script_GUI : MonoBehaviour
 	public void GUI_ExitPortNotification() {
 		//Turn off both nonport AND port notification windows
 		port_info_main.SetActive(false);
-		MGV.showPortDockingNotification = false;
+		GameVars.showPortDockingNotification = false;
 		nonport_info_main.SetActive(false);
-		MGV.showNonPortDockingNotification = false;
-		MGV.controlsLocked = false;
-		MGV.menuControlsLock = false;
+		GameVars.showNonPortDockingNotification = false;
+		GameVars.controlsLocked = false;
+		GameVars.menuControlsLock = false;
 	}
 
 	public void GUI_EnterPort() {
 		//Turn off port welcome screen
-		MGV.showPortDockingNotification = false;
+		GameVars.showPortDockingNotification = false;
 		port_info_main.SetActive(false);
-		port_info_taxes.GetComponent<Text>().text = MGV.currentPortTax.ToString();
+		port_info_taxes.GetComponent<Text>().text = GameVars.currentPortTax.ToString();
 		//Check if current Settlement is part of the main quest line
-		MGV.CheckIfCurrentSettlementIsPartOfMainQuest(MGV.currentSettlement.settlementID);
+		GameVars.CheckIfCurrentSettlementIsPartOfMainQuest(GameVars.currentSettlement.settlementID);
 		//Add this settlement to the player's knowledge base
-		MGV.playerShipVariables.ship.playerJournal.AddNewSettlementToLog(MGV.currentSettlement.settlementID);
+		GameVars.playerShipVariables.ship.playerJournal.AddNewSettlementToLog(GameVars.currentSettlement.settlementID);
 		//Determine what settlements are available to the player in the tavern
-		MGV.GenerateProbableInfoListOfSettlementsInCurrentNetwork();
-		MGV.GenerateListOfAvailableCrewAtCurrentPort();
-		MGV.showSettlementTradeGUI = true;
-		MGV.showSettlementTradeButton = false;
-		MGV.controlsLocked = true;
+		GameVars.GenerateProbableInfoListOfSettlementsInCurrentNetwork();
+		GameVars.GenerateListOfAvailableCrewAtCurrentPort();
+		GameVars.showSettlementTradeGUI = true;
+		GameVars.showSettlementTradeButton = false;
+		GameVars.controlsLocked = true;
 
 		//-------------------------------------------------
 		//NEW GUI FUNCTIONS FOR SETTING UP TAB CONTENT
 		//Show Port Menu
-		MGV.GUI_PortMenu.SetActive(true);
+		GameVars.GUI_PortMenu.SetActive(true);
 
 		//Load Resource labels
 		ShowShipResources();
@@ -710,9 +593,9 @@ public class script_GUI : MonoBehaviour
 		GUI_TAB_SetupCrewManagementPanel();
 
 		//Add a new route to the player journey log as a port entry
-		MGV.playerShipVariables.journey.AddRoute(new PlayerRoute(MGV.playerShip.transform.position, Vector3.zero, MGV.currentSettlement.settlementID, MGV.currentSettlement.name, false, MGV.playerShipVariables.ship.totalNumOfDaysTraveled), MGV.playerShipVariables, MGV.currentCaptainsLog);
+		GameVars.playerShipVariables.journey.AddRoute(new PlayerRoute(GameVars.playerShip.transform.position, Vector3.zero, GameVars.currentSettlement.settlementID, GameVars.currentSettlement.name, false, GameVars.playerShipVariables.ship.totalNumOfDaysTraveled), GameVars.playerShipVariables, GameVars.currentCaptainsLog);
 		//We should also update the ghost trail with this route otherwise itp roduce an empty 0,0,0 position later
-		MGV.playerShipVariables.UpdatePlayerGhostRouteLineRenderer(globalVariables.IS_NOT_NEW_GAME);
+		GameVars.playerShipVariables.UpdatePlayerGhostRouteLineRenderer(GameVars.IS_NOT_NEW_GAME);
 
 		//-------------------------------------------------
 		// UPDATE PLAYER CLOUT METER
@@ -729,8 +612,8 @@ public class script_GUI : MonoBehaviour
 		GUI_SetPortBGImage();
 		GUI_SetPortPopulation();
 		GUI_GetBuiltMonuments();
-		port_info_cityName.GetComponent<Text>().text = MGV.currentSettlement.name;
-		port_info_description.GetComponent<Text>().text = MGV.currentSettlement.description;
+		port_info_cityName.GetComponent<Text>().text = GameVars.currentSettlement.name;
+		port_info_description.GetComponent<Text>().text = GameVars.currentSettlement.description;
 
 	}
 
@@ -739,7 +622,7 @@ public class script_GUI : MonoBehaviour
 		// UPDATE PLAYER CLOUT METER
 		// *This assumes the child gameobject elements of the clout meter are in order from lowest to highest. If not--then this will produce undesirable results
 		bool foundMatch = false;
-		hud_playerClout.GetComponent<Text>().text = MGV.GetCloutTitleEquivalency((int)(Mathf.Round(MGV.playerShipVariables.ship.playerClout * 1000.0f) / 1000.0f));
+		hud_playerClout.GetComponent<Text>().text = GameVars.GetCloutTitleEquivalency((int)(Mathf.Round(GameVars.playerShipVariables.ship.playerClout * 1000.0f) / 1000.0f));
 		for (int i = 0; i < port_info_cloutMeter.transform.childCount; i++) {
 			Transform currentCloutMeter = port_info_cloutMeter.transform.GetChild(i);
 			Debug.Log(currentCloutMeter.name + "  =?  " + hud_playerClout.GetComponent<Text>().text);
@@ -758,8 +641,8 @@ public class script_GUI : MonoBehaviour
 		//Looks through the player's known settlements and adds it to a "/n" separated list
 		string list = "";
 		int counter = 0;
-		foreach (int knownSettlementID in MGV.playerShipVariables.ship.playerJournal.knownSettlements) {
-			list += MGV.GetSettlementFromID(knownSettlementID).name + "\n";
+		foreach (int knownSettlementID in GameVars.playerShipVariables.ship.playerJournal.knownSettlements) {
+			list += GameVars.GetSettlementFromID(knownSettlementID).name + "\n";
 			counter++;
 		}
 		port_info_playerCities.GetComponent<Text>().text = list;
@@ -770,8 +653,8 @@ public class script_GUI : MonoBehaviour
 		//Looks through the hometowns of all crew and adds them to a list
 		string list = "";
 		int counter = 0;
-		foreach (CrewMember crewman in MGV.playerShipVariables.ship.crewRoster) {
-			list += MGV.GetSettlementFromID(crewman.originCity).name + "\n";
+		foreach (CrewMember crewman in GameVars.playerShipVariables.ship.crewRoster) {
+			list += GameVars.GetSettlementFromID(crewman.originCity).name + "\n";
 			counter++;
 		}
 		port_info_crewCities.GetComponent<Text>().text = list;
@@ -790,7 +673,7 @@ public class script_GUI : MonoBehaviour
 		int seers = 0;
 		int other = 0;
 		string list = "";
-		foreach (CrewMember crewman in MGV.playerShipVariables.ship.crewRoster) {
+		foreach (CrewMember crewman in GameVars.playerShipVariables.ship.crewRoster) {
 			switch (crewman.typeOfCrew) {
 				case CrewType.Sailor:
 					sailors++;
@@ -819,11 +702,11 @@ public class script_GUI : MonoBehaviour
 	}
 
 	public void GUI_GetBuiltMonuments() {
-		port_info_monumentsList.GetComponent<Text>().text = MGV.playerShipVariables.ship.builtMonuments;
+		port_info_monumentsList.GetComponent<Text>().text = GameVars.playerShipVariables.ship.builtMonuments;
 	}
 
 	public void GUI_SetPortPopulation() {
-		int pop = MGV.currentSettlement.population;
+		int pop = GameVars.currentSettlement.population;
 		if (pop >= 0 && pop < 25) port_info_population.GetComponent<Text>().text = "Village";
 		else if (pop >= 25 && pop < 50) port_info_population.GetComponent<Text>().text = "Town";
 		else if (pop >= 50 && pop < 75) port_info_population.GetComponent<Text>().text = "City";
@@ -832,9 +715,9 @@ public class script_GUI : MonoBehaviour
 	}
 
 	public void GUI_SetPortBGImage() {
-		Debug.Log("LOOKING FOR BG CITY-------->   " + MGV.currentSettlement.settlementID.ToString());
+		Debug.Log("LOOKING FOR BG CITY-------->   " + GameVars.currentSettlement.settlementID.ToString());
 		//Get the settlement ID as a string
-		string currentID = MGV.currentSettlement.settlementID.ToString();
+		string currentID = GameVars.currentSettlement.settlementID.ToString();
 		Sprite currentBGTex = Resources.Load<Sprite>("settlement_portraits/" + currentID);
 		Debug.Log(currentBGTex);
 		//Now test if it exists, if the settlement does not have a matching texture, then default to a basic one
@@ -844,10 +727,10 @@ public class script_GUI : MonoBehaviour
 	}
 
 	public void GUI_SetPortCoinImage() {
-		Debug.Log("LOOKING FOR COIN CITY-------->   " + MGV.currentSettlement.settlementID.ToString());
+		Debug.Log("LOOKING FOR COIN CITY-------->   " + GameVars.currentSettlement.settlementID.ToString());
 		//Show the coin image associated with this settlement
 		//Get the settlement ID as a string
-		string currentID = MGV.currentSettlement.settlementID.ToString();
+		string currentID = GameVars.currentSettlement.settlementID.ToString();
 		Sprite currentCoinTex = Resources.Load<Sprite>("settlement_coins/" + currentID);
 		Debug.Log(currentCoinTex);
 		//Now test if it exists, if the settlement does not have a matching texture, then default to a basic one
@@ -897,7 +780,7 @@ public class script_GUI : MonoBehaviour
 		//If there are only 2 children (the hidden template notification and the one we are about to delete), then turn off the notification system window and set it to active = false
 		if (notice_notificationParent.transform.childCount == 2) {
 			notice_notificationSystem.SetActive(false);
-			MGV.menuControlsLock = false;
+			GameVars.menuControlsLock = false;
 		}
 		//Remove the current notification that flagged this event
 		GameObject.Destroy(notification);
@@ -912,9 +795,9 @@ public class script_GUI : MonoBehaviour
 	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void ShowSettlementResources() {
 
-		for (int i = 0; i < MGV.currentSettlement.cargo.Length; i++) {
+		for (int i = 0; i < GameVars.currentSettlement.cargo.Length; i++) {
 			Text currentExchangeRate = (Text)all_trade_rows.transform.GetChild(i).GetChild(3).GetComponent<Text>();
-			currentExchangeRate.text = GetPriceOfResource(MGV.currentSettlement.cargo[i].amount_kg) + "d/kg";
+			currentExchangeRate.text = GetPriceOfResource(GameVars.currentSettlement.cargo[i].amount_kg) + "d/kg";
 		}
 
 	}
@@ -922,28 +805,28 @@ public class script_GUI : MonoBehaviour
 	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_Button_TryToLeavePort() {
 		if (CheckIfPlayerCanAffordToPayPortTaxes()) {
-			MGV.showSettlementTradeGUI = false;
-			MGV.showSettlementTradeButton = true;
+			GameVars.showSettlementTradeGUI = false;
+			GameVars.showSettlementTradeButton = true;
 			//MGV.controlsLocked = false;
 			//Start Our time passage
-			MGV.isPassingTime = true;
-			StartCoroutine(MGV.playerShipVariables.WaitForTimePassing(.25f, true));
-			MGV.justLeftPort = true;
-			MGV.playerShipVariables.ship.currency -= MGV.currentPortTax;
+			GameVars.isPassingTime = true;
+			StartCoroutine(GameVars.playerShipVariables.WaitForTimePassing(.25f, true));
+			GameVars.justLeftPort = true;
+			GameVars.playerShipVariables.ship.currency -= GameVars.currentPortTax;
 
 			//Add a new route to the player journey log as a port exit
-			MGV.playerShipVariables.journey.AddRoute(new PlayerRoute(new Vector3(MGV.playerShip.transform.position.x, MGV.playerShip.transform.position.y, MGV.playerShip.transform.position.z), Vector3.zero, MGV.currentSettlement.settlementID, MGV.currentSettlement.name, true, MGV.playerShipVariables.ship.totalNumOfDaysTraveled), MGV.playerShipVariables, MGV.currentCaptainsLog);
+			GameVars.playerShipVariables.journey.AddRoute(new PlayerRoute(new Vector3(GameVars.playerShip.transform.position.x, GameVars.playerShip.transform.position.y, GameVars.playerShip.transform.position.z), Vector3.zero, GameVars.currentSettlement.settlementID, GameVars.currentSettlement.name, true, GameVars.playerShipVariables.ship.totalNumOfDaysTraveled), GameVars.playerShipVariables, GameVars.currentCaptainsLog);
 			//We should also update the ghost trail with this route otherwise itp roduce an empty 0,0,0 position later
-			MGV.playerShipVariables.UpdatePlayerGhostRouteLineRenderer(globalVariables.IS_NOT_NEW_GAME);
+			GameVars.playerShipVariables.UpdatePlayerGhostRouteLineRenderer(GameVars.IS_NOT_NEW_GAME);
 
 			//Turn off the coin image texture
-			MGV.GUI_PortMenu.SetActive(false);
-			MGV.menuControlsLock = false;
+			GameVars.GUI_PortMenu.SetActive(false);
+			GameVars.menuControlsLock = false;
 
 		}
 		else {//Debug.Log ("Not Enough Drachma to Leave the Port!");
-			MGV.showNotification = true;
-			MGV.notificationMessage = "Not Enough Drachma to pay the port tax and leave!";
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = "Not Enough Drachma to pay the port tax and leave!";
 		}
 	}
 
@@ -957,7 +840,7 @@ public class script_GUI : MonoBehaviour
 
 		if (CheckSettlementResourceAvailability((int)(amount), id)) { ChangeShipCargo(id, amount); ChangeSettlementCargo(id, -amount); }
 
-		currentCargoLabel.text = (int)MGV.playerShipVariables.ship.cargo[id].amount_kg + " kg";
+		currentCargoLabel.text = (int)GameVars.playerShipVariables.ship.cargo[id].amount_kg + " kg";
 
 		GUI_CheckAllResourceButtonsForValidity(id);
 		ShowSettlementResources();
@@ -973,7 +856,7 @@ public class script_GUI : MonoBehaviour
 
 		if (CheckShipResourceAvailability((int)(amount), id)) { ChangeShipCargo(id, -amount); ChangeSettlementCargo(id, amount); }
 
-		currentCargoLabel.text = (int)MGV.playerShipVariables.ship.cargo[id].amount_kg + " kg";
+		currentCargoLabel.text = (int)GameVars.playerShipVariables.ship.cargo[id].amount_kg + " kg";
 
 		GUI_CheckAllResourceButtonsForValidity(id);
 		ShowSettlementResources();
@@ -1013,9 +896,9 @@ public class script_GUI : MonoBehaviour
 
 	//This function updates the player cargo labels after any exchange between money and resources has been made
 	public void updateLabelsForPlayerVariables() {
-		player_currency.GetComponent<Text>().text = MGV.playerShipVariables.ship.currency.ToString();
-		player_current_cargo.GetComponent<Text>().text = Mathf.CeilToInt(MGV.playerShipVariables.ship.GetTotalCargoAmount()).ToString();
-		player_max_cargo.GetComponent<Text>().text = Mathf.CeilToInt(MGV.playerShipVariables.ship.cargo_capicity_kg).ToString();
+		player_currency.GetComponent<Text>().text = GameVars.playerShipVariables.ship.currency.ToString();
+		player_current_cargo.GetComponent<Text>().text = Mathf.CeilToInt(GameVars.playerShipVariables.ship.GetTotalCargoAmount()).ToString();
+		player_max_cargo.GetComponent<Text>().text = Mathf.CeilToInt(GameVars.playerShipVariables.ship.cargo_capicity_kg).ToString();
 
 	}
 
@@ -1023,10 +906,10 @@ public class script_GUI : MonoBehaviour
 	public void GUI_checkOutOrDockWithPort(bool isAvailable) {
 		if (isAvailable) {
 			//Figure out if this settlement is part of the player's network
-			MGV.isInNetwork = MGV.CheckIfCityIDIsPartOfNetwork(MGV.currentSettlement.settlementID);
+			GameVars.isInNetwork = GameVars.CheckIfCityIDIsPartOfNetwork(GameVars.currentSettlement.settlementID);
 			//Figure out the tax on the cargo hold
-			MGV.currentPortTax = GetTaxRateOnCurrentShipManifest();
-			MGV.showPortDockingNotification = true;
+			GameVars.currentPortTax = GetTaxRateOnCurrentShipManifest();
+			GameVars.showPortDockingNotification = true;
 		}
 		//Else do nothing
 	}
@@ -1037,6 +920,8 @@ public class script_GUI : MonoBehaviour
 	// SETUP THE CREW SELECTION START SCREEN
 	//=================================================================================================================	
 
+	// TODO: Crew selection disabled for now
+	/*
 	public void GUI_SetupStartScreenCrewSelection() {
 		//We need to be sure to EMPTY the crew list before we start a new one--this is superfluous in a fresh game start--the list is already empty in the GUI, but on an in-game restart
 		//we have to empty the list or else we will add a duplicate list and cause all sorts of fun errors and behavior
@@ -1047,12 +932,12 @@ public class script_GUI : MonoBehaviour
 		Button startGame = (Button)title_crew_select_start_game.GetComponent<Button>();
 		startGame.onClick.RemoveAllListeners();//We have to remove this listener before we add it in case of an in-game restart, otherwise we have to simulataneous duplicate listeners when the button is pressed
 		startGame.onClick.AddListener(() => GUI_startMainGame());
-		for (int i = 0; i < MGV.newGameAvailableCrew.Count; i++) {
+		for (int i = 0; i < GameVars.newGameAvailableCrew.Count; i++) {
 			//Debug.Log ("CREW COUNT   " +i);
 			//We have to re-declare the CrewMember argument here or else when we apply the variable to the onClick() handler
 			//	--all onClick()'s in this loop will reference the last CrewMember instance in the loop rather than their
 			//	--respective iterated instances
-			CrewMember currentMember = MGV.newGameAvailableCrew[i];
+			CrewMember currentMember = GameVars.newGameAvailableCrew[i];
 
 			//First let's get a clone of our hidden row in the tavern scroll view
 			GameObject currentMemberRow = Instantiate((GameObject)title_crew_select_entry_template.transform.gameObject) as GameObject;
@@ -1080,9 +965,9 @@ public class script_GUI : MonoBehaviour
 
 
 			memberName.text = currentMember.name;
-			memberJob.text = MGV.GetJobClassEquivalency(currentMember.typeOfCrew);
-			memberHome.text = MGV.GetSettlementFromID(currentMember.originCity).name;
-			memberClout.text = MGV.GetCloutTitleEquivalency(currentMember.clout);
+			memberJob.text = GameVars.GetJobClassEquivalency(currentMember.typeOfCrew);
+			memberHome.text = GameVars.GetSettlementFromID(currentMember.originCity).name;
+			memberClout.text = GameVars.GetCloutTitleEquivalency(currentMember.clout);
 
 
 			moreMemberInfo.onClick.RemoveAllListeners();
@@ -1092,8 +977,8 @@ public class script_GUI : MonoBehaviour
 			int numOfCrew = 0;
 			int currentIndex = i;
 			//If the crewmember is necessary for the quest--lock the selection in as true
-			if (!MGV.newGameAvailableCrew[i].isKillable) {
-				MGV.newGameCrewSelectList[i] = true;
+			if (!GameVars.newGameAvailableCrew[i].isKillable) {
+				GameVars.newGameCrewSelectList[i] = true;
 				hireMember.transform.GetChild(0).GetComponent<Text>().text = "X";
 				numOfCrew++;
 			}
@@ -1107,17 +992,17 @@ public class script_GUI : MonoBehaviour
 	}
 	public void GUI_CrewSelectToggle(int crewIndex) {
 		Transform currentCrewman = title_crew_select_crew_list.transform.Find("Content").GetChild(crewIndex + 1).Find("Hire Button");
-		if (MGV.newGameCrewSelectList[crewIndex] != true) {
+		if (GameVars.newGameCrewSelectList[crewIndex] != true) {
 			currentCrewman.GetChild(0).GetComponent<Text>().text = "X";
-			MGV.newGameCrewSelectList[crewIndex] = true;
+			GameVars.newGameCrewSelectList[crewIndex] = true;
 		}
 		else {
 			currentCrewman.GetChild(0).GetComponent<Text>().text = "";
-			MGV.newGameCrewSelectList[crewIndex] = false;
+			GameVars.newGameCrewSelectList[crewIndex] = false;
 		}
 		//Update our crew total!
 		int crewTotal = 0;
-		foreach (bool crew in MGV.newGameCrewSelectList) {
+		foreach (bool crew in GameVars.newGameCrewSelectList) {
 			if (crew) crewTotal++;
 		}
 		title_crew_select_crew_count.GetComponent<Text>().text = crewTotal.ToString();
@@ -1127,7 +1012,7 @@ public class script_GUI : MonoBehaviour
 		if (crewTotal >= 30) {
 			for (int x = 1; x < title_crew_select_crew_list.transform.Find("Content").childCount; x++) {
 				Transform childButton = title_crew_select_crew_list.transform.Find("Content").GetChild(x).Find("Hire Button");
-				if (!MGV.newGameCrewSelectList[x - 1]) childButton.gameObject.SetActive(false);
+				if (!GameVars.newGameCrewSelectList[x - 1]) childButton.gameObject.SetActive(false);
 			}
 			//Enable our Start Game Button
 			title_crew_select_start_game.SetActive(true);
@@ -1141,36 +1026,7 @@ public class script_GUI : MonoBehaviour
 		}
 		//Debug.Log(crewTotal);
 	}
-
-	public void GUI_startMainGame() {
-		MGV.camera_titleScreen.SetActive(false);
-		MGV.bg_startScreen.SetActive(false);
-
-		//Turn on the environment fog
-		RenderSettings.fog = true;
-
-		//Now turn on the main player controls camera
-		MGV.FPVCamera.SetActive(true);
-
-		//Turn on the player distance fog wall
-		MGV.playerShipVariables.fogWall.SetActive(true);
-
-		//Now change titleScreen to false
-		MGV.isTitleScreen = false;
-		MGV.isStartScreen = false;
-
-		//Now enable the controls
-		MGV.controlsLocked = false;
-
-		//Initiate the main questline
-		MGV.InitiateMainQuestLineForPlayer();
-
-		//Reset Start Game Button
-		MGV.startGameButton_isPressed = false;
-
-		title_crew_select.SetActive(false);
-		player_hud_parent.SetActive(true);
-	}
+	*/
 
 
 
@@ -1196,7 +1052,7 @@ public class script_GUI : MonoBehaviour
 		//replacement.transform.SetParent(tab_crew_hireScrollWindow.transform);
 
 		//Create a list of 5 crew members to hire
-		for (int i = 0; i < MGV.currentlyAvailableCrewMembersAtPort.Count; i++) {
+		for (int i = 0; i < GameVars.currentlyAvailableCrewMembersAtPort.Count; i++) {
 
 			//First let's get a clone of our hidden row in the tavern scroll view
 			GameObject currentMemberRow = Instantiate((GameObject)tab_crew_hireScrollWindow.transform.GetChild(0).gameObject) as GameObject;
@@ -1212,12 +1068,12 @@ public class script_GUI : MonoBehaviour
 			Button hireMember = (Button)currentMemberRow.transform.Find("Hire Button").GetComponent<Button>();
 			Button moreMemberInfo = (Button)currentMemberRow.transform.Find("Backstory/Backstory Button").GetComponent<Button>();
 
-			CrewMember currentMember = MGV.currentlyAvailableCrewMembersAtPort[i];
+			CrewMember currentMember = GameVars.currentlyAvailableCrewMembersAtPort[i];
 			memberName.text = currentMember.name;
-			memberJob.text = MGV.GetJobClassEquivalency(currentMember.typeOfCrew);
+			memberJob.text = GameVars.GetJobClassEquivalency(currentMember.typeOfCrew);
 			memberCost.text = (currentMember.clout * 2).ToString();//TODO Temporary solution--need to add a clout check modifier
-			memberHome.text = MGV.GetSettlementFromID(currentMember.originCity).name;
-			memberClout.text = MGV.GetCloutTitleEquivalency(currentMember.clout);
+			memberHome.text = GameVars.GetSettlementFromID(currentMember.originCity).name;
+			memberClout.text = GameVars.GetCloutTitleEquivalency(currentMember.clout);
 
 			hireMember.onClick.RemoveAllListeners();
 			hireMember.onClick.AddListener(() => GUI_HireCrewMember(currentMember, currentMemberRow, int.Parse(memberCost.text)));
@@ -1238,7 +1094,7 @@ public class script_GUI : MonoBehaviour
 		//replacement.transform.SetParent(tab_crew_hireScrollWindow.transform);
 
 		//Now add our curent crew members
-		foreach (CrewMember member in MGV.playerShipVariables.ship.crewRoster) {
+		foreach (CrewMember member in GameVars.playerShipVariables.ship.crewRoster) {
 			//We have to re-declare the CrewMember argument here or else when we apply the variable to the onClick() handler
 			//	--all onClick()'s in this loop will reference the last CrewMember instance in the loop rather than their
 			//	--respective iterated instances
@@ -1258,9 +1114,9 @@ public class script_GUI : MonoBehaviour
 			Button moreMemberInfo = (Button)currentMemberRow.transform.Find("Backstory/Backstory Button").GetComponent<Button>();
 
 			memberName.text = currentMember.name;
-			memberJob.text = MGV.GetJobClassEquivalency(currentMember.typeOfCrew);
-			memberHome.text = MGV.GetSettlementFromID(currentMember.originCity).name;
-			memberClout.text = MGV.GetCloutTitleEquivalency(currentMember.clout);
+			memberJob.text = GameVars.GetJobClassEquivalency(currentMember.typeOfCrew);
+			memberHome.text = GameVars.GetSettlementFromID(currentMember.originCity).name;
+			memberClout.text = GameVars.GetCloutTitleEquivalency(currentMember.clout);
 
 			fireMember.onClick.RemoveAllListeners();
 			fireMember.onClick.AddListener(() => GUI_FireCrewMember(currentMember, currentMemberRow));
@@ -1275,9 +1131,9 @@ public class script_GUI : MonoBehaviour
 
 	public void GUI_FireCrewMember(CrewMember crewman, GameObject currentRow) {
 		GameObject.Destroy(currentRow);
-		MGV.playerShipVariables.ship.crewRoster.Remove(crewman);
-		MGV.showNotification = true;
-		MGV.notificationMessage = crewman.name + " looked at you sadly and said before leaving, 'I thought I was doing so well. I'm sorry I let you down. Guess I'll go drink some cheap wine...";
+		GameVars.playerShipVariables.ship.crewRoster.Remove(crewman);
+		GameVars.showNotification = true;
+		GameVars.notificationMessage = crewman.name + " looked at you sadly and said before leaving, 'I thought I was doing so well. I'm sorry I let you down. Guess I'll go drink some cheap wine...";
 		GUI_GetListOfCitiesInCrewNetworks();
 		GUI_GetCrewMakeupList();
 	}
@@ -1285,13 +1141,13 @@ public class script_GUI : MonoBehaviour
 
 	public void GUI_HireCrewMember(CrewMember crewman, GameObject currentRow, int costToHire) {
 		//Check to see if player has enough money to hire
-		if (MGV.playerShipVariables.ship.currency >= costToHire) {
+		if (GameVars.playerShipVariables.ship.currency >= costToHire) {
 			//Now check to see if there is room to hire a new crew member!
-			if (MGV.playerShipVariables.ship.crewRoster.Count < MGV.playerShipVariables.ship.crewCapacity) {
-				MGV.playerShipVariables.ship.crewRoster.Add(crewman);
+			if (GameVars.playerShipVariables.ship.crewRoster.Count < GameVars.playerShipVariables.ship.crewCapacity) {
+				GameVars.playerShipVariables.ship.crewRoster.Add(crewman);
 
 				//Subtract the cost from the ship's money
-				MGV.playerShipVariables.ship.currency -= costToHire;
+				GameVars.playerShipVariables.ship.currency -= costToHire;
 
 				//Remove Row
 				GameObject.Destroy(currentRow);
@@ -1300,22 +1156,22 @@ public class script_GUI : MonoBehaviour
 				//If there isn't room, then let the player know
 			}
 			else {
-				MGV.showNotification = true;
-				MGV.notificationMessage = "You don't have room on the ship to hire " + crewman.name + ".";
+				GameVars.showNotification = true;
+				GameVars.notificationMessage = "You don't have room on the ship to hire " + crewman.name + ".";
 			}
 			//If not enough money, then let the player know
 		}
 		else {
-			MGV.showNotification = true;
-			MGV.notificationMessage = "You can't afford to hire " + crewman.name + ".";
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = "You can't afford to hire " + crewman.name + ".";
 		}
 		GUI_GetListOfCitiesInCrewNetworks();
 		GUI_GetCrewMakeupList();
 	}
 
 	public void GUI_GetBackgroundInfo(string info) {
-		MGV.showNotification = true;
-		MGV.notificationMessage = info;
+		GameVars.showNotification = true;
+		GameVars.notificationMessage = info;
 
 	}
 
@@ -1327,7 +1183,7 @@ public class script_GUI : MonoBehaviour
 
 
 		//-------NEW LOAN-----------------------
-		if (MGV.playerShipVariables.ship.currentLoan == null) {
+		if (GameVars.playerShipVariables.ship.currentLoan == null) {
 			//Turn on the panel we need and the others off
 			tab_loan_new_parent.SetActive(true);
 			tab_loan_old_parent.SetActive(false);
@@ -1336,15 +1192,15 @@ public class script_GUI : MonoBehaviour
 			//Setup the initial term to repay the loan
 			float numOfDaysToPayOffLoan = 10;
 			//Determine the base loan amount off the city's population
-			float baseLoanAmount = 500 * (MGV.currentSettlement.population / 1000);
+			float baseLoanAmount = 500 * (GameVars.currentSettlement.population / 1000);
 			//If base loan amount is less than 200 then make it 200 as the smallest amount available
 			if (baseLoanAmount < 200f) baseLoanAmount = 200f;
 			//Determine the actual loan amount off the player's clout
-			int loanAmount = (int)(baseLoanAmount + (baseLoanAmount * MGV.GetOverallCloutModifier(MGV.currentSettlement.settlementID)));
+			int loanAmount = (int)(baseLoanAmount + (baseLoanAmount * GameVars.GetOverallCloutModifier(GameVars.currentSettlement.settlementID)));
 			//Determmine the base interest rate of the loan off the city's population
-			float baseInterestRate = 10 + (MGV.currentSettlement.population / 1000);
+			float baseInterestRate = 10 + (GameVars.currentSettlement.population / 1000);
 			//Determine finalized interest rate after determining player's clout
-			float finalInterestRate = (float)System.Math.Round(baseInterestRate - (baseInterestRate * MGV.GetOverallCloutModifier(MGV.currentSettlement.settlementID)), 3);
+			float finalInterestRate = (float)System.Math.Round(baseInterestRate - (baseInterestRate * GameVars.GetOverallCloutModifier(GameVars.currentSettlement.settlementID)), 3);
 			//Determine the precompiled interest if returned on time
 			int totalAmountDueAtTerm = Mathf.CeilToInt(loanAmount + (loanAmount * (finalInterestRate / 100)));
 
@@ -1353,7 +1209,7 @@ public class script_GUI : MonoBehaviour
 			tab_loan_new_loanAmount.GetComponent<Text>().text = loanAmount.ToString();
 			tab_loan_new_totalOwed.GetComponent<Text>().text = totalAmountDueAtTerm.ToString();
 			//Create the Loan object for our button to process		
-			Loan newLoan = new Loan(loanAmount, finalInterestRate, numOfDaysToPayOffLoan, MGV.currentSettlement.settlementID);
+			Loan newLoan = new Loan(loanAmount, finalInterestRate, numOfDaysToPayOffLoan, GameVars.currentSettlement.settlementID);
 
 			tab_loan_new_takeLoanButton.GetComponent<Button>().onClick.RemoveAllListeners();
 			tab_loan_new_takeLoanButton.GetComponent<Button>().onClick.AddListener(() => GUI_TakeOutLoan(loanAmount, newLoan));
@@ -1362,14 +1218,14 @@ public class script_GUI : MonoBehaviour
 			//If the player does have a loan already, then we need to make them aware of that
 			//--If the player is back at the origin settlement of the loan, then the player should be allowed to pay the loan back
 		}
-		else if (MGV.CheckIfShipBackAtLoanOriginPort()) {
+		else if (GameVars.CheckIfShipBackAtLoanOriginPort()) {
 			//Turn on the panel we need and the others off
 			tab_loan_new_parent.SetActive(false);
 			tab_loan_old_parent.SetActive(true);
 			tab_loan_elsewhere_parent.SetActive(false);
 
-			int loanAmount = MGV.playerShipVariables.ship.currentLoan.GetTotalAmountDueWithInterest();
-			tab_loan_old_dueDate.GetComponent<Text>().text = MGV.playerShipVariables.ship.currentLoan.numOfDaysUntilDue.ToString();
+			int loanAmount = GameVars.playerShipVariables.ship.currentLoan.GetTotalAmountDueWithInterest();
+			tab_loan_old_dueDate.GetComponent<Text>().text = GameVars.playerShipVariables.ship.currentLoan.numOfDaysUntilDue.ToString();
 			tab_loan_old_loanAmount.GetComponent<Text>().text = loanAmount.ToString();
 
 			tab_loan_old_payBackButton.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -1384,9 +1240,9 @@ public class script_GUI : MonoBehaviour
 			tab_loan_old_parent.SetActive(false);
 			tab_loan_elsewhere_parent.SetActive(true);
 
-			tab_loan_elsewhere_dueDate.GetComponent<Text>().text = MGV.playerShipVariables.ship.currentLoan.numOfDaysUntilDue.ToString();
-			tab_loan_elsewhere_loanAmount.GetComponent<Text>().text = MGV.playerShipVariables.ship.currentLoan.GetTotalAmountDueWithInterest().ToString();
-			tab_loan_elsewhere_loanOrigin.GetComponent<Text>().text = MGV.GetSettlementFromID(MGV.playerShipVariables.ship.currentLoan.settlementOfOrigin).name;
+			tab_loan_elsewhere_dueDate.GetComponent<Text>().text = GameVars.playerShipVariables.ship.currentLoan.numOfDaysUntilDue.ToString();
+			tab_loan_elsewhere_loanAmount.GetComponent<Text>().text = GameVars.playerShipVariables.ship.currentLoan.GetTotalAmountDueWithInterest().ToString();
+			tab_loan_elsewhere_loanOrigin.GetComponent<Text>().text = GameVars.GetSettlementFromID(GameVars.playerShipVariables.ship.currentLoan.settlementOfOrigin).name;
 
 		}
 
@@ -1397,28 +1253,28 @@ public class script_GUI : MonoBehaviour
 
 	public void GUI_PayBackLoan(int amountDue) {
 		//Pay the loan back if the player has the currency to do it
-		if (MGV.playerShipVariables.ship.currency > amountDue) {
-			MGV.playerShipVariables.ship.currency -= amountDue;
-			MGV.playerShipVariables.ship.currentLoan = null;
-			MGV.showNotification = true;
-			MGV.notificationMessage = "You paid back your loan and earned a little respect!";
+		if (GameVars.playerShipVariables.ship.currency > amountDue) {
+			GameVars.playerShipVariables.ship.currency -= amountDue;
+			GameVars.playerShipVariables.ship.currentLoan = null;
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = "You paid back your loan and earned a little respect!";
 			//give a boost to the players clout for paying back loan
-			MGV.AdjustPlayerClout(3);
+			GameVars.AdjustPlayerClout(3);
 			//Reset our loan panel
 			GUI_TAB_SetupLoanManagementPanel();
 			//Otherwise let player know they can't afford to pay the loan back
 		}
 		else {
-			MGV.showNotification = true;
-			MGV.notificationMessage = "You currently can't afford to pay your loan back! Better make some more money!";
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = "You currently can't afford to pay your loan back! Better make some more money!";
 		}
 	}
 
 	public void GUI_TakeOutLoan(int loanAmount, Loan loan) {
-		MGV.playerShipVariables.ship.currentLoan = loan;
-		MGV.playerShipVariables.ship.currency += loanAmount;
-		MGV.showNotification = true;
-		MGV.notificationMessage = "You took out a loan of " + loanAmount + " drachma! Remember to pay it back in due time!";
+		GameVars.playerShipVariables.ship.currentLoan = loan;
+		GameVars.playerShipVariables.ship.currency += loanAmount;
+		GameVars.showNotification = true;
+		GameVars.notificationMessage = "You took out a loan of " + loanAmount + " drachma! Remember to pay it back in due time!";
 		//Reset our loan panel
 		GUI_TAB_SetupLoanManagementPanel();
 	}
@@ -1432,12 +1288,12 @@ public class script_GUI : MonoBehaviour
 
 		int baseCost = 0;
 		//We need to do a clout check as well as a network checks
-		int baseModifier = Mathf.CeilToInt(1000 - (200 * MGV.GetOverallCloutModifier(MGV.currentSettlement.settlementID)));
-		if (MGV.CheckIfCityIDIsPartOfNetwork(MGV.currentSettlement.settlementID)) {
-			baseCost = Mathf.CeilToInt(MGV.currentSettlement.tax_network * baseModifier * 1);
+		int baseModifier = Mathf.CeilToInt(1000 - (200 * GameVars.GetOverallCloutModifier(GameVars.currentSettlement.settlementID)));
+		if (GameVars.CheckIfCityIDIsPartOfNetwork(GameVars.currentSettlement.settlementID)) {
+			baseCost = Mathf.CeilToInt(GameVars.currentSettlement.tax_network * baseModifier * 1);
 		}
 		else {
-			baseCost = Mathf.CeilToInt(MGV.currentSettlement.tax_neutral * baseModifier * 1);
+			baseCost = Mathf.CeilToInt(GameVars.currentSettlement.tax_neutral * baseModifier * 1);
 		}
 
 		int statueCost = baseCost / 2;
@@ -1458,52 +1314,52 @@ public class script_GUI : MonoBehaviour
 	//----------------------------MONUMENT PANEL HELPER FUNCTIONS
 	public void GUI_BuildAStatue(int cost) {
 
-		if (MGV.playerShipVariables.ship.currency > cost) {
-			MGV.playerShipVariables.ship.currency -= cost;
-			MGV.showNotification = true;
-			MGV.notificationMessage = "You built a statue for " + MGV.currentSettlement.name + "! You've earned a little clout!";
-			MGV.AdjustPlayerClout(1);
-			MGV.playerShipVariables.ship.builtMonuments += MGV.currentSettlement.name + " -- " + "Statue\n";
+		if (GameVars.playerShipVariables.ship.currency > cost) {
+			GameVars.playerShipVariables.ship.currency -= cost;
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = "You built a statue for " + GameVars.currentSettlement.name + "! You've earned a little clout!";
+			GameVars.AdjustPlayerClout(1);
+			GameVars.playerShipVariables.ship.builtMonuments += GameVars.currentSettlement.name + " -- " + "Statue\n";
 			GUI_GetBuiltMonuments();
 
 		}
 		else {
-			MGV.showNotification = true;
-			MGV.notificationMessage = "You don't have enough money to build a statue for " + MGV.currentSettlement.name;
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = "You don't have enough money to build a statue for " + GameVars.currentSettlement.name;
 		}
 
 	}
 	public void GUI_BuildAShrine(int cost) {
 
-		if (MGV.playerShipVariables.ship.currency > cost) {
-			MGV.playerShipVariables.ship.currency -= cost;
-			MGV.showNotification = true;
-			MGV.notificationMessage = "You built a shrine for " + MGV.currentSettlement.name + "! You've earned quite a bit of clout!";
-			MGV.AdjustPlayerClout(4);
-			MGV.playerShipVariables.ship.builtMonuments += MGV.currentSettlement.name + " -- " + "Shrine\n";
+		if (GameVars.playerShipVariables.ship.currency > cost) {
+			GameVars.playerShipVariables.ship.currency -= cost;
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = "You built a shrine for " + GameVars.currentSettlement.name + "! You've earned quite a bit of clout!";
+			GameVars.AdjustPlayerClout(4);
+			GameVars.playerShipVariables.ship.builtMonuments += GameVars.currentSettlement.name + " -- " + "Shrine\n";
 			GUI_GetBuiltMonuments();
 
 		}
 		else {
-			MGV.showNotification = true;
-			MGV.notificationMessage = "You don't have enough money to build a Shrine for " + MGV.currentSettlement.name;
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = "You don't have enough money to build a Shrine for " + GameVars.currentSettlement.name;
 		}
 
 	}
 	public void GUI_BuildATemple(int cost) {
 
-		if (MGV.playerShipVariables.ship.currency > cost) {
-			MGV.playerShipVariables.ship.currency -= cost;
-			MGV.showNotification = true;
-			MGV.notificationMessage = "You built a temple for " + MGV.currentSettlement.name + "! You've earned a tremendous amount of clout!";
-			MGV.AdjustPlayerClout(8);
-			MGV.playerShipVariables.ship.builtMonuments += MGV.currentSettlement.name + " -- " + "Temple\n";
+		if (GameVars.playerShipVariables.ship.currency > cost) {
+			GameVars.playerShipVariables.ship.currency -= cost;
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = "You built a temple for " + GameVars.currentSettlement.name + "! You've earned a tremendous amount of clout!";
+			GameVars.AdjustPlayerClout(8);
+			GameVars.playerShipVariables.ship.builtMonuments += GameVars.currentSettlement.name + " -- " + "Temple\n";
 			GUI_GetBuiltMonuments();
 
 		}
 		else {
-			MGV.showNotification = true;
-			MGV.notificationMessage = "You don't have enough money to build a Temple for " + MGV.currentSettlement.name;
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = "You don't have enough money to build a Temple for " + GameVars.currentSettlement.name;
 		}
 	}
 
@@ -1520,10 +1376,10 @@ public class script_GUI : MonoBehaviour
 		}
 
 		//First clear the settlement list
-		foreach (int settlementID in MGV.playerShipVariables.ship.playerJournal.knownSettlements) {
-			Settlement settlement = MGV.GetSettlementFromID(settlementID);
+		foreach (int settlementID in GameVars.playerShipVariables.ship.playerJournal.knownSettlements) {
+			Settlement settlement = GameVars.GetSettlementFromID(settlementID);
 			//make sure not to list the current settlement the player is at
-			if (MGV.currentSettlement.settlementID != settlementID) {
+			if (GameVars.currentSettlement.settlementID != settlementID) {
 				//First let's get a clone of our hidden row in the tavern scroll view
 				GameObject currentPort = Instantiate((GameObject)tab_tavern_scrollWindow.transform.GetChild(0).gameObject) as GameObject;
 				currentPort.transform.SetParent((Transform)tab_tavern_scrollWindow.transform);
@@ -1537,8 +1393,8 @@ public class script_GUI : MonoBehaviour
 				portLabel.text = settlement.name;
 				//Let's setup the Navigator hiring information
 				//-- Figure out the Cost to Hire a navigator for this city
-				float initialCost = CoordinateUtil.GetDistanceBetweenTwoLatLongCoordinates(MGV.currentSettlement.location_longXlatY, settlement.location_longXlatY) / 1000f;
-				int costToHire = Mathf.RoundToInt(initialCost - (initialCost * MGV.GetOverallCloutModifier(settlement.settlementID)));
+				float initialCost = CoordinateUtil.GetDistanceBetweenTwoLatLongCoordinates(GameVars.currentSettlement.location_longXlatY, settlement.location_longXlatY) / 1000f;
+				int costToHire = Mathf.RoundToInt(initialCost - (initialCost * GameVars.GetOverallCloutModifier(settlement.settlementID)));
 				//--Set the button label to show the cost
 				navCostBut.transform.Find("Cost For Navigator").GetComponent<Text>().text = costToHire.ToString() + "Dr";
 				navCostBut.onClick.RemoveAllListeners();
@@ -1549,8 +1405,8 @@ public class script_GUI : MonoBehaviour
 					//Set the button to Active is we are using it!
 					hintCostBut.interactable = true;
 					//Now figure out the costs for questions for the relevant settlements
-					initialCost = CoordinateUtil.GetDistanceBetweenTwoLatLongCoordinates(MGV.currentSettlement.location_longXlatY, settlement.location_longXlatY) / 10000f;
-					int costForHint = Mathf.RoundToInt(initialCost - (initialCost * MGV.GetOverallCloutModifier(settlement.settlementID)));
+					initialCost = CoordinateUtil.GetDistanceBetweenTwoLatLongCoordinates(GameVars.currentSettlement.location_longXlatY, settlement.location_longXlatY) / 10000f;
+					int costForHint = Mathf.RoundToInt(initialCost - (initialCost * GameVars.GetOverallCloutModifier(settlement.settlementID)));
 					//--Set the Button label to show the cost
 					hintCostBut.transform.Find("Cost For Hint").GetComponent<Text>().text = costForHint.ToString() + "Dr";
 					hintCostBut.onClick.RemoveAllListeners();
@@ -1569,39 +1425,39 @@ public class script_GUI : MonoBehaviour
 
 	public void GUI_BuyHint(Settlement currentSettlement, int hintCost) {
 
-		if (MGV.playerShipVariables.ship.currency < hintCost) {
-			MGV.showNotification = true;
-			MGV.notificationMessage = "Not enough money to buy this information!";
+		if (GameVars.playerShipVariables.ship.currency < hintCost) {
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = "Not enough money to buy this information!";
 		}
 		else {
-			MGV.playerShipVariables.ship.currency -= hintCost;
-			MGV.showNotification = true;
-			MGV.notificationMessage = GetInfoOnNetworkedSettlementResource(currentSettlement.cargo[Random.Range(0, currentSettlement.cargo.Length)]);
+			GameVars.playerShipVariables.ship.currency -= hintCost;
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = GetInfoOnNetworkedSettlementResource(currentSettlement.cargo[Random.Range(0, currentSettlement.cargo.Length)]);
 		}
 
 	}
 	public void GUI_HireANavigator(Settlement thisSettlement, int costToHire) {
 		//Do this if button pressed
 		//Check to see if player has enough money to hire
-		if (MGV.playerShipVariables.ship.currency >= costToHire) {
+		if (GameVars.playerShipVariables.ship.currency >= costToHire) {
 			//subtract the cost from the players currency
-			MGV.playerShipVariables.ship.currency -= (int)costToHire;
+			GameVars.playerShipVariables.ship.currency -= (int)costToHire;
 			//change location of beacon
 			Vector3 location = Vector3.zero;
-			for (int x = 0; x < MGV.settlement_masterList_parent.transform.childCount; x++)
-				if (MGV.settlement_masterList_parent.transform.GetChild(x).GetComponent<script_settlement_functions>().thisSettlement.settlementID == thisSettlement.settlementID)
-					location = MGV.settlement_masterList_parent.transform.GetChild(x).position;
-			MGV.navigatorBeacon.transform.position = location;
-			MGV.navigatorBeacon.GetComponent<LineRenderer>().SetPosition(0, new Vector3(location.x, 0, location.z));
-			MGV.navigatorBeacon.GetComponent<LineRenderer>().SetPosition(1, location + new Vector3(0, 400, 0));
-			MGV.playerShipVariables.UpdateNavigatorBeaconAppearenceBasedOnDistance();
-			MGV.playerShipVariables.ship.currentNavigatorTarget = thisSettlement.settlementID;
-			MGV.ShowANotificationMessage("You hired a navigator to " + thisSettlement.name + " for " + costToHire + " drachma.");
+			for (int x = 0; x < GameVars.settlement_masterList_parent.transform.childCount; x++)
+				if (GameVars.settlement_masterList_parent.transform.GetChild(x).GetComponent<script_settlement_functions>().thisSettlement.settlementID == thisSettlement.settlementID)
+					location = GameVars.settlement_masterList_parent.transform.GetChild(x).position;
+			GameVars.navigatorBeacon.transform.position = location;
+			GameVars.navigatorBeacon.GetComponent<LineRenderer>().SetPosition(0, new Vector3(location.x, 0, location.z));
+			GameVars.navigatorBeacon.GetComponent<LineRenderer>().SetPosition(1, location + new Vector3(0, 400, 0));
+			GameVars.playerShipVariables.UpdateNavigatorBeaconAppearenceBasedOnDistance();
+			GameVars.playerShipVariables.ship.currentNavigatorTarget = thisSettlement.settlementID;
+			GameVars.ShowANotificationMessage("You hired a navigator to " + thisSettlement.name + " for " + costToHire + " drachma.");
 			//If not enough money, then let the player know
 		}
 		else {
-			MGV.showNotification = true;
-			MGV.notificationMessage = "You can't afford to hire a navigator to " + thisSettlement.name + ".";
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = "You can't afford to hire a navigator to " + thisSettlement.name + ".";
 		}
 	}
 
@@ -1613,12 +1469,12 @@ public class script_GUI : MonoBehaviour
 
 		//We need to do a clout check as well as a network checks
 		//costToRepair is a GLOBAL var to this script
-		int baseModifier = Mathf.CeilToInt(2 - MGV.GetOverallCloutModifier(MGV.currentSettlement.settlementID));
-		if (MGV.CheckIfCityIDIsPartOfNetwork(MGV.currentSettlement.settlementID)) {
-			costToRepair = Mathf.CeilToInt(MGV.currentSettlement.tax_network * baseModifier * 1);
+		int baseModifier = Mathf.CeilToInt(2 - GameVars.GetOverallCloutModifier(GameVars.currentSettlement.settlementID));
+		if (GameVars.CheckIfCityIDIsPartOfNetwork(GameVars.currentSettlement.settlementID)) {
+			costToRepair = Mathf.CeilToInt(GameVars.currentSettlement.tax_network * baseModifier * 1);
 		}
 		else {
-			costToRepair = Mathf.CeilToInt(MGV.currentSettlement.tax_neutral * baseModifier * 1);
+			costToRepair = Mathf.CeilToInt(GameVars.currentSettlement.tax_neutral * baseModifier * 1);
 		}
 
 		Text cost_allHP = (Text)tab_shiprepair_cost_allhp.GetComponent<Text>();
@@ -1626,8 +1482,8 @@ public class script_GUI : MonoBehaviour
 		Text currentHP = (Text)tab_shiprepair_shiphealth.GetComponent<Text>();
 
 		string oneHPCost = Mathf.CeilToInt(costToRepair).ToString();
-		string allHPCost = (Mathf.CeilToInt(100 - Mathf.CeilToInt(MGV.playerShipVariables.ship.health)) * costToRepair).ToString();
-		string shipCurrent = Mathf.CeilToInt(MGV.playerShipVariables.ship.health).ToString();
+		string allHPCost = (Mathf.CeilToInt(100 - Mathf.CeilToInt(GameVars.playerShipVariables.ship.health)) * costToRepair).ToString();
+		string shipCurrent = Mathf.CeilToInt(GameVars.playerShipVariables.ship.health).ToString();
 
 		//If the ship is at 100HP already, then let's not worry about giving the player the costs--we'll replace the costs by an X
 		//	--and disable the repair buttons
@@ -1652,28 +1508,28 @@ public class script_GUI : MonoBehaviour
 	//----------------------------SHIP REPAIR PANEL HELPER FUNCTIONS		
 	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_RepairShipByOneHP() {
-		MGV.playerShipVariables.ship.health += 1f;
+		GameVars.playerShipVariables.ship.health += 1f;
 		//make sure the hp can't go above 100
-		if (MGV.playerShipVariables.ship.health > 100) {
-			MGV.playerShipVariables.ship.health = 100;
-			MGV.showNotification = true;
-			MGV.notificationMessage = "Your ship is already fully repaired";
+		if (GameVars.playerShipVariables.ship.health > 100) {
+			GameVars.playerShipVariables.ship.health = 100;
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = "Your ship is already fully repaired";
 		}
 		else {
-			MGV.playerShipVariables.ship.currency -= costToRepair;
+			GameVars.playerShipVariables.ship.currency -= costToRepair;
 		}
 		GUI_TAB_SetupShipRepairInformation();
 	}
 
 	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_RepairShipByAllHP() {
-		if (Mathf.CeilToInt(MGV.playerShipVariables.ship.health) >= 100) {
-			MGV.showNotification = true;
-			MGV.notificationMessage = "Your ship is already fully repaired";
+		if (Mathf.CeilToInt(GameVars.playerShipVariables.ship.health) >= 100) {
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = "Your ship is already fully repaired";
 		}
 		else {
-			MGV.playerShipVariables.ship.currency -= (int)(costToRepair * Mathf.CeilToInt(100 - MGV.playerShipVariables.ship.health));
-			MGV.playerShipVariables.ship.health = 100f;
+			GameVars.playerShipVariables.ship.currency -= (int)(costToRepair * Mathf.CeilToInt(100 - GameVars.playerShipVariables.ship.health));
+			GameVars.playerShipVariables.ship.health = 100f;
 		}
 		GUI_TAB_SetupShipRepairInformation();
 	}
@@ -1691,16 +1547,16 @@ public class script_GUI : MonoBehaviour
 	//THIS IS THE UNFURLING / FURLING OF SAILS BUTTON
 	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_furlOrUnfurlSails() {
-		if (MGV.sailsAreUnfurled) {
+		if (GameVars.sailsAreUnfurled) {
 			hud_button_furlSails.transform.GetChild(0).GetComponent<Text>().text = "Furl Sails";
-			MGV.sailsAreUnfurled = false;
-			foreach (GameObject sail in MGV.sails)
+			GameVars.sailsAreUnfurled = false;
+			foreach (GameObject sail in GameVars.sails)
 				sail.SetActive(false);
 		}
 		else {
 			hud_button_furlSails.transform.GetChild(0).GetComponent<Text>().text = "Unfurl Sails";
-			MGV.sailsAreUnfurled = true;
-			foreach (GameObject sail in MGV.sails)
+			GameVars.sailsAreUnfurled = true;
+			foreach (GameObject sail in GameVars.sails)
 				sail.SetActive(true);
 
 		}
@@ -1712,8 +1568,8 @@ public class script_GUI : MonoBehaviour
 	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_dropAnchor() {
 		//If the controls are locked--we are traveling so force it to stop
-		if (MGV.controlsLocked && !MGV.showSettlementTradeGUI)
-			MGV.playerShipVariables.rayCheck_stopShip = true;
+		if (GameVars.controlsLocked && !GameVars.showSettlementTradeGUI)
+			GameVars.playerShipVariables.rayCheck_stopShip = true;
 	}
 
 	//-----------------------------------------------------
@@ -1722,28 +1578,28 @@ public class script_GUI : MonoBehaviour
 	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_restOverNight() {
 		//If the controls are locked--we are traveling so force it to stop
-		if (MGV.controlsLocked && !MGV.showSettlementTradeGUI)
-			MGV.playerShipVariables.rayCheck_stopShip = true;
+		if (GameVars.controlsLocked && !GameVars.showSettlementTradeGUI)
+			GameVars.playerShipVariables.rayCheck_stopShip = true;
 		//Run a script on the player controls that fast forwards time by a quarter day
-		MGV.isPassingTime = true;
-		MGV.controlsLocked = true;
-		StartCoroutine(MGV.playerShipVariables.WaitForTimePassing(.25f, false));
+		GameVars.isPassingTime = true;
+		GameVars.controlsLocked = true;
+		StartCoroutine(GameVars.playerShipVariables.WaitForTimePassing(.25f, false));
 	}
 
 	//-----------------------------------------------------
 	//THIS IS THE SAVE DATA BUTTON
 	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_saveGame() {
-		MGV.notificationMessage = "Saved Data File 'player_save_game.txt' To: " + Application.persistentDataPath + "/";
-		MGV.showNotification = true;
-		MGV.SaveUserGameData(false);
+		GameVars.notificationMessage = "Saved Data File 'player_save_game.txt' To: " + Application.persistentDataPath + "/";
+		GameVars.showNotification = true;
+		GameVars.SaveUserGameData(false);
 	}
 
 	//-----------------------------------------------------
 	//THIS IS THE RESTART GAME BUTTON	
 	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_restartGame() {
-		MGV.RestartGame();
+		GameVars.RestartGame();
 	}
 
 	//-----------------------------------------------------

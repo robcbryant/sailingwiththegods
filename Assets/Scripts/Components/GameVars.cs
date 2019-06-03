@@ -48,7 +48,7 @@ using System.Collections.Generic;
 //======================================================================================================================================================================
 //======================================================================================================================================================================
 
-public class globalVariables : MonoBehaviour
+public class GameVars : MonoBehaviour
 {
 	const int windZoneColumns = 64;
 	const int windZoneRows = 32;
@@ -206,6 +206,9 @@ public class globalVariables : MonoBehaviour
 
 	// Use this for initialization
 	void Awake() {
+
+		Globals.Register(this);
+
 		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 		playerShip = GameObject.FindGameObjectWithTag("playerShip");
 		camera_titleScreen = GameObject.FindGameObjectWithTag("camera_titleScreen");

@@ -26,7 +26,7 @@ public class script_player_controls : MonoBehaviour
 	const float dailyProvisionsKG = .83f; //(NASA)
 	const float dailyWaterKG = 5f; //based on nasa estimates of liters(kg) for astronauts--sailing is more physically intensive so I've upped it to 5 liters
 
-	globalVariables MGV;
+	GameVars GameVars;
 
 	[HideInInspector] public Ship ship;
 	[HideInInspector] public PlayerJourneyLog journey;
@@ -85,7 +85,7 @@ public class script_player_controls : MonoBehaviour
 
 	// Use this for initialization
 	void Start() {
-		MGV = GameObject.FindGameObjectWithTag("global_variables").GetComponent<globalVariables>();
+		GameVars = Globals.GameVars;
 		controller = gameObject.GetComponent<CharacterController>();
 		shipTransform = transform.GetChild(0);
 		ship = new Ship("Argo", 7.408f, 100, 500f);
@@ -98,7 +98,7 @@ public class script_player_controls : MonoBehaviour
 		transform.position = new Vector3(1702.414f, transform.position.y, 2168.358f);
 
 		//Setup the day/night cycle
-		UpdateDayNightCycle(globalVariables.IS_NEW_GAME);
+		UpdateDayNightCycle(GameVars.IS_NEW_GAME);
 
 
 		//TODO temp fix to add 10 crew members
@@ -113,10 +113,10 @@ public class script_player_controls : MonoBehaviour
 		//MGV.InitiateMainQuestLineForPlayer();
 
 		//initialize players ghost route
-		UpdatePlayerGhostRouteLineRenderer(globalVariables.IS_NEW_GAME);
+		UpdatePlayerGhostRouteLineRenderer(GameVars.IS_NEW_GAME);
 
 		//DEBUG
-		MGV.DEBUG_currentQuestLeg = ship.mainQuest.currentQuestSegment;
+		GameVars.DEBUG_currentQuestLeg = ship.mainQuest.currentQuestSegment;
 
 		//Start the infinite loop of checking for wind and water current zones
 		StartCoroutine(waterCurrentZoneMaintenance());
@@ -140,15 +140,15 @@ public class script_player_controls : MonoBehaviour
 		ship.crew = ship.crewRoster.Count;
 
 		//Make sure the camera transform is always tied to the front of the ship model's transform if the FPV camera is enabled
-		if (MGV.FPVCamera.activeSelf)
-			MGV.FPVCamera.transform.parent.parent.position = shipTransform.TransformPoint(new Vector3(shipTransform.localPosition.x, .31f, shipTransform.localPosition.z + .182f));
+		if (GameVars.FPVCamera.activeSelf)
+			GameVars.FPVCamera.transform.parent.parent.position = shipTransform.TransformPoint(new Vector3(shipTransform.localPosition.x, .31f, shipTransform.localPosition.z + .182f));
 
 		//Make sure horizon sky is always at player position
-		MGV.skybox_horizonColor.transform.position = transform.position;
+		GameVars.skybox_horizonColor.transform.position = transform.position;
 
 		//Make sure our celestial spheres are always tied to the position of the player ship
 		//	--We are running a "Mariner-centric" universe and calculating the visual effects of the universe around the ship
-		MGV.skybox_MAIN_CELESTIAL_SPHERE.transform.position = transform.position;
+		GameVars.skybox_MAIN_CELESTIAL_SPHERE.transform.position = transform.position;
 		//Make sure the player's latitude determines the angle of the north pole
 		RotateCelestialSky();
 		//Update the earth's precession
@@ -162,74 +162,79 @@ public class script_player_controls : MonoBehaviour
 		else SFX_birdsong.enabled = false;
 
 
+		// TODO: Make a game state system instead of all these booleans
 
 		//TODO: need to update all references to controlsLocked to the MGV.controlsLocked
 		//controlsLocked = MGV.controlsLocked;
 		//If NOT Game Over then go with the regular logic
-		if (!MGV.isGameOver) {
+		if (!GameVars.isGameOver) {
 			//if the controls are not locked--we are anchored
-			if (!MGV.controlsLocked) {
+			if (!GameVars.controlsLocked) {
 				//check to see if we just left a port starving
-				if (MGV.justLeftPort) {
-					MGV.justLeftPort = false;
+				if (GameVars.justLeftPort) {
+					GameVars.justLeftPort = false;
 					CheckIfShipLeftPortStarvingOrThirsty();
 					//TODO need to add a check here for notification windows to lock controls
 
 					//
 				}
-				//If we aren't locking the controls for a GUI pop up then look for player cursor
-				CheckForPlayerNavigationCursor();
-				AnimateCursorRing();
-				//check for panning screen
-				CheckCameraRotationControls();
-				//check for zooming in / out
-				CheckZoomControls();
+
+				// don't let the player use the cursor, rotate the camera, or zoom when the mouse is over a blocking UI
+				if(!UISystem.IsMouseOverUI()) {
+					//If we aren't locking the controls for a GUI pop up then look for player cursor
+					CheckForPlayerNavigationCursor();
+					AnimateCursorRing();
+					//check for panning screen
+					CheckCameraRotationControls();
+					//check for zooming in / out
+					CheckZoomControls();
+				}
 
 				//show the settlement docking button if in a docking area
 				if (getSettlementDockButtonReady) {
 					getSettlementDockButtonReady = false;
-					MGV.showSettlementTradeButton = true;
+					GameVars.showSettlementTradeButton = true;
 				}
 
 				//Controls Are Locked--so we are traveling	or new gaming
 			}
-			else if (!MGV.isGameOver) {
+			else if (!GameVars.isGameOver) {
 				//Check if we are starting a new game and are at the title screen
-				if (MGV.isTitleScreen || MGV.isStartScreen) {
+				if (GameVars.isTitleScreen || GameVars.isStartScreen) {
 					//If the player triggers the GUI button to start the game, stop the animation and switch the camera off
-					if (MGV.startGameButton_isPressed) {
+					if (GameVars.startGameButton_isPressed) {
 						//Debug.Log ("Quest Seg start new game: " + ship.mainQuest.currentQuestSegment);
 						//Turn off title screen camera
-						MGV.camera_titleScreen.SetActive(false);
-						MGV.bg_startScreen.SetActive(false);
+						GameVars.camera_titleScreen.SetActive(false);
+						GameVars.bg_startScreen.SetActive(false);
 
 						//Turn on the environment fog
 						RenderSettings.fog = true;
 
 						//Now turn on the main player controls camera
-						MGV.FPVCamera.SetActive(true);
+						GameVars.FPVCamera.SetActive(true);
 
 						//Turn on the player distance fog wall
 						fogWall.SetActive(true);
 
 						//Now change titleScreen to false
-						MGV.isTitleScreen = false;
-						MGV.isStartScreen = false;
+						GameVars.isTitleScreen = false;
+						GameVars.isStartScreen = false;
 
 						//Now enable the controls
-						MGV.controlsLocked = false;
+						GameVars.controlsLocked = false;
 
 						//Initiate the main questline
-						MGV.InitiateMainQuestLineForPlayer();
+						GameVars.InitiateMainQuestLineForPlayer();
 
 						//Reset Start Game Button
-						MGV.startGameButton_isPressed = false;
+						GameVars.startGameButton_isPressed = false;
 
 					}
 
 					//Else if we are passing time at rest
 				}
-				else if (MGV.isPassingTime) {
+				else if (GameVars.isPassingTime) {
 					//Debug.Log ("passing time....");
 					CheckCameraRotationControls();
 					//Else we are not at the title screen and just in the game
@@ -237,13 +242,13 @@ public class script_player_controls : MonoBehaviour
 				else {
 					//Check if we're in the menus or not
 					//	-If we aren't in the settlement menu then we know we're traveling
-					if (!MGV.menuControlsLock) {
+					if (!GameVars.menuControlsLock) {
 						//If the ship is dead in the water--don't do anything
 						if (shipSpeed_Actual != 0)
 							TravelToSelectedTarget(currentDestination);
 						else {
-							MGV.controlsLocked = false;
-							MGV.isGameOver = true;
+							GameVars.controlsLocked = false;
+							GameVars.isGameOver = true;
 							current_shipSpeed_Magnitude = 0f;
 						}
 						CheckCameraRotationControls();
@@ -266,17 +271,15 @@ public class script_player_controls : MonoBehaviour
 
 	public void CheckForPlayerNavigationCursor() {
 
-		Vector3 main_mouse = MGV.FPVCamera.GetComponent<Camera>().ScreenToViewportPoint(Input.mousePosition);
+		Vector3 main_mouse = GameVars.FPVCamera.GetComponent<Camera>().ScreenToViewportPoint(Input.mousePosition);
 		//Debug.Log (main_mouse);
 		//Here we are first checking to see if the mouse cursor is over the actual gameplay window
-		Rect FPVCamRect = MGV.FPVCamera.GetComponent<Camera>().rect;
+		Rect FPVCamRect = GameVars.FPVCamera.GetComponent<Camera>().rect;
 		//Debug.Log (FPVCamRect);
-		FPVCamRect.y = 0;
-		FPVCamRect.height = 1f;
-		if (FPVCamRect.Contains(main_mouse)) {
+		if (FPVCamRect.Contains(main_mouse) && !UISystem.IsMouseOverUI()) {
 			//If the mouse cursor is hovering over the allowed gameplay window, then figure out the position of the mouse in worldspace
 			RaycastHit hitInfo;
-			Ray ray = MGV.FPVCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+			Ray ray = GameVars.FPVCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
 			//Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow);
 			//Debug.Log ("I guess?");
 			if (Physics.Raycast(ray.origin, ray.direction, out hitInfo, 100f)) {
@@ -286,7 +289,7 @@ public class script_player_controls : MonoBehaviour
 				cursorRing.transform.position = hitInfo.point;// + new Vector3(0,.03f,0);
 
 				//Adjust the scale of the cursor ring to grow with distance
-				float newScale = Vector3.Distance(cursorRing.transform.position, MGV.FPVCamera.transform.position) * .09f;
+				float newScale = Vector3.Distance(cursorRing.transform.position, GameVars.FPVCamera.transform.position) * .09f;
 				cursorRing.transform.localScale = new Vector3(newScale, newScale, newScale);
 
 				//Hide the cursor if it's touching the player ship to avoid weird visual glitches
@@ -318,7 +321,7 @@ public class script_player_controls : MonoBehaviour
 					//Now check to see if the player clicks the left mouse button to travel
 					if (Input.GetButton("Select")) {
 						//lock controls so that the travel function is triggered on the next update cycle
-						MGV.controlsLocked = true;
+						GameVars.controlsLocked = true;
 						//set the destination: using the players Y value so the ship always stays at a set elevation
 						currentDestination = new Vector3(hitInfo.point.x, transform.position.y, hitInfo.point.z);
 						//set the player ship's current position to be logged into the journey log
@@ -353,58 +356,58 @@ public class script_player_controls : MonoBehaviour
 
 		if (horizontal < 0) {
 			//Rotate right
-			MGV.FPVCamera.transform.parent.parent.RotateAround(MGV.FPVCamera.transform.parent.parent.position, MGV.FPVCamera.transform.parent.parent.up, -70 * Time.deltaTime);
+			GameVars.FPVCamera.transform.parent.parent.RotateAround(GameVars.FPVCamera.transform.parent.parent.position, GameVars.FPVCamera.transform.parent.parent.up, -70 * Time.deltaTime);
 		}
 		else if (horizontal > 0) {
 			//Rotate Left
-			MGV.FPVCamera.transform.parent.parent.RotateAround(MGV.FPVCamera.transform.parent.parent.position, MGV.FPVCamera.transform.parent.parent.up, 70 * Time.deltaTime);
+			GameVars.FPVCamera.transform.parent.parent.RotateAround(GameVars.FPVCamera.transform.parent.parent.position, GameVars.FPVCamera.transform.parent.parent.up, 70 * Time.deltaTime);
 		}
 		//Debug.Log (MGV.FPVCamera.transform.eulerAngles.x);
 		//This first if statement sets the boundary range for the camera vertical rotation--the Unity engine makes this a bit wonky because it's 270-90 for a full 180 degree rotation
-		if ((MGV.FPVCamera.transform.eulerAngles.x <= 40f && MGV.FPVCamera.transform.eulerAngles.x >= 0f) || (MGV.FPVCamera.transform.eulerAngles.x <= 360f && MGV.FPVCamera.transform.eulerAngles.x >= 295f)) {
+		if ((GameVars.FPVCamera.transform.eulerAngles.x <= 40f && GameVars.FPVCamera.transform.eulerAngles.x >= 0f) || (GameVars.FPVCamera.transform.eulerAngles.x <= 360f && GameVars.FPVCamera.transform.eulerAngles.x >= 295f)) {
 			if (vertical < 0) {
 				//Rotate down					
-				MGV.FPVCamera.transform.RotateAround(MGV.FPVCamera.transform.position, MGV.FPVCamera.transform.right, 1.5f);
+				GameVars.FPVCamera.transform.RotateAround(GameVars.FPVCamera.transform.position, GameVars.FPVCamera.transform.right, 1.5f);
 
 
 			}
 			else if (vertical > 0) {
 				//Rotate up
-				MGV.FPVCamera.transform.RotateAround(MGV.FPVCamera.transform.position, MGV.FPVCamera.transform.right, -1.5f);
+				GameVars.FPVCamera.transform.RotateAround(GameVars.FPVCamera.transform.position, GameVars.FPVCamera.transform.right, -1.5f);
 				//Now we need to make sure we don't over rotate past our mark
 			}
 		}
 		//Now we need to make sure we don't over rotate past our mark
-		if (MGV.FPVCamera.transform.eulerAngles.x <= 50f && MGV.FPVCamera.transform.eulerAngles.x >= 39f) {
-			MGV.FPVCamera.transform.eulerAngles = new Vector3(39.9f, MGV.FPVCamera.transform.eulerAngles.y, MGV.FPVCamera.transform.eulerAngles.z);
+		if (GameVars.FPVCamera.transform.eulerAngles.x <= 50f && GameVars.FPVCamera.transform.eulerAngles.x >= 39f) {
+			GameVars.FPVCamera.transform.eulerAngles = new Vector3(39.9f, GameVars.FPVCamera.transform.eulerAngles.y, GameVars.FPVCamera.transform.eulerAngles.z);
 			//Debug.Log ("We're chancing it to 40?");
 		}
-		if (MGV.FPVCamera.transform.eulerAngles.x <= 296f && MGV.FPVCamera.transform.eulerAngles.x >= 285f)
-			MGV.FPVCamera.transform.eulerAngles = new Vector3(295.9f, MGV.FPVCamera.transform.eulerAngles.y, MGV.FPVCamera.transform.eulerAngles.z);
-		if (MGV.FPVCamera.transform.eulerAngles.x < 0)
-			MGV.FPVCamera.transform.eulerAngles = new Vector3(359f, MGV.FPVCamera.transform.eulerAngles.y, MGV.FPVCamera.transform.eulerAngles.z);
+		if (GameVars.FPVCamera.transform.eulerAngles.x <= 296f && GameVars.FPVCamera.transform.eulerAngles.x >= 285f)
+			GameVars.FPVCamera.transform.eulerAngles = new Vector3(295.9f, GameVars.FPVCamera.transform.eulerAngles.y, GameVars.FPVCamera.transform.eulerAngles.z);
+		if (GameVars.FPVCamera.transform.eulerAngles.x < 0)
+			GameVars.FPVCamera.transform.eulerAngles = new Vector3(359f, GameVars.FPVCamera.transform.eulerAngles.y, GameVars.FPVCamera.transform.eulerAngles.z);
 	}
 
 	public void CheckZoomControls() {
 		float zoom = Input.GetAxis("Mouse ScrollWheel");
 		//if zooming out
-		if (zoom < 0 && MGV.FPVCamera.transform.parent.localScale.x < 3.2f) {
-			MGV.FPVCamera.transform.parent.localScale = new Vector3(MGV.FPVCamera.transform.parent.localScale.x + .1f, MGV.FPVCamera.transform.parent.localScale.y + .001f, MGV.FPVCamera.transform.parent.localScale.z + 0.1f);
-			MGV.FPVCamera.transform.parent.Translate(new Vector3(0, .023f, 0));
+		if (zoom < 0 && GameVars.FPVCamera.transform.parent.localScale.x < 3.2f) {
+			GameVars.FPVCamera.transform.parent.localScale = new Vector3(GameVars.FPVCamera.transform.parent.localScale.x + .1f, GameVars.FPVCamera.transform.parent.localScale.y + .001f, GameVars.FPVCamera.transform.parent.localScale.z + 0.1f);
+			GameVars.FPVCamera.transform.parent.Translate(new Vector3(0, .023f, 0));
 			//MGV.FPVCamera.transform.position = Vector3.Lerp(MGV.FPVCamera.transform.position, new Vector3(MGV.FPVCamera.transform.parent.position.x,MGV.FPVCamera.transform.parent.position.y+.1f,MGV.FPVCamera.transform.parent.position.z+4f), .1f);//new Vector3(MGV.FPVCamera.transform.localPosition.x + .01f,MGV.FPVCamera.transform.localPosition.y + .01f,MGV.FPVCamera.transform.localPosition.z + .01f);
 
 		}
-		else if (zoom > 0 && MGV.FPVCamera.transform.parent.localScale.x > .0698f) {
-			MGV.FPVCamera.transform.parent.localScale = new Vector3(MGV.FPVCamera.transform.parent.localScale.x - .1f, MGV.FPVCamera.transform.parent.localScale.y - .001f, MGV.FPVCamera.transform.parent.localScale.z - 0.1f);
-			MGV.FPVCamera.transform.parent.Translate(new Vector3(0, -.023f, 0));
+		else if (zoom > 0 && GameVars.FPVCamera.transform.parent.localScale.x > .0698f) {
+			GameVars.FPVCamera.transform.parent.localScale = new Vector3(GameVars.FPVCamera.transform.parent.localScale.x - .1f, GameVars.FPVCamera.transform.parent.localScale.y - .001f, GameVars.FPVCamera.transform.parent.localScale.z - 0.1f);
+			GameVars.FPVCamera.transform.parent.Translate(new Vector3(0, -.023f, 0));
 			//MGV.FPVCamera.transform.position = Vector3.Lerp(MGV.FPVCamera.transform.position, MGV.FPVCamera.transform.parent.position, .1f);//MGV.FPVCamera.transform.localPosition = new Vector3(MGV.FPVCamera.transform.localPosition.x - .01f,MGV.FPVCamera.transform.localPosition.y - .01f,MGV.FPVCamera.transform.localPosition.z - .01f);
 
 		}
 
 		//If the zoom over shoots its target, then reset it to the minimum
-		if (MGV.FPVCamera.transform.parent.localScale.x < .0698f) {
-			MGV.FPVCamera.transform.parent.localScale = new Vector3(.0698f, MGV.FPVCamera.transform.parent.localScale.y, .0698f);
-			MGV.FPVCamera.transform.parent.localPosition = new Vector3(0, -230f, 0);
+		if (GameVars.FPVCamera.transform.parent.localScale.x < .0698f) {
+			GameVars.FPVCamera.transform.parent.localScale = new Vector3(.0698f, GameVars.FPVCamera.transform.parent.localScale.y, .0698f);
+			GameVars.FPVCamera.transform.parent.localPosition = new Vector3(0, -230f, 0);
 		}
 
 
@@ -475,8 +478,8 @@ public class script_player_controls : MonoBehaviour
 			//Perform regular updates as the ship travels
 			UpdateShipAtrophyAfterTravelTime(numOfDaysTraveledInSegment, false);
 			CheckIfProvisionsOrWaterIsDepleted(numOfDaysTraveledInSegment);
-			RandomEvents.WillARandomEventHappen(MGV, ship, shipSpeedModifiers, transform);
-			UpdateDayNightCycle(globalVariables.IS_NOT_NEW_GAME);
+			RandomEvents.WillARandomEventHappen(GameVars, ship, shipSpeedModifiers, transform);
+			UpdateDayNightCycle(GameVars.IS_NOT_NEW_GAME);
 			UpdateNavigatorBeaconAppearenceBasedOnDistance();
 
 			//if the ship hasn't gotten to the direction, then keep moving
@@ -499,11 +502,11 @@ public class script_player_controls : MonoBehaviour
 				DetectCoastLinesWithRayCasts();
 
 			}
-			else if (!MGV.showSettlementTradeGUI || notEnoughSpeedToMove) { //check to see if we're in the trade menu otherwise we will indefintely write duplicate routes until we leave the trade menu
+			else if (!GameVars.showSettlementTradeGUI || notEnoughSpeedToMove) { //check to see if we're in the trade menu otherwise we will indefintely write duplicate routes until we leave the trade menu
 																			//save this route to the PlayerJourneyLog
-				journey.AddRoute(new PlayerRoute(lastPlayerShipPosition, transform.position, ship.totalNumOfDaysTraveled), gameObject.GetComponent<script_player_controls>(), MGV.currentCaptainsLog);
+				journey.AddRoute(new PlayerRoute(lastPlayerShipPosition, transform.position, ship.totalNumOfDaysTraveled), gameObject.GetComponent<script_player_controls>(), GameVars.currentCaptainsLog);
 				//Update player ghost route
-				UpdatePlayerGhostRouteLineRenderer(globalVariables.IS_NOT_NEW_GAME);
+				UpdatePlayerGhostRouteLineRenderer(GameVars.IS_NOT_NEW_GAME);
 				//Reset the travel line to a distance of zero (turn it off)
 				//line.SetPosition(0,Vector3.zero);
 				//line.SetPosition(1,Vector3.zero);
@@ -512,7 +515,7 @@ public class script_player_controls : MonoBehaviour
 
 				//reset the not enough speed flag
 				notEnoughSpeedToMove = false;
-				MGV.controlsLocked = false;
+				GameVars.controlsLocked = false;
 				shipTravelStartRotationFinished = false;
 
 				//reset coastline detection flag
@@ -565,27 +568,27 @@ public class script_player_controls : MonoBehaviour
 			Debug.Log(trigger.transform.parent.GetComponent<script_settlement_functions>().thisSettlement);
 			if (trigger.transform.parent.GetComponent<script_settlement_functions>().thisSettlement.typeOfSettlement == 1) {
 				getSettlementDockButtonReady = true;
-				MGV.currentSettlement = trigger.transform.parent.gameObject.GetComponent<script_settlement_functions>().thisSettlement;
-				MGV.currentSettlementGameObject = trigger.transform.parent.gameObject;
-				MGV.playerShipVariables.ship.playerJournal.AddNewSettlementToLog(MGV.currentSettlement.settlementID);
+				GameVars.currentSettlement = trigger.transform.parent.gameObject.GetComponent<script_settlement_functions>().thisSettlement;
+				GameVars.currentSettlementGameObject = trigger.transform.parent.gameObject;
+				GameVars.playerShipVariables.ship.playerJournal.AddNewSettlementToLog(GameVars.currentSettlement.settlementID);
 				//If it is a point of interest then run quest functions but don't allow settlement resource access
 			}
 			else if (trigger.transform.parent.GetComponent<script_settlement_functions>().thisSettlement.typeOfSettlement == 0) {
 				//change the current settlement to this location (normally this is done by opening the docking menu--but in this case there is no docking menu)
-				MGV.currentSettlement = trigger.transform.parent.GetComponent<script_settlement_functions>().thisSettlement;
+				GameVars.currentSettlement = trigger.transform.parent.GetComponent<script_settlement_functions>().thisSettlement;
 				//Check if current Settlement is part of the main quest line
-				MGV.CheckIfCurrentSettlementIsPartOfMainQuest(MGV.currentSettlement.settlementID);
-				MGV.showNonPortDockButton = true;
+				GameVars.CheckIfCurrentSettlementIsPartOfMainQuest(GameVars.currentSettlement.settlementID);
+				GameVars.showNonPortDockButton = true;
 			}
 		}
 		if (trigger.transform.tag == "settlement") {
-			Debug.Log("Entering Area of: " + trigger.GetComponent<script_settlement_functions>().thisSettlement.name + ". And the current status of the ghost route is: " + MGV.playerGhostRoute.activeSelf);
+			Debug.Log("Entering Area of: " + trigger.GetComponent<script_settlement_functions>().thisSettlement.name + ". And the current status of the ghost route is: " + GameVars.playerGhostRoute.activeSelf);
 			//This zone is the larger zone of influence that triggers city specific messages to pop up in the captains log journal
-			MGV.AddEntriesToCurrentLogPool(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
+			GameVars.AddEntriesToCurrentLogPool(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
 			//We add the triggered settlement ID to the list of settlements to look for narrative bits from. In the OnTriggerExit() function, we remove them
-			MGV.activeSettlementInfluenceSphereList.Add(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
+			GameVars.activeSettlementInfluenceSphereList.Add(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
 			//If the player got lost asea and the memory map ghost route is turned off--check to see if we're enteringg friendly waters
-			if (MGV.playerGhostRoute.activeSelf == false) {
+			if (GameVars.playerGhostRoute.activeSelf == false) {
 				CheckIfPlayerFoundKnownSettlementAndTurnGhostTrailBackOn(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
 			}
 		}
@@ -599,13 +602,13 @@ public class script_player_controls : MonoBehaviour
 
 		}
 		if (trigger.transform.tag == "settlement_dock_area") {
-			MGV.showSettlementTradeButton = false;
+			GameVars.showSettlementTradeButton = false;
 		}
 		if (trigger.transform.tag == "settlement") {
 			//This zone is the larger zone of influence that triggers city specific messages to pop up in the captains log journal
-			MGV.RemoveEntriesFromCurrentLogPool(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
+			GameVars.RemoveEntriesFromCurrentLogPool(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
 			//We add the triggered settlement ID to the list of settlements to look for narrative bits from. In the OnTriggerExit() function, we remove them
-			MGV.activeSettlementInfluenceSphereList.Remove(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
+			GameVars.activeSettlementInfluenceSphereList.Remove(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
 		}
 	}
 
@@ -738,13 +741,13 @@ public class script_player_controls : MonoBehaviour
 			//make sure we roll for each crew member
 			for (int i = 0; i < ship.crewRoster.Count; i++) {
 				//--we'll base this chance off of a static 30% plus any effect from clout(a maximum change of 25 % in either direction
-				float rollChance = 30 - (((MGV.playerShipVariables.ship.playerClout - 50f) / 100) / 2);
+				float rollChance = 30 - (((GameVars.playerShipVariables.ship.playerClout - 50f) / 100) / 2);
 				//some crew needs to leave
 				if (Random.Range(0, 100) <= rollChance) {
 					//Kill a crewmember
 					KillCrewMember();
 					crewDeathCount++;
-					MGV.showNotification = true;
+					GameVars.showNotification = true;
 					ProvisionsDeaths = true;
 				}
 			}
@@ -759,19 +762,19 @@ public class script_player_controls : MonoBehaviour
 			//make sure we roll for each crew member
 			for (int i = 0; i < ship.crewRoster.Count; i++) {
 				//--we'll base this chance off of a static 30% plus any effect from clout(a maximum change of 25 % in either direction
-				float rollChance = 30 - (((MGV.playerShipVariables.ship.playerClout - 50f) / 100) / 2);
+				float rollChance = 30 - (((GameVars.playerShipVariables.ship.playerClout - 50f) / 100) / 2);
 				//some crew needs to leave
 				if (Random.Range(0, 100) <= rollChance) {
 					//Kill a crewmember
 					KillCrewMember();
 					crewDeathCount++;
-					MGV.showNotification = true;
+					GameVars.showNotification = true;
 				}
 			}
 			notificationMessage += crewDeathCount + " crewmember(s) quit because you left without a full store of water.";
 		}
 		//now update the notification string with the message
-		MGV.notificationMessage = notificationMessage;
+		GameVars.notificationMessage = notificationMessage;
 	}
 
 	public void UpdateDayNightCycle(bool restartCycle) {
@@ -813,19 +816,19 @@ public class script_player_controls : MonoBehaviour
 		//First set things to default if it's a new game we've started
 		//	--This ensures any editor changes are reset. Since it sets to '0' the blends will not activate 
 		if (restartCycle) {
-			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", 1f);
+			GameVars.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", 1f);
 			//RenderSettings.skybox.SetFloat("_Blend", 0);
 			RenderSettings.ambientIntensity = .53f;
-			MGV.mainLightSource.intensity = .78f;
-			MGV.mainLightSource.color = colorDay;
-			MGV.mat_water.SetColor("_Color", waterColorDay);
-			MGV.mat_waterCurrents.color = Color.white;
-			testAngle = MGV.skybox_MAIN_CELESTIAL_SPHERE.transform.localRotation.y;
+			GameVars.mainLightSource.intensity = .78f;
+			GameVars.mainLightSource.color = colorDay;
+			GameVars.mat_water.SetColor("_Color", waterColorDay);
+			GameVars.mat_waterCurrents.color = Color.white;
+			testAngle = GameVars.skybox_MAIN_CELESTIAL_SPHERE.transform.localRotation.y;
 			Debug.Log(initialAngle + "*********************");
-			MGV.skybox_horizonColor.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f, 1f);
-			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f);
-			MGV.skybox_sun.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f);
-			MGV.skybox_moon.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f, .5f);
+			GameVars.skybox_horizonColor.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f, 1f);
+			GameVars.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f);
+			GameVars.skybox_sun.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f);
+			GameVars.skybox_moon.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f, .5f);
 			RenderSettings.fogColor = new Color(203f / 255f, 239f / 255f, 254f / 255f);
 			fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(203f / 255f, 239f / 255f, 254f / 255f);
 
@@ -835,22 +838,22 @@ public class script_player_controls : MonoBehaviour
 		Color brightSky = new Color(203f / 255f, 239f / 255f, 254f / 255f);
 		//Blending Day to Night
 		if (timeOfDay >= .25f && timeOfDay <= 0.5f) {
-			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", Utils.GetRange(timeOfDay, .5f, .25f, 0, 1f));
+			GameVars.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", Utils.GetRange(timeOfDay, .5f, .25f, 0, 1f));
 			RenderSettings.ambientIntensity = Utils.GetRange(timeOfDay, .25f, .5f, .53f, .16f);
-			MGV.mainLightSource.intensity = Utils.GetRange(timeOfDay, .25f, .5f, .78f, .16f);
-			MGV.mainLightSource.color = Color.Lerp(colorDay, colorNight, Utils.GetRange(timeOfDay, .5f, .25f, 1, 0));
+			GameVars.mainLightSource.intensity = Utils.GetRange(timeOfDay, .25f, .5f, .78f, .16f);
+			GameVars.mainLightSource.color = Color.Lerp(colorDay, colorNight, Utils.GetRange(timeOfDay, .5f, .25f, 1, 0));
 			//Fade Out Water Colors
-			MGV.mat_water.color = Color.Lerp(waterColorDay, waterColorNight, Utils.GetRange(timeOfDay, .5f, .25f, 1f, 0));
+			GameVars.mat_water.color = Color.Lerp(waterColorDay, waterColorNight, Utils.GetRange(timeOfDay, .5f, .25f, 1f, 0));
 			//Fade Out Water Current Sprite Colors to Black
-			MGV.mat_waterCurrents.color = Color.Lerp(Color.white, currentColorNight, Utils.GetRange(timeOfDay, .5f, .25f, 1f, 0));
+			GameVars.mat_waterCurrents.color = Color.Lerp(Color.white, currentColorNight, Utils.GetRange(timeOfDay, .5f, .25f, 1f, 0));
 			//Fade Out Sky/Atmosphere Color
-			MGV.skybox_horizonColor.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, Utils.GetRange(timeOfDay, .5f, .25f, 0, 1f), 1f, Utils.GetRange(timeOfDay, .5f, .25f, 0, 1f));
+			GameVars.skybox_horizonColor.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, Utils.GetRange(timeOfDay, .5f, .25f, 0, 1f), 1f, Utils.GetRange(timeOfDay, .5f, .25f, 0, 1f));
 			//Fade Out Sun Color
-			MGV.skybox_sun.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, Utils.GetRange(timeOfDay, .5f, .25f, 70f / 255f, 1f), Utils.GetRange(timeOfDay, .5f, .25f, 0, 1f));
+			GameVars.skybox_sun.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, Utils.GetRange(timeOfDay, .5f, .25f, 70f / 255f, 1f), Utils.GetRange(timeOfDay, .5f, .25f, 0, 1f));
 			//Fade Out Clouds
-			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(Utils.GetRange(timeOfDay, .5f, .25f, 30f / 255f, 1f), Utils.GetRange(timeOfDay, .5f, .25f, 30f / 255f, 1f), Utils.GetRange(timeOfDay, .5f, .25f, 50f / 255f, 1f));
+			GameVars.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(Utils.GetRange(timeOfDay, .5f, .25f, 30f / 255f, 1f), Utils.GetRange(timeOfDay, .5f, .25f, 30f / 255f, 1f), Utils.GetRange(timeOfDay, .5f, .25f, 50f / 255f, 1f));
 			//Fade In Moon(transparency to opaque)
-			MGV.skybox_moon.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f, Utils.GetRange(timeOfDay, .5f, .25f, 1f, 28f / 255f));
+			GameVars.skybox_moon.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f, Utils.GetRange(timeOfDay, .5f, .25f, 1f, 28f / 255f));
 			//Fade in Dark Fog: This breaks up the fog colro fade into two shades to better match the sunset
 			if (timeOfDay >= .25f && timeOfDay <= 0.35f) {
 				RenderSettings.fogColor = Color.Lerp(brightSky, deepPurple, Utils.GetRange(timeOfDay, .35f, .25f, 1f, 0));
@@ -858,7 +861,7 @@ public class script_player_controls : MonoBehaviour
 			}
 			else {
 				//Also we';; turn on the city lights here right as sunset
-				MGV.cityLightsParent.SetActive(true);
+				GameVars.cityLightsParent.SetActive(true);
 				RenderSettings.fogColor = Color.Lerp(deepPurple, waterColorNight, Utils.GetRange(timeOfDay, .5f, .35f, 1f, 0));
 				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(deepPurple, waterColorNight, Utils.GetRange(timeOfDay, .5f, .35f, 1f, 0));
 			}
@@ -866,22 +869,22 @@ public class script_player_controls : MonoBehaviour
 		}
 		//Blending Night to Day
 		if (timeOfDay > 0.75f && timeOfDay <= 1f) {
-			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0));
+			GameVars.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Blend", Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0));
 			RenderSettings.ambientIntensity = Utils.GetRange(timeOfDay, .75f, 1f, .16f, .53f);
-			MGV.mainLightSource.intensity = Utils.GetRange(timeOfDay, .75f, 1f, .16f, .78f);
-			MGV.mainLightSource.color = Color.Lerp(colorNight, colorDay, Utils.GetRange(timeOfDay, 1f, .75f, 1, 0));
+			GameVars.mainLightSource.intensity = Utils.GetRange(timeOfDay, .75f, 1f, .16f, .78f);
+			GameVars.mainLightSource.color = Color.Lerp(colorNight, colorDay, Utils.GetRange(timeOfDay, 1f, .75f, 1, 0));
 			//Fade In Water Colors
-			MGV.mat_water.color = Color.Lerp(waterColorNight, waterColorDay, Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0));
+			GameVars.mat_water.color = Color.Lerp(waterColorNight, waterColorDay, Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0));
 			//Fade Out Water Current Sprite Colors to Black
-			MGV.mat_waterCurrents.color = Color.Lerp(currentColorNight, Color.white, Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0));
+			GameVars.mat_waterCurrents.color = Color.Lerp(currentColorNight, Color.white, Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0));
 			//Fade In Sky/Atmosphere Color
-			MGV.skybox_horizonColor.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0), 1f, Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0));
+			GameVars.skybox_horizonColor.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0), 1f, Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0));
 			//Fade In Sun Color
-			MGV.skybox_sun.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, Utils.GetRange(timeOfDay, 1f, .75f, 1f, 70f / 255f), Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0));
+			GameVars.skybox_sun.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, Utils.GetRange(timeOfDay, 1f, .75f, 1f, 70f / 255f), Utils.GetRange(timeOfDay, 1f, .75f, 1f, 0));
 			//Fade In Clouds
-			MGV.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(Utils.GetRange(timeOfDay, 1f, .75f, 1f, 30f / 255f), Utils.GetRange(timeOfDay, 1f, .75f, 1f, 30f / 255f), Utils.GetRange(timeOfDay, 1f, .75f, 1f, 50f / 255f));
+			GameVars.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(Utils.GetRange(timeOfDay, 1f, .75f, 1f, 30f / 255f), Utils.GetRange(timeOfDay, 1f, .75f, 1f, 30f / 255f), Utils.GetRange(timeOfDay, 1f, .75f, 1f, 50f / 255f));
 			//Fade out Moon(opaque to transparency)
-			MGV.skybox_moon.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f, Utils.GetRange(timeOfDay, 1f, .75f, 28f / 255f, 1f));
+			GameVars.skybox_moon.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f, Utils.GetRange(timeOfDay, 1f, .75f, 28f / 255f, 1f));
 			//Fade in Normal Fog: This breaks up the fog colro fade into two shades to better match the sunrise
 			if (timeOfDay >= .75f && timeOfDay <= 0.85f) {
 				RenderSettings.fogColor = Color.Lerp(waterColorNight, deepPurple, Utils.GetRange(timeOfDay, .85f, .75f, 1f, 0));
@@ -889,14 +892,14 @@ public class script_player_controls : MonoBehaviour
 			}
 			else {
 				//Also we';; turn off the city lights here right as sun rises
-				MGV.cityLightsParent.SetActive(false);
+				GameVars.cityLightsParent.SetActive(false);
 				RenderSettings.fogColor = Color.Lerp(deepPurple, brightSky, Utils.GetRange(timeOfDay, 1f, .85f, 1f, 0));
 				fogWall.GetComponent<MeshRenderer>().sharedMaterial.color = Color.Lerp(deepPurple, brightSky, Utils.GetRange(timeOfDay, 1f, .85f, 1f, 0));
 			}
 		}
 		//------------------------ Rotate the sky for day night cycle
 		targetAngle = Utils.GetRange(timeOfDay, 1f, 0, 360 + testAngle, testAngle);
-		MGV.skybox_MAIN_CELESTIAL_SPHERE.transform.Rotate(0, targetAngle - initialAngle, 0, Space.Self);
+		GameVars.skybox_MAIN_CELESTIAL_SPHERE.transform.Rotate(0, targetAngle - initialAngle, 0, Space.Self);
 		//		//Debug.Log (initialAngle +  "***********" + targetAngle);
 		RotateClouds(targetAngle - initialAngle);
 		initialAngle = targetAngle;
@@ -910,7 +913,7 @@ public class script_player_controls : MonoBehaviour
 		//	--This is the angle of the north celestial pole from the horizon line
 		//	--This is our x Angle of the sphere--0 degrees in Unity is the same as 90 degrees of latitude
 		Vector2 playerLatLong = CoordinateUtil.ConvertWebMercatorToWGS1984(CoordinateUtil.Convert_UnityWorld_WebMercator(transform.position));
-		Transform celestialSphere = MGV.skybox_MAIN_CELESTIAL_SPHERE.transform;
+		Transform celestialSphere = GameVars.skybox_MAIN_CELESTIAL_SPHERE.transform;
 		float latitude = playerLatLong.y;
 
 		float targetAngle = Utils.GetRange(latitude, 90f, -90f, 0, -180);//(90 - latitude);
@@ -929,7 +932,7 @@ public class script_player_controls : MonoBehaviour
 		// Julian Date in days set to J2000 epoch
 		double JD_J2000 = 2457455.500000;
 		//Calculate the current in-game Julian Date
-		double JD_inGame = PropleticGregorianToJulianDateCalculator(globalVariables.TD_year, globalVariables.TD_month, globalVariables.TD_day, globalVariables.TD_hour, globalVariables.TD_minute, globalVariables.TD_second);
+		double JD_inGame = PropleticGregorianToJulianDateCalculator(GameVars.TD_year, GameVars.TD_month, GameVars.TD_day, GameVars.TD_hour, GameVars.TD_minute, GameVars.TD_second);
 		//Find the difference between the J2000 Julian Date and the in-Game Date
 		double numOfJulianDaysBeforeOrAfterJ2000 = Mathf.Abs((float)(JD_J2000 - JD_inGame));
 		//Debug.Log ("JD: DIFFERENCE:  " + numOfJulianDaysBeforeOrAfterJ2000);
@@ -960,7 +963,7 @@ public class script_player_controls : MonoBehaviour
 																					  //	--Since the radius is used for more calculations, I want to determine an easier to use number e.g. 1, or 3000
 																					  //	--height isn't used as much
 																					  //The direction from the player ship to the disc will always be the ecliptic sphere's LOCAL y axis
-		Vector3 precessionDiscDirection = MGV.skybox_ecliptic_sphere.transform.up;
+		Vector3 precessionDiscDirection = GameVars.skybox_ecliptic_sphere.transform.up;
 		//The local cordinates for a point on the circumference in the model are:
 		//float horizontalDistance = radius * Mathf.Cos(precessionAngle*Mathf.Deg2Rad);
 		//float forwardDistance = radius * Mathf.Sin(precessionAngle*Mathf.Deg2Rad);
@@ -972,8 +975,8 @@ public class script_player_controls : MonoBehaviour
 		//Now we need to find the point on the circumference
 		//	--To do this, we'll rotate a Vector3 that points towards the local transform.left : (-) right
 		//	--by the precession angle, along the local y axis
-		Vector3 direction_DiscOriginToXYZOnRing = -MGV.skybox_ecliptic_sphere.transform.right;
-		direction_DiscOriginToXYZOnRing = Quaternion.AngleAxis(precessionAngle, MGV.skybox_ecliptic_sphere.transform.up) * direction_DiscOriginToXYZOnRing;
+		Vector3 direction_DiscOriginToXYZOnRing = -GameVars.skybox_ecliptic_sphere.transform.right;
+		direction_DiscOriginToXYZOnRing = Quaternion.AngleAxis(precessionAngle, GameVars.skybox_ecliptic_sphere.transform.up) * direction_DiscOriginToXYZOnRing;
 		//Now we need to shoot a ray from the center of the precession conical base, in the direction
 		//	--of this new angle in the distance of the radius of the base to find the Unity World
 		//	--coordinate of the point along the precessional ring/disc/conical base.
@@ -987,16 +990,16 @@ public class script_player_controls : MonoBehaviour
 		Vector3 PPGoal = worldCoordinateForRingXYZ;
 		Vector3 direction = PPGoal - OriginPosition;
 		Quaternion toRotation = Quaternion.FromToRotation(transform.up, direction);
-		MGV.skybox_MAIN_CELESTIAL_SPHERE.transform.DetachChildren();
-		MGV.skybox_celestialGrid.transform.rotation = toRotation;
+		GameVars.skybox_MAIN_CELESTIAL_SPHERE.transform.DetachChildren();
+		GameVars.skybox_celestialGrid.transform.rotation = toRotation;
 
 		//testing....This fixed the error with changing time and the rotation not working--I'm not sure why this works..It just does
 		//need to figure this blackbox I made out later. it was one experiment of many
-		MGV.skybox_MAIN_CELESTIAL_SPHERE.transform.rotation = MGV.skybox_celestialGrid.transform.rotation;
-		MGV.skybox_ecliptic_sphere.transform.SetParent(MGV.skybox_MAIN_CELESTIAL_SPHERE.transform);
-		MGV.skybox_celestialGrid.transform.SetParent(MGV.skybox_MAIN_CELESTIAL_SPHERE.transform);
+		GameVars.skybox_MAIN_CELESTIAL_SPHERE.transform.rotation = GameVars.skybox_celestialGrid.transform.rotation;
+		GameVars.skybox_ecliptic_sphere.transform.SetParent(GameVars.skybox_MAIN_CELESTIAL_SPHERE.transform);
+		GameVars.skybox_celestialGrid.transform.SetParent(GameVars.skybox_MAIN_CELESTIAL_SPHERE.transform);
 		//MGV.skybox_sun.transform.SetParent(MGV.skybox_MAIN_CELESTIAL_SPHERE.transform);	
-		MGV.skybox_MAIN_CELESTIAL_SPHERE.transform.localEulerAngles = new Vector3(MGV.skybox_MAIN_CELESTIAL_SPHERE.transform.localEulerAngles.x, 0, 0);
+		GameVars.skybox_MAIN_CELESTIAL_SPHERE.transform.localEulerAngles = new Vector3(GameVars.skybox_MAIN_CELESTIAL_SPHERE.transform.localEulerAngles.x, 0, 0);
 
 	}
 
@@ -1054,8 +1057,8 @@ public class script_player_controls : MonoBehaviour
 	}
 
 	void RotateClouds(float angle) {
-		MGV.skybox_clouds.transform.RotateAround(transform.position, Vector3.left, angle / 4);
-		MGV.skybox_clouds.transform.position = transform.position;
+		GameVars.skybox_clouds.transform.RotateAround(transform.position, Vector3.left, angle / 4);
+		GameVars.skybox_clouds.transform.position = transform.position;
 	}
 
 	public void UpdatePlayerGhostRouteLineRenderer(bool isANewGame) {
@@ -1064,30 +1067,30 @@ public class script_player_controls : MonoBehaviour
 		//We have to take this offset into account later because the player route array will always have 1 less in the array because it doesn't have the origin position as a separate route index(it's not a route)
 		//	--rather than use Count-1 to get the last index of the line renderer, we can just use Count from the route log
 		if (isANewGame) {
-			MGV.playerGhostRoute.GetComponent<LineRenderer>().positionCount = 1;
-			MGV.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(0, transform.position - new Vector3(0, transform.position.y, 0)); //We subtract the y value so that the line sits on the surface of the water and not in the air
+			GameVars.playerGhostRoute.GetComponent<LineRenderer>().positionCount = 1;
+			GameVars.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(0, transform.position - new Vector3(0, transform.position.y, 0)); //We subtract the y value so that the line sits on the surface of the water and not in the air
 																																			//TODO this is a quick and dirty fix to load games--the origin point is already established in a loaded game so if we add 1 to the index, it creates a 'blank' Vector.zero route index in the ghost trail
 		}
-		else if (MGV.isLoadedGame) {
-			MGV.playerGhostRoute.GetComponent<LineRenderer>().positionCount = journey.routeLog.Count;
+		else if (GameVars.isLoadedGame) {
+			GameVars.playerGhostRoute.GetComponent<LineRenderer>().positionCount = journey.routeLog.Count;
 			//TODO This is a quick fix--we use a 0,0,0 to designate the settlement as a stopping points rather than a normal one. This ruins the ghost trail however so we will just use position [0] instead --which just makes no visual diference in the trail
 			if (journey.routeLog[journey.routeLog.Count - 1].theRoute[1].x < 1)
-				MGV.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count - 1, journey.routeLog[journey.routeLog.Count - 1].theRoute[0] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position			
+				GameVars.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count - 1, journey.routeLog[journey.routeLog.Count - 1].theRoute[0] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position			
 			else
-				MGV.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count - 1, journey.routeLog[journey.routeLog.Count - 1].theRoute[1] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
+				GameVars.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count - 1, journey.routeLog[journey.routeLog.Count - 1].theRoute[1] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
 
 			//if it isn't a loaded game then do the original code
 		}
 		else {
-			MGV.playerGhostRoute.GetComponent<LineRenderer>().positionCount = journey.routeLog.Count + 1;//we add one here because the route list never includes the origin position--so we add it manually for a new game
+			GameVars.playerGhostRoute.GetComponent<LineRenderer>().positionCount = journey.routeLog.Count + 1;//we add one here because the route list never includes the origin position--so we add it manually for a new game
 																										 //TODO This is a quick fix--we use a 0,0,0 to designate the settlement as a stopping points rather than a normal one. This ruins the ghost trail however so we will just use position [0] instead --which just makes no visual diference in the trail
 
 			if (journey.routeLog[journey.routeLog.Count - 1].theRoute[1].x < 1) {
-				MGV.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count, journey.routeLog[journey.routeLog.Count - 1].theRoute[0] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
+				GameVars.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count, journey.routeLog[journey.routeLog.Count - 1].theRoute[0] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
 
 			}
 			else {
-				MGV.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count, journey.routeLog[journey.routeLog.Count - 1].theRoute[1] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
+				GameVars.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count, journey.routeLog[journey.routeLog.Count - 1].theRoute[1] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
 			}
 		}
 	}
@@ -1149,7 +1152,7 @@ public class script_player_controls : MonoBehaviour
 		}
 
 		//Now draw the actual trajectory to the screen
-		LineRenderer line = MGV.playerTrajectory.GetComponent<LineRenderer>();
+		LineRenderer line = GameVars.playerTrajectory.GetComponent<LineRenderer>();
 		line.positionCount = trajectoryToDraw.Count;
 		for (int i = 0; i < trajectoryToDraw.Count; i++) {
 			line.SetPosition(i, trajectoryToDraw[i]);
@@ -1161,7 +1164,7 @@ public class script_player_controls : MonoBehaviour
 	public void UpdateNavigatorBeaconAppearenceBasedOnDistance() {
 		//Get position of player and beacon
 		Vector3 playerPos = transform.position;
-		Vector3 beaconPos = MGV.navigatorBeacon.transform.position;
+		Vector3 beaconPos = GameVars.navigatorBeacon.transform.position;
 		//Get Distance
 		float distance = Vector3.Distance(playerPos, beaconPos);
 
@@ -1170,15 +1173,15 @@ public class script_player_controls : MonoBehaviour
 
 		//Update size
 		float calculatedWidth = Utils.GetRange(distance, 0, 100f, .1f, 5f);
-		MGV.navigatorBeacon.GetComponent<LineRenderer>().startWidth = calculatedWidth;
-		MGV.navigatorBeacon.GetComponent<LineRenderer>().endWidth = calculatedWidth;
+		GameVars.navigatorBeacon.GetComponent<LineRenderer>().startWidth = calculatedWidth;
+		GameVars.navigatorBeacon.GetComponent<LineRenderer>().endWidth = calculatedWidth;
 
 		Color colorEnd = new Color(6f / 255f, 167f / 255f, 1f, 0);
 
 		//Update transparency
 		float alpha = Utils.GetRange(distance, 0, 100f, 0, 1f);
-		MGV.navigatorBeacon.GetComponent<LineRenderer>().startColor = new Color(88f / 255f, 1f, 211 / 255f, alpha);
-		MGV.navigatorBeacon.GetComponent<LineRenderer>().endColor = colorEnd;
+		GameVars.navigatorBeacon.GetComponent<LineRenderer>().startColor = new Color(88f / 255f, 1f, 211 / 255f, alpha);
+		GameVars.navigatorBeacon.GetComponent<LineRenderer>().endColor = colorEnd;
 	}
 
 
@@ -1188,7 +1191,7 @@ public class script_player_controls : MonoBehaviour
 		Vector3 waterVector = Vector3.zero;
 
 		if (!rayCheck_stopCurrents) waterVector = currentWaterDirectionVector;
-		if (MGV.sailsAreUnfurled) windVector = currentWindDirectionVector;
+		if (GameVars.sailsAreUnfurled) windVector = currentWindDirectionVector;
 
 		windAndWaterVector = (waterVector * currentWaterDirectionMagnitude) + (windVector * currentWindDirectionMagnitude);
 
@@ -1216,7 +1219,7 @@ public class script_player_controls : MonoBehaviour
 		}
 
 		//Make sure the cursor's z axis is always facing the player's camera
-		cursorRing.transform.LookAt(MGV.FPVCamera.transform.position);
+		cursorRing.transform.LookAt(GameVars.FPVCamera.transform.position);
 		//cursorRing.transform.eulerAngles = -cursorRing.transform.eulerAngles; 
 		cursorRing.transform.eulerAngles = new Vector3(105f, cursorRing.transform.eulerAngles.y, -1 * cursorRing.transform.eulerAngles.z);
 	}
@@ -1230,12 +1233,12 @@ public class script_player_controls : MonoBehaviour
 			//if we find a match then turn the memory ghost route back on
 			if (id == ID) {
 				Debug.Log("Found match in memory lookup");
-				string settlementName = MGV.GetSettlementFromID(id).name;
-				MGV.playerGhostRoute.SetActive(true);
-				MGV.notificationMessage = "After a long and difficult journey, you and your crew finally found your bearings in the great sea!" +
+				string settlementName = GameVars.GetSettlementFromID(id).name;
+				GameVars.playerGhostRoute.SetActive(true);
+				GameVars.notificationMessage = "After a long and difficult journey, you and your crew finally found your bearings in the great sea!" +
 										  " You and your crew recognize the waters surrounding " + settlementName + " and remember the sea routes," +
 										  " you are all familiar with!";
-				MGV.showNotification = true;
+				GameVars.showNotification = true;
 				break;
 			}
 		}
@@ -1421,7 +1424,7 @@ public class script_player_controls : MonoBehaviour
 			//TODO:This is a quick and dirty way to make sure we don't get errors when on game world edge trying to turn zones on/off that don't exist
 			try {
 				Debug.Log("WIND" + zoneName);
-				MGV.windZoneParent.transform.Find(zoneName).transform.GetChild(0).gameObject.SetActive(true);
+				GameVars.windZoneParent.transform.Find(zoneName).transform.GetChild(0).gameObject.SetActive(true);
 			}
 			catch { }
 		}
@@ -1451,7 +1454,7 @@ public class script_player_controls : MonoBehaviour
 		foreach (string zoneName in currentZoneNamesToTurnOn) {
 			//TODO:This is a quick and dirty way to make sure we don't get errors when on game world edge trying to turn zones on/off that don't exist
 			try {
-				MGV.currentZoneParent.transform.Find(zoneName).transform.GetChild(0).gameObject.SetActive(true);
+				GameVars.currentZoneParent.transform.Find(zoneName).transform.GetChild(0).gameObject.SetActive(true);
 				//Debug.Log ("WATER " + zoneName + " : " + GameObject.Find(zoneName).transform.GetChild(0).name + "  -->ON<--");
 			}
 			catch { }
@@ -1481,8 +1484,8 @@ public class script_player_controls : MonoBehaviour
 		//Having an infinite loop is dangerous--but I think it should be safe. I'll have to keep an eye
 		//on memory leaks etc.
 		while (true) {
-			for (int i = 0; i < MGV.windZoneParent.transform.childCount; i++) {
-				Transform currentChild = MGV.windZoneParent.transform.GetChild(i);
+			for (int i = 0; i < GameVars.windZoneParent.transform.childCount; i++) {
+				Transform currentChild = GameVars.windZoneParent.transform.GetChild(i);
 				foreach (string zoneID in windZoneNamesToTurnOn) {
 					if (currentChild.name == zoneID) {
 						currentChild.GetChild(0).gameObject.SetActive(true);
@@ -1502,8 +1505,8 @@ public class script_player_controls : MonoBehaviour
 		//Having an infinite loop is dangerous--but I think it should be safe. I'll have to keep an eye
 		//on memory leaks etc.
 		while (true) {
-			for (int i = 0; i < MGV.currentZoneParent.transform.childCount; i++) {
-				Transform currentChild = MGV.currentZoneParent.transform.GetChild(i);
+			for (int i = 0; i < GameVars.currentZoneParent.transform.childCount; i++) {
+				Transform currentChild = GameVars.currentZoneParent.transform.GetChild(i);
 				foreach (string zoneID in currentZoneNamesToTurnOn) {
 					if (currentChild.name == zoneID) {
 						currentChild.GetChild(0).gameObject.SetActive(true);
@@ -1533,20 +1536,20 @@ public class script_player_controls : MonoBehaviour
 		float amountPerFrame = amountToWait / numOfFrames;
 		for (int i = 0; i < numOfFrames; i++) {
 			ship.totalNumOfDaysTraveled += amountPerFrame;
-			UpdateDayNightCycle(globalVariables.IS_NOT_NEW_GAME);
+			UpdateDayNightCycle(GameVars.IS_NOT_NEW_GAME);
 			if (!isPort) {
 				UpdateShipAtrophyAfterTravelTime(amountPerFrame, true);
 				CheckIfProvisionsOrWaterIsDepleted(amountPerFrame);
 			}
 			yield return null;
 		}
-		MGV.isPassingTime = false;
-		MGV.controlsLocked = false;
+		GameVars.isPassingTime = false;
+		GameVars.controlsLocked = false;
 		if (!isPort) {//If this isn't a port--then add a journey log at the end
 					  //Add a new route to the player journey log
-			journey.AddRoute(new PlayerRoute(transform.position, transform.position, ship.totalNumOfDaysTraveled), gameObject.GetComponent<script_player_controls>(), MGV.currentCaptainsLog);
+			journey.AddRoute(new PlayerRoute(transform.position, transform.position, ship.totalNumOfDaysTraveled), gameObject.GetComponent<script_player_controls>(), GameVars.currentCaptainsLog);
 			//Update player ghost route
-			UpdatePlayerGhostRouteLineRenderer(globalVariables.IS_NOT_NEW_GAME);
+			UpdatePlayerGhostRouteLineRenderer(GameVars.IS_NOT_NEW_GAME);
 		}
 	}
 

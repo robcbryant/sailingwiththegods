@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 public static class RandomEvents
@@ -16,7 +14,7 @@ public static class RandomEvents
 
 	// it makes sense for this to have access to the ship, the ship's movement data and position, and the crew, as well as things like clout
 	// doesn't need access to things like the GUI
-	public static void WillARandomEventHappen(globalVariables MGV, Ship ship, ShipSpeedModifiers shipSpeedModifiers, Transform shipTransform) {
+	public static void WillARandomEventHappen(GameVars gameVars, Ship ship, ShipSpeedModifiers shipSpeedModifiers, Transform shipTransform) {
 
 
 		//Random Events have a chance to occur every half day of travel
@@ -26,14 +24,14 @@ public static class RandomEvents
 		tenthPlaceTemp *= 10;
 		//Debug.Log (tenthPlaceTemp + "  " + hundredthPlaceTemp);
 		//If we are at a half day's travel, then see if a random event occurs
-		if ((Mathf.FloorToInt(tenthPlaceTemp) == 5 || Mathf.FloorToInt(tenthPlaceTemp) == 9) && !MGV.isPerformingRandomEvent) {
-			MGV.isPerformingRandomEvent = true;
+		if ((Mathf.FloorToInt(tenthPlaceTemp) == 5 || Mathf.FloorToInt(tenthPlaceTemp) == 9) && !gameVars.isPerformingRandomEvent) {
+			gameVars.isPerformingRandomEvent = true;
 			float chanceOfEvent = .95f; //0 - 1 value representing chance of a random event occuring
 										//We determine if the 
 			if (Random.Range(0f, 1f) <= chanceOfEvent) {
 				//Debug.Log ("Triggering Random Event");
 				//When we trigger a random event, let's make the ship drop anchor!
-				MGV.playerShipVariables.rayCheck_stopShip = true;
+				gameVars.playerShipVariables.rayCheck_stopShip = true;
 
 				//We separate Random events into two possible categories: Positive, and Negative.
 				//First we need to determine if the player has a positive or negative event occur
@@ -48,8 +46,8 @@ public static class RandomEvents
 				//Get the 0-1 aggregate clout score. Here we use the current zone of influence's network id to check
 				int currentZoneID = 0;
 				//TODO Right now this just uses the relevant city's ID to check--but in the aggregate score function--it should start using the networks--not the city.
-				if (MGV.activeSettlementInfluenceSphereList.Count > 0) currentZoneID = MGV.activeSettlementInfluenceSphereList[0];
-				float aggregateCloutScore = MGV.GetOverallCloutModifier(currentZoneID);
+				if (gameVars.activeSettlementInfluenceSphereList.Count > 0) currentZoneID = gameVars.activeSettlementInfluenceSphereList[0];
+				float aggregateCloutScore = gameVars.GetOverallCloutModifier(currentZoneID);
 				//Now determine the final weighted chance score that will be .5f and under
 				chanceOfEvent = .5f - (.1f * numOfAugers) - (.2f * aggregateCloutScore);
 
@@ -80,12 +78,12 @@ public static class RandomEvents
 							//TODO Right now we'll just assume they aren't in the network
 							chanceOfEvent = .2f + (.05f * numOfWarriors) + (.2f * aggregateCloutScore);
 							//Damage the ship regardlesss of the outcome
-							MGV.AdjustPlayerShipHealth(-20);
+							gameVars.AdjustPlayerShipHealth(-20);
 							//If the roll is lower than the chanceOfEvent variable--the pirates were unsuccessful
 							if (Random.Range(0f, 1f) <= chanceOfEvent) {
 								//Raise the player and crews clout after the successful event
-								MGV.AdjustCrewsClout(3);
-								MGV.AdjustPlayerClout(3);
+								gameVars.AdjustCrewsClout(3);
+								gameVars.AdjustPlayerClout(3);
 
 								//Despite their lack of success--there might be a chance of losing a crewman to the attack
 								//The chance of a death is 20%  minus a total of 10% from the agregate clout score.
@@ -96,20 +94,20 @@ public static class RandomEvents
 									CrewMember crewToKill = RemoveRandomCrewMember(ship);
 									//If there is a crewmember to kill
 									if (crewToKill.ID != -1) {
-										MGV.notificationMessage = "Your crew spots a distant ship closing in fast--definitely pirates! By the gods! You manage to escape after fending off their attack! As your crew cheers with victorious honor, "
+										gameVars.notificationMessage = "Your crew spots a distant ship closing in fast--definitely pirates! By the gods! You manage to escape after fending off their attack! As your crew cheers with victorious honor, "
 																+ "they suddenly stop upon realizing they lost a good crewman... " + crewToKill.name + "'s sacrifice has earned him great honor. You prepare the proper rites and cast the sailor asea.";
-										MGV.showNotification = true;
+										gameVars.showNotification = true;
 										//otherwise there is no crewmember to kill--either from not having enough crewmembers or no crewmembers that are killable so just give the success response without a death
 									}
 									else {
-										MGV.notificationMessage = "Your crew spots a distant ship closing in fast--definitely pirates! By the gods! After a heated battle, you manage to escape after fending off their attack without any casualties! Your crew cheers with victorious honor!";
-										MGV.showNotification = true;
+										gameVars.notificationMessage = "Your crew spots a distant ship closing in fast--definitely pirates! By the gods! After a heated battle, you manage to escape after fending off their attack without any casualties! Your crew cheers with victorious honor!";
+										gameVars.showNotification = true;
 									}
 									//No crewmembers died so it was a perfect defensive victory	
 								}
 								else {
-									MGV.notificationMessage = "Your crew spots a distant ship closing in fast--definitely pirates! By the gods! After a heated battle, you manage to escape after fending off their attack without any casualties! Your crew cheers with victorious honor!";
-									MGV.showNotification = true;
+									gameVars.notificationMessage = "Your crew spots a distant ship closing in fast--definitely pirates! By the gods! After a heated battle, you manage to escape after fending off their attack without any casualties! Your crew cheers with victorious honor!";
+									gameVars.showNotification = true;
 								}
 
 
@@ -117,8 +115,8 @@ public static class RandomEvents
 							}
 							else {
 								//Reduce the clout of the player and crew
-								MGV.AdjustCrewsClout(-3);
-								MGV.AdjustPlayerClout(-3);
+								gameVars.AdjustCrewsClout(-3);
+								gameVars.AdjustPlayerClout(-3);
 
 								// penalty:loss of half the ship's cargo across the board.
 								foreach (Resource resource in ship.cargo) {
@@ -143,17 +141,17 @@ public static class RandomEvents
 								}
 								//If the list of killed crew is empty, then we didn't kill any crewmembers so add a message that explains why
 								if (lostCrew.Count == 0) {
-									MGV.notificationMessage = "Your crew spots a distant ship closing in fast--they are definitely pirates! Your crew prepares for battle as the ship rams at full speed into your hull." +
+									gameVars.notificationMessage = "Your crew spots a distant ship closing in fast--they are definitely pirates! Your crew prepares for battle as the ship rams at full speed into your hull." +
 															  " Your crew fights valiantly against the onslaught, but the pirates successfully bring you to your knees! They rummage through your holds and take half your supplies with them as a generous bounty." +
 															  " They intended to take a number of you prisoner, but the pirate captain sensed a strange omen surrounding you and wanted no part in your crew's fate. They leave your dishonored ship with their newly acquired supplies.";
-									MGV.showNotification = true;
+									gameVars.showNotification = true;
 									//Otherwise members died so alert the player
 								}
 								else {
-									MGV.notificationMessage = "Your crew spots a distant ship closing in fast--they are definitely pirates! Your crew prepares for battle as the ship rams at full speed into your hull." +
+									gameVars.notificationMessage = "Your crew spots a distant ship closing in fast--they are definitely pirates! Your crew prepares for battle as the ship rams at full speed into your hull." +
 																" Your crew fights valiantly against the onslaught, but the pirates successfully bring you to your knees! They rummage through your holds and take half your supplies with them as a generous bounty." +
 																" Unfortunately, you lose " + lostNames + " to death and kidnapping. The remaining crew are unsettled but fortunate for their lives.";
-									MGV.showNotification = true;
+									gameVars.showNotification = true;
 
 								}
 
@@ -173,20 +171,20 @@ public static class RandomEvents
 							//If the roll is lower than the chanceOfEvent variable--the storm was unsuccessful in throwing the player off course
 							if (Random.Range(0f, 1f) <= chanceOfEvent) {
 								//Adjust crew clout
-								MGV.AdjustCrewsClout(3);
-								MGV.AdjustPlayerClout(3);
+								gameVars.AdjustCrewsClout(3);
+								gameVars.AdjustPlayerClout(3);
 
 								//Despite their lack of success--there might be a chance of losing a crewman to the storm
 								//The chance of a death is 20%  minus a total of 10% from the agregate clout score.
-								MGV.notificationMessage = "A storm suddenly surges across the seas filling your crew with worry. The waves crash upon your ship and your sails whip in the winds, but your crew holds fast and successfully navigates the storm!";
-								MGV.showNotification = true;
+								gameVars.notificationMessage = "A storm suddenly surges across the seas filling your crew with worry. The waves crash upon your ship and your sails whip in the winds, but your crew holds fast and successfully navigates the storm!";
+								gameVars.showNotification = true;
 
 								//Otherwise the storm was successful and the necessary penalties occur
 							}
 							else {
 								//Adjust crew clout
-								MGV.AdjustCrewsClout(-3);
-								MGV.AdjustPlayerClout(-3);
+								gameVars.AdjustCrewsClout(-3);
+								gameVars.AdjustPlayerClout(-3);
 
 								//The first penalty is a possibility for the death of 3 crew members
 								//second penalty is the movement of the ship in a random direction for 50 in-game units ~50km or until a shoreline is reached
@@ -222,7 +220,7 @@ public static class RandomEvents
 								}
 
 								//TODO Turn off the ghost trail path of the player to reduce their ability to find their location--this will turn on when revisiting a known settlement.
-								MGV.playerGhostRoute.SetActive(false);
+								gameVars.playerGhostRoute.SetActive(false);
 
 								//Kill up to 6 crew members!
 								int numOfCrewToKill = Random.Range(1, 6);
@@ -240,17 +238,17 @@ public static class RandomEvents
 								}
 								//Display message telling the player what occured
 								if (lostCrew.Count == 0) {
-									MGV.notificationMessage = "A storm suddenly surges across the seas filling your crew with worry. They struggle for hours " +
+									gameVars.notificationMessage = "A storm suddenly surges across the seas filling your crew with worry. They struggle for hours " +
 															 "until the storm overcomes their senses and abilities. You all hold tight and let the storm take your ship where " +
 															"it will, leaving you lost asea without any known bearings across the waters.";
-									MGV.showNotification = true;
+									gameVars.showNotification = true;
 								}
 								else {
-									MGV.notificationMessage = "A storm suddenly surges across the seas filling your crew with worry. They struggle for hours " +
+									gameVars.notificationMessage = "A storm suddenly surges across the seas filling your crew with worry. They struggle for hours " +
 														"until the storm overcomes their senses and abilities. You all hold tight and let the storm take your ship where " +
 														"it will, leaving you lost asea without any known bearings across the waters. Unfortunately, you lose " + lostNames + " to the storm's wrath! You say a few prayers to Poseidon " +
 														"and struggle onward to find your way!";
-									MGV.showNotification = true;
+									gameVars.showNotification = true;
 								}
 
 
@@ -297,8 +295,8 @@ public static class RandomEvents
 							}
 
 							finalMessage += " You continue the journey with the crew--thankful that it wasn't any worse. A plague on a ship asea is quite dangerous.";
-							MGV.notificationMessage = finalMessage;
-							MGV.showNotification = true;
+							gameVars.notificationMessage = finalMessage;
+							gameVars.showNotification = true;
 							break;
 
 
@@ -338,8 +336,8 @@ public static class RandomEvents
 
 							finalMessage += "You think to yourself, as the commander sails away with his small fleet, how odd it is to thank someone for stealing from them. Your crew seems equally frustrated, but equally glad they aren't sailing to some unknown battle against some unknown king. You unfurl the sails and go about your journey!";
 
-							MGV.notificationMessage = finalMessage;
-							MGV.showNotification = true;
+							gameVars.notificationMessage = finalMessage;
+							gameVars.showNotification = true;
 							break;
 
 
@@ -404,8 +402,8 @@ public static class RandomEvents
 
 							//Now add what Provisions and water they give you to the message
 							finalMessage += messageWaterModifier + messageProvisionsModifier + " They bid you farewell and wish Poseidon's favor upon you!";
-							MGV.notificationMessage = finalMessage;
-							MGV.showNotification = true;
+							gameVars.notificationMessage = finalMessage;
+							gameVars.showNotification = true;
 							break;
 						//=====================	
 						//ABADONED SHIP		
@@ -432,8 +430,8 @@ public static class RandomEvents
 
 							//now add the final bit to the event
 							finalMessage += "We watch the ship sink as we sail away--ever mindful that if we aren't careful, the same could happen to us!";
-							MGV.notificationMessage = finalMessage;
-							MGV.showNotification = true;
+							gameVars.notificationMessage = finalMessage;
+							gameVars.showNotification = true;
 							break;
 						//=====================	
 						//FAVOR OF GODS		
@@ -444,8 +442,8 @@ public static class RandomEvents
 											" The waters seem to push you forward in a suspicious but fortunate manner!";
 							shipSpeedModifiers.Event++;
 
-							MGV.notificationMessage = finalMessage;
-							MGV.showNotification = true;
+							gameVars.notificationMessage = finalMessage;
+							gameVars.showNotification = true;
 							break;
 						//=====================	
 						//POSEIDON'S BOUNTY		
@@ -470,8 +468,8 @@ public static class RandomEvents
 								"obviously it is a test by Poseidon on our avarice! We continue on our journey--despite the grumblings of the crew.";
 							}
 
-							MGV.notificationMessage = finalMessage;
-							MGV.showNotification = true;
+							gameVars.notificationMessage = finalMessage;
+							gameVars.showNotification = true;
 							break;
 						//=====================	
 						//ZEUS'S BOUNTY		
@@ -487,7 +485,7 @@ public static class RandomEvents
 							//If there is room on board(There will almost ALWAYS be some room so let's say at least 50kg) then tell the player how much they found
 							//if there is less than 50kg of room, but the ship is low on water, then the crew can have the water
 							if (amountCanHold > 50 || ship.cargo[0].amount_kg <= 100) {
-								int amountToAdd = (int)(Random.Range(1, amountCanHold) * MGV.GetOverallCloutModifier(MGV.currentSettlement.settlementID));
+								int amountToAdd = (int)(Random.Range(1, amountCanHold) * gameVars.GetOverallCloutModifier(gameVars.currentSettlement.settlementID));
 								finalMessage += "The crew catches " + amountToAdd + " kg of water from the rain. What luck! Praise be to Poseidon! Hopefully this isn't one of his tricks!";
 								ship.cargo[0].amount_kg += amountToAdd;
 							}
@@ -496,8 +494,8 @@ public static class RandomEvents
 									"obviously it's a gift to Zeus' brother--not to us and not worth the risk! We continue on our journey--despite the grumblings of the crew.";
 							}
 
-							MGV.notificationMessage = finalMessage;
-							MGV.showNotification = true;
+							gameVars.notificationMessage = finalMessage;
+							gameVars.showNotification = true;
 							break;
 
 					}
@@ -515,9 +513,9 @@ public static class RandomEvents
 			//If we do or don't get a random event, we should always get a message from the crew--let's call them tales
 			//here they describe things like any cities nearby if the crew is familiar or snippets of greek mythology, or they
 			//may be from a list of messages concering any nearby zones of influence from passing settlements/locations of interest
-			ship.shipCaptainsLog.Add(MGV.currentLogPool[Random.Range(0, MGV.currentLogPool.Count)]);
+			ship.shipCaptainsLog.Add(gameVars.currentLogPool[Random.Range(0, gameVars.currentLogPool.Count)]);
 			ship.shipCaptainsLog[ship.shipCaptainsLog.Count - 1].dateTimeOfEntry = ship.totalNumOfDaysTraveled + " days";
-			MGV.currentCaptainsLog = ship.shipCaptainsLog[ship.shipCaptainsLog.Count - 1].dateTimeOfEntry + "\n" + ship.shipCaptainsLog[ship.shipCaptainsLog.Count - 1].logEntry + "\n\n" + MGV.currentCaptainsLog;
+			gameVars.currentCaptainsLog = ship.shipCaptainsLog[ship.shipCaptainsLog.Count - 1].dateTimeOfEntry + "\n" + ship.shipCaptainsLog[ship.shipCaptainsLog.Count - 1].logEntry + "\n\n" + gameVars.currentCaptainsLog;
 		}
 
 
@@ -525,7 +523,7 @@ public static class RandomEvents
 		//	by turning it off when the the trigger number changes--which means it won't take effect
 		//	again until the next time the trigger number occurs
 		//Debug.Log (Mathf.FloorToInt(tenthPlaceTemp));
-		if (Mathf.FloorToInt(tenthPlaceTemp) != 5 && Mathf.FloorToInt(tenthPlaceTemp) != 9) MGV.isPerformingRandomEvent = false;
+		if (Mathf.FloorToInt(tenthPlaceTemp) != 5 && Mathf.FloorToInt(tenthPlaceTemp) != 9) gameVars.isPerformingRandomEvent = false;
 
 	}
 

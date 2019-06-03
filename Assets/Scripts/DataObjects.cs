@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-
 public class Loan
 {
 	public int amount;
@@ -405,6 +404,23 @@ public class MetaResource
 
 public class Resource
 {
+	public const string Water = "Water";
+	public const string Provisions = "Provisions";
+	public const string Grain = "Grain";
+	public const string Wine = "Wine";
+	public const string Timber = "Timber";
+	public const string Gold = "Gold";
+	public const string Silver = "Silver";
+	public const string Copper = "Copper";
+	public const string Tin = "Tin";
+	public const string Obsidian = "Obsidian";
+	public const string Lead = "Lead";
+	public const string Slaves = "Slaves";
+	public const string Iron = "Iron";
+	public const string Bronze = "Bronze";
+	public const string PrestigeGoods = "Prestige Goods";
+
+
 	public string name;
 	public float amount_kg;
 	public float probabilityOfAvailability = 0;
