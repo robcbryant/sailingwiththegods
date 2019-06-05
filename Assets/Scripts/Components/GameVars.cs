@@ -221,8 +221,8 @@ public class GameVars : MonoBehaviour
 		//Load all txt database files
 		masterCrewList = CSVLoader.LoadMasterCrewRoster();
 		captainsLogEntries = CSVLoader.LoadCaptainsLogEntries();
-		settlement_masterList = CSVLoader.LoadSettlementList();
 		masterResourceList = CSVLoader.LoadResourceList();
+		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list
 
 		CreateSettlementsFromList();
 		currentSettlementGameObject = settlement_masterList_parent.transform.GetChild(0).gameObject;

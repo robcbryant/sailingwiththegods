@@ -22,7 +22,8 @@ public class CargoInventoryViewModel : ViewModel
 	}
 	
 	public string Name => Resource.name;
-	public float ProbabilityOfAvailability => Resource.probabilityOfAvailability;		// TODO: This is only set/relevant for resources on a settlement obj, not in the player's ship
+	public float ProbabilityOfAvailability => Resource.probabilityOfAvailability;       // TODO: This is only set/relevant for resources on a settlement obj, not in the player's ship
+	public Sprite Icon => Resource.icon;
 
 	public CargoInventoryViewModel(Resource resource) {
 		Resource = resource;
@@ -32,7 +33,7 @@ public class CargoInventoryViewModel : ViewModel
 public class CargoInventoryView : ViewBehaviour<CargoInventoryViewModel>
 {
 	[SerializeField] Button InfoButton;
-	[SerializeField] Image Icon;					// TODO: Should this be removed? Never set in code i think, it's baked into the row.
+	[SerializeField] ImageView Icon;					// TODO: Should this be removed? Never set in code i think, it's baked into the row.
 	[SerializeField] StringView Name;
 	[SerializeField] StringView Amount;
 
@@ -47,6 +48,7 @@ public class CargoInventoryView : ViewBehaviour<CargoInventoryViewModel>
 
 		Amount?.Bind(new BoundModel<int>(Model, nameof(Model.AmountKg)).AsString());
 		Name?.Bind(new BoundModel<string>(Model, nameof(Model.Name)));
+		Icon?.Bind(new BoundModel<Sprite>(Model, nameof(Model.Icon)));
 	}
 
 	void ShowInfo() {

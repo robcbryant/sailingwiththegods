@@ -8,14 +8,12 @@ public static class CSVLoader
 {
 
 	public static Settlement[] LoadSettlementList() {
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
 		char[] lineDelimiter = new char[] { '@' };
 		char[] recordDelimiter = new char[] { '_' };
 
 		string filename = "settlement_list_newgame";
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
 		//subtract one to account for the header line
 		var settlement_masterList = new Dictionary<int, Settlement>();
 		//start at index 1 to skip the record headers we have to then subtract 
@@ -94,13 +92,11 @@ public static class CSVLoader
 	}
 
 	public static WindRose[,] LoadWindRoses(int width, int height) {
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
 		char[] lineDelimiter = new char[] { ',' };
 
 		string filename = "windroses_january";
 
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
 		var windrose_January = new WindRose[width, height];
 
@@ -121,13 +117,11 @@ public static class CSVLoader
 	}
 
 	public static CurrentRose[,] LoadWaterZonesFromFile(int width, int height) {
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
 		char[] lineDelimiter = new char[] { ',' };
 
 		string filename = "waterzones_january";
 
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
 		var currentRose_January = new CurrentRose[width, height];
 
@@ -147,13 +141,11 @@ public static class CSVLoader
 		return currentRose_January;
 	}
 	public static CaptainsLogEntry[] LoadCaptainsLogEntries() {
-
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
+		
 		char[] lineDelimiter = new char[] { '@' };
 		string filename = "captains_log_database";
 
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
 		var captainsLogEntries = new CaptainsLogEntry[fileByLine.Length];
 		//For each line of the wind rose file (the row)
@@ -174,13 +166,11 @@ public static class CSVLoader
 	//This loads the main quest line from a CSV file in the resources
 	public static MainQuestLine LoadMainQuestLine() {
 		MainQuestLine mainQuest = new MainQuestLine();
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
 		char[] lineDelimiter = new char[] { '@' };
 		char[] lineDelimiterB = new char[] { '_' };
 		string filename = "main_questline_database";
 
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
 		//start at index 1 to skip the record headers
 		//For each line of the main quest file (the row)
@@ -220,14 +210,12 @@ public static class CSVLoader
 	}
 
 	public static List<CrewMember> LoadMasterCrewRoster() {
-
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
+		
 		char[] lineDelimiter = new char[] { '@' };
 
 		string filename = "crewmembers_database";
 
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
 		var masterCrewList = new List<CrewMember>();
 
@@ -252,14 +240,12 @@ public static class CSVLoader
 	}
 
 	static void LoadAdjustedSettlementLocations(Dictionary<int, Settlement> settlements) {
-
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
+		
 		char[] lineDelimiter = new char[] { ',' };
 		int currentID = 0;
 		string filename = "settlement_unity_position_offsets";
 
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
 		for (int row = 0; row < fileByLine.Length; row++) {
 			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
@@ -275,19 +261,17 @@ public static class CSVLoader
 	}
 
 	public static List<MetaResource> LoadResourceList() {
-		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
 		char[] lineDelimiter = new char[] { '@' };
 		string filename = "resource_list";
 
-		string filetext = TryLoadFromGameFolder(filename);
-		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
 		var masterResourceList = new List<MetaResource>();
 
 		//start at index 1 to skip the record headers we have to then subtract 
 		for (int lineCount = 1; lineCount < fileByLine.Length; lineCount++) {
 			string[] records = fileByLine[lineCount].Split(lineDelimiter, StringSplitOptions.None);
-			masterResourceList.Add(new MetaResource(records[1], int.Parse(records[0]), records[2]));
+			masterResourceList.Add(new MetaResource(records[1], int.Parse(records[0]), records[3], records[2]));
 		}
 
 		return masterResourceList;
@@ -315,5 +299,17 @@ public static class CSVLoader
 			return file.text;
 		}
 
+	}
+
+	static string[] TryLoadListFromGameFolder(string filename) {
+		string[] splitFile = new string[] { "\r\n", "\r", "\n" };
+
+		string filetext = TryLoadFromGameFolder(filename);
+		string[] fileByLine = filetext.Split(splitFile, StringSplitOptions.None);
+
+		// remove any trailing newlines since the parsers assume there's no newline at the end of the file, but VS auto-adds one
+		return fileByLine
+			.Where(line => !string.IsNullOrEmpty(line))
+			.ToArray();
 	}
 }

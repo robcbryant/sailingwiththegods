@@ -392,11 +392,13 @@ public class MetaResource
 	public string name;
 	public int id;
 	public string description;
+	public string icon;
 
-	public MetaResource(string name, int id, string description) {
+	public MetaResource(string name, int id, string description, string icon) {
 		this.name = name;
 		this.id = id;
 		this.description = description;
+		this.icon = icon;
 	}
 
 }
@@ -404,6 +406,8 @@ public class MetaResource
 
 public class Resource
 {
+	private const string ResourcePath = "resource_icons";
+
 	public const string Water = "Water";
 	public const string Provisions = "Provisions";
 	public const string Grain = "Grain";
@@ -424,10 +428,14 @@ public class Resource
 	public string name;
 	public float amount_kg;
 	public float probabilityOfAvailability = 0;
+	public Sprite icon { get; private set; }
 
 	public Resource(string name, float amount_kg) {
 		this.name = name;
 		this.amount_kg = amount_kg;
+
+		var iconFilename = Globals.GameVars.masterResourceList.FirstOrDefault(r => r.name == name).icon;
+		icon = Resources.Load<Sprite>(ResourcePath + "/" + iconFilename);
 	}
 }
 
@@ -458,21 +466,21 @@ public class Settlement
 		this.name = name;
 		this.population = population;
 		cargo = new Resource[] {
-		new Resource ("Water", 0f),
-		new Resource ("Provisions", 0f),
-		new Resource ("Grain", 0f),
-		new Resource ("Wine", 0f),
-		new Resource ("Timber", 0f),
-		new Resource ("Gold", 0f),
-		new Resource ("Silver", 0f),
-		new Resource ("Copper", 0f),
-		new Resource ("Tin", 0f),
-		new Resource ("Obsidian", 0f),
-		new Resource ("Lead", 0f),
-		new Resource ("Slaves", 0f),
-		new Resource ("Iron", 0f),
-		new Resource ("Bronze", 0f),
-		new Resource ("Prestige Goods", 0f),
+			new Resource ("Water", 0f),
+			new Resource ("Provisions", 0f),
+			new Resource ("Grain", 0f),
+			new Resource ("Wine", 0f),
+			new Resource ("Timber", 0f),
+			new Resource ("Gold", 0f),
+			new Resource ("Silver", 0f),
+			new Resource ("Copper", 0f),
+			new Resource ("Tin", 0f),
+			new Resource ("Obsidian", 0f),
+			new Resource ("Lead", 0f),
+			new Resource ("Slaves", 0f),
+			new Resource ("Iron", 0f),
+			new Resource ("Bronze", 0f),
+			new Resource ("Prestige Goods", 0f),
 		};
 		networks = new List<int>();
 	}
