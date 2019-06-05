@@ -82,38 +82,33 @@ public class script_player_controls : MonoBehaviour
 	List<string> windZoneNamesToTurnOn = new List<string>();
 	List<string> currentZoneNamesToTurnOn = new List<string>();
 
-
-	// Use this for initialization
-	void Start() {
-		GameVars = Globals.GameVars;
-		controller = gameObject.GetComponent<CharacterController>();
-		shipTransform = transform.GetChild(0);
+	public void Reset() {
 		ship = new Ship("Argo", 7.408f, 100, 500f);
 		ship.networkID = 246;
 		journey = new PlayerJourneyLog();
 		lastPlayerShipPosition = transform.position;
 		ship.mainQuest = CSVLoader.LoadMainQuestLine();
 
-		//Now teleport the player ship to an appropriate location near the first target
-		transform.position = new Vector3(1702.414f, transform.position.y, 2168.358f);
-
 		//Setup the day/night cycle
 		UpdateDayNightCycle(GameVars.IS_NEW_GAME);
 
+		//initialize players ghost route
+		UpdatePlayerGhostRouteLineRenderer(GameVars.IS_NEW_GAME);
+	}
 
-		//TODO temp fix to add 10 crew members
-		//for (int i = 0; i < 10; i++){
-		//	ship.crewRoster.Add(MGV.GenerateRandomCrewMember());
-		//}
+	// Use this for initialization
+	void Start() {
+		GameVars = Globals.GameVars;
+		controller = gameObject.GetComponent<CharacterController>();
+		shipTransform = transform.GetChild(0);
+
+		Reset();
+
+		//Now teleport the player ship to an appropriate location near the first target
+		transform.position = new Vector3(1702.414f, transform.position.y, 2168.358f);
 
 		//Setup the Cursor Ring Material for Animation
 		cursorRingMaterial = cursorRing.GetComponent<MeshRenderer>().sharedMaterial;
-
-		//initiate the main questline
-		//MGV.InitiateMainQuestLineForPlayer();
-
-		//initialize players ghost route
-		UpdatePlayerGhostRouteLineRenderer(GameVars.IS_NEW_GAME);
 
 		//DEBUG
 		GameVars.DEBUG_currentQuestLeg = ship.mainQuest.currentQuestSegment;

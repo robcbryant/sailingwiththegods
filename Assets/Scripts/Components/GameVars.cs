@@ -818,17 +818,7 @@ public class GameVars : MonoBehaviour
 		//First we need to save the game that just ended
 		SaveUserGameData(true);
 		//Then we need to re-initialize all the player's variables
-		playerShipVariables.ship = new Ship("Argo", 7.408f, 100, 500f);
-		playerShipVariables.ship.networkID = 246;
-		playerShipVariables.journey = new PlayerJourneyLog();
-		playerShipVariables.lastPlayerShipPosition = transform.position;
-		playerShipVariables.ship.mainQuest = CSVLoader.LoadMainQuestLine();
-
-		//Setup the day/night cycle
-		playerShipVariables.UpdateDayNightCycle(IS_NEW_GAME);
-
-		//initialize players ghost route
-		playerShipVariables.UpdatePlayerGhostRouteLineRenderer(IS_NEW_GAME);
+		playerShipVariables.Reset();
 
 		//Reset Other Player Ship Variables
 		playerShipVariables.numOfDaysTraveled = 0;
