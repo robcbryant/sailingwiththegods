@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class CargoInventoryViewModel : ViewModel
 {
+	private const string ResourcePath = "resource_icons";
+
 	private Resource Resource;
 
 	private int _AmountKg;
@@ -23,17 +25,20 @@ public class CargoInventoryViewModel : ViewModel
 	
 	public string Name => Resource.name;
 	public float ProbabilityOfAvailability => Resource.probabilityOfAvailability;       // TODO: This is only set/relevant for resources on a settlement obj, not in the player's ship
-	public Sprite Icon => Resource.icon;
+	public Sprite Icon { get; private set; }
 
 	public CargoInventoryViewModel(Resource resource) {
 		Resource = resource;
+
+		var iconFilename = Globals.GameVars.masterResourceList.FirstOrDefault(r => r.name == Name).icon;
+		Icon = Resources.Load<Sprite>(ResourcePath + "/" + iconFilename);
 	}
 }
 
 public class CargoInventoryView : ViewBehaviour<CargoInventoryViewModel>
 {
 	[SerializeField] Button InfoButton;
-	[SerializeField] ImageView Icon;					// TODO: Should this be removed? Never set in code i think, it's baked into the row.
+	[SerializeField] ImageView Icon;
 	[SerializeField] StringView Name;
 	[SerializeField] StringView Amount;
 

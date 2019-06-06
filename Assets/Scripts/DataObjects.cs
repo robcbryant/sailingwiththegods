@@ -113,6 +113,8 @@ public class CrewMember
 	public bool isKillable;
 	public bool isPartOfMainQuest;
 	public CrewType typeOfCrew;
+	public SkillModifiers modifiers;
+
 	//0= sailor  1= warrior  2= slave  3= passenger 4= navigator 5= auger
 	//A sailor is the base class--no benefits/detriments
 	//	--navigators provide maps to different settlements and decrease negative random events
@@ -127,14 +129,17 @@ public class CrewMember
 		this.backgroundInfo = backgroundInfo;
 		this.isKillable = isKillable;
 		this.isPartOfMainQuest = isPartOfMainQuest;
+
+		modifiers = new SkillModifiers {
+			CitiesInNetwork = 
+		};
 	}
 
 	//This is a helper class to create a void crewman
 	public CrewMember(int id) {
-		this.ID = id;
+		ID = id;
+		modifiers = new SkillModifiers();
 	}
-
-
 
 }
 
@@ -406,8 +411,6 @@ public class MetaResource
 
 public class Resource
 {
-	private const string ResourcePath = "resource_icons";
-
 	public const string Water = "Water";
 	public const string Provisions = "Provisions";
 	public const string Grain = "Grain";
@@ -428,14 +431,10 @@ public class Resource
 	public string name;
 	public float amount_kg;
 	public float probabilityOfAvailability = 0;
-	public Sprite icon { get; private set; }
 
 	public Resource(string name, float amount_kg) {
 		this.name = name;
 		this.amount_kg = amount_kg;
-
-		var iconFilename = Globals.GameVars.masterResourceList.FirstOrDefault(r => r.name == name).icon;
-		icon = Resources.Load<Sprite>(ResourcePath + "/" + iconFilename);
 	}
 }
 
