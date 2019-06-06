@@ -522,8 +522,9 @@ public class script_GUI : MonoBehaviour
 		portMessage += GameVars.currentSettlement.description;
 		portMessage += "\n\n";
 		if (GameVars.isInNetwork) {
+			var crewMemberWithNetwork = GameVars.Network.CrewMemberWithNetwork(GameVars.currentSettlement);
 			portMessage += "This Port is part of your network!\n";
-			if (GameVars.crewMemberWithNetwork != null) portMessage += "Your crewman, " + GameVars.crewMemberWithNetwork.name + " assures you their connections here are strong! They should welcome you openly and waive your port taxes on entering!";
+			if (crewMemberWithNetwork != null) portMessage += "Your crewman, " + crewMemberWithNetwork.name + " assures you their connections here are strong! They should welcome you openly and waive your port taxes on entering!";
 			else portMessage += "You know this port as captain very well! You expect that your social connections here will soften the port taxes in your favor!";
 		}
 		else {
@@ -569,8 +570,6 @@ public class script_GUI : MonoBehaviour
 		//Add this settlement to the player's knowledge base
 		GameVars.playerShipVariables.ship.playerJournal.AddNewSettlementToLog(GameVars.currentSettlement.settlementID);
 		//Determine what settlements are available to the player in the tavern
-		GameVars.GenerateProbableInfoListOfSettlementsInCurrentNetwork();
-		GameVars.GenerateListOfAvailableCrewAtCurrentPort();
 		GameVars.showSettlementTradeGUI = true;
 		GameVars.showSettlementTradeButton = false;
 		GameVars.controlsLocked = true;
@@ -578,7 +577,7 @@ public class script_GUI : MonoBehaviour
 		//-------------------------------------------------
 		//NEW GUI FUNCTIONS FOR SETTING UP TAB CONTENT
 		//Show Port Menu
-		GameVars.GUI_PortMenu.SetActive(true);
+		Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel());
 
 		//Load Resource labels
 		ShowShipResources();
@@ -590,7 +589,6 @@ public class script_GUI : MonoBehaviour
 		GUI_TAB_SetupAShrinePanel();
 		GUI_TAB_SetupShipRepairInformation();
 		GUI_TAB_SetupTavernInformation();
-		GUI_TAB_SetupCrewManagementPanel();
 
 		//Add a new route to the player journey log as a port entry
 		GameVars.playerShipVariables.journey.AddRoute(new PlayerRoute(GameVars.playerShip.transform.position, Vector3.zero, GameVars.currentSettlement.settlementID, GameVars.currentSettlement.name, false, GameVars.playerShipVariables.ship.totalNumOfDaysTraveled), GameVars.playerShipVariables, GameVars.currentCaptainsLog);
@@ -604,10 +602,8 @@ public class script_GUI : MonoBehaviour
 
 		//-------------------------------------------------
 		// OTHER PORT GUI SETUP FUNCTIONS
-		GUI_GetListOfPlayerNetworkCities();
-		GUI_GetListOfCitiesInCrewNetworks();
+		GetCrewHometowns();
 		GUI_GetListOfBuiltMonuments();
-		GUI_GetCrewMakeupList();
 		GUI_SetPortCoinImage();
 		GUI_SetPortBGImage();
 		GUI_SetPortPopulation();
@@ -637,35 +633,29 @@ public class script_GUI : MonoBehaviour
 		}
 	}
 
-	public void GUI_GetListOfPlayerNetworkCities() {
-		//Looks through the player's known settlements and adds it to a "/n" separated list
-		string list = "";
-		int counter = 0;
+	public IEnumerable<string> GUI_GetListOfPlayerNetworkCities() {
+		//Looks through the player's known settlements and adds it to a list
+		var result = new List<string>();
 		foreach (int knownSettlementID in GameVars.playerShipVariables.ship.playerJournal.knownSettlements) {
-			list += GameVars.GetSettlementFromID(knownSettlementID).name + "\n";
-			counter++;
+			result.Add( GameVars.GetSettlementFromID(knownSettlementID).name );
 		}
-		port_info_playerCities.GetComponent<Text>().text = list;
-		port_info_playerCities_count.GetComponent<Text>().text = counter.ToString();
+		return result;
 	}
 
-	public void GUI_GetListOfCitiesInCrewNetworks() {
+	public IEnumerable<string> GetCrewHometowns() {
 		//Looks through the hometowns of all crew and adds them to a list
-		string list = "";
-		int counter = 0;
+		var result = new List<string>();
 		foreach (CrewMember crewman in GameVars.playerShipVariables.ship.crewRoster) {
-			list += GameVars.GetSettlementFromID(crewman.originCity).name + "\n";
-			counter++;
+			result.Add(GameVars.GetSettlementFromID(crewman.originCity).name);
 		}
-		port_info_crewCities.GetComponent<Text>().text = list;
-		port_info_crewCities_count.GetComponent<Text>().text = counter.ToString();
+		return result;
 	}
 
 	public void GUI_GetListOfBuiltMonuments() {
 
 	}
 
-	public void GUI_GetCrewMakeupList() {
+	public string GUI_GetCrewMakeupList() {
 		//Loops through all crewmembers and counts their jobs to put into a list
 		int sailors = 0;
 		int warriors = 0;
@@ -698,7 +688,7 @@ public class script_GUI : MonoBehaviour
 		list += "Slaves   - " + slaves.ToString() + "\n";
 		list += "Other   - " + other.ToString() + "\n";
 
-		port_info_crewMakeup.GetComponent<Text>().text = list;
+		return list;
 	}
 
 	public void GUI_GetBuiltMonuments() {
@@ -905,8 +895,6 @@ public class script_GUI : MonoBehaviour
 	//This function activates the docking element when the dock button is clicked. A bool is passed to determine whether or not the button is responsive
 	public void GUI_checkOutOrDockWithPort(bool isAvailable) {
 		if (isAvailable) {
-			//Figure out if this settlement is part of the player's network
-			GameVars.isInNetwork = GameVars.CheckIfCityIDIsPartOfNetwork(GameVars.currentSettlement.settlementID);
 			//Figure out the tax on the cargo hold
 			GameVars.currentPortTax = GetTaxRateOnCurrentShipManifest();
 			GameVars.showPortDockingNotification = true;
@@ -1036,145 +1024,6 @@ public class script_GUI : MonoBehaviour
 	//  THESE CONSTRUCT ALL OF THE PANELS WITHIN THE PORT MENU GUI SYSTEM
 	//============================================================================================================================================================================
 
-
-	//=================================================================================================================
-	// SETUP THE CREW MANAGEMENT PANEL
-	//=================================================================================================================	
-	public void GUI_TAB_SetupCrewManagementPanel() {
-
-		//================================================================================================================
-		// HIRE CREW PANEL
-		//First delete all the crew list beyond the first child(the template)
-		//GameObject replacement = Instantiate((GameObject)tab_crew_hireScrollWindow.transform.GetChild(0).gameObject) as GameObject;
-		for (int i = tab_crew_hireScrollWindow.transform.childCount - 1; i > 0; i--) {
-			Destroy(tab_crew_hireScrollWindow.transform.GetChild(i).gameObject);
-		}
-		//replacement.transform.SetParent(tab_crew_hireScrollWindow.transform);
-
-		//Create a list of 5 crew members to hire
-		for (int i = 0; i < GameVars.currentlyAvailableCrewMembersAtPort.Count; i++) {
-
-			//First let's get a clone of our hidden row in the tavern scroll view
-			GameObject currentMemberRow = Instantiate((GameObject)tab_crew_hireScrollWindow.transform.GetChild(0).gameObject) as GameObject;
-			currentMemberRow.transform.SetParent((Transform)tab_crew_hireScrollWindow.transform);
-			//Set the current clone to active
-			currentMemberRow.SetActive(true);
-			currentMemberRow.GetComponent<RectTransform>().localScale = Vector3.one;
-			Text memberName = (Text)currentMemberRow.transform.Find("Crew Name").GetComponent<Text>();
-			Text memberJob = (Text)currentMemberRow.transform.Find("Sailor Job/Job Title").GetComponent<Text>();
-			Text memberCost = (Text)currentMemberRow.transform.Find("Pay Demand/Pay Amount").GetComponent<Text>();
-			Text memberHome = (Text)currentMemberRow.transform.Find("Home Town/Home Town Name").GetComponent<Text>();
-			Text memberClout = (Text)currentMemberRow.transform.Find("Clout/Clout Title").GetComponent<Text>();
-			Button hireMember = (Button)currentMemberRow.transform.Find("Hire Button").GetComponent<Button>();
-			Button moreMemberInfo = (Button)currentMemberRow.transform.Find("Backstory/Backstory Button").GetComponent<Button>();
-
-			CrewMember currentMember = GameVars.currentlyAvailableCrewMembersAtPort[i];
-			memberName.text = currentMember.name;
-			memberJob.text = GameVars.GetJobClassEquivalency(currentMember.typeOfCrew);
-			memberCost.text = (currentMember.clout * 2).ToString();//TODO Temporary solution--need to add a clout check modifier
-			memberHome.text = GameVars.GetSettlementFromID(currentMember.originCity).name;
-			memberClout.text = GameVars.GetCloutTitleEquivalency(currentMember.clout);
-
-			hireMember.onClick.RemoveAllListeners();
-			hireMember.onClick.AddListener(() => GUI_HireCrewMember(currentMember, currentMemberRow, int.Parse(memberCost.text)));
-			moreMemberInfo.onClick.RemoveAllListeners();
-			moreMemberInfo.onClick.AddListener(() => GUI_GetBackgroundInfo(currentMember.backgroundInfo));
-
-		}
-
-
-		//================================================================================================================
-		// FIRE CREW PANEL
-
-		//First delete all the crew list beyond the first child(the template)
-		//replacement = Instantiate((GameObject)tab_crew_fireScrollWindow.transform.GetChild(0).gameObject) as GameObject;
-		for (int i = tab_crew_fireScrollWindow.transform.childCount - 1; i > 0; i--) {
-			Destroy(tab_crew_fireScrollWindow.transform.GetChild(i).gameObject);
-		}
-		//replacement.transform.SetParent(tab_crew_hireScrollWindow.transform);
-
-		//Now add our curent crew members
-		foreach (CrewMember member in GameVars.playerShipVariables.ship.crewRoster) {
-			//We have to re-declare the CrewMember argument here or else when we apply the variable to the onClick() handler
-			//	--all onClick()'s in this loop will reference the last CrewMember instance in the loop rather than their
-			//	--respective iterated instances
-			CrewMember currentMember = member;
-
-			//First let's get a clone of our hidden row in the tavern scroll view
-			GameObject currentMemberRow = Instantiate((GameObject)tab_crew_fireScrollWindow.transform.GetChild(0).gameObject) as GameObject;
-			currentMemberRow.transform.SetParent((Transform)tab_crew_fireScrollWindow.transform);
-			//Set the current clone to active
-			currentMemberRow.SetActive(true);
-			currentMemberRow.GetComponent<RectTransform>().localScale = Vector3.one;
-			Text memberName = (Text)currentMemberRow.transform.Find("Crew Name").GetComponent<Text>();
-			Text memberJob = (Text)currentMemberRow.transform.Find("Sailor Job/Job Title").GetComponent<Text>();
-			Text memberHome = (Text)currentMemberRow.transform.Find("Home Town/Home Town Name").GetComponent<Text>();
-			Text memberClout = (Text)currentMemberRow.transform.Find("Clout/Clout Title").GetComponent<Text>();
-			Button fireMember = (Button)currentMemberRow.transform.Find("Fire Button").GetComponent<Button>();
-			Button moreMemberInfo = (Button)currentMemberRow.transform.Find("Backstory/Backstory Button").GetComponent<Button>();
-
-			memberName.text = currentMember.name;
-			memberJob.text = GameVars.GetJobClassEquivalency(currentMember.typeOfCrew);
-			memberHome.text = GameVars.GetSettlementFromID(currentMember.originCity).name;
-			memberClout.text = GameVars.GetCloutTitleEquivalency(currentMember.clout);
-
-			fireMember.onClick.RemoveAllListeners();
-			fireMember.onClick.AddListener(() => GUI_FireCrewMember(currentMember, currentMemberRow));
-			moreMemberInfo.onClick.RemoveAllListeners();
-			moreMemberInfo.onClick.AddListener(() => GUI_GetBackgroundInfo(currentMember.backgroundInfo));
-
-		}
-
-	}
-	//----------------------------------------------------------------------------
-	//----------------------------CREW PANEL HELPER FUNCTIONS		
-
-	public void GUI_FireCrewMember(CrewMember crewman, GameObject currentRow) {
-		GameObject.Destroy(currentRow);
-		GameVars.playerShipVariables.ship.crewRoster.Remove(crewman);
-		GameVars.showNotification = true;
-		GameVars.notificationMessage = crewman.name + " looked at you sadly and said before leaving, 'I thought I was doing so well. I'm sorry I let you down. Guess I'll go drink some cheap wine...";
-		GUI_GetListOfCitiesInCrewNetworks();
-		GUI_GetCrewMakeupList();
-	}
-
-
-	public void GUI_HireCrewMember(CrewMember crewman, GameObject currentRow, int costToHire) {
-		//Check to see if player has enough money to hire
-		if (GameVars.playerShipVariables.ship.currency >= costToHire) {
-			//Now check to see if there is room to hire a new crew member!
-			if (GameVars.playerShipVariables.ship.crewRoster.Count < GameVars.playerShipVariables.ship.crewCapacity) {
-				GameVars.playerShipVariables.ship.crewRoster.Add(crewman);
-
-				//Subtract the cost from the ship's money
-				GameVars.playerShipVariables.ship.currency -= costToHire;
-
-				//Remove Row
-				GameObject.Destroy(currentRow);
-
-
-				//If there isn't room, then let the player know
-			}
-			else {
-				GameVars.showNotification = true;
-				GameVars.notificationMessage = "You don't have room on the ship to hire " + crewman.name + ".";
-			}
-			//If not enough money, then let the player know
-		}
-		else {
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You can't afford to hire " + crewman.name + ".";
-		}
-		GUI_GetListOfCitiesInCrewNetworks();
-		GUI_GetCrewMakeupList();
-	}
-
-	public void GUI_GetBackgroundInfo(string info) {
-		GameVars.showNotification = true;
-		GameVars.notificationMessage = info;
-
-	}
-
 	//=================================================================================================================
 	// SETUP THE LOAN MANAGEMENT PANEL
 	//=================================================================================================================	
@@ -1289,7 +1138,7 @@ public class script_GUI : MonoBehaviour
 		int baseCost = 0;
 		//We need to do a clout check as well as a network checks
 		int baseModifier = Mathf.CeilToInt(1000 - (200 * GameVars.GetOverallCloutModifier(GameVars.currentSettlement.settlementID)));
-		if (GameVars.CheckIfCityIDIsPartOfNetwork(GameVars.currentSettlement.settlementID)) {
+		if (GameVars.Network.CheckIfCityIDIsPartOfNetwork(GameVars.currentSettlement.settlementID)) {
 			baseCost = Mathf.CeilToInt(GameVars.currentSettlement.tax_network * baseModifier * 1);
 		}
 		else {
@@ -1470,7 +1319,7 @@ public class script_GUI : MonoBehaviour
 		//We need to do a clout check as well as a network checks
 		//costToRepair is a GLOBAL var to this script
 		int baseModifier = Mathf.CeilToInt(2 - GameVars.GetOverallCloutModifier(GameVars.currentSettlement.settlementID));
-		if (GameVars.CheckIfCityIDIsPartOfNetwork(GameVars.currentSettlement.settlementID)) {
+		if (GameVars.Network.CheckIfCityIDIsPartOfNetwork(GameVars.currentSettlement.settlementID)) {
 			costToRepair = Mathf.CeilToInt(GameVars.currentSettlement.tax_network * baseModifier * 1);
 		}
 		else {

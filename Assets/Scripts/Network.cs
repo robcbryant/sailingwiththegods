@@ -6,74 +6,50 @@ using System.Threading.Tasks;
 
 public class Network
 {
-	Ship Ship;
+	const int INDEPENDENT = 0;
 
-	public Network(Ship ship) {
-		Ship = ship;
+	GameVars GameVars;
+	Ship Ship => GameVars.playerShipVariables.ship;
+
+	public Network(GameVars gameVars) {
+		GameVars = gameVars;
 	}
 
-	public IEnumerator<Settlement> GetCitiesFromNetwork(int netId) => 
-
-	public IEnumerator<Settlement> GetMyImmediateNetwork() {
-		Ship.networks.Select()
-	}
-
-	public IEnumerator<Settlement> GetCrewMemberImmediateNetwork() {
-
-	}
-
-	public IEnumerator<Settlement> GetMyCompleteNetwork() {
-
-	}
-
-	public CrewMember crewMemberWithNetwork => playerShipVariables.ship.crewRoster
-		.FirstOrDefault(c => )
-
-	public bool CheckIfCityIDIsPartOfNetwork(int cityID) {
-		//Debug.Log ("CITY PART OF NETWORK CEHCK: " + cityID);
-		Settlement thisSettlement = GetSettlementFromID(cityID);
-		int INDEPENDENT = 0;//Settlements who don't belong to a network are independent
-							//Debug.Log ("DEBUG ID CHECK 2: " + thisSettlement.name);
-							//First check if the player is part of the network
-		foreach (int playerNetID in playerShipVariables.ship.networks) {
-			//Debug.Log ("DEBUG ID CHECK: " + playerShipVariables.ship.networks);
-			foreach (int cityNetID in thisSettlement.networks) {
-				if (playerNetID == cityNetID && cityNetID != INDEPENDENT) {
-					crewMemberWithNetwork = null;
+	public bool CheckForNetworkMatchBetweenTwoSettlements(int cityA, int cityB) {
+		Settlement cityAObj = GameVars.GetSettlementFromID(cityA);
+		Settlement cityBObj = GameVars.GetSettlementFromID(cityB);
+		foreach (int cityA_ID in cityAObj.networks) {
+			foreach (int cityB_ID in cityBObj.networks) {
+				if (cityA_ID == cityB_ID && cityA_ID != INDEPENDENT) {
 					return true;
 				}
 			}
 		}
-		//Check if this is the player's hometown
-		if (cityID == playerShipVariables.ship.originSettlement)
-			return true;
-
-
-		//Then Check are any crewmembers are part of the network
-		foreach (CrewMember thisCrewMember in playerShipVariables.ship.crewRoster) {
-			//Debug.Log (thisCrewMember.name);
-			Settlement crewOriginCity = GetSettlementFromID(thisCrewMember.originCity);
-			if (crewOriginCity.name != "ERROR") {
-
-				//First check if the crewman is part of this towns network
-				//	--we have to run through each network in the settlement's list against the networks in the crewman's origin city's list
-				//TODO it will probably be useful down the road to ahve a crewman's origin city give extra information / bonuses beyond a network bonus
-				foreach (int cityNetID in thisSettlement.networks) {
-					foreach (int crewCityNetID in crewOriginCity.networks) {
-						if (cityNetID == crewCityNetID && cityNetID != INDEPENDENT) {
-							crewMemberWithNetwork = thisCrewMember;
-							return true;
-						}
-					}
-				}
-			}
-			//Check if this is the crewman's hometown
-			if (cityID == thisCrewMember.originCity)
-				return true;
-		}
-
-		//If we don't come up with any matches anywhere then return false
 		return false;
+	}
 
+	public IEnumerable<Settlement> GetCitiesFromNetwork(int netId) => Globals.GameVars.settlement_masterList.Where(s => s.networks.Contains(netId));
+
+	public IEnumerable<Settlement> MyImmediateNetwork => Ship.networks
+		.Where(netId => netId != INDEPENDENT)
+		.SelectMany(netId => GetCitiesFromNetwork(netId))
+		.Concat(new[] { GameVars.GetSettlementFromID(Ship.originSettlement) });
+
+	public IEnumerable<Settlement> GetCrewMemberNetwork(CrewMember crew) =>
+		Globals.GameVars.GetSettlementFromID(crew.originCity).networks
+			.Where(netId => netId != INDEPENDENT)
+			.SelectMany(netId => GetCitiesFromNetwork(netId))
+			.Concat(new[] { GameVars.GetSettlementFromID(crew.originCity) });
+
+	public IEnumerable<Settlement> MyCompleteNetwork => Ship.crewRoster
+		.SelectMany(crew => GetCrewMemberNetwork(crew))
+		.Concat(MyImmediateNetwork);
+
+	public IEnumerable<CrewMember> CrewMembersWithNetwork(Settlement settlement) => Ship.crewRoster.Where(crew => GetCrewMemberNetwork(crew).Contains(settlement));
+	public CrewMember CrewMemberWithNetwork(Settlement settlement) => CrewMembersWithNetwork(settlement).FirstOrDefault();
+
+	public bool CheckIfCityIDIsPartOfNetwork(int cityID) {
+		var settlement = GameVars.GetSettlementFromID(cityID);
+		return settlement != null && MyCompleteNetwork.Contains(settlement);
 	}
 }

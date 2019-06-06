@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 public class script_player_controls : MonoBehaviour
 {
@@ -262,22 +263,34 @@ public class script_player_controls : MonoBehaviour
 		//Debug.Log (FPVCamRect);
 		if (FPVCamRect.Contains(main_mouse) && !UISystem.IsMouseOverUI()) {
 			//If the mouse cursor is hovering over the allowed gameplay window, then figure out the position of the mouse in worldspace
-			RaycastHit hitInfo;
 			Ray ray = GameVars.FPVCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
 			//Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow);
 			//Debug.Log ("I guess?");
-			if (Physics.Raycast(ray.origin, ray.direction, out hitInfo, 100f)) {
+
+			System.Func<RaycastHit, bool> isRelevant = (RaycastHit h) =>
+				h.collider.tag == "playerShip" ||
+				h.collider.tag == "waterSurface" ||
+				h.collider.tag == "terrain" ||
+				h.collider.tag == "settlementClick";
+
+			var hits = Physics.RaycastAll(ray.origin, ray.direction, 100f)
+				.Where(isRelevant)
+				.OrderBy(h => h.distance);
+
+			if (hits.Any()) {
+				var firstRelevantHit = hits.First();
+
 				//if we get a hit, then turn the cursor ring on
 				cursorRing.SetActive(true);
 				//Move the animated cursor ring to the position of the mouse cursor
-				cursorRing.transform.position = hitInfo.point;// + new Vector3(0,.03f,0);
+				cursorRing.transform.position = firstRelevantHit.point;// + new Vector3(0,.03f,0);
 
 				//Adjust the scale of the cursor ring to grow with distance
 				float newScale = Vector3.Distance(cursorRing.transform.position, GameVars.FPVCamera.transform.position) * .09f;
 				cursorRing.transform.localScale = new Vector3(newScale, newScale, newScale);
 
 				//Hide the cursor if it's touching the player ship to avoid weird visual glitches
-				if (hitInfo.collider.tag == "playerShip") cursorRing.SetActive(false);
+				if (hits.Any(h => h.collider.tag == "playerShip")) cursorRing.SetActive(false);
 				else cursorRing.SetActive(true);
 
 				//Now let's check for line of site to the target
@@ -285,7 +298,7 @@ public class script_player_controls : MonoBehaviour
 				RaycastHit lineOfSightHit;
 				Vector3 lineOfSightOrigin = shipTransform.position + new Vector3(0, .02f, 0);
 				//We Fire a raycast in the direction of the selected point from the ship
-				if (Physics.Raycast(lineOfSightOrigin, Vector3.Normalize(hitInfo.point - lineOfSightOrigin), out lineOfSightHit, 100f)) {
+				if (Physics.Raycast(lineOfSightOrigin, Vector3.Normalize(firstRelevantHit.point - lineOfSightOrigin), out lineOfSightHit, 100f)) {
 					//If the ray intersects with anything but water then there is no line of sight
 					//Debug.DrawRay(lineOfSightOrigin,Vector3.Normalize(hitInfo.point - lineOfSightOrigin) * 100, Color.yellow);
 					//Debug.Log (lineOfSightHit.transform.tag);
@@ -296,24 +309,36 @@ public class script_player_controls : MonoBehaviour
 				}
 
 				//If the cursor is on water and has line of sight
-				if (hitInfo.collider.tag == "waterSurface" && hasLineOfSight == true) {
+				if (firstRelevantHit.collider.tag == "waterSurface" && hasLineOfSight == true) {
 					//Make sure the cursor ring is Green
 					cursorRingIsGreen = true;
 
-					CalculateShipTrajectoryPreview(hitInfo.point);
+					CalculateShipTrajectoryPreview(firstRelevantHit.point);
 
 					//Now check to see if the player clicks the left mouse button to travel
 					if (Input.GetButton("Select")) {
 						//lock controls so that the travel function is triggered on the next update cycle
 						GameVars.controlsLocked = true;
 						//set the destination: using the players Y value so the ship always stays at a set elevation
-						currentDestination = new Vector3(hitInfo.point.x, transform.position.y, hitInfo.point.z);
+						currentDestination = new Vector3(firstRelevantHit.point.x, transform.position.y, firstRelevantHit.point.z);
 						//set the player ship's current position to be logged into the journey log
 						lastPlayerShipPosition = transform.position;
 						travel_lastOrigin = transform.position;
 						numOfDaysTraveled = 0;
 					}
 
+				}
+				else if(hits.Any(h => h.collider.tag == "settlementClick") && GameVars.currentSettlement != null) {
+					// TODO: should probably change it to some other color or something?
+					cursorRingIsGreen = true;
+					//We also need to make sure the trajectory preview is turned off
+					CalculateShipTrajectoryPreview(transform.position);
+
+					//Now check to see if the player clicks the left mouse button to open the port menu
+					//Clicking here will pop the city dialog as long as you're in the docking zone. 
+					if (Input.GetButton("Select")) {
+						GameObject.FindObjectOfType<script_GUI>().GUI_checkOutOrDockWithPort(true);		// TODO: Move this into Globals for now until I've pulled everything out.
+					}
 				}
 				else {
 					//Since we aren't allowed to travel to the mouse position, change the cursor to red

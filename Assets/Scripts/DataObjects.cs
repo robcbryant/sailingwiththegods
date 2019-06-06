@@ -113,7 +113,12 @@ public class CrewMember
 	public bool isKillable;
 	public bool isPartOfMainQuest;
 	public CrewType typeOfCrew;
-	public SkillModifiers modifiers;
+
+	SkillModifiers _changeOnHire;
+	public SkillModifiers changeOnHire { get { if(_changeOnHire == null) InitModifiers(); return _changeOnHire; } }
+
+	SkillModifiers _changeOnFire;
+	public SkillModifiers changeOnFire { get { if (_changeOnFire == null) InitModifiers(); return _changeOnFire; } }
 
 	//0= sailor  1= warrior  2= slave  3= passenger 4= navigator 5= auger
 	//A sailor is the base class--no benefits/detriments
@@ -129,16 +134,31 @@ public class CrewMember
 		this.backgroundInfo = backgroundInfo;
 		this.isKillable = isKillable;
 		this.isPartOfMainQuest = isPartOfMainQuest;
-
-		modifiers = new SkillModifiers {
-			CitiesInNetwork = 
-		};
 	}
 
 	//This is a helper class to create a void crewman
 	public CrewMember(int id) {
 		ID = id;
-		modifiers = new SkillModifiers();
+		_changeOnHire = new SkillModifiers();
+		_changeOnFire = new SkillModifiers();
+	}
+
+	void InitModifiers() {
+		var gameVars = Globals.GameVars;
+
+		_changeOnHire = new SkillModifiers {
+			CitiesInNetwork = gameVars.Network.GetCrewMemberNetwork(this).Count(s => !gameVars.Network.MyCompleteNetwork.Contains(s)),
+			BattlePercentChance = typeOfCrew == CrewType.Warrior ? 5 : 0,
+			Navigation = typeOfCrew == CrewType.Sailor ? 1 : 0,
+			PositiveEvent = typeOfCrew == CrewType.Guide ? 10 : 0
+		};
+
+		_changeOnFire = new SkillModifiers {
+			CitiesInNetwork = -gameVars.Network.MyCompleteNetwork.Count(s => !gameVars.Network.CrewMembersWithNetwork(s).Any(crew => crew != this) && !gameVars.Network.MyImmediateNetwork.Contains(s)),
+			BattlePercentChance = typeOfCrew == CrewType.Warrior ? -5 : 0,
+			Navigation = typeOfCrew == CrewType.Sailor ? -1 : 0,
+			PositiveEvent = typeOfCrew == CrewType.Guide ? -10 : 0
+		};
 	}
 
 }
@@ -450,7 +470,6 @@ public class Settlement
 	public float tax_neutral;
 	public float tax_network;
 	public GameObject theGameObject;
-	public int[] networkHintResources;
 	public Vector3 adjustedGamePosition;
 	public float eulerY;
 	public int typeOfSettlement;

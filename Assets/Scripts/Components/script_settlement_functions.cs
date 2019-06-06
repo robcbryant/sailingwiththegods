@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+// TODO: Replace this with the new tooltip system.
 public class script_settlement_functions : MonoBehaviour
 {
 

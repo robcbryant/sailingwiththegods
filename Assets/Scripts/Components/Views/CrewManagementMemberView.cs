@@ -12,23 +12,21 @@ public class CrewManagementMemberViewModel : ViewModel
 	private const string ResourcePath = "crew_portraits";
 	private const string DefaultPortrait = "crew_portraits/phoenician_sailor";
 
-	private CrewMember Member;
+	public CrewMember Member { get; private set; }
 	
 	public Sprite Portrait { get; private set; }
 	public string Name => Member.name;
 	public string City => Globals.GameVars.GetSettlementFromID(Member.originCity).name;
 	public string Job => Globals.GameVars.GetJobClassEquivalency(Member.typeOfCrew);
+	public string BackgroundInfo => Member.backgroundInfo;
 
-	public string Role => Job + "\n" + Skills;
+	public string Role => "<#000000>" + Job + "</color>" + "\n" + Skills;
 
-	public string Skills {
-		get {
-
-		}
-	}
+	public bool IsInCrew => Globals.GameVars.playerShipVariables.ship.crewRoster.Contains(Member);
+	public string Skills => IsInCrew ? Member.changeOnFire.ToString() : Member.changeOnHire.ToString();
 
 	//TODO Temporary solution--need to add a clout check modifier
-	public int Cost => Member.clout * 2;
+	public int CostToHire => Member.clout * 2;
 
 
 	public CrewManagementMemberViewModel(CrewMember member) {
@@ -46,23 +44,24 @@ public class CrewManagementMemberView : ViewBehaviour<CrewManagementMemberViewMo
 	[SerializeField] StringView Name;
 	[SerializeField] StringView City;
 	[SerializeField] StringView Skills;
-	[SerializeField] StringView Salary;
+	[SerializeField] StringView Cost;
 
-	private void Start() {
-		if (InfoButton != null) {
-			Subscribe(InfoButton.onClick, ShowInfo);
-		}
-	}
-
-	public override void Bind(CargoInventoryViewModel model) {
+	public override void Bind(CrewManagementMemberViewModel model) {
 		base.Bind(model);
 
-		Amount?.Bind(new BoundModel<int>(Model, nameof(Model.AmountKg)).AsString());
-		Name?.Bind(new BoundModel<string>(Model, nameof(Model.Name)));
-		Icon?.Bind(new BoundModel<Sprite>(Model, nameof(Model.Icon)));
-	}
+		InfoButton?.Bind(ValueModel.New(new ButtonViewModel {
+			OnClick = () => Debug.Log("Clicked info button for " + Model.Name)
+		}));
 
-	void ShowInfo() {
-		Debug.Log("Cargo - " + Model.Name + " - " + Model.AmountKg + " kg");
+		ActionButton?.Bind(ValueModel.New(new ButtonViewModel {
+			Label = model.IsInCrew ? "Fire" : "Hire",
+			OnClick = () => Debug.Log("Clicked crew action for " + Model.Name)
+		}));
+
+		Name?.Bind(new BoundModel<string>(Model, nameof(Model.Name)));
+		City?.Bind(new BoundModel<string>(Model, nameof(Model.City)));
+		Skills?.Bind(new BoundModel<string>(Model, nameof(Model.Role)));
+		Cost?.Bind(new BoundModel<int>(Model, nameof(Model.CostToHire)).AsString());
+		Portrait?.Bind(new BoundModel<Sprite>(Model, nameof(Model.Portrait)));
 	}
 }

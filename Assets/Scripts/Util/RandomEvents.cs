@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public static class RandomEvents
 {
@@ -36,12 +37,8 @@ public static class RandomEvents
 				//We separate Random events into two possible categories: Positive, and Negative.
 				//First we need to determine if the player has a positive or negative event occur
 				//--The basic chance is a 50/50 chance of either or, but we need to figure out if the
-				//--crew makeup has any augers, and if so, each auger decreases the chance of a negative
+				//--crew makeup has any augers, and if so, each auger decreases the chance of a negative (now controlled by PostiveEvent modifiers)
 				//--event by 10%. We then roll an aggregate clout score to further reduce the chance by a maximum of 20%
-
-				//Count the number of augers on board the ship
-				int numOfAugers = 0;
-				foreach (CrewMember crewman in ship.crewRoster) { if (crewman.typeOfCrew == CrewType.Guide) numOfAugers++; }
 
 				//Get the 0-1 aggregate clout score. Here we use the current zone of influence's network id to check
 				int currentZoneID = 0;
@@ -49,7 +46,7 @@ public static class RandomEvents
 				if (gameVars.activeSettlementInfluenceSphereList.Count > 0) currentZoneID = gameVars.activeSettlementInfluenceSphereList[0];
 				float aggregateCloutScore = gameVars.GetOverallCloutModifier(currentZoneID);
 				//Now determine the final weighted chance score that will be .5f and under
-				chanceOfEvent = .5f - (.1f * numOfAugers) - (.2f * aggregateCloutScore);
+				chanceOfEvent = .5f - ship.crewRoster.Sum(c => c.changeOnHire.PositiveEvent / 100f) - (.2f * aggregateCloutScore);
 
 
 				//If we roll under our range, that means we hit a NEGATIVE random event
@@ -163,10 +160,8 @@ public static class RandomEvents
 						//STORM AT SEA	
 						case 2:
 							//We need to dtermine whether or not the player sucessfully navigates through the storm.
-							//The player has a 20% chance of succeeding plus 5% per sailor on board, plus a max of 20% based on aggregate clout
-							int numOfSailors = 0;
-							foreach (CrewMember crewman in ship.crewRoster) { if (crewman.typeOfCrew == 0) numOfSailors++; }
-							chanceOfEvent = .2f + (.005f * numOfSailors) + (.2f * aggregateCloutScore);
+							//The player has a 20% chance of succeeding plus 1% per sailor on board (now controlled by Navigation modifiers), plus a max of 20% based on aggregate clout
+							chanceOfEvent = .2f + ship.crewRoster.Sum(c => c.changeOnHire.Navigation / 100f) + (.2f * aggregateCloutScore);
 							Debug.Log(chanceOfEvent);
 							//If the roll is lower than the chanceOfEvent variable--the storm was unsuccessful in throwing the player off course
 							if (Random.Range(0f, 1f) <= chanceOfEvent) {

@@ -113,7 +113,6 @@ public class GameVars : MonoBehaviour
 	// settlements
 	[HideInInspector] public Settlement[] settlement_masterList;
 	[HideInInspector] public GameObject settlement_masterList_parent;
-	[HideInInspector] public List<Settlement> currentNetworkSettlements;//this is not a complete list--but rather a list of settlements generated through probability
 	[HideInInspector] public GameObject currentSettlementGameObject;
 	[HideInInspector] public Settlement currentSettlement;
 	[HideInInspector] public int currentPortTax = 0;		// this is derived from the currentSettlement. could be a getter on settlement object
@@ -175,11 +174,13 @@ public class GameVars : MonoBehaviour
 	[HideInInspector] public bool[] newGameCrewSelectList = new bool[40];
 	[HideInInspector] public List<CrewMember> newGameAvailableCrew = new List<CrewMember>();
 	[HideInInspector] public bool showPortDockingNotification = false;
-	[HideInInspector] public bool isInNetwork = false;
 	[HideInInspector] public bool gameDifficulty_Beginner = false;
 	[HideInInspector] public bool showNonPortDockButton = false;
 	[HideInInspector] public bool showNonPortDockingNotification = false;
 	[HideInInspector] public bool updatePlayerCloutMeter = false;
+
+	public Network Network { get; private set; }
+	public bool isInNetwork => Network.CheckIfCityIDIsPartOfNetwork(currentSettlement.settlementID);
 
 	//###################################
 	//	RANDOM EVENT VARIABLES
@@ -218,6 +219,10 @@ public class GameVars : MonoBehaviour
 		navigatorBeacon = GameObject.FindGameObjectWithTag("navigatorBeacon");
 		mainLightSource = GameObject.FindGameObjectWithTag("main_light_source").GetComponent<Light>();
 
+		playerShipVariables = playerShip.GetComponent<script_player_controls>();
+
+		Network = new Network(this);
+
 		//Load all txt database files
 		masterCrewList = CSVLoader.LoadMasterCrewRoster();
 		captainsLogEntries = CSVLoader.LoadCaptainsLogEntries();
@@ -239,7 +244,6 @@ public class GameVars : MonoBehaviour
 		//Load the basic log entries into the log pool
 		AddEntriesToCurrentLogPool(0);
 		StartPlayerShipAtOriginCity();
-		playerShipVariables = playerShip.GetComponent<script_player_controls>();
 		GenerateCityLights();
 	}
 
@@ -977,63 +981,6 @@ public class GameVars : MonoBehaviour
 
 	}
 
-	public void SetupBeginnerGameDifficulty() {
-		//Set difficulty level variables
-		if (gameDifficulty_Beginner)
-			camera_Mapview.GetComponent<Camera>().enabled = true;
-		else
-			camera_Mapview.GetComponent<Camera>().enabled = false;
-	}
-
-	public void LoadSavedGhostRoute() {
-		//For the loadgame function--it just fills the ghost trail with the routes that exist
-		playerGhostRoute.GetComponent<LineRenderer>().positionCount = playerShipVariables.journey.routeLog.Count;
-		for (int routeIndex = 0; routeIndex < playerShipVariables.journey.routeLog.Count; routeIndex++) {
-			Debug.Log("GhostRoute Index: " + routeIndex);
-			playerGhostRoute.GetComponent<LineRenderer>().SetPosition(routeIndex, playerShipVariables.journey.routeLog[routeIndex].UnityXYZEndPoint - new Vector3(0, playerShip.transform.position.y, 0));
-			//set player last origin point for next route add on
-			if (routeIndex == playerShipVariables.journey.routeLog.Count - 1) {
-				playerShipVariables.travel_lastOrigin = playerShipVariables.journey.routeLog[routeIndex].UnityXYZEndPoint - new Vector3(0, playerShip.transform.position.y);
-				playerShipVariables.originOfTrip = playerShipVariables.journey.routeLog[routeIndex].UnityXYZEndPoint - new Vector3(0, playerShip.transform.position.y);
-			}
-		}
-	}
-
-	//====================================================================================================
-	//     GUI ORIENTED FUNCTIONS
-	//====================================================================================================   
-
-
-	public void GenerateProbableInfoListOfSettlementsInCurrentNetwork() {
-		List<Settlement> networkSettlements = new List<Settlement>();
-		int settlementListLimit = 0;
-		//Debug.Log ("DEBUG: " + currentSettlement.settlementID);
-		foreach (Settlement city in settlement_masterList) {
-			if (city.name != currentSettlement.name && CheckForNetworkMatchBetweenTwoSettlements(currentSettlement.settlementID, city.settlementID) && settlementListLimit < 5) {
-				int numOfResourcesToShow = 0;
-				//determine how many resource hint slots this city will have based on influence
-				for (int i = 0; i < 5; i++)
-					if (currentSettlement.population >= UnityEngine.Random.Range(0f, 101f))
-						numOfResourcesToShow++;
-
-				city.networkHintResources = new int[numOfResourcesToShow];
-				//now fill in the available resource hint slots with random resources 0-14
-				for (int i = 0; i < numOfResourcesToShow; i++)
-					city.networkHintResources[i] = UnityEngine.Random.Range(0, 15); //15 because range is exclusive
-																					//Now add the city to the list
-				networkSettlements.Add(city);
-				playerShipVariables.ship.playerJournal.AddNewSettlementToLog(city.settlementID);
-				settlementListLimit++;
-			}
-		}
-
-		currentNetworkSettlements = networkSettlements;
-	}
-
-	public void GenerateListOfAvailableCrewAtCurrentPort() {
-		currentlyAvailableCrewMembersAtPort = GenerateRandomCrewMembers(5);
-	}
-
 	public List<CrewMember> GenerateRandomCrewMembers(int numberOfCrewmanNeeded) {
 		//This function pulls from the list of available crewmembers in the world and selects random crewman from that list of a defined
 		//	--size that isn't already on board the ship and returns it. This may not return a full list if the requested number is too high--it will return
@@ -1063,7 +1010,27 @@ public class GameVars : MonoBehaviour
 
 	}
 
+	public void SetupBeginnerGameDifficulty() {
+		//Set difficulty level variables
+		if (gameDifficulty_Beginner)
+			camera_Mapview.GetComponent<Camera>().enabled = true;
+		else
+			camera_Mapview.GetComponent<Camera>().enabled = false;
+	}
 
+	public void LoadSavedGhostRoute() {
+		//For the loadgame function--it just fills the ghost trail with the routes that exist
+		playerGhostRoute.GetComponent<LineRenderer>().positionCount = playerShipVariables.journey.routeLog.Count;
+		for (int routeIndex = 0; routeIndex < playerShipVariables.journey.routeLog.Count; routeIndex++) {
+			Debug.Log("GhostRoute Index: " + routeIndex);
+			playerGhostRoute.GetComponent<LineRenderer>().SetPosition(routeIndex, playerShipVariables.journey.routeLog[routeIndex].UnityXYZEndPoint - new Vector3(0, playerShip.transform.position.y, 0));
+			//set player last origin point for next route add on
+			if (routeIndex == playerShipVariables.journey.routeLog.Count - 1) {
+				playerShipVariables.travel_lastOrigin = playerShipVariables.journey.routeLog[routeIndex].UnityXYZEndPoint - new Vector3(0, playerShip.transform.position.y);
+				playerShipVariables.originOfTrip = playerShipVariables.journey.routeLog[routeIndex].UnityXYZEndPoint - new Vector3(0, playerShip.transform.position.y);
+			}
+		}
+	}
 
 	//====================================================================================================
 	//    LOOKUP / DICTIONARY FUNCTIONS
@@ -1318,22 +1285,7 @@ public class GameVars : MonoBehaviour
 	//====================================================================================================
 	//    OTHER FUNCTIONS
 	//====================================================================================================   
-
-	public bool CheckForNetworkMatchBetweenTwoSettlements(int cityA, int cityB) {
-		int INDEPENDENT = 0;
-		Settlement cityAObj = GetSettlementFromID(cityA);
-		Settlement cityBObj = GetSettlementFromID(cityB);
-		foreach (int cityA_ID in cityAObj.networks) {
-			foreach (int cityB_ID in cityBObj.networks) {
-				if (cityA_ID == cityB_ID && cityA_ID != INDEPENDENT) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-
+	
 	public float GetOverallCloutModifier(int settlementID) {
 		//This is the main function that processes ALL clout-based modifiers and returns a floating point value 0-1
 		//	--to represent the influence level the player has at any particular moment in an interaction. This
