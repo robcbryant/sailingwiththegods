@@ -472,6 +472,7 @@ public class script_GUI : MonoBehaviour
 		//-------------------------------------------------
 		//NEW GUI FUNCTIONS FOR SETTING UP TAB CONTENT
 		//Show Port Menu
+		Globals.UI.Hide<Dashboard>();
 		Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel());
 
 		//Setup port panels
@@ -1229,7 +1230,6 @@ public class script_GUI : MonoBehaviour
 		if (GameVars.controlsLocked && !GameVars.showSettlementTradeGUI)
 			GameVars.playerShipVariables.rayCheck_stopShip = true;
 		//Run a script on the player controls that fast forwards time by a quarter day
-		GameVars.isPassingTime = true;
 		GameVars.controlsLocked = true;
 		GameVars.playerShipVariables.PassTime(.25f, false);
 	}

@@ -26,11 +26,8 @@ public class PortViewModel : ViewModel
 	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_Button_TryToLeavePort() {
 		if (GameVars.Trade.CheckIfPlayerCanAffordToPayPortTaxes()) {
-			GameVars.showSettlementTradeGUI = false;
-			GameVars.showSettlementTradeButton = true;
 			//MGV.controlsLocked = false;
 			//Start Our time passage
-			GameVars.isPassingTime = true;
 			GameVars.playerShipVariables.PassTime(.25f, true);
 			GameVars.justLeftPort = true;
 			GameVars.playerShipVariables.ship.currency -= GameVars.currentPortTax;
@@ -41,8 +38,10 @@ public class PortViewModel : ViewModel
 			GameVars.playerShipVariables.UpdatePlayerGhostRouteLineRenderer(GameVars.IS_NOT_NEW_GAME);
 
 			//Turn off the coin image texture
-			GameVars.GUI_PortMenu.SetActive(false);
 			GameVars.menuControlsLock = false;
+
+			Globals.UI.Hide<PortScreen>();
+			Globals.UI.Show<Dashboard, DashboardViewModel>(new DashboardViewModel());
 
 		}
 		else {//Debug.Log ("Not Enough Drachma to Leave the Port!");

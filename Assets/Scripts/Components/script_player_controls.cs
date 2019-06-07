@@ -1533,6 +1533,7 @@ public class script_player_controls : MonoBehaviour
 	}
 
 	public void PassTime(float amountToWait, bool isPort) {
+		GameVars.isPassingTime = true;
 		StartCoroutine(WaitForTimePassing(.25f, false));
 	}
 
