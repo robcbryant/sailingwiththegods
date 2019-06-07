@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3327344800890940219}
   - component: {fileID: 3327344800890940220}
   - component: {fileID: 3327344800890940221}
+  - component: {fileID: 2541506450831106119}
   m_Layer: 4
   m_Name: Water
   m_TagString: waterSurface
@@ -148,7 +149,7 @@ MonoBehaviour:
   enableNormalMap: 1
   normalStrength: 0.94
   enableMacroNormals: 0
-  macroNormalsDistance: 989
+  macroNormalsDistance: 250
   normalTiling: 10
   intersectionSolver: 0
   intersectionSolverNames:
@@ -268,12 +269,25 @@ MonoBehaviour:
   showLighting: 0
   showColors: 0
   showSurface: 0
-  showNormals: 0
+  showNormals: 1
   showIntersection: 0
   showHighlights: 0
   showDepth: 0
   showWaves: 0
-  showAdvanced: 1
+  showAdvanced: 0
   hideMaterialInspector: 1
   hideMeshRenderer: 0
   realtimeEditing: 0
+--- !u!65 &2541506450831106119
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3327344800890940222}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 500, y: 0.000021855694, z: 500}
+  m_Center: {x: 0, y: 0, z: 0}
