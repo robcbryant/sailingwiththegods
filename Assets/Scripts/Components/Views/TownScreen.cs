@@ -38,24 +38,29 @@ public class TownScreen : ViewBehaviour<TradeViewModel>
 		Info?.Bind(ValueModel.New(new ButtonViewModel {
 			OnClick = () => Debug.Log("Info clicked for " + model.PortName)
 		}));
+	}
 
-		PortName.Bind(ValueModel.New(model.PortName));
-		Capacity.Bind(ValueModel.New(model.Capacity));
-		Money.Bind(ValueModel.New(model.Money));
+	protected override void Refresh(object sender, string propertyChanged) {
+		base.Refresh(sender, propertyChanged);
+
+		PortName.Bind(ValueModel.New(Model.PortName));
+		Capacity.Bind(ValueModel.New(Model.Capacity));
+		Money.Bind(ValueModel.New(Model.Money));
 
 		SmallTxn.Bind(ValueModel.New(new ButtonViewModel {
-			Label = model.TradeAction == TradeAction.Buy ? ">" : "<",
-			OnClick = model.SmallTxn
+			Label = Model.TradeAction == TradeAction.Buy ? ">" : "<",
+			OnClick = Model.SmallTxn
 		}));
 
 		LargeTxn.Bind(ValueModel.New(new ButtonViewModel {
-			Label = model.TradeAction == TradeAction.Buy ? ">>" : "<<",
-			OnClick = model.LargeTxn
+			Label = Model.TradeAction == TradeAction.Buy ? ">>" : "<<",
+			OnClick = Model.LargeTxn
 		}));
 
 		AllTxn.Bind(ValueModel.New(new ButtonViewModel {
-			Label = model.TradeAction == TradeAction.Buy ? "All>" : "<All",
-			OnClick = model.AllTxn
+			Label = Model.TradeAction == TradeAction.Buy ? "All>" : "<All",
+			OnClick = Model.AllTxn
 		}));
+
 	}
 }

@@ -32,8 +32,14 @@ public class TradeViewModel : ViewModel
 	public TradeViewModel() {
 		GameVars = Globals.GameVars;
 
-		Available = new ObservableCollection<CargoItemTradeViewModel>(GameVars.currentSettlement.cargo.Select(r => new CargoItemTradeViewModel(TradeAction.Buy, r, this)));
-		Mine = new ObservableCollection<CargoItemTradeViewModel>(GameVars.playerShipVariables.ship.cargo.Select(r => new CargoItemTradeViewModel(TradeAction.Sell, r, this)));
+		Available = new ObservableCollection<CargoItemTradeViewModel>(GameVars.currentSettlement.cargo
+			.Where(r => r.amount_kg > 0)
+			.Select(r => new CargoItemTradeViewModel(TradeAction.Buy, r, this))
+		);
+		Mine = new ObservableCollection<CargoItemTradeViewModel>(GameVars.playerShipVariables.ship.cargo
+			.Where(r => r.amount_kg > 0)
+			.Select(r => new CargoItemTradeViewModel(TradeAction.Sell, r, this))
+		);
 	}
 
 	public void BackToPort() {
@@ -89,8 +95,20 @@ public class TradeViewModel : ViewModel
 			ChangeShipCargo(item.Name, amount);
 			ChangeSettlementCargo(item.Name, -amount);
 
-			item.AmountKg += amount;
-			Available.Remove(item);
+			// update the list so the new row appears
+			// probably need to write some sort of wrapper that watches for amount == 0 and does this automatically
+			var mine = Mine.FirstOrDefault(n => n.Name == item.Name);
+			if (mine == null) {
+				mine = new CargoItemTradeViewModel(TradeAction.Sell, GameVars.playerShipVariables.ship.GetCargoByName(item.Name), this);
+				Mine.Add(mine);
+			}
+
+			item.AmountKg -= amount;
+			mine.AmountKg += amount;
+
+			if(item.AmountKg <= 0) {
+				Available.Remove(item);
+			}
 		}
 	}
 
@@ -102,8 +120,16 @@ public class TradeViewModel : ViewModel
 			ChangeShipCargo(item.Name, -amount);
 			ChangeSettlementCargo(item.Name, amount);
 
+			// update the list so the new row appears
+			// probably need to write some sort of wrapper that watches for amount == 0 and does this automatically
+			var available = Available.FirstOrDefault(n => n.Name == item.Name);
+			if (available == null) {
+				available = new CargoItemTradeViewModel(TradeAction.Sell, GameVars.currentSettlement.GetCargoByName(item.Name), this);
+				Available.Add(available);
+			}
+
 			item.AmountKg -= amount;
-			Mine.Remove(item);
+			available.AmountKg += amount;
 		}
 	}
 }

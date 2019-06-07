@@ -56,16 +56,12 @@ public abstract class ListView<TModel, TCellModel> : ViewBehaviour<TModel>
 	void Repopulate()
 	{
 		Clear();
-		foreach (var cellModel in Model.Where(Filter))
+		foreach (var cellModel in Model)
 		{
 			var cell = GameObject.Instantiate(CellPrefab).GetComponent<ViewBehaviour<TCellModel>>();
 			cell.Bind(cellModel);
 			cell.transform.SetParent(CellParent);
 		}
-	}
-
-	protected virtual bool Filter(TCellModel item) {
-		return true;
 	}
 
 	public override void Bind(TModel model)

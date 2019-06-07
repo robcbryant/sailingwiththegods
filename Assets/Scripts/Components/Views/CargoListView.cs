@@ -9,8 +9,4 @@ public class CargoListView : ListView<ObservableCollection<CargoInventoryViewMod
 	private void Start() {
 		Subscribe(CloseButton.onClick, () => Globals.UI.Hide(this));
 	}
-
-	protected override bool Filter(CargoInventoryViewModel item) {
-		return item.AmountKg > 0;
-	}
 }

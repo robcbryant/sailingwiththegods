@@ -51,6 +51,7 @@ public class BoundModel<T> : ViewModel, IDisposable, IValueModel<T>
 
 	string SourceProperty;
 	INotifyPropertyChanged Source;
+	Func<object, T> Adaptor;
 
 	// keep a local cache of the value. we'll get notified if it ever changes
 	private T _value;
@@ -78,10 +79,12 @@ public class BoundModel<T> : ViewModel, IDisposable, IValueModel<T>
 
 	void Refresh() 
 	{
-		_value = (T)Source
+		var val = Source
 				.GetType()
 				.GetProperty(SourceProperty)
 				.GetValue(Source);
+
+		_value = Adaptor != null ? Adaptor(val) : (T)val;
 	}
 
 	public void Dispose()
@@ -90,7 +93,7 @@ public class BoundModel<T> : ViewModel, IDisposable, IValueModel<T>
 		Handle.Dispose();
 	}
 
-	public BoundModel(INotifyPropertyChanged source, string property = null) 
+	public BoundModel(INotifyPropertyChanged source, string property = null, Func<object, T> adaptor = null) 
 	{
 		Bind(source, property);
 	}
@@ -120,7 +123,66 @@ public static class ValueModel
 	public static ValueModel<T> New<T>(T value) => new ValueModel<T>(value);
 
 	// adaptors
-	public static IValueModel<string> AsString<T>(this IValueModel<T> self) => new ValueModel<string>(self.Value.ToString());
+	public static IValueModel<string> AsString<T>(this IValueModel<T> self) => new WrapperModel<T, string>(self, o => o.ToString());
+}
+
+public class WrapperModel<TIn, TOut> : ViewModel, IValueModel<TOut>
+{
+	EventOwner Owner = new EventOwner();
+	DelegateHandle Handle;
+
+	IValueModel<TIn> Source;
+	Func<TIn, TOut> AdaptOut;
+	Func<TOut, TIn> AdaptIn;
+
+	// keep a local cache of the value. we'll get notified if it ever changes
+	private TOut _value;
+	public TOut Value {
+		get => _value;
+		set {
+			_value = value;
+
+			// setting this should dispatch notify for us
+			Source.Value = AdaptIn(value);
+		}
+	}
+
+	void OnPropertyChanged(object sender, PropertyChangedEventArgs e) {
+		if (sender == Source) {
+			Refresh();
+			NotifyAny();
+		}
+	}
+
+	void Refresh() {
+		_value = AdaptOut(Source.Value);
+	}
+
+	public void Dispose() {
+		Owner.Dispose();
+		Handle.Dispose();
+	}
+
+	public WrapperModel(IValueModel<TIn> source, Func<TIn, TOut> adaptOut = null, Func<TOut, TIn> adaptIn = null)
+	{
+		AdaptOut = adaptOut;
+		AdaptIn = adaptIn;
+
+		Bind(source);
+	}
+
+	public void Bind(IValueModel<TIn> source)
+	{
+		if (source == null) Debug.LogError("Tried to bind a model to a null source model.");
+
+		Source = source;
+
+		Owner.Unsubscribe(Handle);
+		Owner.Subscribe(() => source.PropertyChanged += OnPropertyChanged, () => source.PropertyChanged -= OnPropertyChanged);
+
+		Refresh();
+		NotifyAny();
+	}
 }
 
 public class ValueModel<T> : ViewModel, IValueModel<T>
