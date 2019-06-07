@@ -26,6 +26,8 @@ public class TradeViewModel : ViewModel
 	public CargoItemTradeViewModel Selected { get => _Selected; set { _Selected = value; Notify(); } }
 
 	public string PortName => GameVars.currentSettlement.name;
+	public string Capacity => Mathf.RoundToInt(GameVars.playerShipVariables.ship.CurrentCargoKg) + " / " + Mathf.RoundToInt(GameVars.playerShipVariables.ship.cargo_capicity_kg) + " kg";
+	public string Money => GameVars.playerShipVariables.ship.currency + " dr";
 
 	public TradeViewModel() {
 		GameVars = Globals.GameVars;
@@ -83,7 +85,7 @@ public class TradeViewModel : ViewModel
 	public void GUI_Buy_Resources(CargoItemTradeViewModel item, int amount) {
 		Debug.Log(item.Name + " : " + amount);
 
-		if (GameVars.Trade.CheckSettlementResourceAvailability((int)(amount), item.Name)) {
+		if (GameVars.Trade.CheckSettlementResourceAvailability(amount, item.Name)) {
 			ChangeShipCargo(item.Name, amount);
 			ChangeSettlementCargo(item.Name, -amount);
 
@@ -96,7 +98,7 @@ public class TradeViewModel : ViewModel
 	public void GUI_Sell_Resources(CargoItemTradeViewModel item, int amount) {
 		Debug.Log(item.Name + " : " + amount);
 
-		if (GameVars.Trade.CheckShipResourceAvailability((int)(amount), item.Name)) {
+		if (GameVars.Trade.CheckShipResourceAvailability(amount, item.Name)) {
 			ChangeShipCargo(item.Name, -amount);
 			ChangeSettlementCargo(item.Name, amount);
 

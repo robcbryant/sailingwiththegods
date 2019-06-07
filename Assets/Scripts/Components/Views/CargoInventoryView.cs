@@ -13,18 +13,15 @@ public class CargoInventoryViewModel : ViewModel
 
 	private Resource Resource;
 
-	private int _AmountKg;
 	public int AmountKg {
-		get => _AmountKg;
+		get => Mathf.RoundToInt(Resource.amount_kg);
 		set {
-			_AmountKg = value;
 			Resource.amount_kg = value;
 			Notify();
 		}
 	}
-	
+
 	public string Name => Resource.name;
-	public float ProbabilityOfAvailability => Resource.probabilityOfAvailability;       // TODO: This is only set/relevant for resources on a settlement obj, not in the player's ship
 	public Sprite Icon { get; private set; }
 
 	public CargoInventoryViewModel(Resource resource) {

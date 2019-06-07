@@ -13,6 +13,10 @@ public class TownScreen : ViewBehaviour<TradeViewModel>
 	[SerializeField] CargoTradeListView Mine;
 
 	[SerializeField] StringView PortName;
+
+	[SerializeField] StringView Capacity;
+	[SerializeField] StringView Money;
+
 	[SerializeField] ButtonView Info;
 	[SerializeField] ButtonView Port;
 
@@ -36,16 +40,21 @@ public class TownScreen : ViewBehaviour<TradeViewModel>
 		}));
 
 		PortName.Bind(ValueModel.New(model.PortName));
+		Capacity.Bind(ValueModel.New(model.Capacity));
+		Money.Bind(ValueModel.New(model.Money));
 
 		SmallTxn.Bind(ValueModel.New(new ButtonViewModel {
+			Label = model.TradeAction == TradeAction.Buy ? ">" : "<",
 			OnClick = model.SmallTxn
 		}));
 
 		LargeTxn.Bind(ValueModel.New(new ButtonViewModel {
+			Label = model.TradeAction == TradeAction.Buy ? ">>" : "<<",
 			OnClick = model.LargeTxn
 		}));
 
 		AllTxn.Bind(ValueModel.New(new ButtonViewModel {
+			Label = model.TradeAction == TradeAction.Buy ? "All>" : "<All",
 			OnClick = model.AllTxn
 		}));
 	}

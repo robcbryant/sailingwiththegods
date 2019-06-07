@@ -14,14 +14,12 @@ public class CargoItemTradeViewModel : ViewModel
 	private Resource Resource;
 	private GameVars GameVars => Globals.GameVars;
 
-	TradeViewModel Parent;
+	public TradeViewModel Parent { get; private set; }
 	TradeAction TradeAction;
 
-	private int _AmountKg;
 	public int AmountKg {
-		get => _AmountKg;
+		get => Mathf.RoundToInt(Resource.amount_kg);
 		set {
-			_AmountKg = value;
 			Resource.amount_kg = value;
 			Notify();
 		}
@@ -53,6 +51,8 @@ public class CargoItemTradeViewModel : ViewModel
 
 	public string Name => Resource.name;
 	public Sprite Icon { get; private set; }
+
+	public bool IsSelected => Parent.Selected == this;
 
 	public CargoItemTradeViewModel(TradeAction action, Resource resource, TradeViewModel parentModel) {
 		Resource = resource;

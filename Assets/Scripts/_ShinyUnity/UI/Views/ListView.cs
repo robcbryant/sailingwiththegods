@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -55,12 +56,16 @@ public abstract class ListView<TModel, TCellModel> : ViewBehaviour<TModel>
 	void Repopulate()
 	{
 		Clear();
-		foreach (var cellModel in Model)
+		foreach (var cellModel in Model.Where(Filter))
 		{
 			var cell = GameObject.Instantiate(CellPrefab).GetComponent<ViewBehaviour<TCellModel>>();
 			cell.Bind(cellModel);
 			cell.transform.SetParent(CellParent);
 		}
+	}
+
+	protected virtual bool Filter(TCellModel item) {
+		return true;
 	}
 
 	public override void Bind(TModel model)

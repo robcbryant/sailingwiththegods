@@ -173,6 +173,10 @@ public class EventOwner : IDisposable
 		{
 			Events.Instance.AddListener(kvp.Value.Type, kvp.Value.Delegate);
 		}
+		foreach(var d in DelegateHandles) 
+		{
+			d.Enable();
+		}
 	}
 
 	public void Disable()
@@ -185,6 +189,10 @@ public class EventOwner : IDisposable
 		{
 			Events.Instance.RemoveListener(kvp.Value.Type, kvp.Value.Delegate);
 		}
+		foreach (var d in DelegateHandles) 
+		{
+			d.Disable();
+		}
 	}
 
 	public void Dispose()
@@ -192,5 +200,6 @@ public class EventOwner : IDisposable
 		Disable();
 		UnityEvents.Clear();
 		Delegates.Clear();
+		DelegateHandles.Clear();
 	}
 }

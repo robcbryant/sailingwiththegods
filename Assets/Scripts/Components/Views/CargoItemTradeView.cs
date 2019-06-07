@@ -17,6 +17,10 @@ public class CargoItemTradeView : ViewBehaviour<CargoItemTradeViewModel>
 	[SerializeField] StringView Hint;
 	[SerializeField] ImageView Icon;
 
+	[SerializeField] Image SelectedOverlay;
+
+	DelegateHandle SelectedHandle;
+
 	private void Awake() {
 		Interactable = GetComponent<InteractableBehaviour>();
 	}
@@ -35,6 +39,20 @@ public class CargoItemTradeView : ViewBehaviour<CargoItemTradeViewModel>
 		Icon?.Bind(new BoundModel<Sprite>(Model, nameof(Model.Icon)));
 		Price?.Bind(new BoundModel<string>(Model, nameof(Model.PriceStr)));
 		Hint?.Bind(new BoundModel<string>(Model, nameof(Model.HintStr)));
+
+		if(SelectedHandle != null) {
+			Unsubscribe(SelectedHandle);
+		}
+		SelectedHandle = Subscribe(() => model.Parent.PropertyChanged += OnSelectedChanged, () => model.Parent.PropertyChanged -= OnSelectedChanged);
+		RefreshSelection();
+	}
+
+	void OnSelectedChanged(object sender, PropertyChangedEventArgs e) {
+		RefreshSelection();
+	}
+
+	void RefreshSelection() {
+		SelectedOverlay.gameObject.SetActive(Model.IsSelected);
 	}
 
 	void Clicked() {

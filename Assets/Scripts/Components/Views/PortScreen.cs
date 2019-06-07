@@ -13,6 +13,10 @@ public class PortScreen : ViewBehaviour<PortViewModel>
 	[SerializeField] CrewManagementListView Fire;
 
 	[SerializeField] StringView PortName;
+
+	[SerializeField] StringView Capacity;
+	[SerializeField] StringView Money;
+
 	[SerializeField] ButtonView Info;
 	[SerializeField] ButtonView Sail;
 	[SerializeField] ButtonView Town;
@@ -38,5 +42,7 @@ public class PortScreen : ViewBehaviour<PortViewModel>
 		}));
 
 		PortName.Bind(ValueModel.New(model.PortName));
+		Capacity.Bind(ValueModel.New(model.Capacity));
+		Money.Bind(ValueModel.New(model.Money));
 	}
 }

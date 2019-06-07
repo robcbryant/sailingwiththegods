@@ -66,10 +66,10 @@ public static class CSVLoader
 			settlement.typeOfSettlement = int.Parse(records[26]);
 			//add resources to settlement (records length - 2 is confusing, but there are items after the last resource--can probably change this later)
 			for (int recordIndex = 11; recordIndex < records.Length - 3; recordIndex++) {
-				settlement.cargo[recordIndex - 11].probabilityOfAvailability = float.Parse(records[recordIndex]);
+				var probabilityOfAvailability = float.Parse(records[recordIndex]);
 				//TODO The probability values are 1-100 and population affects the amount
 				//  Population/2 x (probabilityOfResource/100)
-				float amount = (settlement.population / 2) * (settlement.cargo[recordIndex - 11].probabilityOfAvailability / 1.5f);
+				float amount = (settlement.population / 2) * (probabilityOfAvailability / 1.5f);
 				settlement.cargo[recordIndex - 11].amount_kg = amount;
 			}
 			//Add model/prefab name to settlement

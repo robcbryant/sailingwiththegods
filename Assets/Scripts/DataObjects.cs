@@ -450,7 +450,6 @@ public class Resource
 
 	public string name;
 	public float amount_kg;
-	public float probabilityOfAvailability = 0;
 
 	public Resource(string name, float amount_kg) {
 		this.name = name;
@@ -535,7 +534,6 @@ public class Ship
 	public float speed;
 	public float health;
 	public float cargo_capicity_kg;
-	public float current_cargo_kg;
 	public Resource[] cargo;
 	public int currency;
 	public int crewCapacity;
@@ -552,6 +550,8 @@ public class Ship
 	public List<int> networks;
 	public int originSettlement;
 	public string builtMonuments = "";
+
+	public float CurrentCargoKg => cargo.Sum(c => c.amount_kg);
 
 	public Resource GetCargoByName(string name) => cargo.FirstOrDefault(c => c.name == name);
 
@@ -583,7 +583,6 @@ public class Ship
 			new Resource ("Prestige Goods", 0f),
 		};
 
-		this.current_cargo_kg = 0;
 		this.currency = 500;
 		this.crewCapacity = 30;
 		this.crew = 0;
