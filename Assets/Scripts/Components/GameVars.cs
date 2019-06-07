@@ -179,6 +179,8 @@ public class GameVars : MonoBehaviour
 	[HideInInspector] public bool showNonPortDockingNotification = false;
 	[HideInInspector] public bool updatePlayerCloutMeter = false;
 
+	// high level game systems
+	public Trade Trade { get; private set; }
 	public Network Network { get; private set; }
 	public bool isInNetwork => Network.CheckIfCityIDIsPartOfNetwork(currentSettlement.settlementID);
 
@@ -222,6 +224,7 @@ public class GameVars : MonoBehaviour
 		playerShipVariables = playerShip.GetComponent<script_player_controls>();
 
 		Network = new Network(this);
+		Trade = new Trade(this);
 
 		//Load all txt database files
 		masterCrewList = CSVLoader.LoadMasterCrewRoster();

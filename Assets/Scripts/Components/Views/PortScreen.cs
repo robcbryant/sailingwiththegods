@@ -15,6 +15,7 @@ public class PortScreen : ViewBehaviour<PortViewModel>
 	[SerializeField] StringView PortName;
 	[SerializeField] ButtonView Info;
 	[SerializeField] ButtonView Sail;
+	[SerializeField] ButtonView Town;
 
 	public override void Bind(PortViewModel model) {
 		base.Bind(model);
@@ -24,7 +25,12 @@ public class PortScreen : ViewBehaviour<PortViewModel>
 
 		Sail?.Bind(ValueModel.New(new ButtonViewModel {
 			Label = "Sail",
-			OnClick = () => Globals.UI.Hide<PortScreen>()	// TODO: There's more to do on hide. Got to set all the state stuff in gamevars
+			OnClick = model.GUI_Button_TryToLeavePort
+		}));
+
+		Town?.Bind(ValueModel.New(new ButtonViewModel {
+			Label = "Town",
+			OnClick = model.GoToTown
 		}));
 
 		Info?.Bind(ValueModel.New(new ButtonViewModel {

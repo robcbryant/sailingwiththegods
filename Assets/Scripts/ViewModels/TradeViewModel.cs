@@ -1,0 +1,107 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Collections.ObjectModel;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+
+public enum TradeAction
+{
+	Buy,
+	Sell
+}
+
+public class TradeViewModel : ViewModel
+{
+	private GameVars GameVars;
+
+	public readonly ObservableCollection<CargoItemTradeViewModel> Available;
+	public readonly ObservableCollection<CargoItemTradeViewModel> Mine;
+
+	private TradeAction _TradeAction;
+	public TradeAction TradeAction { get => _TradeAction; set { _TradeAction = value; Notify(); } }
+
+	private CargoItemTradeViewModel _Selected;
+	public CargoItemTradeViewModel Selected { get => _Selected; set { _Selected = value; Notify(); } }
+
+	public string PortName => GameVars.currentSettlement.name;
+
+	public TradeViewModel() {
+		GameVars = Globals.GameVars;
+
+		Available = new ObservableCollection<CargoItemTradeViewModel>(GameVars.currentSettlement.cargo.Select(r => new CargoItemTradeViewModel(TradeAction.Buy, r, this)));
+		Mine = new ObservableCollection<CargoItemTradeViewModel>(GameVars.playerShipVariables.ship.cargo.Select(r => new CargoItemTradeViewModel(TradeAction.Sell, r, this)));
+	}
+
+	public void BackToPort() {
+		Globals.UI.Hide<TownScreen>();
+		Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel());
+	}
+
+	public void SmallTxn() {
+		if (TradeAction == TradeAction.Buy) {
+			GUI_Buy_Resources(Selected, Mathf.Min(1, Selected.AmountKg));
+		}
+		else {
+			GUI_Sell_Resources(Selected, Mathf.Min(1, Selected.AmountKg));
+		}
+	}
+
+	public void LargeTxn() {
+		if (TradeAction == TradeAction.Buy) {
+			GUI_Buy_Resources(Selected, Mathf.Min(10, Selected.AmountKg));
+		}
+		else {
+			GUI_Sell_Resources(Selected, Mathf.Min(10, Selected.AmountKg));
+		}
+	}
+
+	public void AllTxn() {
+		if(TradeAction == TradeAction.Buy) {
+			GUI_Buy_Resources(Selected, Selected.AmountKg);
+		}
+		else {
+			GUI_Sell_Resources(Selected, Selected.AmountKg);
+		}
+	}
+
+	void ChangeSettlementCargo(string resourceName, float changeAmount) {
+		GameVars.currentSettlement.GetCargoByName(resourceName).amount_kg += changeAmount;
+	}
+
+	void ChangeShipCargo(string resourceName, float changeAmount) {
+		float price = GameVars.Trade.GetPriceOfResource(GameVars.currentSettlement.GetCargoByName(resourceName).amount_kg);
+		Debug.Log(resourceName + "  :  " + GameVars.playerShipVariables.ship.GetCargoByName(resourceName).amount_kg + "  :  " + changeAmount);
+		GameVars.playerShipVariables.ship.GetCargoByName(resourceName).amount_kg += changeAmount;
+		//we use a (-) change amount here because the changeAmount reflects the direction of the goods
+		//e.g. if the player is selling--they are negative in cargo---but their currency is positive and vice versa.
+		GameVars.playerShipVariables.ship.currency += (int)(price * -changeAmount);
+	}
+
+	// REFERENCED IN BUTTON CLICK UNITYEVENT
+	public void GUI_Buy_Resources(CargoItemTradeViewModel item, int amount) {
+		Debug.Log(item.Name + " : " + amount);
+
+		if (GameVars.Trade.CheckSettlementResourceAvailability((int)(amount), item.Name)) {
+			ChangeShipCargo(item.Name, amount);
+			ChangeSettlementCargo(item.Name, -amount);
+
+			item.AmountKg += amount;
+			Available.Remove(item);
+		}
+	}
+
+	// REFERENCED IN BUTTON CLICK UNITYEVENT
+	public void GUI_Sell_Resources(CargoItemTradeViewModel item, int amount) {
+		Debug.Log(item.Name + " : " + amount);
+
+		if (GameVars.Trade.CheckShipResourceAvailability((int)(amount), item.Name)) {
+			ChangeShipCargo(item.Name, -amount);
+			ChangeSettlementCargo(item.Name, amount);
+
+			item.AmountKg -= amount;
+			Mine.Remove(item);
+		}
+	}
+}

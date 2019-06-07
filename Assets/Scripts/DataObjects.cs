@@ -477,6 +477,8 @@ public class Settlement
 	public List<int> networks;
 	public string prefabName;
 
+	public Resource GetCargoByName(string name) => cargo.FirstOrDefault(c => c.name == name);
+
 	public Settlement(int settlementID, string name, Vector2 location_longXlatY, float elevation, int population) {
 		this.settlementID = settlementID;
 		this.location_longXlatY = location_longXlatY;
@@ -550,6 +552,8 @@ public class Ship
 	public List<int> networks;
 	public int originSettlement;
 	public string builtMonuments = "";
+
+	public Resource GetCargoByName(string name) => cargo.FirstOrDefault(c => c.name == name);
 
 	public Ship(string name, float speed, int health, float cargo_capcity_kg) {
 

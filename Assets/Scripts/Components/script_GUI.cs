@@ -348,111 +348,6 @@ public class script_GUI : MonoBehaviour
 	//======================================================================================================================================================================
 	//======================================================================================================================================================================
 
-
-	//=====================================================================================================================================	
-	//  Processing Based Functions (Ideally these will all be moved to the globalvariables  script
-	//=====================================================================================================================================	
-
-	string GetInfoOnNetworkedSettlementResource(Resource resource) {
-		if (resource.amount_kg < 100)
-			return "I hear they are running inredibly low on " + resource.name;
-		else if (resource.amount_kg < 300)
-			return "Someone mentioned that they have modest stores of " + resource.name;
-		else
-			return "A sailor just came from there and said he just unloaded an enormous quantity of " + resource.name;
-
-	}
-
-	// given the amount of this cargo in the current settlment, returns the price of it at this settlement based on scarcity
-	int GetPriceOfResource(float amount) {
-		//Price = 1000 * 1.2^(-.1*x)
-		int price = (int)Mathf.Floor(1000 * Mathf.Pow(1.2f, (-.1f * amount)));
-		if (price < 1) price = 1;
-		return price;
-
-	}
-
-	bool CheckIfPlayerCanAffordToPayPortTaxes() {
-		if (GameVars.playerShipVariables.ship.currency >= GameVars.currentPortTax) return true; else return false;
-	}
-
-	int GetTaxRateOnCurrentShipManifest() {
-		//We need to get the total price of all cargo on the ship
-		float totalPriceOfGoods = 0f;
-
-		//Loop through each resource in the settlement's cargo and figure out the price of that resource 
-		for (int setIndex = 2; setIndex < GameVars.currentSettlement.cargo.Length; setIndex++) {
-			float currentResourcePrice = GetPriceOfResource(GameVars.currentSettlement.cargo[setIndex].amount_kg);
-			//with this price, let's check the ships cargo at the same index position and calculate its worth and add it to the total
-			totalPriceOfGoods += (currentResourcePrice * GameVars.playerShipVariables.ship.cargo[setIndex].amount_kg);
-			//Debug.Log (MGV.currentSettlement.cargo[setIndex].name + totalPriceOfGoods);
-
-
-		}
-
-		float taxRateToApply = 0f;
-		//Now we need to figure out the tax on the total price of the cargo--which is based on the settlements in/out of network tax
-		// total price / 100 * tax rate = amount player owes to settlement for docking
-		if (GameVars.isInNetwork)
-			taxRateToApply = GameVars.currentSettlement.tax_network;
-		else
-			taxRateToApply = GameVars.currentSettlement.tax_neutral;
-
-		//Add the players clout modifier. It will be a 0-100 percent reduction of the current tax rate
-
-		float taxReductionAmount = taxRateToApply * (-1 * GameVars.GetOverallCloutModifier(GameVars.currentSettlement.settlementID));
-		float newTaxRate = taxRateToApply + taxReductionAmount;
-		GameVars.currentPortTax = (int)newTaxRate;
-
-		return (int)((totalPriceOfGoods / 100) * taxRateToApply);
-	}
-
-	bool CheckSettlementResourceAvailability(int amountToCheck, int cargoIndex) {
-		//This function checks 3 thing(s)
-		//	1 Does the city have the resource for the player to buy?
-		//	2 Does the player have the currency to buy the resource?
-		//	3 Does the player have the cargo hold space to buy the resource?
-		float resourceAmount = GameVars.currentSettlement.cargo[cargoIndex].amount_kg;
-		float price = GetPriceOfResource(resourceAmount);
-
-		if (resourceAmount >= amountToCheck
-			&& (price * amountToCheck) < GameVars.playerShipVariables.ship.currency
-			&& (GameVars.playerShipVariables.ship.cargo_capicity_kg - GameVars.playerShipVariables.ship.GetTotalCargoAmount()) >= amountToCheck)
-			return true;
-		else
-			return false;
-	}
-
-	bool CheckShipResourceAvailability(int amountToCheck, int cargoIndex) {
-		//This function checks 1 thing(s):
-		//	1 Does the player have cargo to sell?
-		if (GameVars.playerShipVariables.ship.cargo[cargoIndex].amount_kg >= amountToCheck)
-			return true;
-		else
-			return false;
-
-	}
-
-	void ChangeSettlementCargo(int cargoIndex, float changeAmount) {
-		GameVars.currentSettlement.cargo[cargoIndex].amount_kg += changeAmount;
-	}
-
-	void ChangeShipCargo(int cargoIndex, float changeAmount) {
-		float price = GetPriceOfResource(GameVars.currentSettlement.cargo[cargoIndex].amount_kg);
-		Debug.Log(cargoIndex + "  :  " + GameVars.playerShipVariables.ship.cargo[cargoIndex].amount_kg + "  :  " + changeAmount);
-		GameVars.playerShipVariables.ship.cargo[cargoIndex].amount_kg += changeAmount;
-		//we use a (-) change amount here because the changeAmount reflects the direction of the goods
-		//e.g. if the player is selling--they are negative in cargo---but their currency is positive and vice versa.
-		GameVars.playerShipVariables.ship.currency += (int)(price * -changeAmount);
-	}
-
-	void ShowShipResources() {
-		for (int i = 0; i < GameVars.playerShipVariables.ship.cargo.Length; i++) {
-			Text currentCargoLabel = (Text)all_trade_rows.transform.GetChild(i).GetChild(6).GetComponent<Text>();
-			currentCargoLabel.text = (int)GameVars.playerShipVariables.ship.cargo[i].amount_kg + " kg";
-		}
-	}
-
 	//=====================================================================================================================================	
 	//  GUI Interaction Functions are the remaining code below. All of these functions control some aspect of the GUI based on state changes
 	//=====================================================================================================================================	
@@ -579,11 +474,6 @@ public class script_GUI : MonoBehaviour
 		//Show Port Menu
 		Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel());
 
-		//Load Resource labels
-		ShowShipResources();
-		//Check Button availability
-		GUI_CheckAllResourceButtonsForValidity();
-		ShowSettlementResources();
 		//Setup port panels
 		GUI_TAB_SetupLoanManagementPanel();
 		GUI_TAB_SetupAShrinePanel();
@@ -781,108 +671,7 @@ public class script_GUI : MonoBehaviour
 	//=================================================================================================================
 	// HELPER FUNCTIONS FOR IN-PORT TRADE WINDOW
 	//=================================================================================================================	
-
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
-	public void ShowSettlementResources() {
-
-		for (int i = 0; i < GameVars.currentSettlement.cargo.Length; i++) {
-			Text currentExchangeRate = (Text)all_trade_rows.transform.GetChild(i).GetChild(3).GetComponent<Text>();
-			currentExchangeRate.text = GetPriceOfResource(GameVars.currentSettlement.cargo[i].amount_kg) + "d/kg";
-		}
-
-	}
-
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
-	public void GUI_Button_TryToLeavePort() {
-		if (CheckIfPlayerCanAffordToPayPortTaxes()) {
-			GameVars.showSettlementTradeGUI = false;
-			GameVars.showSettlementTradeButton = true;
-			//MGV.controlsLocked = false;
-			//Start Our time passage
-			GameVars.isPassingTime = true;
-			StartCoroutine(GameVars.playerShipVariables.WaitForTimePassing(.25f, true));
-			GameVars.justLeftPort = true;
-			GameVars.playerShipVariables.ship.currency -= GameVars.currentPortTax;
-
-			//Add a new route to the player journey log as a port exit
-			GameVars.playerShipVariables.journey.AddRoute(new PlayerRoute(new Vector3(GameVars.playerShip.transform.position.x, GameVars.playerShip.transform.position.y, GameVars.playerShip.transform.position.z), Vector3.zero, GameVars.currentSettlement.settlementID, GameVars.currentSettlement.name, true, GameVars.playerShipVariables.ship.totalNumOfDaysTraveled), GameVars.playerShipVariables, GameVars.currentCaptainsLog);
-			//We should also update the ghost trail with this route otherwise itp roduce an empty 0,0,0 position later
-			GameVars.playerShipVariables.UpdatePlayerGhostRouteLineRenderer(GameVars.IS_NOT_NEW_GAME);
-
-			//Turn off the coin image texture
-			GameVars.GUI_PortMenu.SetActive(false);
-			GameVars.menuControlsLock = false;
-
-		}
-		else {//Debug.Log ("Not Enough Drachma to Leave the Port!");
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "Not Enough Drachma to pay the port tax and leave!";
-		}
-	}
-
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
-	public void GUI_Buy_Resources(string idXamount) {
-		int id = int.Parse(idXamount.Split(',')[0]) - 1;
-		float amount = float.Parse(idXamount.Split(',')[1]);
-		Text currentCargoLabel = (Text)all_trade_rows.transform.GetChild(id).GetChild(6).GetComponent<Text>();
-
-		Debug.Log(id + " : " + amount);
-
-		if (CheckSettlementResourceAvailability((int)(amount), id)) { ChangeShipCargo(id, amount); ChangeSettlementCargo(id, -amount); }
-
-		currentCargoLabel.text = (int)GameVars.playerShipVariables.ship.cargo[id].amount_kg + " kg";
-
-		GUI_CheckAllResourceButtonsForValidity(id);
-		ShowSettlementResources();
-	}
-
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
-	public void GUI_Sell_Resources(string idXamount) {
-		int id = int.Parse(idXamount.Split(',')[0]) - 1;
-		float amount = float.Parse(idXamount.Split(',')[1]);
-		Text currentCargoLabel = (Text)all_trade_rows.transform.GetChild(id).GetChild(6).GetComponent<Text>();
-
-		Debug.Log(id + " : " + amount);
-
-		if (CheckShipResourceAvailability((int)(amount), id)) { ChangeShipCargo(id, -amount); ChangeSettlementCargo(id, amount); }
-
-		currentCargoLabel.text = (int)GameVars.playerShipVariables.ship.cargo[id].amount_kg + " kg";
-
-		GUI_CheckAllResourceButtonsForValidity(id);
-		ShowSettlementResources();
-	}
-
-	//This function, if an ID value IS given, goes through the buttons associated with that resource ID and determines
-	//	--whether or not the buttons should be disabled or not
-	public void GUI_CheckAllResourceButtonsForValidity(int id) {
-		Button currentCargoButton_one = (Button)all_trade_rows.transform.GetChild(id).GetChild(4).GetComponent<Button>();
-		Button currentCargoButton_ten = (Button)all_trade_rows.transform.GetChild(id).GetChild(5).GetComponent<Button>();
-		Button currentSettlementButton_one = (Button)all_trade_rows.transform.GetChild(id).GetChild(1).GetComponent<Button>();
-		Button currentSettlementButton_ten = (Button)all_trade_rows.transform.GetChild(id).GetChild(2).GetComponent<Button>();
-
-		if (CheckShipResourceAvailability((int)(1), id)) { currentCargoButton_one.interactable = true; } else { currentCargoButton_one.interactable = false; }
-		if (CheckShipResourceAvailability((int)(10), id)) { currentCargoButton_ten.interactable = true; } else { currentCargoButton_ten.interactable = false; }
-		if (CheckSettlementResourceAvailability((int)(1), id)) { currentSettlementButton_one.interactable = true; } else { currentSettlementButton_one.interactable = false; }
-		if (CheckSettlementResourceAvailability((int)(10), id)) { currentSettlementButton_ten.interactable = true; } else { currentSettlementButton_ten.interactable = false; }
-	}
-
-
-	//This Function, if no ID given, goes through ALL id values and their corresponding buttons and determines
-	//	--whether or not the button should be disabled or not
-	public void GUI_CheckAllResourceButtonsForValidity() {
-		for (int id = 0; id < 15; id++) {
-			Button currentCargoButton_one = (Button)all_trade_rows.transform.GetChild(id).GetChild(4).GetComponent<Button>();
-			Button currentCargoButton_ten = (Button)all_trade_rows.transform.GetChild(id).GetChild(5).GetComponent<Button>();
-			Button currentSettlementButton_one = (Button)all_trade_rows.transform.GetChild(id).GetChild(1).GetComponent<Button>();
-			Button currentSettlementButton_ten = (Button)all_trade_rows.transform.GetChild(id).GetChild(2).GetComponent<Button>();
-
-			if (CheckShipResourceAvailability((int)(1), id)) { currentCargoButton_one.interactable = true; } else { currentCargoButton_one.interactable = false; }
-			if (CheckShipResourceAvailability((int)(10), id)) { currentCargoButton_ten.interactable = true; } else { currentCargoButton_ten.interactable = false; }
-			if (CheckSettlementResourceAvailability((int)(1), id)) { currentSettlementButton_one.interactable = true; } else { currentSettlementButton_one.interactable = false; }
-			if (CheckSettlementResourceAvailability((int)(10), id)) { currentSettlementButton_ten.interactable = true; } else { currentSettlementButton_ten.interactable = false; }
-		}
-	}
-
+	
 
 	//This function updates the player cargo labels after any exchange between money and resources has been made
 	public void updateLabelsForPlayerVariables() {
@@ -896,7 +685,7 @@ public class script_GUI : MonoBehaviour
 	public void GUI_checkOutOrDockWithPort(bool isAvailable) {
 		if (isAvailable) {
 			//Figure out the tax on the cargo hold
-			GameVars.currentPortTax = GetTaxRateOnCurrentShipManifest();
+			GameVars.currentPortTax = GameVars.Trade.GetTaxRateOnCurrentShipManifest();
 			GameVars.showPortDockingNotification = true;
 		}
 		//Else do nothing
@@ -1272,6 +1061,16 @@ public class script_GUI : MonoBehaviour
 	//----------------------------------------------------------------------------
 	//----------------------------TAVERN PANEL HELPER FUNCTIONS
 
+	public string GetInfoOnNetworkedSettlementResource(Resource resource) {
+		if (resource.amount_kg < 100)
+			return "I hear they are running inredibly low on " + resource.name;
+		else if (resource.amount_kg < 300)
+			return "Someone mentioned that they have modest stores of " + resource.name;
+		else
+			return "A sailor just came from there and said he just unloaded an enormous quantity of " + resource.name;
+
+	}
+
 	public void GUI_BuyHint(Settlement currentSettlement, int hintCost) {
 
 		if (GameVars.playerShipVariables.ship.currency < hintCost) {
@@ -1432,7 +1231,7 @@ public class script_GUI : MonoBehaviour
 		//Run a script on the player controls that fast forwards time by a quarter day
 		GameVars.isPassingTime = true;
 		GameVars.controlsLocked = true;
-		StartCoroutine(GameVars.playerShipVariables.WaitForTimePassing(.25f, false));
+		GameVars.playerShipVariables.PassTime(.25f, false);
 	}
 
 	//-----------------------------------------------------

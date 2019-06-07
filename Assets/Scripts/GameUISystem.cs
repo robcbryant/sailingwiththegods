@@ -10,11 +10,13 @@ public class GameUISystem : UISystem
 	[SerializeField] Dashboard Dashboard = null;
 	[SerializeField] TitleScreen TitleScreen = null;
 	[SerializeField] PortScreen PortScreen = null;
+	[SerializeField] TownScreen TownScreen = null;
 
 	void AddViews() {
 		Add(Dashboard);
 		Add(TitleScreen);
 		Add(PortScreen);
+		Add(TownScreen);
 	}
 
 	void Start() {

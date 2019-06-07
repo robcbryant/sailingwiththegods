@@ -1532,9 +1532,13 @@ public class script_player_controls : MonoBehaviour
 
 	}
 
+	public void PassTime(float amountToWait, bool isPort) {
+		StartCoroutine(WaitForTimePassing(.25f, false));
+	}
+
 	//This function will run the clock for a given amount of time and adjust the necessary variables
 	//--Like Provisions and water consumption, and skyline changes
-	public IEnumerator WaitForTimePassing(float amountToWait, bool isPort) {
+	IEnumerator WaitForTimePassing(float amountToWait, bool isPort) {
 		//Rather than one quick jump of time--let's do a smooth visual passage of time
 		//I'm going to chop it to 180 frames--so roughly 3-4 seconds total
 
