@@ -13,6 +13,7 @@ public class CrewManagementMemberViewModel : ViewModel
 	private const string DefaultPortrait = "crew_portraits/phoenician_sailor";
 
 	public CrewMember Member { get; private set; }
+	public CrewManagementViewModel Parent { get; private set; }
 	
 	public Sprite Portrait { get; private set; }
 	public string Name => Member.name;
@@ -29,10 +30,20 @@ public class CrewManagementMemberViewModel : ViewModel
 	public int CostToHire => Member.clout * 2;
 
 
-	public CrewManagementMemberViewModel(CrewMember member) {
+	public CrewManagementMemberViewModel(CrewMember member, CrewManagementViewModel parent) {
 		Member = member;
+		Parent = parent;
 
 		Portrait = Resources.Load<Sprite>(ResourcePath + "/" + member.ID) ?? Resources.Load<Sprite>(DefaultPortrait);
+	}
+
+	public void DoAction() {
+		if(IsInCrew) {
+			Parent.GUI_FireCrewMember(this);
+		}
+		else {
+			Parent.GUI_HireCrewMember(this);
+		}
 	}
 }
 
@@ -55,7 +66,7 @@ public class CrewManagementMemberView : ViewBehaviour<CrewManagementMemberViewMo
 
 		ActionButton?.Bind(ValueModel.New(new ButtonViewModel {
 			Label = model.IsInCrew ? "Fire" : "Hire",
-			OnClick = () => Debug.Log("Clicked crew action for " + Model.Name)
+			OnClick = model.DoAction
 		}));
 
 		Name?.Bind(new BoundModel<string>(Model, nameof(Model.Name)));

@@ -16,8 +16,8 @@ public class CrewManagementViewModel : ViewModel
 	public CrewManagementViewModel() {
 		GameVars = Globals.GameVars;
 
-		AvailableCrew = new ObservableCollection<CrewManagementMemberViewModel>(GameVars.GenerateRandomCrewMembers(5).Select(crew => new CrewManagementMemberViewModel(crew)));
-		MyCrew = new ObservableCollection<CrewManagementMemberViewModel>(GameVars.playerShipVariables.ship.crewRoster.Select(crew => new CrewManagementMemberViewModel(crew)));
+		AvailableCrew = new ObservableCollection<CrewManagementMemberViewModel>(GameVars.GenerateRandomCrewMembers(5).Select(crew => new CrewManagementMemberViewModel(crew, this)));
+		MyCrew = new ObservableCollection<CrewManagementMemberViewModel>(GameVars.playerShipVariables.ship.crewRoster.Select(crew => new CrewManagementMemberViewModel(crew, this)));
 	}
 
 	//=================================================================================================================
@@ -32,6 +32,7 @@ public class CrewManagementViewModel : ViewModel
 
 		GameVars.playerShipVariables.ship.crewRoster.Remove(crewman);
 		MyCrew.Remove(crew);
+		AvailableCrew.Add(crew);
 
 		GameVars.showNotification = true;
 		GameVars.notificationMessage = crewman.name + " looked at you sadly and said before leaving, 'I thought I was doing so well. I'm sorry I let you down. Guess I'll go drink some cheap wine...";
@@ -51,7 +52,8 @@ public class CrewManagementViewModel : ViewModel
 				GameVars.playerShipVariables.ship.currency -= crew.CostToHire;
 
 				//Remove Row
-				MyCrew.Remove(crew);
+				AvailableCrew.Remove(crew);
+				MyCrew.Add(crew);
 
 
 				//If there isn't room, then let the player know
