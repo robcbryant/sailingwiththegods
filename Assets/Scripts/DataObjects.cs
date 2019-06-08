@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 using UnityEngine;
 
 public class Loan
@@ -429,7 +430,7 @@ public class MetaResource
 }
 
 
-public class Resource
+public class Resource : Model
 {
 	public const string Water = "Water";
 	public const string Provisions = "Provisions";
@@ -447,14 +448,18 @@ public class Resource
 	public const string Bronze = "Bronze";
 	public const string PrestigeGoods = "Prestige Goods";
 
+	public string name { get; private set; }
 
-	public string name;
-	public float amount_kg;
-	public float initial_amount_kg;
+	private float _initial_amount_kg;
+	public float initial_amount_kg { get => _initial_amount_kg; set { _initial_amount_kg = value; Notify(); } }
+
+	private float _amount_kg;
+	public float amount_kg { get => _amount_kg; set { _amount_kg = value; Notify(); } }
 
 	public Resource(string name, float amount_kg) {
 		this.name = name;
 		this.amount_kg = amount_kg;
+		this.initial_amount_kg = amount_kg;
 	}
 }
 

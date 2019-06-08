@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class GameViewModel : ViewModel
+public class GameViewModel : Model
 {
 	public enum Difficulty
 	{

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class PortViewModel : ViewModel
+public class PortViewModel : Model
 {
 	GameVars GameVars => Globals.GameVars;
 	Settlement Settlement => GameVars.currentSettlement;

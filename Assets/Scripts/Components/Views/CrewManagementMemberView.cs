@@ -7,7 +7,7 @@ using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CrewManagementMemberViewModel : ViewModel
+public class CrewManagementMemberViewModel : Model
 {
 	private const string ResourcePath = "crew_portraits";
 	private const string DefaultPortrait = "crew_portraits/phoenician_sailor";

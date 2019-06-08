@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 
-public class DashboardViewModel : ViewModel
+public class DashboardViewModel : Model
 {
 	public string CaptainsLog => Globals.GameVars.currentCaptainsLog;
 	public readonly CargoInventoryViewModel WaterInventory;

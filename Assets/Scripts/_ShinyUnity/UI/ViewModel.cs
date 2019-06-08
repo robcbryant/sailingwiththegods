@@ -29,7 +29,7 @@ using System.Runtime.CompilerServices;
 using System.ComponentModel;
 using UnityEngine;
 
-public class ViewModel : INotifyPropertyChanged
+public class Model : INotifyPropertyChanged
 {
 	public event PropertyChangedEventHandler PropertyChanged;
 
@@ -44,7 +44,38 @@ public class ViewModel : INotifyPropertyChanged
 	}
 }
 
-public class BoundModel<T> : ViewModel, IDisposable, IValueModel<T>
+public class ListenerModel : Model, IDisposable
+{
+	EventOwner Owner = new EventOwner();
+	List<DelegateHandle> Handles = new List<DelegateHandle>();
+
+	void OnPropertyChanged(object sender, PropertyChangedEventArgs e) {
+		NotifyAny();
+	}
+
+	public void Dispose() {
+		Owner.Dispose();
+
+		foreach(var handle in Handles) {
+			handle.Dispose();
+		}
+	}
+
+	/// <summary>
+	/// Make this listener dispatch a null PropertyChanged whenever another model changes
+	/// </summary>
+	public void Listen(INotifyPropertyChanged source) {
+
+		if (source == null) Debug.LogError("Tried to bind a model to a null source model.");
+		
+		var handle = Owner.Subscribe(() => source.PropertyChanged += OnPropertyChanged, () => source.PropertyChanged -= OnPropertyChanged);
+		Handles.Add(handle);
+
+		NotifyAny();
+	}
+}
+
+public class BoundModel<T> : Model, IDisposable, IValueModel<T>
 {
 	EventOwner Owner = new EventOwner();
 	DelegateHandle Handle;
@@ -70,7 +101,7 @@ public class BoundModel<T> : ViewModel, IDisposable, IValueModel<T>
 
 	void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
 	{
-		if (sender == Source && e.PropertyName == SourceProperty) 
+		if (sender == Source && (e.PropertyName == null || e.PropertyName == SourceProperty)) 
 		{
 			Refresh();
 			Notify(e.PropertyName);
@@ -106,7 +137,7 @@ public class BoundModel<T> : ViewModel, IDisposable, IValueModel<T>
 		SourceProperty = property;
 
 		Owner.Unsubscribe(Handle);
-		Owner.Subscribe(() => source.PropertyChanged += OnPropertyChanged, () => source.PropertyChanged -= OnPropertyChanged);
+		Handle = Owner.Subscribe(() => source.PropertyChanged += OnPropertyChanged, () => source.PropertyChanged -= OnPropertyChanged);
 
 		Refresh();
 		NotifyAny();
@@ -126,7 +157,7 @@ public static class ValueModel
 	public static IValueModel<string> AsString<T>(this IValueModel<T> self) => new WrapperModel<T, string>(self, o => o.ToString());
 }
 
-public class WrapperModel<TIn, TOut> : ViewModel, IValueModel<TOut>
+public class WrapperModel<TIn, TOut> : Model, IValueModel<TOut>
 {
 	EventOwner Owner = new EventOwner();
 	DelegateHandle Handle;
@@ -178,14 +209,14 @@ public class WrapperModel<TIn, TOut> : ViewModel, IValueModel<TOut>
 		Source = source;
 
 		Owner.Unsubscribe(Handle);
-		Owner.Subscribe(() => source.PropertyChanged += OnPropertyChanged, () => source.PropertyChanged -= OnPropertyChanged);
+		Handle = Owner.Subscribe(() => source.PropertyChanged += OnPropertyChanged, () => source.PropertyChanged -= OnPropertyChanged);
 
 		Refresh();
 		NotifyAny();
 	}
 }
 
-public class ValueModel<T> : ViewModel, IValueModel<T>
+public class ValueModel<T> : Model, IValueModel<T>
 {
 	private T _value;
 	public T Value {

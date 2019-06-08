@@ -12,7 +12,7 @@ public enum TradeAction
 	Sell
 }
 
-public class TradeViewModel : ViewModel
+public class TradeViewModel : Model
 {
 	private GameVars GameVars;
 

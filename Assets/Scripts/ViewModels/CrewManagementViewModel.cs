@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class CrewManagementViewModel : ViewModel
+public class CrewManagementViewModel : Model
 {
 	private GameVars GameVars;
 

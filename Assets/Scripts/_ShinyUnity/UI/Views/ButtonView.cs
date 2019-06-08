@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonViewModel : ViewModel
+public class ButtonViewModel : Model
 {
 	private string _Label;
 	public string Label { get => _Label; set { _Label = value; Notify(); } }

@@ -7,7 +7,7 @@ using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CargoItemTradeViewModel : ViewModel
+public class CargoItemTradeViewModel : Model
 {
 	private const string ResourcePath = "resource_icons";
 

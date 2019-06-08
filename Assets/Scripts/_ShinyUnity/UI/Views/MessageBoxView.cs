@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MessageBoxViewModel : ViewModel
+public class MessageBoxViewModel : Model
 {
 	private string _Title;
 	public string Title { get => _Title; set { _Title = value; Notify(); } }

@@ -7,7 +7,7 @@ using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CargoInventoryViewModel : ViewModel
+public class CargoInventoryViewModel : ListenerModel
 {
 	private const string ResourcePath = "resource_icons";
 
@@ -26,6 +26,7 @@ public class CargoInventoryViewModel : ViewModel
 
 	public CargoInventoryViewModel(Resource resource) {
 		Resource = resource;
+		Listen(Resource);
 
 		var iconFilename = Globals.GameVars.masterResourceList.FirstOrDefault(r => r.name == Name).icon;
 		Icon = Resources.Load<Sprite>(ResourcePath + "/" + iconFilename);
