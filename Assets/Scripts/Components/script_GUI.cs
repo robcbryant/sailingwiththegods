@@ -465,7 +465,7 @@ public class script_GUI : MonoBehaviour
 		//Add this settlement to the player's knowledge base
 		GameVars.playerShipVariables.ship.playerJournal.AddNewSettlementToLog(GameVars.currentSettlement.settlementID);
 		//Determine what settlements are available to the player in the tavern
-		GameVars.showSettlementTradeGUI = true;
+		GameVars.showSettlementGUI = true;
 		GameVars.showSettlementTradeButton = false;
 		GameVars.controlsLocked = true;
 
@@ -1217,7 +1217,7 @@ public class script_GUI : MonoBehaviour
 	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_dropAnchor() {
 		//If the controls are locked--we are traveling so force it to stop
-		if (GameVars.controlsLocked && !GameVars.showSettlementTradeGUI)
+		if (GameVars.controlsLocked && !GameVars.showSettlementGUI)
 			GameVars.playerShipVariables.rayCheck_stopShip = true;
 	}
 
@@ -1227,7 +1227,7 @@ public class script_GUI : MonoBehaviour
 	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_restOverNight() {
 		//If the controls are locked--we are traveling so force it to stop
-		if (GameVars.controlsLocked && !GameVars.showSettlementTradeGUI)
+		if (GameVars.controlsLocked && !GameVars.showSettlementGUI)
 			GameVars.playerShipVariables.rayCheck_stopShip = true;
 		//Run a script on the player controls that fast forwards time by a quarter day
 		GameVars.controlsLocked = true;

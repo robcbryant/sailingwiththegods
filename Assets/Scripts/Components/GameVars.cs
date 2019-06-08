@@ -169,7 +169,7 @@ public class GameVars : MonoBehaviour
 	//	GUI VARIABLES
 	//###################################
 	[HideInInspector] public bool runningMainGameGUI = false;
-	[HideInInspector] public bool showSettlementTradeGUI = false;
+	[HideInInspector] public bool showSettlementGUI = false;
 	[HideInInspector] public bool showSettlementTradeButton = false;
 	[HideInInspector] public bool[] newGameCrewSelectList = new bool[40];
 	[HideInInspector] public List<CrewMember> newGameAvailableCrew = new List<CrewMember>();

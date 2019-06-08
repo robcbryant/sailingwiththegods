@@ -511,7 +511,7 @@ public class script_player_controls : MonoBehaviour
 				DetectCoastLinesWithRayCasts();
 
 			}
-			else if (!GameVars.showSettlementTradeGUI || notEnoughSpeedToMove) { //check to see if we're in the trade menu otherwise we will indefintely write duplicate routes until we leave the trade menu
+			else if (!GameVars.showSettlementGUI || notEnoughSpeedToMove) { //check to see if we're in the trade menu otherwise we will indefintely write duplicate routes until we leave the trade menu
 																			//save this route to the PlayerJourneyLog
 				journey.AddRoute(new PlayerRoute(lastPlayerShipPosition, transform.position, ship.totalNumOfDaysTraveled), gameObject.GetComponent<script_player_controls>(), GameVars.currentCaptainsLog);
 				//Update player ghost route

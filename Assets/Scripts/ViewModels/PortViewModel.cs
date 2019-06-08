@@ -40,6 +40,9 @@ public class PortViewModel : ViewModel
 			//Turn off the coin image texture
 			GameVars.menuControlsLock = false;
 
+			GameVars.showSettlementGUI = false;
+			GameVars.runningMainGameGUI = true;
+
 			Globals.UI.Hide<PortScreen>();
 			Globals.UI.Show<Dashboard, DashboardViewModel>(new DashboardViewModel());
 
