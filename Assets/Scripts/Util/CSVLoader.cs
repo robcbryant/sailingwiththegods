@@ -71,6 +71,7 @@ public static class CSVLoader
 				//  Population/2 x (probabilityOfResource/100)
 				float amount = (settlement.population / 2) * (probabilityOfAvailability / 1.5f);
 				settlement.cargo[recordIndex - 11].amount_kg = amount;
+				settlement.cargo[recordIndex - 11].initial_amount_kg = amount;
 			}
 			//Add model/prefab name to settlement
 			settlement.prefabName = records[records.Length - 2];

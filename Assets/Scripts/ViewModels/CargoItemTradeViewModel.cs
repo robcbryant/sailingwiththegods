@@ -26,7 +26,7 @@ public class CargoItemTradeViewModel : ViewModel
 	}
 
 	// the resource object gives the amount_kg stored on the ship or on the settlement, depending on what the source of the Resource reference was
-	public int Price => GameVars.Trade.GetPriceOfResource(Resource.amount_kg);
+	public int Price => GameVars.Trade.GetPriceOfResource(Resource.name, GameVars.currentSettlement);
 	public string PriceStr => Price + "d/kg";
 
 	public int AveragePrice => GameVars.Trade.GetAvgPriceOfResource(Name, Resource.amount_kg);

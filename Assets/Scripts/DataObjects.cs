@@ -450,6 +450,7 @@ public class Resource
 
 	public string name;
 	public float amount_kg;
+	public float initial_amount_kg;
 
 	public Resource(string name, float amount_kg) {
 		this.name = name;

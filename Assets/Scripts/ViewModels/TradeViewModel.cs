@@ -79,7 +79,7 @@ public class TradeViewModel : ViewModel
 	}
 
 	void ChangeShipCargo(string resourceName, float changeAmount) {
-		float price = GameVars.Trade.GetPriceOfResource(GameVars.currentSettlement.GetCargoByName(resourceName).amount_kg);
+		float price = GameVars.Trade.GetPriceOfResource(resourceName, GameVars.currentSettlement);
 		Debug.Log(resourceName + "  :  " + GameVars.playerShipVariables.ship.GetCargoByName(resourceName).amount_kg + "  :  " + changeAmount);
 		GameVars.playerShipVariables.ship.GetCargoByName(resourceName).amount_kg += changeAmount;
 		//we use a (-) change amount here because the changeAmount reflects the direction of the goods
