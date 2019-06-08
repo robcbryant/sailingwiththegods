@@ -61,29 +61,37 @@ public class Trade
 		return (int)((totalPriceOfGoods / 100) * taxRateToApply);
 	}
 
-	public bool CheckSettlementResourceAvailability(int amountToCheck, string resourceName) {
+	public int AdjustBuy(int amountToCheck, string resourceName) {
 		//This function checks 3 thing(s)
 		//	1 Does the city have the resource for the player to buy?
 		//	2 Does the player have the currency to buy the resource?
 		//	3 Does the player have the cargo hold space to buy the resource?
 		float resourceAmount = GameVars.currentSettlement.GetCargoByName(resourceName).amount_kg;
 		float price = GetPriceOfResource(resourceAmount);
+		float remainingSpace = GameVars.playerShipVariables.ship.cargo_capicity_kg - GameVars.playerShipVariables.ship.GetTotalCargoAmount();
 
-		if (resourceAmount >= amountToCheck
-			&& (price * amountToCheck) < GameVars.playerShipVariables.ship.currency
-			&& (GameVars.playerShipVariables.ship.cargo_capicity_kg - GameVars.playerShipVariables.ship.GetTotalCargoAmount()) >= amountToCheck)
-			return true;
-		else
-			return false;
+		if (resourceAmount < amountToCheck) {
+			amountToCheck = Mathf.RoundToInt(resourceAmount);
+		}
+		if ((price * amountToCheck) > GameVars.playerShipVariables.ship.currency) {
+			amountToCheck = Mathf.FloorToInt(GameVars.playerShipVariables.ship.currency / price);
+		}
+		if(remainingSpace < amountToCheck) {
+			amountToCheck = Mathf.FloorToInt(remainingSpace);
+		}
+
+		return amountToCheck;
 	}
 
-	public bool CheckShipResourceAvailability(int amountToCheck, string resourceName) {
+	public int AdjustSell(int amountToCheck, string resourceName) {
 		//This function checks 1 thing(s):
 		//	1 Does the player have cargo to sell?
-		if (GameVars.playerShipVariables.ship.GetCargoByName(resourceName).amount_kg >= amountToCheck)
-			return true;
-		else
-			return false;
+		float resourceAmount = GameVars.playerShipVariables.ship.GetCargoByName(resourceName).amount_kg;
 
+		if (resourceAmount < amountToCheck) { 
+			amountToCheck = Mathf.RoundToInt(resourceAmount);
+		}
+
+		return amountToCheck;
 	}
 }

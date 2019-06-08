@@ -13,6 +13,9 @@ public class CrewManagementViewModel : ViewModel
 	public readonly ObservableCollection<CrewManagementMemberViewModel> AvailableCrew;
 	public readonly ObservableCollection<CrewManagementMemberViewModel> MyCrew;
 
+	public string Capacity => GameVars.playerShipVariables.ship.crewRoster.Count + " / " + GameVars.playerShipVariables.ship.crewCapacity + " crew";
+	public string Money => GameVars.playerShipVariables.ship.currency + " dr";
+
 	public CrewManagementViewModel() {
 		GameVars = Globals.GameVars;
 
@@ -33,6 +36,9 @@ public class CrewManagementViewModel : ViewModel
 		GameVars.playerShipVariables.ship.crewRoster.Remove(crewman);
 		MyCrew.Remove(crew);
 		AvailableCrew.Add(crew);
+
+		Notify(nameof(Capacity));
+		Notify(nameof(Money));
 
 		GameVars.showNotification = true;
 		GameVars.notificationMessage = crewman.name + " looked at you sadly and said before leaving, 'I thought I was doing so well. I'm sorry I let you down. Guess I'll go drink some cheap wine...";
@@ -55,6 +61,8 @@ public class CrewManagementViewModel : ViewModel
 				AvailableCrew.Remove(crew);
 				MyCrew.Add(crew);
 
+				Notify(nameof(Capacity));
+				Notify(nameof(Money));
 
 				//If there isn't room, then let the player know
 			}

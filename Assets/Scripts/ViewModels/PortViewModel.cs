@@ -14,10 +14,6 @@ public class PortViewModel : ViewModel
 	public string PortName => Settlement.name;
 	public readonly CrewManagementViewModel CrewManagement;
 
-	// TODO: These were copied from TownViewModel. they need to share i guess. i may be re-inventing the old tab interface. there's some stuff that should be on everything.
-	public string Capacity => Mathf.RoundToInt(GameVars.playerShipVariables.ship.CurrentCargoKg) + " / " + Mathf.RoundToInt(GameVars.playerShipVariables.ship.cargo_capicity_kg) + " kg";
-	public string Money => GameVars.playerShipVariables.ship.currency + " dr";
-
 	public PortViewModel() {
 		CrewManagement = new CrewManagementViewModel();
 	}

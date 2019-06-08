@@ -91,9 +91,12 @@ public class TradeViewModel : ViewModel
 	public void GUI_Buy_Resources(CargoItemTradeViewModel item, int amount) {
 		Debug.Log(item.Name + " : " + amount);
 
-		if (GameVars.Trade.CheckSettlementResourceAvailability(amount, item.Name)) {
-			ChangeShipCargo(item.Name, amount);
-			ChangeSettlementCargo(item.Name, -amount);
+		var amountToBuy = GameVars.Trade.AdjustBuy(amount, item.Name);
+		if (amountToBuy > 0) {
+
+			// these change the values in our model too, just need to notify
+			ChangeShipCargo(item.Name, amountToBuy);
+			ChangeSettlementCargo(item.Name, -amountToBuy);
 
 			// update the list so the new row appears
 			// probably need to write some sort of wrapper that watches for amount == 0 and does this automatically
@@ -103,12 +106,14 @@ public class TradeViewModel : ViewModel
 				Mine.Add(mine);
 			}
 
-			item.AmountKg -= amount;
-			mine.AmountKg += amount;
-
 			if(item.AmountKg <= 0) {
 				Available.Remove(item);
 			}
+
+			item.Notify(nameof(item.AmountKg));
+			mine.Notify(nameof(mine.AmountKg));
+			Notify(nameof(Capacity));
+			Notify(nameof(Money));
 		}
 	}
 
@@ -116,9 +121,12 @@ public class TradeViewModel : ViewModel
 	public void GUI_Sell_Resources(CargoItemTradeViewModel item, int amount) {
 		Debug.Log(item.Name + " : " + amount);
 
-		if (GameVars.Trade.CheckShipResourceAvailability(amount, item.Name)) {
-			ChangeShipCargo(item.Name, -amount);
-			ChangeSettlementCargo(item.Name, amount);
+		var amountToSell = GameVars.Trade.AdjustSell(amount, item.Name);
+		if (amountToSell > 0) {
+
+			// these change the values in our model too, just need to notify
+			ChangeShipCargo(item.Name, -amountToSell);
+			ChangeSettlementCargo(item.Name, amountToSell);
 
 			// update the list so the new row appears
 			// probably need to write some sort of wrapper that watches for amount == 0 and does this automatically
@@ -128,8 +136,10 @@ public class TradeViewModel : ViewModel
 				Available.Add(available);
 			}
 
-			item.AmountKg -= amount;
-			available.AmountKg += amount;
+			item.Notify(nameof(item.AmountKg));
+			available.Notify(nameof(available.AmountKg));
+			Notify(nameof(Capacity));
+			Notify(nameof(Money));
 		}
 	}
 }

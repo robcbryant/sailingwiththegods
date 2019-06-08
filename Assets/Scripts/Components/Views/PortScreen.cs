@@ -41,8 +41,8 @@ public class PortScreen : ViewBehaviour<PortViewModel>
 			OnClick = () => Debug.Log("Info clicked for " + model.PortName)
 		}));
 
-		PortName.Bind(ValueModel.New(model.PortName));
-		Capacity.Bind(ValueModel.New(model.Capacity));
-		Money.Bind(ValueModel.New(model.Money));
+		PortName.Bind(ValueModel.New(Model.PortName));
+		Capacity.Bind(new BoundModel<string>(Model.CrewManagement, nameof(Model.CrewManagement.Capacity)));
+		Money.Bind(new BoundModel<string>(Model.CrewManagement, nameof(Model.CrewManagement.Money)));
 	}
 }
