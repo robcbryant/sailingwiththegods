@@ -328,7 +328,10 @@ public class script_player_controls : MonoBehaviour
 					}
 
 				}
-				else if(hits.Any(h => h.collider.tag == "settlementClick") && GameVars.currentSettlement != null) {
+				else if (hits.Any(h => h.collider.tag == "settlementClick") && 
+						hits.First(h => h.collider.tag == "settlementClick").collider.GetComponentInParent<script_settlement_functions>().thisSettlement == GameVars.currentSettlement && 
+						GameVars.currentSettlement != null) {
+
 					// TODO: should probably change it to some other color or something?
 					cursorRingIsGreen = true;
 					//We also need to make sure the trajectory preview is turned off
@@ -339,6 +342,7 @@ public class script_player_controls : MonoBehaviour
 					if (Input.GetButton("Select")) {
 						GameObject.FindObjectOfType<script_GUI>().GUI_checkOutOrDockWithPort(true);		// TODO: Move this into Globals for now until I've pulled everything out.
 					}
+
 				}
 				else {
 					//Since we aren't allowed to travel to the mouse position, change the cursor to red
