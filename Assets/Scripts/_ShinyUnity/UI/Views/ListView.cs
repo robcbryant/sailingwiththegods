@@ -40,8 +40,8 @@ public abstract class ListView<TModel, TCellModel> : ViewBehaviour<TModel>
 	where TModel : INotifyCollectionChanged, INotifyPropertyChanged, ICollection<TCellModel>
 	where TCellModel : INotifyPropertyChanged
 {
-	[SerializeField] private Transform CellParent;
-	[SerializeField] private GameObject CellPrefab;
+	[SerializeField] private Transform CellParent = null;
+	[SerializeField] private GameObject CellPrefab = null;
 
 	DelegateHandle CollectionModelSubscription;
 

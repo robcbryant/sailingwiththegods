@@ -43,11 +43,11 @@ public class MessageBoxViewModel : Model
 
 public class MessageBoxView : ViewBehaviour<MessageBoxViewModel>
 {
-	[SerializeField] StringView Title;
-	[SerializeField] StringView Message;
-	[SerializeField] ButtonView OK;
-	[SerializeField] ButtonView Cancel;
-	[SerializeField] ButtonView Close;
+	[SerializeField] StringView Title = null;
+	[SerializeField] StringView Message = null;
+	[SerializeField] ButtonView OK = null;
+	[SerializeField] ButtonView Cancel = null;
+	[SerializeField] ButtonView Close = null;
 
 	public override void Bind(MessageBoxViewModel model) {
 		base.Bind(model);

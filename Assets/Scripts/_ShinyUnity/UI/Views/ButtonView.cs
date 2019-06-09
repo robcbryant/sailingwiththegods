@@ -37,8 +37,8 @@ public class ButtonViewModel : Model
 
 public class ButtonView : ViewBehaviour<IValueModel<ButtonViewModel>>
 {
-	[SerializeField] StringView Label;
-	[SerializeField] Button Button;
+	[SerializeField] StringView Label = null;
+	[SerializeField] Button Button = null;
 
 	private void Start() {
 		Subscribe(Button.onClick, OnClick);

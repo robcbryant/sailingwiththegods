@@ -126,6 +126,7 @@ public class BoundModel<T> : Model, IDisposable, IValueModel<T>
 
 	public BoundModel(INotifyPropertyChanged source, string property = null, Func<object, T> adaptor = null) 
 	{
+		Adaptor = adaptor;
 		Bind(source, property);
 	}
 
