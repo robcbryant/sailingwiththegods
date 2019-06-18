@@ -26,6 +26,8 @@ public class CrewManagementMemberViewModel : Model
 	public bool IsInCrew => Globals.GameVars.playerShipVariables.ship.crewRoster.Contains(Member);
 	public string Skills => IsInCrew ? Member.changeOnFire.ToString() : Member.changeOnHire.ToString();
 
+	public string CitiesInNetwork => Member.currentContribution.CitiesInNetworkStr;
+
 	//TODO Temporary solution--need to add a clout check modifier
 	public int CostToHire => Member.clout * 2;
 
@@ -56,6 +58,7 @@ public class CrewManagementMemberView : ViewBehaviour<CrewManagementMemberViewMo
 	[SerializeField] StringView City;
 	[SerializeField] StringView Skills;
 	[SerializeField] StringView Cost;
+	[SerializeField] StringView CitiesContributed;
 
 	public override void Bind(CrewManagementMemberViewModel model) {
 		base.Bind(model);
@@ -74,5 +77,6 @@ public class CrewManagementMemberView : ViewBehaviour<CrewManagementMemberViewMo
 		Skills?.Bind(new BoundModel<string>(Model, nameof(Model.Role)));
 		Cost?.Bind(new BoundModel<int>(Model, nameof(Model.CostToHire)).AsString());
 		Portrait?.Bind(new BoundModel<Sprite>(Model, nameof(Model.Portrait)));
+		CitiesContributed?.Bind(new BoundModel<string>(Model, nameof(Model.CitiesInNetwork)));
 	}
 }

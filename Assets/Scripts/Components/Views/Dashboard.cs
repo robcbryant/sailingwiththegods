@@ -20,6 +20,7 @@ public class Dashboard : ViewBehaviour<DashboardViewModel>
 	// subscreens
 	[SerializeField] MessageBoxView CaptainsLogScreen;
 	[SerializeField] CargoListView CargoList;
+	[SerializeField] CrewListScreen CrewList;
 
 	public override void Bind(DashboardViewModel model) {
 		base.Bind(model);
@@ -33,9 +34,9 @@ public class Dashboard : ViewBehaviour<DashboardViewModel>
 		}));
 
 		CargoButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Globals.UI.Show(CargoList, Model.CargoList) }));
+		CrewButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Globals.UI.Show(CrewList, Model.CrewList) }));
 
 		MainMenuButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Debug.Log("Main Menu Clicked") }));
-		CrewButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Debug.Log("Crew Clicked") }));
 		CloutButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Debug.Log("Clout Clicked") }));
 
 		FoodInventory.Bind(Model.FoodInventory);

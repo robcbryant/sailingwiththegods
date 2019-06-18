@@ -11,6 +11,7 @@ public class DashboardViewModel : Model
 	public readonly CargoInventoryViewModel WaterInventory;
 	public readonly CargoInventoryViewModel FoodInventory;
 	public readonly ObservableCollection<CargoInventoryViewModel> CargoList;
+	public readonly ObservableCollection<CrewManagementMemberViewModel> CrewList;
 
 	public DashboardViewModel() {
 
@@ -21,6 +22,11 @@ public class DashboardViewModel : Model
 		FoodInventory = new CargoInventoryViewModel(food);
 
 		CargoList = new ObservableCollection<CargoInventoryViewModel>(Globals.GameVars.playerShipVariables.ship.cargo.Select(c => new CargoInventoryViewModel(c)));
+
+		// can pass in null for the parent model since we aren't hiring/firing. should make an interface or something though
+		CrewList = new ObservableCollection<CrewManagementMemberViewModel>(Globals.GameVars.playerShipVariables.ship.crewRoster
+			.Select(c => new CrewManagementMemberViewModel(c, null))
+		);
 
 	}
 }

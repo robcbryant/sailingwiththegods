@@ -121,6 +121,9 @@ public class CrewMember
 	SkillModifiers _changeOnFire;
 	public SkillModifiers changeOnFire { get { if (_changeOnFire == null) InitModifiers(); return _changeOnFire; } }
 
+	SkillModifiers _currentContribution;
+	public SkillModifiers currentContribution { get { if (_currentContribution == null) InitModifiers(); return _currentContribution; } }
+
 	//0= sailor  1= warrior  2= slave  3= passenger 4= navigator 5= auger
 	//A sailor is the base class--no benefits/detriments
 	//	--navigators provide maps to different settlements and decrease negative random events
@@ -142,6 +145,7 @@ public class CrewMember
 		ID = id;
 		_changeOnHire = new SkillModifiers();
 		_changeOnFire = new SkillModifiers();
+		_currentContribution = new SkillModifiers();
 	}
 
 	void InitModifiers() {
@@ -159,6 +163,14 @@ public class CrewMember
 			BattlePercentChance = typeOfCrew == CrewType.Warrior ? -5 : 0,
 			Navigation = typeOfCrew == CrewType.Sailor ? -1 : 0,
 			PositiveEvent = typeOfCrew == CrewType.Guide ? -10 : 0
+		};
+
+		// very similar to changeOnFire, but shows it as positives. this is their contribution to your team, not what you'll lose if you fire them (but it's basically the same).
+		_currentContribution = new SkillModifiers {
+			CitiesInNetwork = gameVars.Network.MyCompleteNetwork.Count(s => !gameVars.Network.CrewMembersWithNetwork(s).Any(crew => crew != this) && !gameVars.Network.MyImmediateNetwork.Contains(s)),
+			BattlePercentChance = typeOfCrew == CrewType.Warrior ? 5 : 0,
+			Navigation = typeOfCrew == CrewType.Sailor ? 1 : 0,
+			PositiveEvent = typeOfCrew == CrewType.Guide ? 10 : 0
 		};
 	}
 
