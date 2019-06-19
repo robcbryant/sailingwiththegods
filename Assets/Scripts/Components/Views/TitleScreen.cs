@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 public class TitleScreen : ViewBehaviour<GameViewModel>
 {
-	[SerializeField] Button title_newgame_button;
-	[SerializeField] Button title_newgame_beginner_button;
-	[SerializeField] Button title_loadgame_button;
-	[SerializeField] Button title_loadgame_beginner_button;
+	[SerializeField] Button title_newgame_button = null;
+	[SerializeField] Button title_newgame_beginner_button = null;
+	[SerializeField] Button title_loadgame_button = null;
+	[SerializeField] Button title_loadgame_beginner_button = null;
 
-	[SerializeField] Button title_credits_button;
-	[SerializeField] Button title_credits_exit;
-	[SerializeField] Text title_credits_text;
-	[SerializeField] GameObject title_credits_screen;
+	[SerializeField] Button title_credits_button = null;
+	[SerializeField] Button title_credits_exit = null;
+	[SerializeField] Text title_credits_text = null;
+	[SerializeField] GameObject title_credits_screen = null;
 
 	// killing this screen. or at least redoing it
 	/*

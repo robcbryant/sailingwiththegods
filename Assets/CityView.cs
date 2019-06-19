@@ -9,15 +9,14 @@ using UnityEngine.UI;
 
 public class CityView : ViewBehaviour<CityViewModel>
 {
-	[SerializeField] CrewManagementListView Crew;
+	[SerializeField] CrewManagementListView Crew = null;
 
-	[SerializeField] StringView PortName;
-	[SerializeField] ImageView PortIcon;
+	[SerializeField] StringView PortName = null;
 
-	[SerializeField] CargoListView Buy;
-	[SerializeField] CargoListView Sell;
+	[SerializeField] CargoListView Buy = null;
+	[SerializeField] CargoListView Sell = null;
 
-	[SerializeField] ButtonView ActionButton;
+	[SerializeField] ButtonView ActionButton = null;
 
 	public override void Bind(CityViewModel model) {
 		base.Bind(model);

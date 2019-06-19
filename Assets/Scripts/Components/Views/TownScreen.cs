@@ -9,20 +9,20 @@ using UnityEngine.UI;
 
 public class TownScreen : ViewBehaviour<TradeViewModel>
 {
-	[SerializeField] CargoTradeListView Available;
-	[SerializeField] CargoTradeListView Mine;
+	[SerializeField] CargoTradeListView Available = null;
+	[SerializeField] CargoTradeListView Mine = null;
 
-	[SerializeField] StringView PortName;
+	[SerializeField] StringView PortName = null;
 
-	[SerializeField] StringView Capacity;
-	[SerializeField] StringView Money;
+	[SerializeField] StringView Capacity = null;
+	[SerializeField] StringView Money = null;
 
-	[SerializeField] ButtonView Info;
-	[SerializeField] ButtonView Port;
+	[SerializeField] ButtonView Info = null;
+	[SerializeField] ButtonView Port = null;
 
-	[SerializeField] ButtonView SmallTxn;
-	[SerializeField] ButtonView LargeTxn;
-	[SerializeField] ButtonView AllTxn;
+	[SerializeField] ButtonView SmallTxn = null;
+	[SerializeField] ButtonView LargeTxn = null;
+	[SerializeField] ButtonView AllTxn = null;
 
 	public override void Bind(TradeViewModel model) {
 		base.Bind(model);

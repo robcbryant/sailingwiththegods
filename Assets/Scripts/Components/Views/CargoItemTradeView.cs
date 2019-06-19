@@ -11,13 +11,13 @@ public class CargoItemTradeView : ViewBehaviour<CargoItemTradeViewModel>
 {
 	InteractableBehaviour Interactable;
 
-	[SerializeField] StringView Name;
-	[SerializeField] StringView Price;
-	[SerializeField] StringView Amount;
-	[SerializeField] StringView Hint;
-	[SerializeField] ImageView Icon;
+	[SerializeField] StringView Name = null;
+	[SerializeField] StringView Price = null;
+	[SerializeField] StringView Amount = null;
+	[SerializeField] StringView Hint = null;
+	[SerializeField] ImageView Icon = null;
 
-	[SerializeField] Image SelectedOverlay;
+	[SerializeField] Image SelectedOverlay = null;
 
 	DelegateHandle SelectedHandle;
 

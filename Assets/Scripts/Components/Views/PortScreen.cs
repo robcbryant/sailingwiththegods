@@ -9,17 +9,17 @@ using UnityEngine.UI;
 
 public class PortScreen : ViewBehaviour<PortViewModel>
 {
-	[SerializeField] CrewManagementListView Hire;
-	[SerializeField] CrewManagementListView Fire;
+	[SerializeField] CrewManagementListView Hire = null;
+	[SerializeField] CrewManagementListView Fire = null;
 
-	[SerializeField] StringView PortName;
+	[SerializeField] StringView PortName = null;
 
-	[SerializeField] StringView Capacity;
-	[SerializeField] StringView Money;
+	[SerializeField] StringView Capacity = null;
+	[SerializeField] StringView Money = null;
 
-	[SerializeField] ButtonView Info;
-	[SerializeField] ButtonView Sail;
-	[SerializeField] ButtonView Town;
+	[SerializeField] ButtonView Info = null;
+	[SerializeField] ButtonView Sail = null;
+	[SerializeField] ButtonView Town = null;
 
 	public override void Bind(PortViewModel model) {
 		base.Bind(model);

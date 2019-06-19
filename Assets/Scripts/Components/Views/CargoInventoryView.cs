@@ -35,10 +35,10 @@ public class CargoInventoryViewModel : ListenerModel
 
 public class CargoInventoryView : ViewBehaviour<CargoInventoryViewModel>
 {
-	[SerializeField] Button InfoButton;
-	[SerializeField] ImageView Icon;
-	[SerializeField] StringView Name;
-	[SerializeField] StringView Amount;
+	[SerializeField] Button InfoButton = null;
+	[SerializeField] ImageView Icon = null;
+	[SerializeField] StringView Name = null;
+	[SerializeField] StringView Amount = null;
 
 	private void Start() {
 		if(InfoButton != null) {

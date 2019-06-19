@@ -26,7 +26,9 @@ public class CrewManagementMemberViewModel : Model
 	public bool IsInCrew => Globals.GameVars.playerShipVariables.ship.crewRoster.Contains(Member);
 	public string Skills => IsInCrew ? Member.changeOnFire.ToString() : Member.changeOnHire.ToString();
 	
-	public string NumConnectionsStr => CitiesInNetwork.Count() + " Connections";
+	public string NumConnectionsStr => CitiesInNetwork == null ? 
+		"" : 
+		CitiesInNetwork.Count() + " Connections";
 
 	public readonly ObservableCollection<CityViewModel> CitiesInNetwork;
 
@@ -51,14 +53,14 @@ public class CrewManagementMemberViewModel : Model
 
 public class CrewManagementMemberView : ViewBehaviour<CrewManagementMemberViewModel>
 { 
-	[SerializeField] ButtonView InfoButton;
-	[SerializeField] ButtonView ActionButton;
-	[SerializeField] ImageView Portrait;
-	[SerializeField] StringView Name;
-	[SerializeField] StringView City;
-	[SerializeField] StringView Skills;
-	[SerializeField] StringView Cost;
-	[SerializeField] StringView CitiesContributed;
+	[SerializeField] ButtonView InfoButton = null;
+	[SerializeField] ButtonView ActionButton = null;
+	[SerializeField] ImageView Portrait = null;
+	[SerializeField] StringView Name = null;
+	[SerializeField] StringView City = null;
+	[SerializeField] StringView Skills = null;
+	[SerializeField] StringView Cost = null;
+	[SerializeField] StringView CitiesContributed = null;
 
 	public override void Bind(CrewManagementMemberViewModel model) {
 		base.Bind(model);

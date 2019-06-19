@@ -9,18 +9,18 @@ using UnityEngine.UI;
 
 public class Dashboard : ViewBehaviour<DashboardViewModel>
 {
-	[SerializeField] ButtonView CaptainsLogButton;
-	[SerializeField] ButtonView MainMenuButton;
-	[SerializeField] ButtonView CargoButton;
-	[SerializeField] ButtonView CrewButton;
-	[SerializeField] ButtonView CloutButton;
-	[SerializeField] CargoInventoryView FoodInventory;
-	[SerializeField] CargoInventoryView WaterInventory;
+	[SerializeField] ButtonView CaptainsLogButton = null;
+	[SerializeField] ButtonView MainMenuButton = null;
+	[SerializeField] ButtonView CargoButton = null;
+	[SerializeField] ButtonView CrewButton = null;
+	[SerializeField] ButtonView CloutButton = null;
+	[SerializeField] CargoInventoryView FoodInventory = null;
+	[SerializeField] CargoInventoryView WaterInventory = null;
 
 	// subscreens
-	[SerializeField] MessageBoxView CaptainsLogScreen;
-	[SerializeField] CargoListView CargoList;
-	[SerializeField] CrewListScreen CrewList;
+	[SerializeField] MessageBoxView CaptainsLogScreen = null;
+	[SerializeField] CargoListView CargoList = null;
+	[SerializeField] CrewListScreen CrewList = null;
 
 	public override void Bind(DashboardViewModel model) {
 		base.Bind(model);

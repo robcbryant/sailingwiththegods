@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class CrewDetailsScreen : ViewBehaviour<CrewManagementMemberViewModel>
 {
-	[SerializeField] CrewManagementMemberView CrewMember;
-	[SerializeField] StringView FlavorText;
-	[SerializeField] ButtonView CloseButton;
-	[SerializeField] CityListView Cities;
+	[SerializeField] CrewManagementMemberView CrewMember = null;
+	[SerializeField] StringView FlavorText = null;
+	[SerializeField] ButtonView CloseButton = null;
+	[SerializeField] CityListView Cities = null;
 
 	public override void Bind(CrewManagementMemberViewModel model) {
 		base.Bind(model);

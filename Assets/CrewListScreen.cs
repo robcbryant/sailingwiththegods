@@ -9,8 +9,8 @@ using UnityEngine.UI;
 
 public class CrewListScreen : ViewBehaviour<ObservableCollection<CrewManagementMemberViewModel>>
 {
-	[SerializeField] CrewManagementListView List;
-	[SerializeField] ButtonView Close;
+	[SerializeField] CrewManagementListView List = null;
+	[SerializeField] ButtonView Close = null;
 
 	public override void Bind(ObservableCollection<CrewManagementMemberViewModel> model) {
 		base.Bind(model);
