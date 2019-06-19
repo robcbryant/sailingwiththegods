@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -280,18 +281,19 @@ public static class CSVLoader
 
 	static string TryLoadFromGameFolder(string filename) {
 		try {
-			WWW localFile = new WWW("file://" + Application.dataPath + "/" + filename + ".txt");
-
-			while (!localFile.isDone) {
-				Debug.Log("Progress of Load File: " + localFile.progress);
+			var localFile = "";
+			var filePath = Application.dataPath + "/" + filename + ".txt";
+			if (File.Exists(filePath)) {
+				localFile = File.ReadAllText(filePath);
 			}
+
 			Debug.Log(Application.dataPath + "/" + filename + ".txt");
-			Debug.Log(localFile.text);
-			if (localFile.text == "") {
+			Debug.Log(localFile);
+			if (localFile == "") {
 				TextAsset file = (TextAsset)Resources.Load(filename, typeof(TextAsset));
 				return file.text;
 			}
-			return localFile.text;
+			return localFile;
 
 		}
 		catch (Exception error) {

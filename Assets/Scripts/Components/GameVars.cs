@@ -272,14 +272,9 @@ public class GameVars : MonoBehaviour
 		char[] recordDelimiter = new char[] { '_' };
 
 		//Look for a save game file and tell the player if none is found.
-		WWW saveFile;
 		string saveText;
 		try {
-			saveFile = new WWW("file://" + Application.dataPath + "/player_save_game.txt");
-			saveText = System.IO.File.ReadAllText(Application.persistentDataPath + "/player_save_game.txt");
-			while (!saveFile.isDone) {
-				Debug.Log("Progress of Load File: " + saveFile.progress);
-			}
+			saveText = File.ReadAllText(Application.persistentDataPath + "/player_save_game.txt");
 		}
 		catch (Exception error) {
 			ShowANotificationMessage("Sorry! No load game 'player_save_game.txt' was found in the game directory '" + Application.persistentDataPath + "' or the save file is corrupt!\nError Code: " + error);
