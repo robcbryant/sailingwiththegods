@@ -26,7 +26,7 @@ public class CityViewModel : Model
 
 		Crew = new ObservableCollection<CrewManagementMemberViewModel>(
 			GameVars.Network.CrewMembersWithNetwork(city)
-				.Select(crew => new CrewManagementMemberViewModel(crew, null, null))
+				.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null))
 				.OrderBy(c => GameVars.Network.GetCrewMemberNetwork(c.Member).Count())
 				.Take(5)
 		);
@@ -51,5 +51,13 @@ public class CityViewModel : Model
 				.Select(o => new CargoInventoryViewModel(o.Resource))
 				.Take(5)
 		);
+	}
+
+	void OnCrewClicked(CrewManagementMemberViewModel crew) {
+
+		// hide a previous details view if one was already showing so they don't stack on top of eachother and confuse the user
+		Globals.UI.Hide<CrewDetailsScreen>();
+		Globals.UI.Show<CrewDetailsScreen, CrewManagementMemberViewModel>(crew);
+
 	}
 }
