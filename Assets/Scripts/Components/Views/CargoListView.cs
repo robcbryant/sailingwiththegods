@@ -4,9 +4,13 @@ using UnityEngine.UI;
 
 public class CargoListView : ListView<ObservableCollection<CargoInventoryViewModel>, CargoInventoryViewModel>
 {
-	[SerializeField] Button CloseButton;
+	[SerializeField] ButtonView CloseButton = null;
 
-	private void Start() {
-		Subscribe(CloseButton.onClick, () => Globals.UI.Hide(this));
+	public override void Bind(ObservableCollection<CargoInventoryViewModel> model) {
+		base.Bind(model);
+
+		CloseButton?.Bind(ValueModel.New(new ButtonViewModel {
+			OnClick = () => Globals.UI.Hide(this)
+		}));
 	}
 }

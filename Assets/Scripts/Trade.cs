@@ -21,7 +21,7 @@ public class Trade
 	}
 
 	// finds the average price of the resource across all settlements, so you can tell whether you have a good price or not
-	public int GetAvgPriceOfResource(string resourceName, float amount) {
+	public int GetAvgPriceOfResource(string resourceName) {
 		return Mathf.RoundToInt((float)GameVars.settlement_masterList
 			.Select(s => GetPriceOfResource(resourceName, s))
 			.Average()

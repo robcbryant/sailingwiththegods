@@ -258,6 +258,7 @@ GameObject:
   - component: {fileID: 1914736137233631331}
   - component: {fileID: 1914736137233631340}
   - component: {fileID: 2017840439167536072}
+  - component: {fileID: 3682837663082364157}
   m_Layer: 0
   m_Name: FPVCamera
   m_TagString: FPVCamera
@@ -384,3 +385,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70b9ae18c04c25345a5622a4d1fdcf22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3682837663082364157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914736137233631342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -768656878, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0

@@ -28,10 +28,17 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public abstract class UISystem : MonoBehaviour
 {
+	private Canvas Canvas;
+
+	private void Awake() {
+		Canvas = GetComponent<Canvas>();
+	}
+
 	#region Generic cases for any view passed in
 
 	protected void Add<T>(T c) where T : ViewBehaviour 
@@ -118,17 +125,32 @@ public abstract class UISystem : MonoBehaviour
 		}
 	}
 
-	public static List<RaycastResult> GetMouseOverUI() {
+	public Vector3 WorldToUI(Camera worldCam, Vector3 worldPos) {
+		//Convert the world for screen point so that it can be used with ScreenPointToLocalPointInRectangle function
+		Vector3 screenPos = worldCam.WorldToScreenPoint(worldPos);
+		Vector2 movePos;
+
+		//Convert the screenpoint to ui rectangle local point
+		RectTransformUtility.ScreenPointToLocalPointInRectangle(Canvas.transform as RectTransform, screenPos, Canvas.worldCamera, out movePos);
+		//Convert the local point to world point
+		return Canvas.transform.TransformPoint(movePos);
+	}
+
+	public static IEnumerable<RaycastResult> GetMouseOverUI() {
 		var eventData = new PointerEventData(EventSystem.current);
 		eventData.position = Input.mousePosition;
 
 		var raycastResults = new List<RaycastResult>();
 		EventSystem.current.RaycastAll(eventData, raycastResults);
-		return raycastResults;
+		return raycastResults.Where(r => r.module is GraphicRaycaster);
 	}
 
 	public static bool IsMouseOverUI() {
-		return GetMouseOverUI().Count > 0;
+		return GetMouseOverUI().Count() > 0;
+	}
+
+	public static bool IsMouseOverUI(Graphic ui) {
+		return GetMouseOverUI().Any(r => r.gameObject.GetComponent<Graphic>() == ui);
 	}
 
 	#endregion

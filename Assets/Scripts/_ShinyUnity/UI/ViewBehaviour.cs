@@ -38,6 +38,8 @@ public abstract class ViewBehaviour<TModel> : ViewBehaviour where TModel : INoti
 {
 	DelegateHandle ModelSubscription;
 
+	public RectTransform RectTransform => transform as RectTransform;
+
 	public TModel Model { get; private set; }
 	virtual public void Bind(TModel model) {
 		Model = model;
