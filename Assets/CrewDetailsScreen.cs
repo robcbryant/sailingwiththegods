@@ -13,7 +13,7 @@ public class CrewDetailsScreen : ViewBehaviour<CrewManagementMemberViewModel>
 		base.Bind(model);
 
 		CrewMember?.Bind(model);
-		Cities?.Bind(model.CitiesInNetwork);
+		Cities?.Bind(model.CitiesInNetwork);			// TODO: This is null because we passed the model down from the tooltip which doesn't have this...
 		FlavorText?.Bind(ValueModel.New(model.BackgroundInfo));
 
 		CloseButton?.Bind(ValueModel.New(new ButtonViewModel {
