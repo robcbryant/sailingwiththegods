@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +14,6 @@ public class CrewManagementMemberViewModel : Model
 	private const string DefaultPortrait = "crew_portraits/phoenician_sailor";
 
 	public CrewMember Member { get; private set; }
-	public CrewManagementViewModel Parent { get; private set; }
 	
 	public Sprite Portrait { get; private set; }
 	public string Name => Member.name;
@@ -25,26 +25,26 @@ public class CrewManagementMemberViewModel : Model
 
 	public bool IsInCrew => Globals.GameVars.playerShipVariables.ship.crewRoster.Contains(Member);
 	public string Skills => IsInCrew ? Member.changeOnFire.ToString() : Member.changeOnHire.ToString();
+	
+	public string NumConnectionsStr => CitiesInNetwork.Count() + " Connections";
 
-	public string CitiesInNetwork => Member.currentContribution.CitiesInNetworkStr;
+	public readonly ObservableCollection<CityViewModel> CitiesInNetwork;
 
 	//TODO Temporary solution--need to add a clout check modifier
 	public int CostToHire => Member.clout * 2;
 
+	private Action<CrewManagementMemberViewModel> _OnClick;
+	public Action<CrewManagementMemberViewModel> OnClick { get => _OnClick; set { _OnClick = value; Notify(); } }
 
-	public CrewManagementMemberViewModel(CrewMember member, CrewManagementViewModel parent) {
+
+	public CrewManagementMemberViewModel(CrewMember member, Action<CrewManagementMemberViewModel> onClick, Action<CityViewModel> onClickCity) {
 		Member = member;
-		Parent = parent;
-
+		OnClick = onClick;
 		Portrait = Resources.Load<Sprite>(ResourcePath + "/" + member.ID) ?? Resources.Load<Sprite>(DefaultPortrait);
-	}
 
-	public void DoAction() {
-		if(IsInCrew) {
-			Parent.GUI_FireCrewMember(this);
-		}
-		else {
-			Parent.GUI_HireCrewMember(this);
+		// can't build this if we're creating this model for a CityViewModel to own, infinite recursion. should subclass the model instead, but this hack works for now.
+		if(onClickCity != null) {
+			CitiesInNetwork = new ObservableCollection<CityViewModel>(Globals.GameVars.Network.GetCrewMemberNetwork(Member).Select(s => new CityViewModel(s, onClickCity)));
 		}
 	}
 }
@@ -69,7 +69,7 @@ public class CrewManagementMemberView : ViewBehaviour<CrewManagementMemberViewMo
 
 		ActionButton?.Bind(ValueModel.New(new ButtonViewModel {
 			Label = model.IsInCrew ? "Fire" : "Hire",
-			OnClick = model.DoAction
+			OnClick = () => model.OnClick?.Invoke(Model)
 		}));
 
 		Name?.Bind(new BoundModel<string>(Model, nameof(Model.Name)));
@@ -77,6 +77,6 @@ public class CrewManagementMemberView : ViewBehaviour<CrewManagementMemberViewMo
 		Skills?.Bind(new BoundModel<string>(Model, nameof(Model.Role)));
 		Cost?.Bind(new BoundModel<int>(Model, nameof(Model.CostToHire)).AsString());
 		Portrait?.Bind(new BoundModel<Sprite>(Model, nameof(Model.Portrait)));
-		CitiesContributed?.Bind(new BoundModel<string>(Model, nameof(Model.CitiesInNetwork)));
+		CitiesContributed?.Bind(new BoundModel<string>(Model, nameof(Model.NumConnectionsStr)));
 	}
 }

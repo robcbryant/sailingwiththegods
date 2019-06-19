@@ -12,6 +12,7 @@ public class GameUISystem : UISystem
 	[SerializeField] PortScreen PortScreen = null;
 	[SerializeField] TownScreen TownScreen = null;
 	[SerializeField] CityView CityView = null;
+	[SerializeField] CrewDetailsScreen CrewDetails = null;
 
 	void AddViews() {
 		Add(Dashboard);
@@ -19,6 +20,7 @@ public class GameUISystem : UISystem
 		Add(PortScreen);
 		Add(TownScreen);
 		Add(CityView);
+		Add(CrewDetails);
 	}
 
 	void Start() {

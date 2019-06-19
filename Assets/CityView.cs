@@ -17,6 +17,8 @@ public class CityView : ViewBehaviour<CityViewModel>
 	[SerializeField] CargoListView Buy;
 	[SerializeField] CargoListView Sell;
 
+	[SerializeField] ButtonView ActionButton;
+
 	public override void Bind(CityViewModel model) {
 		base.Bind(model);
 
@@ -25,5 +27,9 @@ public class CityView : ViewBehaviour<CityViewModel>
 		Crew?.Bind(model.Crew);
 
 		PortName?.Bind(ValueModel.New(model.PortName));
+
+		ActionButton?.Bind(ValueModel.New(new ButtonViewModel {
+			OnClick = () => model.OnClick?.Invoke(Model)
+		}));
 	}
 }

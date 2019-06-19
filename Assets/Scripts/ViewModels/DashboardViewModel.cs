@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class DashboardViewModel : Model
 {
@@ -22,11 +23,19 @@ public class DashboardViewModel : Model
 		FoodInventory = new CargoInventoryViewModel(food);
 
 		CargoList = new ObservableCollection<CargoInventoryViewModel>(Globals.GameVars.playerShipVariables.ship.cargo.Select(c => new CargoInventoryViewModel(c)));
-
-		// can pass in null for the parent model since we aren't hiring/firing. should make an interface or something though
+		
 		CrewList = new ObservableCollection<CrewManagementMemberViewModel>(Globals.GameVars.playerShipVariables.ship.crewRoster
-			.Select(c => new CrewManagementMemberViewModel(c, null))
+			.OrderBy(c => Globals.GameVars.Network.GetCrewMemberNetwork(c).Count())
+			.Select(c => new CrewManagementMemberViewModel(c, OnCrewClicked, OnCrewCityClicked))
 		);
 
+	}
+
+	void OnCrewCityClicked(CityViewModel city) {
+		Debug.Log("City clicked: " + city.PortName);
+	}
+
+	void OnCrewClicked(CrewManagementMemberViewModel crew) {
+		Globals.UI.Show<CrewDetailsScreen, CrewManagementMemberViewModel>(crew);
 	}
 }

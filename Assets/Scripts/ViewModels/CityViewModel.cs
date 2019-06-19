@@ -16,13 +16,17 @@ public class CityViewModel : Model
 
 	public string PortName => City.name;
 
-	public CityViewModel(Settlement city) {
+	private Action<CityViewModel> _OnClick;
+	public Action<CityViewModel> OnClick { get => _OnClick; set { _OnClick = value; Notify(); } }
+
+	public CityViewModel(Settlement city, Action<CityViewModel> onClick) {
 		GameVars = Globals.GameVars;
 		City = city;
+		OnClick = onClick;
 
 		Crew = new ObservableCollection<CrewManagementMemberViewModel>(
 			GameVars.Network.CrewMembersWithNetwork(city)
-				.Select(crew => new CrewManagementMemberViewModel(crew, null))
+				.Select(crew => new CrewManagementMemberViewModel(crew, null, null))
 				.OrderBy(c => GameVars.Network.GetCrewMemberNetwork(c.Member).Count())
 				.Take(5)
 		);

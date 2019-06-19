@@ -19,14 +19,23 @@ public class CrewManagementViewModel : Model
 	public CrewManagementViewModel() {
 		GameVars = Globals.GameVars;
 
-		AvailableCrew = new ObservableCollection<CrewManagementMemberViewModel>(GameVars.GenerateRandomCrewMembers(5).Select(crew => new CrewManagementMemberViewModel(crew, this)));
-		MyCrew = new ObservableCollection<CrewManagementMemberViewModel>(GameVars.playerShipVariables.ship.crewRoster.Select(crew => new CrewManagementMemberViewModel(crew, this)));
+		AvailableCrew = new ObservableCollection<CrewManagementMemberViewModel>(GameVars.GenerateRandomCrewMembers(5).Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null)));
+		MyCrew = new ObservableCollection<CrewManagementMemberViewModel>(GameVars.playerShipVariables.ship.crewRoster.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null)));
 	}
 
 	//=================================================================================================================
 	// SETUP THE CREW MANAGEMENT PANEL
 	//=================================================================================================================	
 	
+	private void OnCrewClicked(CrewManagementMemberViewModel crew) {
+		if (crew.IsInCrew) {
+			GUI_FireCrewMember(crew);
+		}
+		else {
+			GUI_HireCrewMember(crew);
+		}
+	}
+
 	//----------------------------------------------------------------------------
 	//----------------------------CREW PANEL HELPER FUNCTIONS		
 

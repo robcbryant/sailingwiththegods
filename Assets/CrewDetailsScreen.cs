@@ -1,18 +1,23 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrewDetailsScreen : MonoBehaviour
+public class CrewDetailsScreen : ViewBehaviour<CrewManagementMemberViewModel>
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	[SerializeField] CrewManagementMemberView CrewMember;
+	[SerializeField] StringView FlavorText;
+	[SerializeField] ButtonView CloseButton;
+	[SerializeField] CityListView Cities;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public override void Bind(CrewManagementMemberViewModel model) {
+		base.Bind(model);
+
+		CrewMember?.Bind(model);
+		Cities?.Bind(model.CitiesInNetwork);
+		FlavorText?.Bind(ValueModel.New(model.BackgroundInfo));
+
+		CloseButton?.Bind(ValueModel.New(new ButtonViewModel {
+			OnClick = Globals.UI.Hide<CrewDetailsScreen>
+		}));
+	}
 }
