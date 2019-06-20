@@ -43,12 +43,12 @@ public class CrewManagementMemberViewModel : Model
 		Member = member;
 		OnClick = onClick;
 		Portrait = Resources.Load<Sprite>(ResourcePath + "/" + member.ID) ?? Resources.Load<Sprite>(DefaultPortrait);
-
-		// can't build this if we're creating this model for a CityViewModel to own, infinite recursion. should subclass the model instead, but this hack works for now.
+		
+		// don't bother building the network list if we're being created for a view that doesn't need it
 		if(onClickCity != null) {
 			CitiesInNetwork = new ObservableCollection<CityViewModel>(
 				Globals.GameVars.Network.GetCrewMemberNetwork(Member)
-					.Select(s => new CityViewModel(s, onClickCity, false))
+					.Select(s => new CityViewModel(s, onClickCity))
 			);
 		}
 	}

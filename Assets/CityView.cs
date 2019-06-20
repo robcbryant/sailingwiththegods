@@ -21,9 +21,12 @@ public class CityView : ViewBehaviour<CityViewModel>
 	public override void Bind(CityViewModel model) {
 		base.Bind(model);
 
-		Buy?.Bind(model.Buy);
-		Sell?.Bind(model.Sell);
-		Crew?.Bind(model.Crew);
+		if(model is CityDetailsViewModel) {
+			var details = model as CityDetailsViewModel;
+			Buy?.Bind(details.Buy);
+			Sell?.Bind(details.Sell);
+			Crew?.Bind(details.Crew);
+		}
 
 		PortName?.Bind(ValueModel.New(model.PortName));
 

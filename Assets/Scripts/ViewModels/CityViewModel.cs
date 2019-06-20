@@ -5,19 +5,11 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 
-public class CityViewModel : Model
+public class CityDetailsViewModel : CityViewModel
 {
-	private GameVars GameVars;
-	private Settlement City;
-
 	public readonly ObservableCollection<CrewManagementMemberViewModel> Crew;
 	public readonly ObservableCollection<CargoInventoryViewModel> Buy;
 	public readonly ObservableCollection<CargoInventoryViewModel> Sell;
-
-	public string PortName => City.name;
-
-	private Action<CityViewModel> _OnClick;
-	public Action<CityViewModel> OnClick { get => _OnClick; set { _OnClick = value; Notify(); } }
 
 	class PriceInfo
 	{
@@ -34,19 +26,14 @@ public class CityViewModel : Model
 				})
 				.ToArray();
 
-	public CityViewModel(Settlement city, Action<CityViewModel> onClick, bool includeCrew) {
-		GameVars = Globals.GameVars;
-		City = city;
-		OnClick = onClick;
+	public CityDetailsViewModel(Settlement city, Action<CityViewModel> onClick) : base(city, onClick) {
 
-		if(includeCrew) {
-			Crew = new ObservableCollection<CrewManagementMemberViewModel>(
-				GameVars.Network.CrewMembersWithNetwork(city)
-					.OrderBy(c => GameVars.Network.GetCrewMemberNetwork(c).Count())
-					.Take(5)
-					.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null))
-			);
-		}
+		Crew = new ObservableCollection<CrewManagementMemberViewModel>(
+			GameVars.Network.CrewMembersWithNetwork(city)
+				.OrderBy(c => GameVars.Network.GetCrewMemberNetwork(c).Count())
+				.Take(5)
+				.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null))
+		);
 
 		Buy = new ObservableCollection<CargoInventoryViewModel>(
 			PriceInfos
@@ -61,6 +48,7 @@ public class CityViewModel : Model
 				.Take(5)
 				.Select(o => new CargoInventoryViewModel(o.Resource))
 		);
+
 	}
 
 	void OnCrewClicked(CrewManagementMemberViewModel crew) {
@@ -69,5 +57,22 @@ public class CityViewModel : Model
 		Globals.UI.Hide<CrewDetailsScreen>();
 		Globals.UI.Show<CrewDetailsScreen, CrewManagementMemberViewModel>(crew);
 
+	}
+}
+
+public class CityViewModel : Model
+{
+	protected GameVars GameVars;
+	protected Settlement City;
+
+	public string PortName => City.name;
+
+	private Action<CityViewModel> _OnClick;
+	public Action<CityViewModel> OnClick { get => _OnClick; set { _OnClick = value; Notify(); } }
+
+	public CityViewModel(Settlement city, Action<CityViewModel> onClick) {
+		GameVars = Globals.GameVars;
+		City = city;
+		OnClick = onClick;
 	}
 }
