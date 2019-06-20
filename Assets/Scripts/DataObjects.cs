@@ -116,13 +116,13 @@ public class CrewMember
 	public CrewType typeOfCrew;
 
 	SkillModifiers _changeOnHire;
-	public SkillModifiers changeOnHire { get { if(_changeOnHire == null) InitModifiers(); return _changeOnHire; } }
+	public SkillModifiers changeOnHire { get { if(_changeOnHire == null) InitChangeOnHire(); return _changeOnHire; } }
 
 	SkillModifiers _changeOnFire;
-	public SkillModifiers changeOnFire { get { if (_changeOnFire == null) InitModifiers(); return _changeOnFire; } }
+	public SkillModifiers changeOnFire { get { if (_changeOnFire == null) InitChangeOnFire(); return _changeOnFire; } }
 
 	SkillModifiers _currentContribution;
-	public SkillModifiers currentContribution { get { if (_currentContribution == null) InitModifiers(); return _currentContribution; } }
+	public SkillModifiers currentContribution { get { if (_currentContribution == null) InitCurrentContribution(); return _currentContribution; } }
 
 	//0= sailor  1= warrior  2= slave  3= passenger 4= navigator 5= auger
 	//A sailor is the base class--no benefits/detriments
@@ -148,7 +148,7 @@ public class CrewMember
 		_currentContribution = new SkillModifiers();
 	}
 
-	void InitModifiers() {
+	void InitChangeOnHire() {
 		var gameVars = Globals.GameVars;
 
 		_changeOnHire = new SkillModifiers {
@@ -157,17 +157,26 @@ public class CrewMember
 			Navigation = typeOfCrew == CrewType.Sailor ? 1 : 0,
 			PositiveEvent = typeOfCrew == CrewType.Guide ? 10 : 0
 		};
+	}
 
+	void InitChangeOnFire() {
+		var gameVars = Globals.GameVars;
+
+		// the cities in network calculation is too expensive right now. disabled temporarily
 		_changeOnFire = new SkillModifiers {
-			CitiesInNetwork = -gameVars.Network.MyCompleteNetwork.Count(s => !gameVars.Network.CrewMembersWithNetwork(s).Any(crew => crew != this) && !gameVars.Network.MyImmediateNetwork.Contains(s)),
+			CitiesInNetwork = -gameVars.Network.GetCrewMemberNetwork(this).Count(s => !gameVars.Network.CrewMembersWithNetwork(s).Any(crew => crew != this) && !gameVars.Network.MyImmediateNetwork.Contains(s)),
 			BattlePercentChance = typeOfCrew == CrewType.Warrior ? -5 : 0,
 			Navigation = typeOfCrew == CrewType.Sailor ? -1 : 0,
 			PositiveEvent = typeOfCrew == CrewType.Guide ? -10 : 0
 		};
+	}
+
+	void InitCurrentContribution() {
+		var gameVars = Globals.GameVars;
 
 		// very similar to changeOnFire, but shows it as positives. this is their contribution to your team, not what you'll lose if you fire them (but it's basically the same).
 		_currentContribution = new SkillModifiers {
-			CitiesInNetwork = gameVars.Network.MyCompleteNetwork.Count(s => !gameVars.Network.CrewMembersWithNetwork(s).Any(crew => crew != this) && !gameVars.Network.MyImmediateNetwork.Contains(s)),
+			CitiesInNetwork = gameVars.Network.GetCrewMemberNetwork(this).Count(s => !gameVars.Network.CrewMembersWithNetwork(s).Any(crew => crew != this) && !gameVars.Network.MyImmediateNetwork.Contains(s)),
 			BattlePercentChance = typeOfCrew == CrewType.Warrior ? 5 : 0,
 			Navigation = typeOfCrew == CrewType.Sailor ? 1 : 0,
 			PositiveEvent = typeOfCrew == CrewType.Guide ? 10 : 0
