@@ -15,7 +15,7 @@ public class PortViewModel : Model
 	public readonly CrewManagementViewModel CrewManagement;
 
 	public PortViewModel() {
-		CrewManagement = new CrewManagementViewModel();
+		CrewManagement = new CrewManagementViewModel(Settlement);
 	}
 
 	public void GoToTown() {

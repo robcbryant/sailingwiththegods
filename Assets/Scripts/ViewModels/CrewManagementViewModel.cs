@@ -16,11 +16,19 @@ public class CrewManagementViewModel : Model
 	public string Capacity => GameVars.playerShipVariables.ship.crewRoster.Count + " / " + GameVars.playerShipVariables.ship.crewCapacity + " crew";
 	public string Money => GameVars.playerShipVariables.ship.currency + " dr";
 
-	public CrewManagementViewModel() {
+	public CrewManagementViewModel(Settlement settlement) {
 		GameVars = Globals.GameVars;
 
-		AvailableCrew = new ObservableCollection<CrewManagementMemberViewModel>(GameVars.GenerateRandomCrewMembers(5).Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null)));
-		MyCrew = new ObservableCollection<CrewManagementMemberViewModel>(GameVars.playerShipVariables.ship.crewRoster.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null)));
+		AvailableCrew = new ObservableCollection<CrewManagementMemberViewModel>(
+			settlement.availableCrew
+			.Where(crew => !GameVars.playerShipVariables.ship.crewRoster.Contains(crew))
+			.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null))
+		);
+
+		MyCrew = new ObservableCollection<CrewManagementMemberViewModel>(
+			GameVars.playerShipVariables.ship.crewRoster
+			.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null))
+		);
 	}
 
 	//=================================================================================================================

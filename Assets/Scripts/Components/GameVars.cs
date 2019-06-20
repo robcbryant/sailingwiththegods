@@ -230,7 +230,7 @@ public class GameVars : MonoBehaviour
 		masterCrewList = CSVLoader.LoadMasterCrewRoster();
 		captainsLogEntries = CSVLoader.LoadCaptainsLogEntries();
 		masterResourceList = CSVLoader.LoadResourceList();
-		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list
+		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list and crew list
 
 		CreateSettlementsFromList();
 		currentSettlementGameObject = settlement_masterList_parent.transform.GetChild(0).gameObject;
@@ -917,6 +917,11 @@ public class GameVars : MonoBehaviour
 		//Setup Difficulty Level
 		SetupBeginnerGameDifficulty();
 
+		// setup each city with 5 crew available and for now, they never regenerate.
+		foreach(var settlement in settlement_masterList) {
+			settlement.availableCrew = GenerateRandomCrewMembers(5);
+		}
+
 		Debug.Log(playerShipVariables.ship.mainQuest.currentQuestSegment);
 
 		//Flag the main GUI scripts to turn on
@@ -989,12 +994,8 @@ public class GameVars : MonoBehaviour
 			CrewMember thisMember = masterCrewList[UnityEngine.Random.Range(0, masterCrewList.Count)];
 			if (!thisMember.isPartOfMainQuest) {
 				//Now make sure this crewmember isn't already in the current crew
-				foreach (CrewMember boatCrewMan in playerShipVariables.ship.crewRoster) {
-					//If we don't have a match, add the crewman to the list and break from the loop
-					if (thisMember.ID != boatCrewMan.ID) {
-						availableCrew.Add(thisMember);
-						break;
-					}
+				if(!playerShipVariables.ship.crewRoster.Contains(thisMember)) {
+					availableCrew.Add(thisMember);
 				}
 			}
 			//Break from the main loop if we've tried enough crewman

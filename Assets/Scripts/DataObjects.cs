@@ -492,6 +492,7 @@ public class Settlement
 	public int typeOfSettlement;
 	public string description;
 	public List<int> networks;
+	public List<CrewMember> availableCrew;
 	public string prefabName;
 
 	public Resource GetCargoByName(string name) => cargo.FirstOrDefault(c => c.name == name);
@@ -520,6 +521,7 @@ public class Settlement
 			new Resource ("Prestige Goods", 0f),
 		};
 		networks = new List<int>();
+		availableCrew = new List<CrewMember>();
 	}
 
 	//This is a debug class to make a blank settlement for testing
@@ -532,6 +534,7 @@ public class Settlement
 		this.tax_neutral = 0;
 		this.description = "FAKE SETTLEMENT--LOOK INTO THIS ERROR";
 		this.networks = new List<int>();
+		this.availableCrew = new List<CrewMember>();
 
 	}
 
