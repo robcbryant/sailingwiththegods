@@ -46,7 +46,10 @@ public class CrewManagementMemberViewModel : Model
 
 		// can't build this if we're creating this model for a CityViewModel to own, infinite recursion. should subclass the model instead, but this hack works for now.
 		if(onClickCity != null) {
-			CitiesInNetwork = new ObservableCollection<CityViewModel>(Globals.GameVars.Network.GetCrewMemberNetwork(Member).Select(s => new CityViewModel(s, onClickCity)));
+			CitiesInNetwork = new ObservableCollection<CityViewModel>(
+				Globals.GameVars.Network.GetCrewMemberNetwork(Member)
+					.Select(s => new CityViewModel(s, onClickCity, false))
+			);
 		}
 	}
 }

@@ -42,7 +42,7 @@ public class script_settlement_functions : MonoBehaviour, IPointerEnterHandler, 
 
 	void TryShowTooltip() {
 		if (!Globals.UI.IsShown<CityView>()) {
-			var ui = Globals.UI.Show<CityView, CityViewModel>(new CityViewModel(thisSettlement, null));
+			var ui = Globals.UI.Show<CityView, CityViewModel>(new CityViewModel(thisSettlement, null, true));
 			ui.transform.position = Globals.UI.WorldToUI(GameVars.FPVCamera.GetComponent<Camera>(), transform.position);
 		}
 	}

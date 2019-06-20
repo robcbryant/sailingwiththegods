@@ -43,8 +43,12 @@ public abstract class ViewBehaviour<TModel> : ViewBehaviour where TModel : INoti
 	public TModel Model { get; private set; }
 	virtual public void Bind(TModel model) {
 		Model = model;
-
-		if (model == null) Debug.LogError("Tried to bind a view to a null model.");
+		
+		if (model == null)
+		{
+			Debug.LogWarning("Tried to bind view to a null model on " + name);
+			return;
+		}
 
 		Unsubscribe(ModelSubscription);
 		ModelSubscription = Subscribe(() => model.PropertyChanged += OnPropertyChanged, () => model.PropertyChanged -= OnPropertyChanged);

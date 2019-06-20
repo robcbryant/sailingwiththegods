@@ -19,37 +19,47 @@ public class CityViewModel : Model
 	private Action<CityViewModel> _OnClick;
 	public Action<CityViewModel> OnClick { get => _OnClick; set { _OnClick = value; Notify(); } }
 
-	public CityViewModel(Settlement city, Action<CityViewModel> onClick) {
+	class PriceInfo
+	{
+		public Resource Resource;
+		public int Price;
+		public int AvgPrice;
+	}
+
+	IEnumerable<PriceInfo> PriceInfos => City.cargo
+				.Select(resource => new PriceInfo {
+					Resource = resource,
+					Price = GameVars.Trade.GetPriceOfResource(resource.name, City),
+					AvgPrice = GameVars.Trade.GetAvgPriceOfResource(resource.name)
+				})
+				.ToArray();
+
+	public CityViewModel(Settlement city, Action<CityViewModel> onClick, bool includeCrew) {
 		GameVars = Globals.GameVars;
 		City = city;
 		OnClick = onClick;
 
-		Crew = new ObservableCollection<CrewManagementMemberViewModel>(
-			GameVars.Network.CrewMembersWithNetwork(city)
-				.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null))
-				.OrderBy(c => GameVars.Network.GetCrewMemberNetwork(c.Member).Count())
-				.Take(5)
-		);
-
-		var priceInfo = City.cargo
-				.Select(resource => new {
-					Resource = resource,
-					Price = GameVars.Trade.GetPriceOfResource(resource.name, City),
-					AvgPrice = GameVars.Trade.GetAvgPriceOfResource(resource.name)
-				});
+		if(includeCrew) {
+			Crew = new ObservableCollection<CrewManagementMemberViewModel>(
+				GameVars.Network.CrewMembersWithNetwork(city)
+					.OrderBy(c => GameVars.Network.GetCrewMemberNetwork(c).Count())
+					.Take(5)
+					.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null))
+			);
+		}
 
 		Buy = new ObservableCollection<CargoInventoryViewModel>(
-			priceInfo
+			PriceInfos
 				.OrderBy(o => o.Price - o.AvgPrice)
-				.Select(o => new CargoInventoryViewModel(o.Resource))
 				.Take(5)
+				.Select(o => new CargoInventoryViewModel(o.Resource))
 		);
 
 		Sell = new ObservableCollection<CargoInventoryViewModel>(
-			priceInfo
+			PriceInfos
 				.OrderByDescending(o => o.Price - o.AvgPrice)
-				.Select(o => new CargoInventoryViewModel(o.Resource))
 				.Take(5)
+				.Select(o => new CargoInventoryViewModel(o.Resource))
 		);
 	}
 

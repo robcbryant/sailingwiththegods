@@ -47,6 +47,12 @@ public class ButtonView : ViewBehaviour<IValueModel<ButtonViewModel>>
 	public override void Bind(IValueModel<ButtonViewModel> model) {
 		base.Bind(model);
 
+		if (model == null) 
+		{
+			Debug.LogWarning("Tried to bind view to a null model on " + name);
+			return;
+		}
+
 		Label?.Bind(new BoundModel<string>(Model.Value, nameof(Model.Value.Label)));
 	}
 

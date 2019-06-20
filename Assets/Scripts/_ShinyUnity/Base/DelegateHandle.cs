@@ -31,6 +31,8 @@ public class DelegateHandle : IDisposable
 	Action Subscribe;
 	Action Unsubscribe;
 
+	bool IsSubscribed;
+
 	public DelegateHandle(Action subscribe, Action unsubscribe) 
 	{
 		Subscribe = subscribe;
@@ -41,12 +43,17 @@ public class DelegateHandle : IDisposable
 
 	public void Enable() 
 	{
-		Subscribe?.Invoke();
+		if(!IsSubscribed) 
+		{
+			Subscribe?.Invoke();
+			IsSubscribed = true;
+		}
 	}
 
 	public void Disable() 
 	{
 		Unsubscribe?.Invoke();
+		IsSubscribed = false;
 	}
 
 	public void Dispose() 

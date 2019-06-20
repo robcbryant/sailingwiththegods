@@ -30,12 +30,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-// i click a delete button on a cell
-// the cell model should have an ondelete callback
-// the ondelete is set in the container, which decides what to do
-// so the cell models need to be custom, use case specific. shouldn't just be generic
-// so i really should make custom list subclasses i think
-
 public abstract class ListView<TModel, TCellModel> : ViewBehaviour<TModel> 
 	where TModel : INotifyCollectionChanged, INotifyPropertyChanged, ICollection<TCellModel>
 	where TCellModel : INotifyPropertyChanged
@@ -45,12 +39,77 @@ public abstract class ListView<TModel, TCellModel> : ViewBehaviour<TModel>
 
 	DelegateHandle CollectionModelSubscription;
 
+	Queue<ViewBehaviour<TCellModel>> Pool = new Queue<ViewBehaviour<TCellModel>>();
+	List<ViewBehaviour<TCellModel>> Used = new List<ViewBehaviour<TCellModel>>();
+
+	private void PoolExistingObjects() {
+
+		// only once at first scene load, add any zombie children to pool that aren't in the pool arleady. these were the initial ones in the scene at start
+		if (!Pool.Any() && !Used.Any() && CellParent.childCount > 0) {
+			var toDisable = new List<ViewBehaviour<TCellModel>>();
+			for (var i = 0; i < CellParent.childCount; i++) {
+				var child = CellParent.GetChild(i).GetComponent<ViewBehaviour<TCellModel>>();
+				if (!Pool.Contains(child)) {
+					toDisable.Add(child);
+					Pool.Enqueue(child);
+				}
+			}
+
+			foreach (var child in toDisable) {
+				child.gameObject.SetActive(false);
+			}
+		}
+
+	}
+
 	void Clear()
 	{
-		for (var i = 0; i < CellParent.childCount; i++)
-		{
-			GameObject.Destroy(CellParent.GetChild(i).gameObject);
+		PoolExistingObjects();
+
+		foreach (var item in Used) {
+			Pool.Enqueue(item);
+			item.gameObject.SetActive(false);
 		}
+		Used.Clear();
+
+	}
+
+	void Insert(TCellModel cellModel, int idx) {
+		ViewBehaviour<TCellModel> cell;
+		if (!Pool.Any()) {
+			cell = AllocateNewItem(cellModel);
+		}
+		else {
+			cell = Pool.Dequeue();
+		}
+
+		cell.Bind(cellModel);
+		cell.gameObject.SetActive(true);
+		cell.transform.SetSiblingIndex(idx);
+
+		if (idx >= Used.Count) {
+			Used.Add(cell);
+		}
+		else {
+			Used.Insert(idx, cell);
+		}
+	}
+
+	TCellModel Remove(int index) {
+		var cell = Used[index];
+		cell.gameObject.SetActive(false);
+
+		Used.RemoveAt(index);
+		Pool.Enqueue(cell);
+
+		return cell.Model;
+	}
+
+	ViewBehaviour<TCellModel> AllocateNewItem(TCellModel cellModel) {
+		var cell = GameObject.Instantiate(CellPrefab).GetComponent<ViewBehaviour<TCellModel>>();
+		cell.transform.SetParent(CellParent);
+		cell.gameObject.SetActive(false);
+		return cell;
 	}
 
 	void Repopulate()
@@ -58,9 +117,7 @@ public abstract class ListView<TModel, TCellModel> : ViewBehaviour<TModel>
 		Clear();
 		foreach (var cellModel in Model)
 		{
-			var cell = GameObject.Instantiate(CellPrefab).GetComponent<ViewBehaviour<TCellModel>>();
-			cell.Bind(cellModel);
-			cell.transform.SetParent(CellParent);
+			Insert(cellModel, Used.Count);
 		}
 	}
 
@@ -68,10 +125,16 @@ public abstract class ListView<TModel, TCellModel> : ViewBehaviour<TModel>
 	{
 		base.Bind(model);
 
+		if(model == null) 
+		{
+			Debug.LogWarning("Tried to bind view to a null model on " + name);
+			return;
+		}
+
 		Unsubscribe(CollectionModelSubscription);
 		CollectionModelSubscription = Subscribe(() => model.CollectionChanged += OnCollectionChanged, () => model.CollectionChanged -= OnCollectionChanged);
 
-		RefreshCollection(null, null);
+		Repopulate();
 	}
 
 	void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -79,18 +142,38 @@ public abstract class ListView<TModel, TCellModel> : ViewBehaviour<TModel>
 		RefreshCollection(sender, e);
 	}
 
-	protected void RefreshCollection() => Refresh(null, null);
-	protected void RefreshCollection(object sender) => Refresh(sender, null);
+	protected void RefreshCollection() => Repopulate();
+	protected void RefreshCollection(object sender) => Repopulate();
 	protected void RefreshCollection(object sender, NotifyCollectionChangedEventArgs e)
 	{
-		// TODO: We have tons of granularity that we can use to improve performance. But for now, just clear and rebuild.
-		Repopulate();
+		// observablecollection never has more than one item in each of its event args
+		switch(e.Action) {
+			case NotifyCollectionChangedAction.Add:
+				Insert((TCellModel)e.NewItems[0], e.NewStartingIndex);
+				break;
+			case NotifyCollectionChangedAction.Move:
+				var moving = Remove(e.OldStartingIndex);
+				Insert(moving, e.NewStartingIndex);
+				break;
+			case NotifyCollectionChangedAction.Remove:
+				Remove(e.OldStartingIndex);
+				break;
+			case NotifyCollectionChangedAction.Replace:
+				Used[e.NewStartingIndex].Bind((TCellModel)e.NewItems[0]);
+				break;
+			case NotifyCollectionChangedAction.Reset:
+				Repopulate();
+				break;
+			default:
+				Debug.LogError("Unsupported collection change in ListView.");
+				break;
+		}
 	}
 
 	protected override void Refresh(object sender, string propertyChanged)
 	{
 		base.Refresh(sender, propertyChanged);
 
-		Repopulate();
+		// deliberately do nothing here. don't react to property changes on the list (such as count changing). we want to handle it efficiently in RefreshCollection
 	}
 }
