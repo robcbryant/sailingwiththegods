@@ -1096,10 +1096,7 @@ public class script_GUI : MonoBehaviour
 			for (int x = 0; x < GameVars.settlement_masterList_parent.transform.childCount; x++)
 				if (GameVars.settlement_masterList_parent.transform.GetChild(x).GetComponent<script_settlement_functions>().thisSettlement.settlementID == thisSettlement.settlementID)
 					location = GameVars.settlement_masterList_parent.transform.GetChild(x).position;
-			GameVars.navigatorBeacon.transform.position = location;
-			GameVars.navigatorBeacon.GetComponent<LineRenderer>().SetPosition(0, new Vector3(location.x, 0, location.z));
-			GameVars.navigatorBeacon.GetComponent<LineRenderer>().SetPosition(1, location + new Vector3(0, 400, 0));
-			GameVars.playerShipVariables.UpdateNavigatorBeaconAppearenceBasedOnDistance();
+			GameVars.MoveNavigatorBeacon(GameVars.navigatorBeacon, location);
 			GameVars.playerShipVariables.ship.currentNavigatorTarget = thisSettlement.settlementID;
 			GameVars.ShowANotificationMessage("You hired a navigator to " + thisSettlement.name + " for " + costToHire + " drachma.");
 			//If not enough money, then let the player know

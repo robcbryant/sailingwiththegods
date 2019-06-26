@@ -41,6 +41,7 @@ using System.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 
 
 //======================================================================================================================================================================
@@ -99,11 +100,14 @@ public class GameVars : MonoBehaviour
 	public Material mat_waterCurrents;
 	public Material mat_water;
 
+	[Header("Beacons")]
+	public GameObject navigatorBeacon;
+	public GameObject crewBeacon;
+
 	// TODO: unorganized variables
 	[HideInInspector] public GameObject mainCamera;
 	[HideInInspector] public GameObject playerTrajectory;
 	[HideInInspector] public GameObject playerGhostRoute;
-	[HideInInspector] public GameObject navigatorBeacon;
 	[HideInInspector] public WindRose[,] windrose_January = new WindRose[10, 8];
 	[HideInInspector] public GameObject windZoneParent;
 	[HideInInspector] public GameObject waterSurface;
@@ -218,7 +222,6 @@ public class GameVars : MonoBehaviour
 		waterSurface = GameObject.FindGameObjectWithTag("waterSurface");
 		playerGhostRoute = GameObject.FindGameObjectWithTag("playerGhostRoute");
 		playerTrajectory = GameObject.FindGameObjectWithTag("playerTrajectory");
-		navigatorBeacon = GameObject.FindGameObjectWithTag("navigatorBeacon");
 		mainLightSource = GameObject.FindGameObjectWithTag("main_light_source").GetComponent<Light>();
 
 		playerShipVariables = playerShip.GetComponent<script_player_controls>();
@@ -390,10 +393,7 @@ public class GameVars : MonoBehaviour
 			for (int x = 0; x < settlement_masterList_parent.transform.childCount; x++)
 				if (settlement_masterList_parent.transform.GetChild(x).GetComponent<script_settlement_functions>().thisSettlement.settlementID == targetID)
 					location = settlement_masterList_parent.transform.GetChild(x).position;
-			navigatorBeacon.transform.position = location;
-			navigatorBeacon.GetComponent<LineRenderer>().SetPosition(0, new Vector3(location.x, 0, location.z));
-			navigatorBeacon.GetComponent<LineRenderer>().SetPosition(1, location + new Vector3(0, 400, 0));
-			playerShipVariables.UpdateNavigatorBeaconAppearenceBasedOnDistance();
+			MoveNavigatorBeacon(navigatorBeacon, location);
 		}
 		else {
 			ship.currentNavigatorTarget = -1;
@@ -417,7 +417,45 @@ public class GameVars : MonoBehaviour
 		return true;
 	}
 
+	public void MoveNavigatorBeacon(GameObject beacon, Vector3 location) {
+		beacon.transform.position = location;
+		beacon.GetComponent<LineRenderer>().SetPosition(0, new Vector3(location.x, 0, location.z));
+		beacon.GetComponent<LineRenderer>().SetPosition(1, location + new Vector3(0, 400, 0));
+		playerShipVariables.UpdateNavigatorBeaconAppearenceBasedOnDistance(beacon);
+	}
 
+	public void RotateCameraTowards(Vector3 target) {
+
+		// rotate the camera's parent to look at the target (which eliminates the need for RotateAround below)
+		// also rotate the 
+		//FPVCamera.transform.parent.parent.parent.DOLookAt(target, 1f);
+
+		CameraLookTarget = target;
+
+	}
+
+	public Vector3? CameraLookTarget;
+
+	void UpdateCameraRotation() {
+
+		if(CameraLookTarget.HasValue) {
+
+			var camToTarget = CameraLookTarget.Value - FPVCamera.transform.parent.parent.transform.position;
+			var angle = Vector3.SignedAngle(FPVCamera.transform.parent.parent.forward, camToTarget.normalized, Vector3.up);
+
+			FPVCamera.transform.parent.parent.RotateAround(FPVCamera.transform.parent.parent.position, FPVCamera.transform.parent.parent.up, angle * Time.deltaTime);
+
+			if(Mathf.Abs(angle) < 2f) {
+				CameraLookTarget = null;
+			}
+
+		}
+
+	}
+
+	private void Update() {
+		UpdateCameraRotation();
+	}
 
 	//====================================================================================================
 	//      GAMEOBJECT BUILDING TO POPULATE WORLD FUNCTIONS

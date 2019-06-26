@@ -63,7 +63,7 @@ public class CityDetailsViewModel : CityViewModel
 public class CityViewModel : Model
 {
 	protected GameVars GameVars;
-	protected Settlement City;
+	public Settlement City { get; private set; }
 
 	public string PortName => City.name;
 

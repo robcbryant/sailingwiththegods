@@ -17,7 +17,16 @@ public class CrewDetailsScreen : ViewBehaviour<CrewManagementMemberViewModel>
 		FlavorText?.Bind(ValueModel.New(model.BackgroundInfo));
 
 		CloseButton?.Bind(ValueModel.New(new ButtonViewModel {
-			OnClick = Globals.UI.Hide<CrewDetailsScreen>
+			OnClick = () => {
+
+				// the city tooltip might be up from clicking a city in a crew member's network
+				if (Globals.UI.IsShown<CityView>()) {
+					Globals.UI.Hide<CityView>();
+				}
+
+				Globals.UI.Hide<CrewDetailsScreen>();
+
+			}
 		}));
 	}
 }

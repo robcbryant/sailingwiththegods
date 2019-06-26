@@ -33,9 +33,22 @@ public class DashboardViewModel : Model
 
 	void OnCrewCityClicked(CityViewModel city) {
 		Debug.Log("City clicked: " + city.PortName);
+
+		if(Globals.UI.IsShown<CityView>()) {
+			Globals.UI.Hide<CityView>();
+		}
+
+		Globals.GameVars.MoveNavigatorBeacon(Globals.GameVars.crewBeacon, city.City.theGameObject.transform.position);
+		Globals.GameVars.RotateCameraTowards(city.City.theGameObject.transform.position);
+		Globals.UI.Show<CityView, CityViewModel>(new CityDetailsViewModel(city.City, null));
 	}
 
 	void OnCrewClicked(CrewManagementMemberViewModel crew) {
+
+		if (Globals.UI.IsShown<CityView>()) {
+			Globals.UI.Hide<CityView>();
+		}
+
 		Globals.UI.Show<CrewDetailsScreen, CrewManagementMemberViewModel>(crew);
 	}
 }

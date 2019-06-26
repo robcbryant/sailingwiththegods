@@ -362,10 +362,12 @@ public class script_player_controls : MonoBehaviour
 		}
 	}
 
-
 	public void CheckCameraRotationControls() {
 		float horizontal = Input.GetAxis("Horizontal");
 		float vertical = Input.GetAxis("Vertical");
+
+		// don't allow manual rotation when auto-rotating
+		if (GameVars.CameraLookTarget.HasValue) return;
 
 		if (horizontal < 0) {
 			//Rotate right
@@ -493,7 +495,10 @@ public class script_player_controls : MonoBehaviour
 			CheckIfProvisionsOrWaterIsDepleted(numOfDaysTraveledInSegment);
 			RandomEvents.WillARandomEventHappen(GameVars, ship, shipSpeedModifiers, transform);
 			UpdateDayNightCycle(GameVars.IS_NOT_NEW_GAME);
-			UpdateNavigatorBeaconAppearenceBasedOnDistance();
+
+			// update beacons
+			UpdateNavigatorBeaconAppearenceBasedOnDistance(GameVars.navigatorBeacon);
+			UpdateNavigatorBeaconAppearenceBasedOnDistance(GameVars.crewBeacon);
 
 			//if the ship hasn't gotten to the direction, then keep moving
 			if (distance > .2f && !notEnoughSpeedToMove && !rayCheck_stopShip) {
@@ -1174,10 +1179,10 @@ public class script_player_controls : MonoBehaviour
 
 	}
 
-	public void UpdateNavigatorBeaconAppearenceBasedOnDistance() {
+	public void UpdateNavigatorBeaconAppearenceBasedOnDistance(GameObject beacon) {
 		//Get position of player and beacon
 		Vector3 playerPos = transform.position;
-		Vector3 beaconPos = GameVars.navigatorBeacon.transform.position;
+		Vector3 beaconPos = beacon.transform.position;
 		//Get Distance
 		float distance = Vector3.Distance(playerPos, beaconPos);
 
@@ -1186,15 +1191,15 @@ public class script_player_controls : MonoBehaviour
 
 		//Update size
 		float calculatedWidth = Utils.GetRange(distance, 0, 100f, .1f, 5f);
-		GameVars.navigatorBeacon.GetComponent<LineRenderer>().startWidth = calculatedWidth;
-		GameVars.navigatorBeacon.GetComponent<LineRenderer>().endWidth = calculatedWidth;
+		beacon.GetComponent<LineRenderer>().startWidth = calculatedWidth;
+		beacon.GetComponent<LineRenderer>().endWidth = calculatedWidth;
 
 		Color colorEnd = new Color(6f / 255f, 167f / 255f, 1f, 0);
 
 		//Update transparency
 		float alpha = Utils.GetRange(distance, 0, 100f, 0, 1f);
-		GameVars.navigatorBeacon.GetComponent<LineRenderer>().startColor = new Color(88f / 255f, 1f, 211 / 255f, alpha);
-		GameVars.navigatorBeacon.GetComponent<LineRenderer>().endColor = colorEnd;
+		beacon.GetComponent<LineRenderer>().startColor = new Color(88f / 255f, 1f, 211 / 255f, alpha);
+		beacon.GetComponent<LineRenderer>().endColor = colorEnd;
 	}
 
 
