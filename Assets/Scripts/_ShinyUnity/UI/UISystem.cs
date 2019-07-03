@@ -66,6 +66,12 @@ public abstract class UISystem : MonoBehaviour
 		view?.gameObject.SetActive(false);
 	}
 
+	public void HideAll() {
+		foreach(var view in _Views) {
+			Hide(view.Value);
+		}
+	}
+
 	#endregion
 
 	#region View registry system

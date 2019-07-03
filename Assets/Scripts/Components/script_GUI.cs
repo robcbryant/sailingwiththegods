@@ -110,7 +110,6 @@ public class script_GUI : MonoBehaviour
 
 	public GameObject hud_button_dock;
 	public GameObject hud_button_furlSails;
-	public GameObject hud_button_helpwindow;
 
 	//-----------------------------------------------------------
 	// Port Menu TAB Content Panel Variables
@@ -1229,36 +1228,6 @@ public class script_GUI : MonoBehaviour
 		//Run a script on the player controls that fast forwards time by a quarter day
 		GameVars.controlsLocked = true;
 		GameVars.playerShipVariables.PassTime(.25f, false);
-	}
-
-	//-----------------------------------------------------
-	//THIS IS THE SAVE DATA BUTTON
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
-	public void GUI_saveGame() {
-		GameVars.notificationMessage = "Saved Data File 'player_save_game.txt' To: " + Application.persistentDataPath + "/";
-		GameVars.showNotification = true;
-		GameVars.SaveUserGameData(false);
-	}
-
-	//-----------------------------------------------------
-	//THIS IS THE RESTART GAME BUTTON	
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
-	public void GUI_restartGame() {
-		GameVars.RestartGame();
-	}
-
-	//-----------------------------------------------------
-	//THIS IS THE HELP BUTTON	
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
-	public void GUI_showHelpMenu() {
-		hud_button_helpwindow.SetActive(true);
-	}
-
-	//-----------------------------------------------------
-	//THIS IS THE CLOSE HELP BUTTON	
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
-	public void GUI_closeHelpMenu() {
-		hud_button_helpwindow.SetActive(false);
 	}
 
 }

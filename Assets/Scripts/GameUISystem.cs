@@ -13,6 +13,7 @@ public class GameUISystem : UISystem
 	[SerializeField] TownScreen TownScreen = null;
 	[SerializeField] CityView CityView = null;
 	[SerializeField] CrewDetailsScreen CrewDetails = null;
+	[SerializeField] MainMenuScreen MainMenu = null;
 
 	void AddViews() {
 		Add(Dashboard);
@@ -21,6 +22,7 @@ public class GameUISystem : UISystem
 		Add(TownScreen);
 		Add(CityView);
 		Add(CrewDetails);
+		Add(MainMenu);
 	}
 
 	void Start() {

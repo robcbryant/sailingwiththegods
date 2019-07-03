@@ -687,6 +687,11 @@ public class GameVars : MonoBehaviour
 		string initialPath = "";
 
 		FileInfo file = new FileInfo(localPath + localFile);
+		if (!file.Exists) {
+			Debug.LogError("No save file created, so could not save game data to server: " + localFile);
+			return;
+		}
+
 		Uri address = new Uri("ftp://" + host + "/" + Path.Combine(initialPath, file.Name));
 		FtpWebRequest request = FtpWebRequest.Create(address) as FtpWebRequest;
 
@@ -869,13 +874,13 @@ public class GameVars : MonoBehaviour
 
 		//Take player back to title screen
 		//Debug.Log ("GOING TO TITLE SCREEN");
-		camera_titleScreen.SetActive(true);
-		bg_titleScreen.SetActive(true);
-		bg_startScreen.SetActive(true);
+		Globals.UI.HideAll();
+		Globals.UI.Show<TitleScreen, GameViewModel>(new GameViewModel());
 		controlsLocked = true;
 		isTitleScreen = true;
 		RenderSettings.fog = false;
 		FPVCamera.SetActive(false);
+		camera_titleScreen.SetActive(true);
 		isTitleScreen = true;
 		runningMainGameGUI = false;
 

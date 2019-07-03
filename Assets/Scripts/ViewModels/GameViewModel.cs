@@ -121,4 +121,18 @@ public class GameViewModel : Model
 		//GUI_SetupStartScreenCrewSelection();
 
 	}
+
+	//-----------------------------------------------------
+	//THIS IS THE SAVE DATA BUTTON
+	public void GUI_saveGame() {
+		GameVars.notificationMessage = "Saved Data File 'player_save_game.txt' To: " + Application.persistentDataPath + "/";
+		GameVars.showNotification = true;
+		GameVars.SaveUserGameData(false);
+	}
+
+	//-----------------------------------------------------
+	//THIS IS THE RESTART GAME BUTTON	
+	public void GUI_restartGame() {
+		GameVars.RestartGame();
+	}
 }

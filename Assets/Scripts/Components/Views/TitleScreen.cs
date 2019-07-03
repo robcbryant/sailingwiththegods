@@ -6,29 +6,18 @@ using UnityEngine.UI;
 public class TitleScreen : ViewBehaviour<GameViewModel>
 {
 	[SerializeField] Button title_newgame_button = null;
-	[SerializeField] Button title_newgame_beginner_button = null;
 	[SerializeField] Button title_loadgame_button = null;
-	[SerializeField] Button title_loadgame_beginner_button = null;
+	[SerializeField] Button title_quitgame_button = null;
 
 	[SerializeField] Button title_credits_button = null;
 	[SerializeField] Button title_credits_exit = null;
 	[SerializeField] Text title_credits_text = null;
 	[SerializeField] GameObject title_credits_screen = null;
 
-	// killing this screen. or at least redoing it
-	/*
-	[SerializeField] GameObject title_crew_select;
-	[SerializeField] GameObject title_crew_select_crew_list;
-	[SerializeField] GameObject title_crew_select_entry_template;
-	[SerializeField] GameObject title_crew_select_crew_count;
-	[SerializeField] GameObject title_crew_select_start_game;
-	*/
-
 	private void Start() {
 		Subscribe(title_newgame_button.onClick, () => Model.GUI_startNewGame(GameViewModel.Difficulty.Normal));
-		Subscribe(title_newgame_beginner_button.onClick, () => Model.GUI_startNewGame(GameViewModel.Difficulty.Beginner));
 		Subscribe(title_loadgame_button.onClick, () => Model.GUI_loadGame(GameViewModel.Difficulty.Normal));
-		Subscribe(title_loadgame_beginner_button.onClick, () => Model.GUI_loadGame(GameViewModel.Difficulty.Beginner));
+		Subscribe(title_quitgame_button.onClick, Application.Quit);
 
 		Subscribe(title_credits_button.onClick, () => GUI_showCredits());
 		Subscribe(title_credits_exit.onClick, () => GUI_hideCredits());

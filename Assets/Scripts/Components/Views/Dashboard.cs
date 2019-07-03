@@ -36,7 +36,7 @@ public class Dashboard : ViewBehaviour<DashboardViewModel>
 		CargoButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Globals.UI.Show(CargoList, Model.CargoList) }));
 		CrewButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Globals.UI.Show(CrewList, Model.CrewList) }));
 
-		MainMenuButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Debug.Log("Main Menu Clicked") }));
+		MainMenuButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Globals.UI.Show<MainMenuScreen, GameViewModel>(new GameViewModel()) }));
 		CloutButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Debug.Log("Clout Clicked") }));
 
 		FoodInventory.Bind(Model.FoodInventory);
