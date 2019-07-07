@@ -124,13 +124,13 @@ public class BoundModel<T> : Model, IDisposable, IValueModel<T>
 		Handle.Dispose();
 	}
 
-	public BoundModel(INotifyPropertyChanged source, string property = null, Func<object, T> adaptor = null) 
+	public BoundModel(INotifyPropertyChanged source, string property, Func<object, T> adaptor = null) 
 	{
 		Adaptor = adaptor;
 		Bind(source, property);
 	}
 
-	public void Bind(INotifyPropertyChanged source, string property = null) {
+	public void Bind(INotifyPropertyChanged source, string property) {
 
 		if (source == null) Debug.LogError("Tried to bind a model to a null source model.");
 
@@ -153,9 +153,11 @@ public interface IValueModel<T> : INotifyPropertyChanged
 public static class ValueModel
 {
 	public static ValueModel<T> New<T>(T value) => new ValueModel<T>(value);
+	public static WrapperModel<T, T> Wrap<T>(IValueModel<T> value) => new WrapperModel<T, T>(value, o => o, o => o);
 
 	// adaptors
-	public static IValueModel<string> AsString<T>(this IValueModel<T> self) => new WrapperModel<T, string>(self, o => o.ToString());
+	public static IValueModel<string> AsString<T>(this IValueModel<T> self) => new WrapperModel<T, string>(self, o => o.ToString(), o => throw new NotImplementedException("AsString is readonly"));
+	public static IValueModel<T> Select<T>(this IValueModel<T> self, Func<T, T> adaptor) => new WrapperModel<T, T>(self, o => adaptor(o), o => throw new NotImplementedException("Select is readonly"));
 }
 
 public class WrapperModel<TIn, TOut> : Model, IValueModel<TOut>
@@ -195,7 +197,7 @@ public class WrapperModel<TIn, TOut> : Model, IValueModel<TOut>
 		Handle.Dispose();
 	}
 
-	public WrapperModel(IValueModel<TIn> source, Func<TIn, TOut> adaptOut = null, Func<TOut, TIn> adaptIn = null)
+	public WrapperModel(IValueModel<TIn> source, Func<TIn, TOut> adaptOut, Func<TOut, TIn> adaptIn)
 	{
 		AdaptOut = adaptOut;
 		AdaptIn = adaptIn;

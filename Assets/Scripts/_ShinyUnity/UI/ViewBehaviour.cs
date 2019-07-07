@@ -53,7 +53,18 @@ public abstract class ViewBehaviour<TModel> : ViewBehaviour where TModel : INoti
 		Unsubscribe(ModelSubscription);
 		ModelSubscription = Subscribe(() => model.PropertyChanged += OnPropertyChanged, () => model.PropertyChanged -= OnPropertyChanged);
 
-		Refresh();
+		// wait for the first time we activate if we're disabled on bind. we might be inside something that needs to activate the correct state
+		if(isActiveAndEnabled) {
+			Refresh();
+		}
+	}
+
+	protected override void OnEnable() {
+		base.OnEnable();
+
+		if(Model != null) {
+			Refresh();
+		}
 	}
 
 	void OnPropertyChanged(object sender, PropertyChangedEventArgs e) 

@@ -14,10 +14,13 @@ public class CrewManagementViewModel : Model
 	public readonly ObservableCollection<CrewManagementMemberViewModel> MyCrew;
 
 	public string Capacity => GameVars.playerShipVariables.ship.crewRoster.Count + " / " + GameVars.playerShipVariables.ship.crewCapacity + " crew";
-	public string Money => GameVars.playerShipVariables.ship.currency + " dr";
+
+	public BoundModel<int> Money;
 
 	public CrewManagementViewModel(Settlement settlement) {
 		GameVars = Globals.GameVars;
+
+		Money = new BoundModel<int>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.currency));
 
 		AvailableCrew = new ObservableCollection<CrewManagementMemberViewModel>(
 			settlement.availableCrew

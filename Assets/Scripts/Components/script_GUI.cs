@@ -133,26 +133,6 @@ public class script_GUI : MonoBehaviour
 	public GameObject tab_crew_fireScrollWindow;
 
 	//---------------------------
-	// Loan Maintenance
-	public GameObject tab_loan_new_parent;
-	public GameObject tab_loan_old_parent;
-	public GameObject tab_loan_elsewhere_parent;
-
-	public GameObject tab_loan_new_loanAmount;
-	public GameObject tab_loan_new_dueDate;
-	public GameObject tab_loan_new_totalOwed;
-	public GameObject tab_loan_new_interestRate;
-	public GameObject tab_loan_new_takeLoanButton;
-
-	public GameObject tab_loan_old_loanAmount;
-	public GameObject tab_loan_old_dueDate;
-	public GameObject tab_loan_old_payBackButton;
-
-	public GameObject tab_loan_elsewhere_loanAmount;
-	public GameObject tab_loan_elsewhere_dueDate;
-	public GameObject tab_loan_elsewhere_loanOrigin;
-
-	//---------------------------
 	// Build a Shrine
 	public GameObject tab_monument_buildStatueButton;
 	public GameObject tab_monument_buildShrineButton;
@@ -475,7 +455,6 @@ public class script_GUI : MonoBehaviour
 		Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel());
 
 		//Setup port panels
-		GUI_TAB_SetupLoanManagementPanel();
 		GUI_TAB_SetupAShrinePanel();
 		GUI_TAB_SetupShipRepairInformation();
 		GUI_TAB_SetupTavernInformation();
@@ -812,113 +791,7 @@ public class script_GUI : MonoBehaviour
 	//============================================================================================================================================================================
 	//  THESE CONSTRUCT ALL OF THE PANELS WITHIN THE PORT MENU GUI SYSTEM
 	//============================================================================================================================================================================
-
-	//=================================================================================================================
-	// SETUP THE LOAN MANAGEMENT PANEL
-	//=================================================================================================================	
-
-	public void GUI_TAB_SetupLoanManagementPanel() {
-
-
-		//-------NEW LOAN-----------------------
-		if (GameVars.playerShipVariables.ship.currentLoan == null) {
-			//Turn on the panel we need and the others off
-			tab_loan_new_parent.SetActive(true);
-			tab_loan_old_parent.SetActive(false);
-			tab_loan_elsewhere_parent.SetActive(false);
-
-			//Setup the initial term to repay the loan
-			float numOfDaysToPayOffLoan = 10;
-			//Determine the base loan amount off the city's population
-			float baseLoanAmount = 500 * (GameVars.currentSettlement.population / 1000);
-			//If base loan amount is less than 200 then make it 200 as the smallest amount available
-			if (baseLoanAmount < 200f) baseLoanAmount = 200f;
-			//Determine the actual loan amount off the player's clout
-			int loanAmount = (int)(baseLoanAmount + (baseLoanAmount * GameVars.GetOverallCloutModifier(GameVars.currentSettlement.settlementID)));
-			//Determmine the base interest rate of the loan off the city's population
-			float baseInterestRate = 10 + (GameVars.currentSettlement.population / 1000);
-			//Determine finalized interest rate after determining player's clout
-			float finalInterestRate = (float)System.Math.Round(baseInterestRate - (baseInterestRate * GameVars.GetOverallCloutModifier(GameVars.currentSettlement.settlementID)), 3);
-			//Determine the precompiled interest if returned on time
-			int totalAmountDueAtTerm = Mathf.CeilToInt(loanAmount + (loanAmount * (finalInterestRate / 100)));
-
-			tab_loan_new_dueDate.GetComponent<Text>().text = numOfDaysToPayOffLoan.ToString();
-			tab_loan_new_interestRate.GetComponent<Text>().text = finalInterestRate.ToString();
-			tab_loan_new_loanAmount.GetComponent<Text>().text = loanAmount.ToString();
-			tab_loan_new_totalOwed.GetComponent<Text>().text = totalAmountDueAtTerm.ToString();
-			//Create the Loan object for our button to process		
-			Loan newLoan = new Loan(loanAmount, finalInterestRate, numOfDaysToPayOffLoan, GameVars.currentSettlement.settlementID);
-
-			tab_loan_new_takeLoanButton.GetComponent<Button>().onClick.RemoveAllListeners();
-			tab_loan_new_takeLoanButton.GetComponent<Button>().onClick.AddListener(() => GUI_TakeOutLoan(loanAmount, newLoan));
-
-			//-------OLD LOAN-----------------------	
-			//If the player does have a loan already, then we need to make them aware of that
-			//--If the player is back at the origin settlement of the loan, then the player should be allowed to pay the loan back
-		}
-		else if (GameVars.CheckIfShipBackAtLoanOriginPort()) {
-			//Turn on the panel we need and the others off
-			tab_loan_new_parent.SetActive(false);
-			tab_loan_old_parent.SetActive(true);
-			tab_loan_elsewhere_parent.SetActive(false);
-
-			int loanAmount = GameVars.playerShipVariables.ship.currentLoan.GetTotalAmountDueWithInterest();
-			tab_loan_old_dueDate.GetComponent<Text>().text = GameVars.playerShipVariables.ship.currentLoan.numOfDaysUntilDue.ToString();
-			tab_loan_old_loanAmount.GetComponent<Text>().text = loanAmount.ToString();
-
-			tab_loan_old_payBackButton.GetComponent<Button>().onClick.RemoveAllListeners();
-			tab_loan_old_payBackButton.GetComponent<Button>().onClick.AddListener(() => GUI_PayBackLoan(loanAmount));
-
-			//-------LOAN IS ELSEWHERE-----------------------
-			//If at a different settlement, the player needs to be made aware that they can only take a loan out from a single settlement at a time.
-		}
-		else {
-			//Turn on the panel we need and the others off
-			tab_loan_new_parent.SetActive(false);
-			tab_loan_old_parent.SetActive(false);
-			tab_loan_elsewhere_parent.SetActive(true);
-
-			tab_loan_elsewhere_dueDate.GetComponent<Text>().text = GameVars.playerShipVariables.ship.currentLoan.numOfDaysUntilDue.ToString();
-			tab_loan_elsewhere_loanAmount.GetComponent<Text>().text = GameVars.playerShipVariables.ship.currentLoan.GetTotalAmountDueWithInterest().ToString();
-			tab_loan_elsewhere_loanOrigin.GetComponent<Text>().text = GameVars.GetSettlementFromID(GameVars.playerShipVariables.ship.currentLoan.settlementOfOrigin).name;
-
-		}
-
-
-	}
-	//----------------------------------------------------------------------------
-	//----------------------------LOAN PANEL HELPER FUNCTIONS	
-
-	public void GUI_PayBackLoan(int amountDue) {
-		//Pay the loan back if the player has the currency to do it
-		if (GameVars.playerShipVariables.ship.currency > amountDue) {
-			GameVars.playerShipVariables.ship.currency -= amountDue;
-			GameVars.playerShipVariables.ship.currentLoan = null;
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You paid back your loan and earned a little respect!";
-			//give a boost to the players clout for paying back loan
-			GameVars.AdjustPlayerClout(3);
-			//Reset our loan panel
-			GUI_TAB_SetupLoanManagementPanel();
-			//Otherwise let player know they can't afford to pay the loan back
-		}
-		else {
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You currently can't afford to pay your loan back! Better make some more money!";
-		}
-	}
-
-	public void GUI_TakeOutLoan(int loanAmount, Loan loan) {
-		GameVars.playerShipVariables.ship.currentLoan = loan;
-		GameVars.playerShipVariables.ship.currency += loanAmount;
-		GameVars.showNotification = true;
-		GameVars.notificationMessage = "You took out a loan of " + loanAmount + " drachma! Remember to pay it back in due time!";
-		//Reset our loan panel
-		GUI_TAB_SetupLoanManagementPanel();
-	}
-
-
-
+	
 	//=================================================================================================================
 	// SETUP THE BUILD A MONUMENT PANEL
 	//=================================================================================================================	

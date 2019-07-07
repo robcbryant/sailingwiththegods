@@ -558,14 +558,13 @@ public class Settlement
 
 }
 
-public class Ship
+public class Ship : Model
 {
 	public string name;
 	public float speed;
 	public float health;
 	public float cargo_capicity_kg;
 	public Resource[] cargo;
-	public int currency;
 	public int crewCapacity;
 	public int crew;
 	public float totalNumOfDaysTraveled;
@@ -580,6 +579,9 @@ public class Ship
 	public List<int> networks;
 	public int originSettlement;
 	public string builtMonuments = "";
+
+	private int _currency;
+	public int currency { get => _currency; set { _currency = value; Notify(); } }
 
 	public float CurrentCargoKg => cargo.Sum(c => c.amount_kg);
 

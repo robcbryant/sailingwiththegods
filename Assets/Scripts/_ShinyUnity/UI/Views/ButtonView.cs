@@ -40,6 +40,15 @@ public class ButtonView : ViewBehaviour<IValueModel<ButtonViewModel>>
 	[SerializeField] StringView Label = null;
 	[SerializeField] Button Button = null;
 
+	private void Awake() {
+		if(Label == null) {
+			Label = GetComponentInChildren<StringView>();
+		}
+		if(Button == null) {
+			Button = GetComponent<Button>();
+		}
+	}
+
 	private void Start() {
 		Subscribe(Button.onClick, OnClick);
 	}
@@ -57,6 +66,6 @@ public class ButtonView : ViewBehaviour<IValueModel<ButtonViewModel>>
 	}
 
 	void OnClick() {
-		Model.Value.OnClick?.Invoke();
+		Model?.Value?.OnClick?.Invoke();
 	}
 }
