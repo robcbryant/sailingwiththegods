@@ -123,20 +123,7 @@ public class script_GUI : MonoBehaviour
 	public GameObject tab_shiprepair_repairOneButton;
 	public GameObject tab_shiprepair_repairAllButton;
 
-	//---------------------------
-	// Tavern 
-	public GameObject tab_tavern_scrollWindow;
 
-	//---------------------------
-	// Crew
-	public GameObject tab_crew_hireScrollWindow;
-	public GameObject tab_crew_fireScrollWindow;
-
-	//---------------------------
-	// Build a Shrine
-	public GameObject tab_monument_buildStatueButton;
-	public GameObject tab_monument_buildShrineButton;
-	public GameObject tab_monument_buildTempleButton;
 
 
 
@@ -152,7 +139,6 @@ public class script_GUI : MonoBehaviour
 	//===================================
 	// OTHER VARS
 	GameVars GameVars;
-	public GameObject all_trade_rows;
 	public GameObject player_currency;
 	public GameObject player_current_cargo;
 	public GameObject player_max_cargo;
@@ -455,7 +441,6 @@ public class script_GUI : MonoBehaviour
 		Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel());
 
 		//Setup port panels
-		GUI_TAB_SetupAShrinePanel();
 		GUI_TAB_SetupShipRepairInformation();
 
 		//Add a new route to the player journey log as a port entry
@@ -791,87 +776,6 @@ public class script_GUI : MonoBehaviour
 	//  THESE CONSTRUCT ALL OF THE PANELS WITHIN THE PORT MENU GUI SYSTEM
 	//============================================================================================================================================================================
 	
-	//=================================================================================================================
-	// SETUP THE BUILD A MONUMENT PANEL
-	//=================================================================================================================	
-	public void GUI_TAB_SetupAShrinePanel() {
-
-		int baseCost = 0;
-		//We need to do a clout check as well as a network checks
-		int baseModifier = Mathf.CeilToInt(1000 - (200 * GameVars.GetOverallCloutModifier(GameVars.currentSettlement.settlementID)));
-		if (GameVars.Network.CheckIfCityIDIsPartOfNetwork(GameVars.currentSettlement.settlementID)) {
-			baseCost = Mathf.CeilToInt(GameVars.currentSettlement.tax_network * baseModifier * 1);
-		}
-		else {
-			baseCost = Mathf.CeilToInt(GameVars.currentSettlement.tax_neutral * baseModifier * 1);
-		}
-
-		int statueCost = baseCost / 2;
-		int shrineCost = baseCost;
-		int templeCost = baseCost * 2;
-		tab_monument_buildStatueButton.transform.GetChild(0).GetComponent<Text>().text = statueCost.ToString() + " DR";
-		tab_monument_buildStatueButton.GetComponent<Button>().onClick.RemoveAllListeners();
-		tab_monument_buildStatueButton.GetComponent<Button>().onClick.AddListener(() => GUI_BuildAStatue(statueCost));
-		tab_monument_buildShrineButton.transform.GetChild(0).GetComponent<Text>().text = shrineCost.ToString() + " DR";
-		tab_monument_buildShrineButton.GetComponent<Button>().onClick.RemoveAllListeners();
-		tab_monument_buildShrineButton.GetComponent<Button>().onClick.AddListener(() => GUI_BuildAShrine(shrineCost));
-		tab_monument_buildTempleButton.transform.GetChild(0).GetComponent<Text>().text = templeCost.ToString() + " DR";
-		tab_monument_buildTempleButton.GetComponent<Button>().onClick.RemoveAllListeners();
-		tab_monument_buildTempleButton.GetComponent<Button>().onClick.AddListener(() => GUI_BuildATemple(templeCost));
-
-	}
-	//----------------------------------------------------------------------------
-	//----------------------------MONUMENT PANEL HELPER FUNCTIONS
-	public void GUI_BuildAStatue(int cost) {
-
-		if (GameVars.playerShipVariables.ship.currency > cost) {
-			GameVars.playerShipVariables.ship.currency -= cost;
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You built a statue for " + GameVars.currentSettlement.name + "! You've earned a little clout!";
-			GameVars.AdjustPlayerClout(1);
-			GameVars.playerShipVariables.ship.builtMonuments += GameVars.currentSettlement.name + " -- " + "Statue\n";
-			GUI_GetBuiltMonuments();
-
-		}
-		else {
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You don't have enough money to build a statue for " + GameVars.currentSettlement.name;
-		}
-
-	}
-	public void GUI_BuildAShrine(int cost) {
-
-		if (GameVars.playerShipVariables.ship.currency > cost) {
-			GameVars.playerShipVariables.ship.currency -= cost;
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You built a shrine for " + GameVars.currentSettlement.name + "! You've earned quite a bit of clout!";
-			GameVars.AdjustPlayerClout(4);
-			GameVars.playerShipVariables.ship.builtMonuments += GameVars.currentSettlement.name + " -- " + "Shrine\n";
-			GUI_GetBuiltMonuments();
-
-		}
-		else {
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You don't have enough money to build a Shrine for " + GameVars.currentSettlement.name;
-		}
-
-	}
-	public void GUI_BuildATemple(int cost) {
-
-		if (GameVars.playerShipVariables.ship.currency > cost) {
-			GameVars.playerShipVariables.ship.currency -= cost;
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You built a temple for " + GameVars.currentSettlement.name + "! You've earned a tremendous amount of clout!";
-			GameVars.AdjustPlayerClout(8);
-			GameVars.playerShipVariables.ship.builtMonuments += GameVars.currentSettlement.name + " -- " + "Temple\n";
-			GUI_GetBuiltMonuments();
-
-		}
-		else {
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You don't have enough money to build a Temple for " + GameVars.currentSettlement.name;
-		}
-	}
 
 	//=================================================================================================================
 	// SETUP THE SHIP REPAIR PANEL

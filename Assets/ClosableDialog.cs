@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ClosableDialog : OwnerBehaviour
 {
-	[SerializeField] Button Button;
+	[SerializeField] Button Button = null;
 
 	private void Start() {
 		Subscribe(Button.onClick, () => 

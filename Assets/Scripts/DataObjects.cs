@@ -578,7 +578,9 @@ public class Ship : Model
 	public MainQuestLine mainQuest;
 	public List<int> networks;
 	public int originSettlement;
-	public string builtMonuments = "";
+
+	private string _builtMonuments = "";
+	public string builtMonuments { get => _builtMonuments; set { _builtMonuments = value; Notify(); } }
 
 	private int _currency;
 	public int currency { get => _currency; set { _currency = value; Notify(); } }

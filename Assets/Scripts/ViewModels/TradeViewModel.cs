@@ -16,6 +16,8 @@ public class TradeViewModel : Model
 {
 	private GameVars GameVars;
 
+	public Ship Ship => GameVars.playerShipVariables.ship;
+
 	public readonly ObservableCollection<CargoItemTradeViewModel> Available;
 	public readonly ObservableCollection<CargoItemTradeViewModel> Mine;
 
@@ -27,10 +29,13 @@ public class TradeViewModel : Model
 
 	public string PortName => GameVars.currentSettlement.name;
 	public string Capacity => Mathf.RoundToInt(GameVars.playerShipVariables.ship.CurrentCargoKg) + " / " + Mathf.RoundToInt(GameVars.playerShipVariables.ship.cargo_capicity_kg) + " kg";
-	public string Money => GameVars.playerShipVariables.ship.currency + " dr";
+
+	public BoundModel<int> Money;
 
 	public TradeViewModel() {
 		GameVars = Globals.GameVars;
+
+		Money = new BoundModel<int>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.currency));
 
 		Available = new ObservableCollection<CargoItemTradeViewModel>(GameVars.currentSettlement.cargo
 			.Where(r => r.amount_kg > 0)

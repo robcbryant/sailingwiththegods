@@ -87,7 +87,7 @@ public class TavernViewModel : Model
 
 public class TavernView : ViewBehaviour<TavernViewModel>
 {
-	[SerializeField] CityListView CityList;
+	[SerializeField] CityListView CityList = null;
 
 	public override void Bind(TavernViewModel model) {
 		base.Bind(model);

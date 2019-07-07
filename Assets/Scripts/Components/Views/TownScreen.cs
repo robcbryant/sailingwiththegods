@@ -24,6 +24,10 @@ public class TownScreen : ViewBehaviour<TradeViewModel>
 	[SerializeField] ButtonView LargeTxn = null;
 	[SerializeField] ButtonView AllTxn = null;
 
+	[SerializeField] ButtonView Monuments = null;
+	[SerializeField] StringView BuiltMonuments = null;
+
+
 	public override void Bind(TradeViewModel model) {
 		base.Bind(model);
 
@@ -35,9 +39,21 @@ public class TownScreen : ViewBehaviour<TradeViewModel>
 			OnClick = model.BackToPort
 		}));
 
+		Monuments?.Bind(ValueModel.New(new ButtonViewModel {
+			Label = "Monuments",
+			OnClick = () => Globals.UI.Show<ShrinesView, ShrinesViewModel>(new ShrinesViewModel())
+		}));
+
 		Info?.Bind(ValueModel.New(new ButtonViewModel {
 			OnClick = () => Debug.Log("Info clicked for " + model.PortName)
 		}));
+
+		Money.Bind(ValueModel.Wrap(Model.Money)
+				.AsString()
+				.Select(s => s + " dr")
+		);
+
+		BuiltMonuments.Bind(new BoundModel<string>(Model.Ship, nameof(Model.Ship.builtMonuments)));
 	}
 
 	protected override void Refresh(object sender, string propertyChanged) {
@@ -45,7 +61,6 @@ public class TownScreen : ViewBehaviour<TradeViewModel>
 
 		PortName.Bind(ValueModel.New(Model.PortName));
 		Capacity.Bind(ValueModel.New(Model.Capacity));
-		Money.Bind(ValueModel.New(Model.Money));
 
 		SmallTxn.Bind(ValueModel.New(new ButtonViewModel {
 			Label = Model.TradeAction == TradeAction.Buy ? ">" : "<",
