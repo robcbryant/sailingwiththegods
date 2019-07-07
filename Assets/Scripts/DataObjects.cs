@@ -562,7 +562,6 @@ public class Ship : Model
 {
 	public string name;
 	public float speed;
-	public float health;
 	public float cargo_capicity_kg;
 	public Resource[] cargo;
 	public int crewCapacity;
@@ -578,6 +577,9 @@ public class Ship : Model
 	public MainQuestLine mainQuest;
 	public List<int> networks;
 	public int originSettlement;
+
+	private float _health;
+	public float health { get => _health; set { _health = value; Notify(); } }
 
 	private string _builtMonuments = "";
 	public string builtMonuments { get => _builtMonuments; set { _builtMonuments = value; Notify(); } }

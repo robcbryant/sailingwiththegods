@@ -114,18 +114,7 @@ public class script_GUI : MonoBehaviour
 	//-----------------------------------------------------------
 	// Port Menu TAB Content Panel Variables
 	//-----------------------------------------------------------
-
-	//---------------------------
-	// Ship Repairs
-	public GameObject tab_shiprepair_shiphealth;
-	public GameObject tab_shiprepair_cost_onehp;
-	public GameObject tab_shiprepair_cost_allhp;
-	public GameObject tab_shiprepair_repairOneButton;
-	public GameObject tab_shiprepair_repairAllButton;
-
-
-
-
+	
 
 	//****************************************************************
 	//GUI INFORMATION PANEL VARIABLES
@@ -439,9 +428,6 @@ public class script_GUI : MonoBehaviour
 		//Show Port Menu
 		Globals.UI.Hide<Dashboard>();
 		Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel());
-
-		//Setup port panels
-		GUI_TAB_SetupShipRepairInformation();
 
 		//Add a new route to the player journey log as a port entry
 		GameVars.playerShipVariables.journey.AddRoute(new PlayerRoute(GameVars.playerShip.transform.position, Vector3.zero, GameVars.currentSettlement.settlementID, GameVars.currentSettlement.name, false, GameVars.playerShipVariables.ship.totalNumOfDaysTraveled), GameVars.playerShipVariables, GameVars.currentCaptainsLog);
@@ -767,91 +753,6 @@ public class script_GUI : MonoBehaviour
 		//Debug.Log(crewTotal);
 	}
 	*/
-
-
-
-
-	//============================================================================================================================================================================
-	//============================================================================================================================================================================
-	//  THESE CONSTRUCT ALL OF THE PANELS WITHIN THE PORT MENU GUI SYSTEM
-	//============================================================================================================================================================================
-	
-
-	//=================================================================================================================
-	// SETUP THE SHIP REPAIR PANEL
-	//=================================================================================================================	
-	public void GUI_TAB_SetupShipRepairInformation() {
-
-		//We need to do a clout check as well as a network checks
-		//costToRepair is a GLOBAL var to this script
-		int baseModifier = Mathf.CeilToInt(2 - GameVars.GetOverallCloutModifier(GameVars.currentSettlement.settlementID));
-		if (GameVars.Network.CheckIfCityIDIsPartOfNetwork(GameVars.currentSettlement.settlementID)) {
-			costToRepair = Mathf.CeilToInt(GameVars.currentSettlement.tax_network * baseModifier * 1);
-		}
-		else {
-			costToRepair = Mathf.CeilToInt(GameVars.currentSettlement.tax_neutral * baseModifier * 1);
-		}
-
-		Text cost_allHP = (Text)tab_shiprepair_cost_allhp.GetComponent<Text>();
-		Text cost_1HP = (Text)tab_shiprepair_cost_onehp.GetComponent<Text>();
-		Text currentHP = (Text)tab_shiprepair_shiphealth.GetComponent<Text>();
-
-		string oneHPCost = Mathf.CeilToInt(costToRepair).ToString();
-		string allHPCost = (Mathf.CeilToInt(100 - Mathf.CeilToInt(GameVars.playerShipVariables.ship.health)) * costToRepair).ToString();
-		string shipCurrent = Mathf.CeilToInt(GameVars.playerShipVariables.ship.health).ToString();
-
-		//If the ship is at 100HP already, then let's not worry about giving the player the costs--we'll replace the costs by an X
-		//	--and disable the repair buttons
-		if (shipCurrent == "100") {
-			cost_1HP.text = "X";
-			cost_allHP.text = "X";
-			currentHP.text = shipCurrent;
-			tab_shiprepair_repairOneButton.GetComponent<Button>().interactable = false;
-			tab_shiprepair_repairAllButton.GetComponent<Button>().interactable = false;
-		}
-		else {
-			cost_1HP.text = oneHPCost;
-			cost_allHP.text = allHPCost;
-			currentHP.text = shipCurrent;
-			tab_shiprepair_repairOneButton.GetComponent<Button>().interactable = true;
-			tab_shiprepair_repairAllButton.GetComponent<Button>().interactable = true;
-		}
-	}
-
-
-	//----------------------------------------------------------------------------
-	//----------------------------SHIP REPAIR PANEL HELPER FUNCTIONS		
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
-	public void GUI_RepairShipByOneHP() {
-		GameVars.playerShipVariables.ship.health += 1f;
-		//make sure the hp can't go above 100
-		if (GameVars.playerShipVariables.ship.health > 100) {
-			GameVars.playerShipVariables.ship.health = 100;
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "Your ship is already fully repaired";
-		}
-		else {
-			GameVars.playerShipVariables.ship.currency -= costToRepair;
-		}
-		GUI_TAB_SetupShipRepairInformation();
-	}
-
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
-	public void GUI_RepairShipByAllHP() {
-		if (Mathf.CeilToInt(GameVars.playerShipVariables.ship.health) >= 100) {
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "Your ship is already fully repaired";
-		}
-		else {
-			GameVars.playerShipVariables.ship.currency -= (int)(costToRepair * Mathf.CeilToInt(100 - GameVars.playerShipVariables.ship.health));
-			GameVars.playerShipVariables.ship.health = 100f;
-		}
-		GUI_TAB_SetupShipRepairInformation();
-	}
-
-
-
-
 
 	//============================================================================================================================================================================
 	//============================================================================================================================================================================

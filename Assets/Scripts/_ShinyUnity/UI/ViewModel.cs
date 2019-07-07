@@ -157,7 +157,7 @@ public static class ValueModel
 
 	// adaptors
 	public static IValueModel<string> AsString<T>(this IValueModel<T> self) => new WrapperModel<T, string>(self, o => o.ToString(), o => throw new NotImplementedException("AsString is readonly"));
-	public static IValueModel<T> Select<T>(this IValueModel<T> self, Func<T, T> adaptor) => new WrapperModel<T, T>(self, o => adaptor(o), o => throw new NotImplementedException("Select is readonly"));
+	public static IValueModel<TOut> Select<T, TOut>(this IValueModel<T> self, Func<T, TOut> adaptor) => new WrapperModel<T, TOut>(self, o => adaptor(o), o => throw new NotImplementedException("Select is readonly"));
 }
 
 public class WrapperModel<TIn, TOut> : Model, IValueModel<TOut>
