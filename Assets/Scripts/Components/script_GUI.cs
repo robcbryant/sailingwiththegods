@@ -457,7 +457,6 @@ public class script_GUI : MonoBehaviour
 		//Setup port panels
 		GUI_TAB_SetupAShrinePanel();
 		GUI_TAB_SetupShipRepairInformation();
-		GUI_TAB_SetupTavernInformation();
 
 		//Add a new route to the player journey log as a port entry
 		GameVars.playerShipVariables.journey.AddRoute(new PlayerRoute(GameVars.playerShip.transform.position, Vector3.zero, GameVars.currentSettlement.settlementID, GameVars.currentSettlement.name, false, GameVars.playerShipVariables.ship.totalNumOfDaysTraveled), GameVars.playerShipVariables, GameVars.currentCaptainsLog);
@@ -873,112 +872,6 @@ public class script_GUI : MonoBehaviour
 			GameVars.notificationMessage = "You don't have enough money to build a Temple for " + GameVars.currentSettlement.name;
 		}
 	}
-
-
-
-	//=================================================================================================================
-	// SETUP THE TAVERN PANEL
-	//=================================================================================================================	
-	public void GUI_TAB_SetupTavernInformation() {
-
-		//Let's clear our current list of settlements
-		for (int i = 1; i < tab_tavern_scrollWindow.transform.childCount; i++) {
-			GameObject.Destroy(tab_tavern_scrollWindow.transform.GetChild(i).gameObject);
-		}
-
-		//First clear the settlement list
-		foreach (int settlementID in GameVars.playerShipVariables.ship.playerJournal.knownSettlements) {
-			Settlement settlement = GameVars.GetSettlementFromID(settlementID);
-			//make sure not to list the current settlement the player is at
-			if (GameVars.currentSettlement.settlementID != settlementID) {
-				//First let's get a clone of our hidden row in the tavern scroll view
-				GameObject currentPort = Instantiate((GameObject)tab_tavern_scrollWindow.transform.GetChild(0).gameObject) as GameObject;
-				currentPort.transform.SetParent((Transform)tab_tavern_scrollWindow.transform);
-				//Set the current clone to active
-				currentPort.SetActive(true);
-				currentPort.GetComponent<RectTransform>().localScale = Vector3.one;
-				Text portLabel = (Text)currentPort.transform.Find("Port Name").GetComponent<Text>();
-				Button hintCostBut = (Button)currentPort.transform.Find("Hint Button").GetComponent<Button>();
-				Button navCostBut = (Button)currentPort.transform.Find("Hire Navigator Button").GetComponent<Button>();
-				//Setup the Port Name
-				portLabel.text = settlement.name;
-				//Let's setup the Navigator hiring information
-				//-- Figure out the Cost to Hire a navigator for this city
-				float initialCost = CoordinateUtil.GetDistanceBetweenTwoLatLongCoordinates(GameVars.currentSettlement.location_longXlatY, settlement.location_longXlatY) / 1000f;
-				int costToHire = Mathf.RoundToInt(initialCost - (initialCost * GameVars.GetOverallCloutModifier(settlement.settlementID)));
-				//--Set the button label to show the cost
-				navCostBut.transform.Find("Cost For Navigator").GetComponent<Text>().text = costToHire.ToString() + "Dr";
-				navCostBut.onClick.RemoveAllListeners();
-				navCostBut.onClick.AddListener(() => GUI_HireANavigator(settlement, costToHire));
-
-				//Now let's setup a hint button if it's a city. If it's not a city, then there is no trading and nothign to ask about
-				if (settlement.typeOfSettlement == 1) {
-					//Set the button to Active is we are using it!
-					hintCostBut.interactable = true;
-					//Now figure out the costs for questions for the relevant settlements
-					initialCost = CoordinateUtil.GetDistanceBetweenTwoLatLongCoordinates(GameVars.currentSettlement.location_longXlatY, settlement.location_longXlatY) / 10000f;
-					int costForHint = Mathf.RoundToInt(initialCost - (initialCost * GameVars.GetOverallCloutModifier(settlement.settlementID)));
-					//--Set the Button label to show the cost
-					hintCostBut.transform.Find("Cost For Hint").GetComponent<Text>().text = costForHint.ToString() + "Dr";
-					hintCostBut.onClick.RemoveAllListeners();
-					hintCostBut.onClick.AddListener(() => GUI_BuyHint(settlement, costForHint));
-
-				}
-				else {
-					//turn off the button if it's not a port
-					hintCostBut.interactable = false;
-				}
-			}
-		}
-	}
-	//----------------------------------------------------------------------------
-	//----------------------------TAVERN PANEL HELPER FUNCTIONS
-
-	public string GetInfoOnNetworkedSettlementResource(Resource resource) {
-		if (resource.amount_kg < 100)
-			return "I hear they are running inredibly low on " + resource.name;
-		else if (resource.amount_kg < 300)
-			return "Someone mentioned that they have modest stores of " + resource.name;
-		else
-			return "A sailor just came from there and said he just unloaded an enormous quantity of " + resource.name;
-
-	}
-
-	public void GUI_BuyHint(Settlement currentSettlement, int hintCost) {
-
-		if (GameVars.playerShipVariables.ship.currency < hintCost) {
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "Not enough money to buy this information!";
-		}
-		else {
-			GameVars.playerShipVariables.ship.currency -= hintCost;
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = GetInfoOnNetworkedSettlementResource(currentSettlement.cargo[Random.Range(0, currentSettlement.cargo.Length)]);
-		}
-
-	}
-	public void GUI_HireANavigator(Settlement thisSettlement, int costToHire) {
-		//Do this if button pressed
-		//Check to see if player has enough money to hire
-		if (GameVars.playerShipVariables.ship.currency >= costToHire) {
-			//subtract the cost from the players currency
-			GameVars.playerShipVariables.ship.currency -= (int)costToHire;
-			//change location of beacon
-			Vector3 location = Vector3.zero;
-			for (int x = 0; x < GameVars.settlement_masterList_parent.transform.childCount; x++)
-				if (GameVars.settlement_masterList_parent.transform.GetChild(x).GetComponent<script_settlement_functions>().thisSettlement.settlementID == thisSettlement.settlementID)
-					location = GameVars.settlement_masterList_parent.transform.GetChild(x).position;
-			GameVars.MoveNavigatorBeacon(GameVars.navigatorBeacon, location);
-			GameVars.playerShipVariables.ship.currentNavigatorTarget = thisSettlement.settlementID;
-			GameVars.ShowANotificationMessage("You hired a navigator to " + thisSettlement.name + " for " + costToHire + " drachma.");
-			//If not enough money, then let the player know
-		}
-		else {
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You can't afford to hire a navigator to " + thisSettlement.name + ".";
-		}
-	}
-
 
 	//=================================================================================================================
 	// SETUP THE SHIP REPAIR PANEL
