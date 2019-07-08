@@ -560,6 +560,12 @@ public class Settlement
 
 public class Ship : Model
 {
+	public const int StartingCrewCap = 10;		// 30
+	public const int StartingCargoCap = 200;	// 1200
+	public const int StartingWater = 50;		// 300
+	public const int StartingFood = 50;			// 300
+	public const int StartingCrewSize = 0;		// 30 - KDTODO: Changed to 0 because the questline forces like 7 people into your crew anyway (StartingCrewCap must match atm)
+
 	public string name;
 	public float speed;
 	public float cargo_capicity_kg;
@@ -568,7 +574,6 @@ public class Ship : Model
 	public int crew;
 	public float totalNumOfDaysTraveled;
 	public int networkID;
-	public float playerClout;
 	public List<CaptainsLogEntry> shipCaptainsLog;
 	public List<CrewMember> crewRoster;
 	public Journal playerJournal;
@@ -586,6 +591,9 @@ public class Ship : Model
 
 	private int _currency;
 	public int currency { get => _currency; set { _currency = value; Notify(); } }
+
+	public float _playerClout;
+	public float playerClout { get => _playerClout; set { _playerClout = value; Notify(); } }
 
 	public float CurrentCargoKg => cargo.Sum(c => c.amount_kg);
 
@@ -620,7 +628,7 @@ public class Ship : Model
 		};
 
 		this.currency = 500;
-		this.crewCapacity = 30;
+		this.crewCapacity = StartingCrewCap;
 		this.crew = 0;
 		this.playerClout = 50f;
 		this.currentNavigatorTarget = -1;

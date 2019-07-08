@@ -13,9 +13,12 @@ public class Dashboard : ViewBehaviour<DashboardViewModel>
 	[SerializeField] ButtonView MainMenuButton = null;
 	[SerializeField] ButtonView CargoButton = null;
 	[SerializeField] ButtonView CrewButton = null;
-	[SerializeField] ButtonView CloutButton = null;
 	[SerializeField] CargoInventoryView FoodInventory = null;
 	[SerializeField] CargoInventoryView WaterInventory = null;
+
+	[SerializeField] ButtonView CloutButton = null;
+	[SerializeField] SliderView CloutSlider = null;
+	[SerializeField] StringView CloutTitle = null;
 
 	// subscreens
 	[SerializeField] MessageBoxView CaptainsLogScreen = null;
@@ -38,6 +41,11 @@ public class Dashboard : ViewBehaviour<DashboardViewModel>
 
 		MainMenuButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Globals.UI.Show<MainMenuScreen, GameViewModel>(new GameViewModel()) }));
 		CloutButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Debug.Log("Clout Clicked") }));
+
+		// TODO: make 5000 max clout a const somewhere
+		CloutSlider.Bind(Model.Clout.Select(c => c / 5000f));
+		CloutTitle.Bind(ValueModel.Wrap(Model.Clout)
+			.Select(c => Globals.GameVars.GetCloutTitleEquivalency((int)c)));
 
 		FoodInventory.Bind(Model.FoodInventory);
 		WaterInventory.Bind(Model.WaterInventory);

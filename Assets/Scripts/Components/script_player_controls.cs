@@ -73,7 +73,8 @@ public class script_player_controls : MonoBehaviour
 	List<string> currentZoneNamesToTurnOn = new List<string>();
 
 	public void Reset() {
-		ship = new Ship("Argo", 7.408f, 100, 500f);
+		// NOTE KD: Changed ship base speed to 16 so that even with low crew, you can still counter the current and wind. was 7.408 researched or arbitrary?
+		ship = new Ship("Argo", 42, 100, 500);//7.408f, 100, 500f);
 		ship.networkID = 246;
 		journey = new PlayerJourneyLog();
 		lastPlayerShipPosition = transform.position;

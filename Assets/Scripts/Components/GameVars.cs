@@ -898,7 +898,7 @@ public class GameVars : MonoBehaviour
 	public void InitiateMainQuestLineForPlayer() {
 		Debug.Log("Main Quest TESTER");
 		//For the argonautica, let's set the crew capacity to 30
-		playerShipVariables.ship.crewCapacity = 30;
+		playerShipVariables.ship.crewCapacity = Ship.StartingCrewCap;
 
 		//Now let's add all the initial crew from the start screen selection and start the first leg of the quest
 		for (int i = 0; i < newGameAvailableCrew.Count; i++) {
@@ -914,11 +914,11 @@ public class GameVars : MonoBehaviour
 		playerShipVariables.ship.crew = playerShipVariables.ship.crewRoster.Count;
 
 		//Let's increase the ships cargo capacity
-		playerShipVariables.ship.cargo_capicity_kg = 1200f;
+		playerShipVariables.ship.cargo_capicity_kg = Ship.StartingCargoCap;
 
-		//Let's increase the ships Provisions and water base to reflect 28 crew members
-		playerShipVariables.ship.cargo[0].amount_kg = 300f;
-		playerShipVariables.ship.cargo[1].amount_kg = 300f;
+		//Let's increase the ships Provisions and water base to reflect starting crew members
+		playerShipVariables.ship.cargo[0].amount_kg = Ship.StartingWater;
+		playerShipVariables.ship.cargo[1].amount_kg = Ship.StartingFood;
 
 		//Increase the quest counter because the start screen takes care of the first leg
 

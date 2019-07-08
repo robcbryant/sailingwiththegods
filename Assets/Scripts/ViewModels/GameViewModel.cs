@@ -71,10 +71,10 @@ public class GameViewModel : Model
 			//Now enable the controls
 			GameVars.controlsLocked = false;
 			//For the argonautica, let's set the crew capacity to 30
-			GameVars.playerShipVariables.ship.crewCapacity = 30;
+			GameVars.playerShipVariables.ship.crewCapacity = Ship.StartingCrewCap;
 			GameVars.playerShipVariables.ship.crew = GameVars.playerShipVariables.ship.crewRoster.Count;
 			//Let's increase the ships cargo capacity
-			GameVars.playerShipVariables.ship.cargo_capicity_kg = 1200f;
+			GameVars.playerShipVariables.ship.cargo_capicity_kg = Ship.StartingCargoCap;
 			//Set the player's initial position to the new position
 			GameVars.playerShipVariables.lastPlayerShipPosition = GameVars.playerShip.transform.position;
 			//Update Ghost Route
@@ -108,8 +108,8 @@ public class GameViewModel : Model
 		else GameVars.gameDifficulty_Beginner = true;
 		GameVars.SetupBeginnerGameDifficulty();
 
-		// since we're skipping crew select, force pick the first 30 members
-		for(var i = 0; i < 30; i++) {
+		// since we're skipping crew select, force pick the first 3 members (you start with 3 now
+		for(var i = 0; i < Ship.StartingCrewSize; i++) {
 			GameVars.newGameCrewSelectList[i] = true;
 		}
 

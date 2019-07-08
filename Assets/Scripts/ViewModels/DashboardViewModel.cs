@@ -14,7 +14,11 @@ public class DashboardViewModel : Model
 	public readonly ObservableCollection<CargoInventoryViewModel> CargoList;
 	public readonly ObservableCollection<CrewManagementMemberViewModel> CrewList;
 
+	public BoundModel<float> Clout;
+
 	public DashboardViewModel() {
+
+		Clout = new BoundModel<float>(Globals.GameVars.playerShipVariables.ship, nameof(Globals.GameVars.playerShipVariables.ship.playerClout));
 
 		var water = Globals.GameVars.playerShipVariables.ship.cargo.FirstOrDefault(r => r.name == Resource.Water);
 		WaterInventory = new CargoInventoryViewModel(water);
