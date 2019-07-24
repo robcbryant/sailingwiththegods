@@ -67,6 +67,17 @@ public class ButtonView : ViewBehaviour<IValueModel<ButtonViewModel>>
 		}
 	}
 
+	protected override void Refresh(object sender, string propertyChanged) {
+		base.Refresh(sender, propertyChanged);
+
+		// allow the ButtonViewModel contained in the IValueModel wrapper to be changed to a new instance and have the label update
+		if(sender == Model) {
+			if (Model.Value.Label != null) {
+				Label?.Bind(new BoundModel<string>(Model.Value, nameof(Model.Value.Label)));
+			}
+		}
+	}
+
 	void OnClick() {
 		Model?.Value?.OnClick?.Invoke();
 	}

@@ -19059,6 +19059,31 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 809532579}
   m_CullTransparentMesh: 0
+--- !u!1 &814956857 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100012, guid: fc0e6f1a8932ea14598c2ab8a62cedd0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1316822635}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &814956858
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814956857}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 966205a622c893946b3206bc1ec6b80f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &817818324
 GameObject:
   m_ObjectHideFlags: 0
@@ -33198,6 +33223,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 400014, guid: fc0e6f1a8932ea14598c2ab8a62cedd0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 400014, guid: fc0e6f1a8932ea14598c2ab8a62cedd0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 400014, guid: fc0e6f1a8932ea14598c2ab8a62cedd0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 400014, guid: fc0e6f1a8932ea14598c2ab8a62cedd0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 400014, guid: fc0e6f1a8932ea14598c2ab8a62cedd0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 400014, guid: fc0e6f1a8932ea14598c2ab8a62cedd0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 400014, guid: fc0e6f1a8932ea14598c2ab8a62cedd0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 90
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc0e6f1a8932ea14598c2ab8a62cedd0, type: 3}
 --- !u!4 &1316822636 stripped
@@ -39731,6 +39784,7 @@ MonoBehaviour:
   - {fileID: 733858547}
   - {fileID: 627294858}
   - {fileID: 551273449}
+  - {fileID: 1673367831}
   MasterGUISystem: {fileID: 946421297}
   GUI_PortMenu: {fileID: 1448835274}
   GUI_GameHUD: {fileID: 612486307}
@@ -39757,7 +39811,6 @@ MonoBehaviour:
   currentPortTax: 0
   playerShip: {fileID: 0}
   playerShipVariables: {fileID: 0}
-  sailsAreUnfurled: 1
   currentCaptainsLog: 
   controlsLocked: 0
   isGameOver: 0
@@ -40154,6 +40207,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1667485485}
   m_CullTransparentMesh: 0
+--- !u!1 &1673367831 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100002, guid: fc0e6f1a8932ea14598c2ab8a62cedd0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1316822635}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1678107152
 GameObject:
   m_ObjectHideFlags: 0

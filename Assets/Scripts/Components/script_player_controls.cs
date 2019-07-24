@@ -73,8 +73,7 @@ public class script_player_controls : MonoBehaviour
 	List<string> currentZoneNamesToTurnOn = new List<string>();
 
 	public void Reset() {
-		// NOTE KD: Changed ship base speed to 16 so that even with low crew, you can still counter the current and wind. was 7.408 researched or arbitrary?
-		ship = new Ship("Argo", 42, 100, 500);//7.408f, 100, 500f);
+		ship = new Ship("Argo", 7.408f, 100, 500);
 		ship.networkID = 246;
 		journey = new PlayerJourneyLog();
 		lastPlayerShipPosition = transform.position;
@@ -704,6 +703,15 @@ public class script_player_controls : MonoBehaviour
 	}
 
 	void UpdateShipSpeed() {
+
+		// TODO: Re-evaluate ship speed code based on Sandy's articles and get this working again
+		// using joanna's suggested 3x^2. this makes it very slow but possible with 1/10 of your crew, you only drop to 0 with less than that
+		// i've turned off thirst and hunger modifiers. the penalty for those is crew members dying, not speed. hopefully an okay simplification.
+		var t = (float)ship.crewRoster.Count / (float)ship.crewCapacity;
+		var crewMultiplier = 3 * t * t;
+		shipSpeedModifiers.Crew = ship.speed - (ship.speed * crewMultiplier);
+
+		/*
 		//Figure out the crew modifier for speed -- we need to make the crew a ratio to subtract 
 		//	--crew modifier is ((totalPossibleCrew / 100) * current#OfCrew ) / 10 --this gives a percentage of crew available
 		//	--we use a curve: (x-.25)^2*3 to figure out the reduced speed impact so the speed impact isn't a direct 1:1 effect on speed.
@@ -730,6 +738,7 @@ public class script_player_controls : MonoBehaviour
 		//	--once the ship hits 90hp, the speed will immediately be reduced by 10% and 1% for every point of damage sustained after
 		if (ship.health <= 90f) shipSpeedModifiers.ShipHP = (ship.speed / 100f) * (100f - ship.health);
 		else shipSpeedModifiers.ShipHP = 0f;
+		*/
 	}
 
 	/// <summary>
@@ -1210,7 +1219,7 @@ public class script_player_controls : MonoBehaviour
 		Vector3 waterVector = Vector3.zero;
 
 		if (!rayCheck_stopCurrents) waterVector = currentWaterDirectionVector;
-		if (GameVars.sailsAreUnfurled) windVector = currentWindDirectionVector;
+		if (GameVars.playerShipVariables.ship.sailsAreUnfurled) windVector = currentWindDirectionVector;
 
 		windAndWaterVector = (waterVector * currentWaterDirectionMagnitude) + (windVector * currentWindDirectionMagnitude);
 

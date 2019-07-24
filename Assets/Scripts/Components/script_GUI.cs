@@ -723,35 +723,6 @@ public class script_GUI : MonoBehaviour
 	//============================================================================================================================================================================
 
 	//-----------------------------------------------------
-	//THIS IS THE UNFURLING / FURLING OF SAILS BUTTON
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
-	public void GUI_furlOrUnfurlSails() {
-		if (GameVars.sailsAreUnfurled) {
-			hud_button_furlSails.transform.GetChild(0).GetComponent<Text>().text = "Furl Sails";
-			GameVars.sailsAreUnfurled = false;
-			foreach (GameObject sail in GameVars.sails)
-				sail.SetActive(false);
-		}
-		else {
-			hud_button_furlSails.transform.GetChild(0).GetComponent<Text>().text = "Unfurl Sails";
-			GameVars.sailsAreUnfurled = true;
-			foreach (GameObject sail in GameVars.sails)
-				sail.SetActive(true);
-
-		}
-	}
-
-
-	//-----------------------------------------------------
-	//THIS IS THE DROP ANCHOR BUTTON
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
-	public void GUI_dropAnchor() {
-		//If the controls are locked--we are traveling so force it to stop
-		if (GameVars.controlsLocked && !GameVars.showSettlementGUI)
-			GameVars.playerShipVariables.rayCheck_stopShip = true;
-	}
-
-	//-----------------------------------------------------
 	//THIS IS THE REST BUTTON
 
 	// REFERENCED IN BUTTON CLICK UNITYEVENT

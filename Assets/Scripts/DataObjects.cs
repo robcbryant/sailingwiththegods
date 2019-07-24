@@ -585,6 +585,9 @@ public class Ship : Model
 	public List<int> networks;
 	public int originSettlement;
 
+	private bool _sailsAreUnfurled = true;
+	public bool sailsAreUnfurled { get => _sailsAreUnfurled; set { _sailsAreUnfurled = value; Notify(); } }
+
 	private int _upgradeLevel;
 	public int upgradeLevel { get => _upgradeLevel; set { _upgradeLevel = value; Notify(); } }
 

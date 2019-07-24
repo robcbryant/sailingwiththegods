@@ -13,6 +13,8 @@ public class Dashboard : ViewBehaviour<DashboardViewModel>
 	[SerializeField] ButtonView MainMenuButton = null;
 	[SerializeField] ButtonView CargoButton = null;
 	[SerializeField] ButtonView CrewButton = null;
+	[SerializeField] ButtonView AnchorButton = null;
+	[SerializeField] ButtonView SailsButton = null;
 	[SerializeField] CargoInventoryView FoodInventory = null;
 	[SerializeField] CargoInventoryView WaterInventory = null;
 
@@ -51,5 +53,11 @@ public class Dashboard : ViewBehaviour<DashboardViewModel>
 
 		FoodInventory.Bind(Model.FoodInventory);
 		WaterInventory.Bind(Model.WaterInventory);
+
+		AnchorButton?.Bind(ValueModel.New(new ButtonViewModel { OnClick = Model.GUI_dropAnchor }));
+		SailsButton?.Bind(model.SailsAreUnfurled.Select(b => new ButtonViewModel {
+			Label = b ? "Furl Sails" : "Unfurl Sails",
+			OnClick = model.GUI_furlOrUnfurlSails
+		}));
 	}
 }

@@ -124,7 +124,6 @@ public class GameVars : MonoBehaviour
 	// ship
 	[HideInInspector] public GameObject playerShip;
 	[HideInInspector] public script_player_controls playerShipVariables;
-	[HideInInspector] public bool sailsAreUnfurled = true;
 
 	// captain's log
 	[HideInInspector] public string currentCaptainsLog = "";
