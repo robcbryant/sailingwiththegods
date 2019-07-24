@@ -64,7 +64,7 @@ public class PortScreen : ViewBehaviour<PortViewModel>
 		}));
 
 		Repairs?.Bind(ValueModel.New(new ButtonViewModel {
-			Label = "Repairs",
+			Label = "Shipyard",
 			OnClick = () => Globals.UI.Show<RepairsView, RepairsViewModel>(new RepairsViewModel())
 		}));
 

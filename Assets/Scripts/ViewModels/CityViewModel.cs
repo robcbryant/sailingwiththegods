@@ -69,6 +69,8 @@ public class CityViewModel : Model
 	public string PortName => City.name;
 	public string PortDescription => City.description;
 
+	public float Distance => Vector3.Distance(City.theGameObject.transform.position, GameVars.playerShip.transform.position);
+
 	private Action<CityViewModel> _OnClick;
 	public Action<CityViewModel> OnClick { get => _OnClick; set { _OnClick = value; Notify(); } }
 

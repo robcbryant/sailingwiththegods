@@ -1021,7 +1021,29 @@ public class GameVars : MonoBehaviour
 		while (newGameAvailableCrew.Count < 40) {
 			newGameAvailableCrew.Add(GenerateRandomCrewMembers(1)[0]);
 		}
-		
+
+		// filter out people who don't have connections at the ports in your starting bay or have overwhelmingly large networks
+		// prefer random people with small networks over argonautica crew who have very large networks. you should have to hire these people later
+		var nearestToStart = new string[] { "Pagasae", "Iolcus", "Pherai (Thessaly)", "Phylace", "Tisaia", "Histiaia/Oreos" };
+		var bestOptions = from c in newGameAvailableCrew
+						  let network = Network.GetCrewMemberNetwork(c)
+						  where network.Any(s => nearestToStart.Contains(s.name)) && network.Count() < 10
+						  select c;
+
+		// use people with low # connections as backup options. this is just to keep the early game from being confusing
+		var backupOptions = from c in newGameAvailableCrew
+							let network = Network.GetCrewMemberNetwork(c)
+							where network.Count() < 10
+							select c;
+
+		var remainingNeeded = Ship.StartingCrewSize - bestOptions.Count();
+		if(remainingNeeded > 0) {
+			newGameAvailableCrew = bestOptions.Concat(backupOptions.Take(remainingNeeded)).ToList();
+		}
+		else {
+			newGameAvailableCrew = bestOptions.ToList();
+		}
+
 	}
 
 	public List<CrewMember> GenerateRandomCrewMembers(int numberOfCrewmanNeeded) {

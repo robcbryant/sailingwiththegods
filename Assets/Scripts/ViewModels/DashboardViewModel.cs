@@ -15,6 +15,7 @@ public class DashboardViewModel : Model
 	public readonly ObservableCollection<CrewManagementMemberViewModel> CrewList;
 
 	public BoundModel<float> Clout;
+	public CrewMember Jason => Globals.GameVars.masterCrewList.FirstOrDefault(c => c.isJason);
 
 	public DashboardViewModel() {
 
@@ -35,7 +36,7 @@ public class DashboardViewModel : Model
 
 	}
 
-	void OnCrewCityClicked(CityViewModel city) {
+	public void OnCrewCityClicked(CityViewModel city) {
 		Debug.Log("City clicked: " + city.PortName);
 
 		if(Globals.UI.IsShown<CityView>()) {
@@ -47,7 +48,7 @@ public class DashboardViewModel : Model
 		Globals.UI.Show<CityView, CityViewModel>(new CityDetailsViewModel(city.City, null));
 	}
 
-	void OnCrewClicked(CrewManagementMemberViewModel crew) {
+	public void OnCrewClicked(CrewManagementMemberViewModel crew) {
 
 		if (Globals.UI.IsShown<CityView>()) {
 			Globals.UI.Hide<CityView>();
