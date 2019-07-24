@@ -971,6 +971,20 @@ public class GameVars : MonoBehaviour
 		runningMainGameGUI = true;
 	}
 
+	// when you purchase the trireme, we add all the MUST have story crew members. 
+	public void FillBeginStoryCrew() {
+
+		foreach (int crewID in playerShipVariables.ship.mainQuest.questSegments[0].crewmembersToAdd) {
+			CrewMember currentMember = GetCrewMemberFromID(crewID);
+			if (!currentMember.isKillable && !currentMember.isJason) {
+				playerShipVariables.ship.crewRoster.Add(currentMember);
+			}
+		}
+
+		playerShipVariables.ship.crew = playerShipVariables.ship.crewRoster.Count;
+
+	}
+
 	public void FillNewGameCrewRosterAvailability() {
 		//We need to fill a list of 40 crewmembers for the player to choose from on a new game start
 		//--The first set will come from the Argonautica, and the top of the list will be populated with necessary characters for the plot
@@ -983,25 +997,10 @@ public class GameVars : MonoBehaviour
 		//TODO FIX THIS LATER Let's remove the randomly generated crew--this is just a safety precaution--might not be needed.
 		playerShipVariables.ship.crewRoster.Clear();
 
-		//First let's add all the MUST have crew
-		int indexCounter = 0;
-		Debug.Log(playerShipVariables.ship.mainQuest.questSegments.Count);
-		Debug.Log(playerShipVariables.ship.mainQuest.questSegments[0]);
-
+		//Let's add all the optional crew from the Argonautica
 		foreach (int crewID in playerShipVariables.ship.mainQuest.questSegments[0].crewmembersToAdd) {
 			CrewMember currentMember = GetCrewMemberFromID(crewID);
-			if (!currentMember.isKillable) {
-				newGameAvailableCrew.Add(currentMember);
-				//also make sure the matching list of bools is TRUE for quest crewman
-				newGameCrewSelectList[indexCounter] = true;
-				indexCounter++;
-			}
-		}
-
-		//Now let's add all the optional crew from the Argonautica
-		foreach (int crewID in playerShipVariables.ship.mainQuest.questSegments[0].crewmembersToAdd) {
-			CrewMember currentMember = GetCrewMemberFromID(crewID);
-			if (currentMember.isKillable) {
+			if (currentMember.isKillable && !currentMember.isJason) {
 				newGameAvailableCrew.Add(currentMember);
 			}
 		}
@@ -1022,9 +1021,7 @@ public class GameVars : MonoBehaviour
 		while (newGameAvailableCrew.Count < 40) {
 			newGameAvailableCrew.Add(GenerateRandomCrewMembers(1)[0]);
 		}
-
-
-
+		
 	}
 
 	public List<CrewMember> GenerateRandomCrewMembers(int numberOfCrewmanNeeded) {

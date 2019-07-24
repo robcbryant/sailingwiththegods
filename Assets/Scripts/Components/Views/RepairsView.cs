@@ -11,8 +11,10 @@ public class RepairsViewModel : Model
 	GameVars GameVars => Globals.GameVars;
 
 	public int costToRepair { get; private set; }
+	public int costToBuyUpgrade => 10000;			// TODO: Drive with something.
 
 	public BoundModel<float> shipHealth { get; private set; }
+	public BoundModel<int> shipLevel { get; private set; }
 
 	public RepairsViewModel() {
 
@@ -26,10 +28,10 @@ public class RepairsViewModel : Model
 		}
 
 		shipHealth = new BoundModel<float>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.health));
+		shipLevel = new BoundModel<int>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.upgradeLevel));
 
 	}
 
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_RepairShipByOneHP() {
 		GameVars.playerShipVariables.ship.health += 1f;
 		//make sure the hp can't go above 100
@@ -45,7 +47,6 @@ public class RepairsViewModel : Model
 		NotifyAny();
 	}
 
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_RepairShipByAllHP() {
 		if (Mathf.CeilToInt(GameVars.playerShipVariables.ship.health) >= 100) {
 			GameVars.showNotification = true;
@@ -59,6 +60,24 @@ public class RepairsViewModel : Model
 		NotifyAny();
 	}
 
+	public void GUI_BuyNewShip() {
+		if(GameVars.playerShipVariables.ship.currency > costToBuyUpgrade) {
+			GameVars.playerShipVariables.ship.upgradeLevel = 1;
+			GameVars.playerShipVariables.ship.currency -= costToBuyUpgrade;
+
+			// TODO: These should be defined per uprade level, but until we have a better idea how upgrades will work long term, just hard here
+			GameVars.playerShipVariables.ship.crewCapacity = 30;
+			GameVars.playerShipVariables.ship.cargo_capicity_kg = 1200;
+
+			// add all the non-fireable story crew members now that you have your big boy ship
+			GameVars.FillBeginStoryCrew();
+		}
+		else { 
+			GameVars.showNotification = true;
+			GameVars.notificationMessage = "Earn more drachma through trade to upgrade your ship!";
+		}
+	}
+
 }
 
 public class RepairsView : ViewBehaviour<RepairsViewModel>
@@ -68,6 +87,7 @@ public class RepairsView : ViewBehaviour<RepairsViewModel>
 	[SerializeField] StringView CostAllHp = null;
 	[SerializeField] ButtonView RepairOneButton = null;
 	[SerializeField] ButtonView RepairAllButton = null;
+	[SerializeField] ButtonView UpgradeButton = null;
 
 	public override void Bind(RepairsViewModel model) {
 		base.Bind(model);
@@ -86,6 +106,12 @@ public class RepairsView : ViewBehaviour<RepairsViewModel>
 			Label = "Repair",
 			OnClick = Model.GUI_RepairShipByAllHP
 		}));
+
+		UpgradeButton.Bind(ValueModel.New(new ButtonViewModel {
+			Label = "Buy",
+			OnClick = model.GUI_BuyNewShip
+		}));
+
 	}
 
 	protected override void Refresh(object sender, string propertyChanged) {
@@ -113,5 +139,8 @@ public class RepairsView : ViewBehaviour<RepairsViewModel>
 			RepairOneButton.GetComponent<Button>().interactable = true;
 			RepairAllButton.GetComponent<Button>().interactable = true;
 		}
+
+		// TODO: Flesh out upgrade system? For now, you can only upgrade once and it just gives you the main ship. You start out with a smaller one.
+		UpgradeButton.GetComponent<Button>().interactable = Model.shipLevel.Value == 0;
 	}
 }

@@ -108,8 +108,8 @@ public class GameViewModel : Model
 		else GameVars.gameDifficulty_Beginner = true;
 		GameVars.SetupBeginnerGameDifficulty();
 
-		// since we're skipping crew select, force pick the first 3 members (you start with 3 now
-		for(var i = 0; i < Ship.StartingCrewSize; i++) {
+		// since we're skipping crew select, force pick the first StartingCrewSize members
+		for (var i = 0; i < Ship.StartingCrewSize; i++) {
 			GameVars.newGameCrewSelectList[i] = true;
 		}
 

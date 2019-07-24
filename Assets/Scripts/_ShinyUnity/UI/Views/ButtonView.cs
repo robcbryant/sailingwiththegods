@@ -62,7 +62,9 @@ public class ButtonView : ViewBehaviour<IValueModel<ButtonViewModel>>
 			return;
 		}
 
-		Label?.Bind(new BoundModel<string>(Model.Value, nameof(Model.Value.Label)));
+		if(Model.Value.Label != null) {
+			Label?.Bind(new BoundModel<string>(Model.Value, nameof(Model.Value.Label)));
+		}
 	}
 
 	void OnClick() {

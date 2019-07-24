@@ -115,6 +115,8 @@ public class CrewMember
 	public bool isPartOfMainQuest;
 	public CrewType typeOfCrew;
 
+	public bool isJason => name == "Jason";
+
 	SkillModifiers _changeOnHire;
 	public SkillModifiers changeOnHire { get { if(_changeOnHire == null) InitChangeOnHire(); return _changeOnHire; } }
 
@@ -564,7 +566,7 @@ public class Ship : Model
 	public const int StartingCargoCap = 200;	// 1200
 	public const int StartingWater = 50;		// 300
 	public const int StartingFood = 50;			// 300
-	public const int StartingCrewSize = 0;		// 30 - KDTODO: Changed to 0 because the questline forces like 7 people into your crew anyway (StartingCrewCap must match atm)
+	public const int StartingCrewSize = 5;		// 30
 
 	public string name;
 	public float speed;
@@ -582,6 +584,9 @@ public class Ship : Model
 	public MainQuestLine mainQuest;
 	public List<int> networks;
 	public int originSettlement;
+
+	private int _upgradeLevel;
+	public int upgradeLevel { get => _upgradeLevel; set { _upgradeLevel = value; Notify(); } }
 
 	private float _health;
 	public float health { get => _health; set { _health = value; Notify(); } }
