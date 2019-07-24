@@ -76,8 +76,11 @@ public class GameVars : MonoBehaviour
 	public GameObject terrain;
 	public GameObject cityLightsParent;
 
-	[Header("Ununorganized Scene Refs")]
+	[Header("Ship Scene Refs")]
 	public GameObject[] sails = new GameObject[6];
+	public GameObject[] shipLevels;
+
+	[Header("Ununorganized Scene Refs")]
 	public List<CrewMember> currentlyAvailableCrewMembersAtPort; // updated every time ship docks at port
 
 	[Header("GUI Scene Refs")]
@@ -968,6 +971,33 @@ public class GameVars : MonoBehaviour
 
 		//Flag the main GUI scripts to turn on
 		runningMainGameGUI = true;
+	}
+
+	public void UpgradeShip(int costToBuyUpgrade) {
+		playerShipVariables.ship.upgradeLevel = 1;
+		playerShipVariables.ship.currency -= costToBuyUpgrade;
+
+		// TODO: These should be defined per uprade level, but until we have a better idea how upgrades will work long term, just hard here
+		playerShipVariables.ship.crewCapacity = 30;
+		playerShipVariables.ship.cargo_capicity_kg = 1200;
+
+		// add all the non-fireable story crew members now that you have your big boy ship
+		FillBeginStoryCrew();
+
+		Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
+			Title = "Welcome to the Argonautica!",
+			Message = "Find your way through the dangerous seas to complete your quest! You have found yourself at Pagasae, where King Pelias has given you the task of sailing across " +
+					"the Aegean and the Black Sea to retrieve the Golden Fleece. This is the hide of the flying ram that brought Phrixus from Boetia to Aea. The hide now hangs on a tree on the other side of the Black" +
+					" Sea in the city of Aea. The great lord Aeetes prizes the fleece, and a very large dragon guards it.\n\n" +
+					"The task seems impossible!But you do not sail alone, Jason.You have assembled a group of the most powerful warriors, sailors, and prophets in Greece to help you in your quest. " +
+					"Most are the sons of royal families, and each one has a unique skill.Once the heroes have all arrived, your crew stocks the ships and the people of Pagasae greet you all."
+		});
+
+		// show the new ship model
+		foreach (var upgradeLevel in shipLevels) {
+			upgradeLevel.SetActive(false);
+		}
+		shipLevels[playerShipVariables.ship.upgradeLevel].SetActive(true);
 	}
 
 	// when you purchase the trireme, we add all the MUST have story crew members. 
