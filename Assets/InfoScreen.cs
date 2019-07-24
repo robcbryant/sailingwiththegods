@@ -16,6 +16,9 @@ public class InfoScreenModel : Model
 
 	private Sprite _Icon;
 	public Sprite Icon { get => _Icon; set { _Icon = value; Notify(); } }
+
+	private float _IconScale = 1;
+	public float IconScale { get => _IconScale; set { _IconScale = value; Notify(); } }
 }
 
 public class InfoScreen : ViewBehaviour<InfoScreenModel>
@@ -37,5 +40,13 @@ public class InfoScreen : ViewBehaviour<InfoScreenModel>
 		Subtitle?.Bind(new BoundModel<string>(model, nameof(Model.Subtitle)));
 		Title?.Bind(new BoundModel<string>(Model, nameof(Model.Title)));
 		Message?.Bind(new BoundModel<string>(Model, nameof(Model.Message)));
+	}
+
+	protected override void Refresh(object sender, string propertyChanged) {
+		base.Refresh(sender, propertyChanged);
+
+		if(Icon != null) {
+			Icon.transform.localScale = Vector3.one * Model.IconScale;
+		}
 	}
 }
