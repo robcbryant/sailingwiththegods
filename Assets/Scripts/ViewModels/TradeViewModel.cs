@@ -12,10 +12,8 @@ public enum TradeAction
 	Sell
 }
 
-public class TradeViewModel : Model
+public class TradeViewModel : CityViewModel
 {
-	private GameVars GameVars;
-
 	public Ship Ship => GameVars.playerShipVariables.ship;
 
 	public readonly ObservableCollection<CargoItemTradeViewModel> Available;
@@ -27,13 +25,11 @@ public class TradeViewModel : Model
 	private CargoItemTradeViewModel _Selected;
 	public CargoItemTradeViewModel Selected { get => _Selected; set { _Selected = value; Notify(); } }
 
-	public string PortName => GameVars.currentSettlement.name;
 	public string Capacity => Mathf.RoundToInt(GameVars.playerShipVariables.ship.CurrentCargoKg) + " / " + Mathf.RoundToInt(GameVars.playerShipVariables.ship.cargo_capicity_kg) + " kg";
 
 	public BoundModel<int> Money;
 
-	public TradeViewModel() {
-		GameVars = Globals.GameVars;
+	public TradeViewModel() : base(Globals.GameVars.currentSettlement, null) {
 
 		Money = new BoundModel<int>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.currency));
 
@@ -45,6 +41,7 @@ public class TradeViewModel : Model
 			.Where(r => r.amount_kg > 0)
 			.Select(r => new CargoItemTradeViewModel(TradeAction.Sell, r, this))
 		);
+
 	}
 
 	public void BackToPort() {

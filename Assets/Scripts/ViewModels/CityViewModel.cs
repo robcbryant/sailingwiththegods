@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class CityDetailsViewModel : CityViewModel
 {
@@ -62,13 +63,46 @@ public class CityDetailsViewModel : CityViewModel
 
 public class CityViewModel : Model
 {
-	protected GameVars GameVars;
+	protected GameVars GameVars { get; private set; }
 	public Settlement City { get; private set; }
 
 	public string PortName => City.name;
+	public string PortDescription => City.description;
 
 	private Action<CityViewModel> _OnClick;
 	public Action<CityViewModel> OnClick { get => _OnClick; set { _OnClick = value; Notify(); } }
+
+	public Sprite PortIcon {
+		get {
+			Sprite currentBGTex = Resources.Load<Sprite>("settlement_portraits/" + City.settlementID);
+
+			//Now test if it exists, if the settlement does not have a matching texture, then default to a basic one
+			if (currentBGTex) return currentBGTex;
+			else return Resources.Load<Sprite>("settlement_portraits/gui_port_portrait_default");
+		}
+	}
+
+	public Sprite PortCoin {
+		get {
+			Sprite currentCoinTex = Resources.Load<Sprite>("settlement_coins/" + City.settlementID);
+
+			//Now test if it exists, if the settlement does not have a matching texture, then default to a basic one
+			if (currentCoinTex) return currentCoinTex;
+			else return Resources.Load<Sprite>("settlement_coins/default_coin_texture");
+		}
+	}
+
+	public string PortPopulationRank {
+		get {
+			int pop = City.population;
+			if (pop >= 0 && pop < 25) return "Population: Village";
+			else if (pop >= 25 && pop < 50) return "Population: Town";
+			else if (pop >= 50 && pop < 75) return "Population: City";
+			else if (pop >= 75 && pop <= 100) return "Population: Metropolis";
+			else return "";
+		}
+
+	}
 
 	public CityViewModel(Settlement city, Action<CityViewModel> onClick) {
 		GameVars = Globals.GameVars;

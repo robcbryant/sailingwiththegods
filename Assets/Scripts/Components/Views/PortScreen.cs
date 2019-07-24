@@ -25,6 +25,8 @@ public class PortScreen : ViewBehaviour<PortViewModel>
 	[SerializeField] ButtonView Loans = null;
 	[SerializeField] ButtonView Repairs = null;
 
+	[SerializeField] ImageView PortIcon = null;
+
 	public override void Bind(PortViewModel model) {
 		base.Bind(model);
 
@@ -42,7 +44,12 @@ public class PortScreen : ViewBehaviour<PortViewModel>
 		}));
 
 		Info?.Bind(ValueModel.New(new ButtonViewModel {
-			OnClick = () => Debug.Log("Info clicked for " + model.PortName)
+			OnClick = () => Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
+				Icon = model.PortCoin,
+				Title = model.PortName,
+				Subtitle = model.PortPopulationRank,
+				Message = model.PortDescription
+			})
 		}));
 
 		Loans?.Bind(ValueModel.New(new ButtonViewModel {
@@ -59,6 +66,8 @@ public class PortScreen : ViewBehaviour<PortViewModel>
 			Label = "Repairs",
 			OnClick = () => Globals.UI.Show<RepairsView, RepairsViewModel>(new RepairsViewModel())
 		}));
+
+		PortIcon?.Bind(new BoundModel<Sprite>(model, nameof(model.PortIcon)));
 
 		PortName.Bind(ValueModel.New(Model.PortName));
 		Capacity.Bind(new BoundModel<string>(Model.CrewManagement, nameof(Model.CrewManagement.Capacity)));

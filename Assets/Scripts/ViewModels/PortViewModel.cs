@@ -6,16 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class PortViewModel : Model
+public class PortViewModel : CityViewModel
 {
-	GameVars GameVars => Globals.GameVars;
-	Settlement Settlement => GameVars.currentSettlement;
-
-	public string PortName => Settlement.name;
 	public readonly CrewManagementViewModel CrewManagement;
 
-	public PortViewModel() {
-		CrewManagement = new CrewManagementViewModel(Settlement);
+	public PortViewModel() : base(Globals.GameVars.currentSettlement, null){
+		CrewManagement = new CrewManagementViewModel(City);
 	}
 
 	public void GoToTown() {
