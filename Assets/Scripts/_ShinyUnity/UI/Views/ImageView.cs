@@ -30,6 +30,12 @@ public class ImageView : ViewBehaviour<IValueModel<Sprite>>
 {
 	[SerializeField] Image Image = null;
 
+	private void Awake() {
+		if (Image == null) {
+			Image = GetComponentInChildren<Image>();
+		}
+	}
+
 	protected override void Refresh(object sender, string propertyChanged) {
 		if (Image == null) return;
 		Image.sprite = Model.Value;

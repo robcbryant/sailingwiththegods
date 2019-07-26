@@ -69,7 +69,12 @@ public class CrewManagementMemberView : ViewBehaviour<CrewManagementMemberViewMo
 		base.Bind(model);
 
 		InfoButton?.Bind(ValueModel.New(new ButtonViewModel {
-			OnClick = () => Debug.Log("Clicked info button for " + Model.Name)
+			OnClick = () => Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
+				Icon = model.Portrait,
+				Title = model.Name,
+				Subtitle = model.Job,
+				Message = model.BackgroundInfo
+			})
 		}));
 
 		ActionButton?.Bind(ValueModel.New(new ButtonViewModel {

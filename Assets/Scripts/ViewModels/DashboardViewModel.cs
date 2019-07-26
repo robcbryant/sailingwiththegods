@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class DashboardViewModel : Model
 {
+	GameVars GameVars => Globals.GameVars;
+
 	public string CaptainsLog => Globals.GameVars.currentCaptainsLog;
 	public readonly CargoInventoryViewModel WaterInventory;
 	public readonly CargoInventoryViewModel FoodInventory;
@@ -15,6 +17,9 @@ public class DashboardViewModel : Model
 	public readonly ObservableCollection<CrewManagementMemberViewModel> CrewList;
 
 	public BoundModel<float> Clout;
+	public CrewMember Jason => Globals.GameVars.masterCrewList.FirstOrDefault(c => c.isJason);
+
+	public BoundModel<bool> SailsAreUnfurled { get; private set; }
 
 	public DashboardViewModel() {
 
@@ -33,9 +38,11 @@ public class DashboardViewModel : Model
 			.Select(c => new CrewManagementMemberViewModel(c, OnCrewClicked, OnCrewCityClicked))
 		);
 
+		SailsAreUnfurled = new BoundModel<bool>(Globals.GameVars.playerShipVariables.ship, nameof(Globals.GameVars.playerShipVariables.ship.sailsAreUnfurled));
+
 	}
 
-	void OnCrewCityClicked(CityViewModel city) {
+	public void OnCrewCityClicked(CityViewModel city) {
 		Debug.Log("City clicked: " + city.PortName);
 
 		if(Globals.UI.IsShown<CityView>()) {
@@ -47,12 +54,32 @@ public class DashboardViewModel : Model
 		Globals.UI.Show<CityView, CityViewModel>(new CityDetailsViewModel(city.City, null));
 	}
 
-	void OnCrewClicked(CrewManagementMemberViewModel crew) {
+	public void OnCrewClicked(CrewManagementMemberViewModel crew) {
 
 		if (Globals.UI.IsShown<CityView>()) {
 			Globals.UI.Hide<CityView>();
 		}
 
 		Globals.UI.Show<CrewDetailsScreen, CrewManagementMemberViewModel>(crew);
+	}
+
+	public void GUI_furlOrUnfurlSails() {
+		if (GameVars.playerShipVariables.ship.sailsAreUnfurled) {
+			GameVars.playerShipVariables.ship.sailsAreUnfurled = false;
+			foreach (GameObject sail in GameVars.sails)
+				sail.SetActive(false);
+		}
+		else {
+			GameVars.playerShipVariables.ship.sailsAreUnfurled = true;
+			foreach (GameObject sail in GameVars.sails)
+				sail.SetActive(true);
+
+		}
+	}
+
+	public void GUI_dropAnchor() {
+		//If the controls are locked--we are traveling so force it to stop
+		if (GameVars.controlsLocked && !GameVars.showSettlementGUI)
+			GameVars.playerShipVariables.rayCheck_stopShip = true;
 	}
 }

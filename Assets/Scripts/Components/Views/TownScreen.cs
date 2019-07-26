@@ -45,7 +45,13 @@ public class TownScreen : ViewBehaviour<TradeViewModel>
 		}));
 
 		Info?.Bind(ValueModel.New(new ButtonViewModel {
-			OnClick = () => Debug.Log("Info clicked for " + model.PortName)
+			OnClick = () => Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
+				Icon = model.PortCoin,
+				IconScale = 2,						// coin icons have a bunch of padding in their sprite, so scale it up
+				Title = model.PortName,
+				Subtitle = model.PortPopulationRank,
+				Message = model.PortDescription
+			})
 		}));
 
 		Money.Bind(ValueModel.Wrap(Model.Money)

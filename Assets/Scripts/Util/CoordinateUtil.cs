@@ -13,7 +13,9 @@ public static class CoordinateUtil
 
 	public const float unityWorldUnitResolution = 1193.920898f;//in meters
 	const float unityOrigin = 0;//This will always be 0,0 for both x and y
-
+	
+	public static float ToMeters(float worldUnits) => worldUnits * unityWorldUnitResolution;
+	public static float ToKilometers(float worldUnits) => ToMeters(worldUnits) / 1000f;
 
 	public static Vector2 Convert_WebMercator_UnityWorld(Vector2 WTM_Coordinate) {
 

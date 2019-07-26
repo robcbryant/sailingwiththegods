@@ -443,9 +443,6 @@ public class script_GUI : MonoBehaviour
 		// OTHER PORT GUI SETUP FUNCTIONS
 		GetCrewHometowns();
 		GUI_GetListOfBuiltMonuments();
-		GUI_SetPortCoinImage();
-		GUI_SetPortBGImage();
-		GUI_SetPortPopulation();
 		GUI_GetBuiltMonuments();
 		port_info_cityName.GetComponent<Text>().text = GameVars.currentSettlement.name;
 		port_info_description.GetComponent<Text>().text = GameVars.currentSettlement.description;
@@ -532,40 +529,6 @@ public class script_GUI : MonoBehaviour
 
 	public void GUI_GetBuiltMonuments() {
 		port_info_monumentsList.GetComponent<Text>().text = GameVars.playerShipVariables.ship.builtMonuments;
-	}
-
-	public void GUI_SetPortPopulation() {
-		int pop = GameVars.currentSettlement.population;
-		if (pop >= 0 && pop < 25) port_info_population.GetComponent<Text>().text = "Village";
-		else if (pop >= 25 && pop < 50) port_info_population.GetComponent<Text>().text = "Town";
-		else if (pop >= 50 && pop < 75) port_info_population.GetComponent<Text>().text = "City";
-		else if (pop >= 75 && pop <= 100) port_info_population.GetComponent<Text>().text = "Metropolis";
-
-	}
-
-	public void GUI_SetPortBGImage() {
-		Debug.Log("LOOKING FOR BG CITY-------->   " + GameVars.currentSettlement.settlementID.ToString());
-		//Get the settlement ID as a string
-		string currentID = GameVars.currentSettlement.settlementID.ToString();
-		Sprite currentBGTex = Resources.Load<Sprite>("settlement_portraits/" + currentID);
-		Debug.Log(currentBGTex);
-		//Now test if it exists, if the settlement does not have a matching texture, then default to a basic one
-		if (currentBGTex) { port_info_portImage.GetComponent<Image>().sprite = currentBGTex; }
-		else { port_info_portImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("settlement_portraits/gui_port_portrait_default"); }
-
-	}
-
-	public void GUI_SetPortCoinImage() {
-		Debug.Log("LOOKING FOR COIN CITY-------->   " + GameVars.currentSettlement.settlementID.ToString());
-		//Show the coin image associated with this settlement
-		//Get the settlement ID as a string
-		string currentID = GameVars.currentSettlement.settlementID.ToString();
-		Sprite currentCoinTex = Resources.Load<Sprite>("settlement_coins/" + currentID);
-		Debug.Log(currentCoinTex);
-		//Now test if it exists, if the settlement does not have a matching texture, then default to a basic one
-		if (currentCoinTex) { port_info_coinImage.GetComponent<Image>().sprite = currentCoinTex; }
-		else { port_info_coinImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("settlement_coins/default_coin_texture"); }
-
 	}
 
 
@@ -758,35 +721,6 @@ public class script_GUI : MonoBehaviour
 	//============================================================================================================================================================================
 	// ADDITIONAL FUNCTIONS FOR GUI BUTTONS (These are linked from the Unity Editor)
 	//============================================================================================================================================================================
-
-	//-----------------------------------------------------
-	//THIS IS THE UNFURLING / FURLING OF SAILS BUTTON
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
-	public void GUI_furlOrUnfurlSails() {
-		if (GameVars.sailsAreUnfurled) {
-			hud_button_furlSails.transform.GetChild(0).GetComponent<Text>().text = "Furl Sails";
-			GameVars.sailsAreUnfurled = false;
-			foreach (GameObject sail in GameVars.sails)
-				sail.SetActive(false);
-		}
-		else {
-			hud_button_furlSails.transform.GetChild(0).GetComponent<Text>().text = "Unfurl Sails";
-			GameVars.sailsAreUnfurled = true;
-			foreach (GameObject sail in GameVars.sails)
-				sail.SetActive(true);
-
-		}
-	}
-
-
-	//-----------------------------------------------------
-	//THIS IS THE DROP ANCHOR BUTTON
-	// REFERENCED IN BUTTON CLICK UNITYEVENT
-	public void GUI_dropAnchor() {
-		//If the controls are locked--we are traveling so force it to stop
-		if (GameVars.controlsLocked && !GameVars.showSettlementGUI)
-			GameVars.playerShipVariables.rayCheck_stopShip = true;
-	}
 
 	//-----------------------------------------------------
 	//THIS IS THE REST BUTTON

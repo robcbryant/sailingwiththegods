@@ -124,7 +124,6 @@ public class GameVars : MonoBehaviour
 	// ship
 	[HideInInspector] public GameObject playerShip;
 	[HideInInspector] public script_player_controls playerShipVariables;
-	[HideInInspector] public bool sailsAreUnfurled = true;
 
 	// captain's log
 	[HideInInspector] public string currentCaptainsLog = "";
@@ -971,6 +970,20 @@ public class GameVars : MonoBehaviour
 		runningMainGameGUI = true;
 	}
 
+	// when you purchase the trireme, we add all the MUST have story crew members. 
+	public void FillBeginStoryCrew() {
+
+		foreach (int crewID in playerShipVariables.ship.mainQuest.questSegments[0].crewmembersToAdd) {
+			CrewMember currentMember = GetCrewMemberFromID(crewID);
+			if (!currentMember.isKillable && !currentMember.isJason) {
+				playerShipVariables.ship.crewRoster.Add(currentMember);
+			}
+		}
+
+		playerShipVariables.ship.crew = playerShipVariables.ship.crewRoster.Count;
+
+	}
+
 	public void FillNewGameCrewRosterAvailability() {
 		//We need to fill a list of 40 crewmembers for the player to choose from on a new game start
 		//--The first set will come from the Argonautica, and the top of the list will be populated with necessary characters for the plot
@@ -983,25 +996,10 @@ public class GameVars : MonoBehaviour
 		//TODO FIX THIS LATER Let's remove the randomly generated crew--this is just a safety precaution--might not be needed.
 		playerShipVariables.ship.crewRoster.Clear();
 
-		//First let's add all the MUST have crew
-		int indexCounter = 0;
-		Debug.Log(playerShipVariables.ship.mainQuest.questSegments.Count);
-		Debug.Log(playerShipVariables.ship.mainQuest.questSegments[0]);
-
+		//Let's add all the optional crew from the Argonautica
 		foreach (int crewID in playerShipVariables.ship.mainQuest.questSegments[0].crewmembersToAdd) {
 			CrewMember currentMember = GetCrewMemberFromID(crewID);
-			if (!currentMember.isKillable) {
-				newGameAvailableCrew.Add(currentMember);
-				//also make sure the matching list of bools is TRUE for quest crewman
-				newGameCrewSelectList[indexCounter] = true;
-				indexCounter++;
-			}
-		}
-
-		//Now let's add all the optional crew from the Argonautica
-		foreach (int crewID in playerShipVariables.ship.mainQuest.questSegments[0].crewmembersToAdd) {
-			CrewMember currentMember = GetCrewMemberFromID(crewID);
-			if (currentMember.isKillable) {
+			if (currentMember.isKillable && !currentMember.isJason) {
 				newGameAvailableCrew.Add(currentMember);
 			}
 		}
@@ -1023,7 +1021,27 @@ public class GameVars : MonoBehaviour
 			newGameAvailableCrew.Add(GenerateRandomCrewMembers(1)[0]);
 		}
 
+		// filter out people who don't have connections at the ports in your starting bay or have overwhelmingly large networks
+		// prefer random people with small networks over argonautica crew who have very large networks. you should have to hire these people later
+		var nearestToStart = new string[] { "Pagasae", "Iolcus", "Pherai (Thessaly)", "Phylace", "Tisaia", "Histiaia/Oreos" };
+		var bestOptions = from c in newGameAvailableCrew
+						  let network = Network.GetCrewMemberNetwork(c)
+						  where network.Any(s => nearestToStart.Contains(s.name)) && network.Count() < 10
+						  select c;
 
+		// use people with low # connections as backup options. this is just to keep the early game from being confusing
+		var backupOptions = from c in newGameAvailableCrew
+							let network = Network.GetCrewMemberNetwork(c)
+							where network.Count() < 10
+							select c;
+
+		var remainingNeeded = Ship.StartingCrewSize - bestOptions.Count();
+		if(remainingNeeded > 0) {
+			newGameAvailableCrew = bestOptions.Concat(backupOptions.Take(remainingNeeded)).ToList();
+		}
+		else {
+			newGameAvailableCrew = bestOptions.ToList();
+		}
 
 	}
 

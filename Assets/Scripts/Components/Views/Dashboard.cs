@@ -13,6 +13,8 @@ public class Dashboard : ViewBehaviour<DashboardViewModel>
 	[SerializeField] ButtonView MainMenuButton = null;
 	[SerializeField] ButtonView CargoButton = null;
 	[SerializeField] ButtonView CrewButton = null;
+	[SerializeField] ButtonView AnchorButton = null;
+	[SerializeField] ButtonView SailsButton = null;
 	[SerializeField] CargoInventoryView FoodInventory = null;
 	[SerializeField] CargoInventoryView WaterInventory = null;
 
@@ -40,7 +42,9 @@ public class Dashboard : ViewBehaviour<DashboardViewModel>
 		CrewButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Globals.UI.Show(CrewList, Model.CrewList) }));
 
 		MainMenuButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Globals.UI.Show<MainMenuScreen, GameViewModel>(new GameViewModel()) }));
-		CloutButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Debug.Log("Clout Clicked") }));
+		CloutButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Globals.UI.Show<CrewDetailsScreen, CrewManagementMemberViewModel>(
+			new CrewManagementMemberViewModel(model.Jason, model.OnCrewClicked, model.OnCrewCityClicked)
+		)}));
 
 		// TODO: make 5000 max clout a const somewhere
 		CloutSlider.Bind(Model.Clout.Select(c => c / 5000f));
@@ -49,5 +53,11 @@ public class Dashboard : ViewBehaviour<DashboardViewModel>
 
 		FoodInventory.Bind(Model.FoodInventory);
 		WaterInventory.Bind(Model.WaterInventory);
+
+		AnchorButton?.Bind(ValueModel.New(new ButtonViewModel { OnClick = Model.GUI_dropAnchor }));
+		SailsButton?.Bind(model.SailsAreUnfurled.Select(b => new ButtonViewModel {
+			Label = b ? "Furl Sails" : "Unfurl Sails",
+			OnClick = model.GUI_furlOrUnfurlSails
+		}));
 	}
 }

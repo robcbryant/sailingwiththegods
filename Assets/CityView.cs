@@ -12,6 +12,7 @@ public class CityView : ViewBehaviour<CityViewModel>
 	[SerializeField] CrewManagementListView Crew = null;
 
 	[SerializeField] StringView PortName = null;
+	[SerializeField] StringView Distance = null;
 
 	[SerializeField] CargoListView Buy = null;
 	[SerializeField] CargoListView Sell = null;
@@ -29,6 +30,9 @@ public class CityView : ViewBehaviour<CityViewModel>
 		}
 
 		PortName?.Bind(ValueModel.New(model.PortName));
+		Distance?.Bind(ValueModel.New(model.Distance)
+			.Select(d => string.Format("{0} km away", Mathf.RoundToInt(d)))
+		);
 
 		ActionButton?.Bind(ValueModel.New(new ButtonViewModel {
 			OnClick = () => model.OnClick?.Invoke(Model)

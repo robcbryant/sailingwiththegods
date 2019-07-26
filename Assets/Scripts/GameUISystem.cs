@@ -23,6 +23,7 @@ public class GameUISystem : UISystem
 	[SerializeField] RepairsView RepairsView = null;
 	[SerializeField] ShrinesView ShrinesView = null;
 	[SerializeField] TavernView TavernView = null;
+	[SerializeField] InfoScreen InfoScreen = null;
 
 	void AddViews() {
 		Add(Dashboard);
@@ -36,6 +37,7 @@ public class GameUISystem : UISystem
 		Add(RepairsView);
 		Add(ShrinesView);
 		Add(TavernView);
+		Add(InfoScreen);
 	}
 
 	void Start() {
