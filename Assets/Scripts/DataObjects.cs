@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 public class Loan
@@ -66,10 +67,10 @@ public class MainQuestLine
 public class Journal
 {
 
-	public List<int> knownSettlements;
+	public ObservableCollection<int> knownSettlements;
 
 	public Journal() {
-		this.knownSettlements = new List<int>();
+		this.knownSettlements = new ObservableCollection<int>();
 	}
 
 	public void AddNewSettlementToLog(int settlementID) {
@@ -503,7 +504,7 @@ public class Settlement
 	public int typeOfSettlement;
 	public string description;
 	public List<int> networks;
-	public List<CrewMember> availableCrew;
+	public ObservableCollection<CrewMember> availableCrew;
 	public string prefabName;
 
 	public Resource GetCargoByName(string name) => cargo.FirstOrDefault(c => c.name == name);
@@ -532,7 +533,7 @@ public class Settlement
 			new Resource ("Prestige Goods", 0f),
 		};
 		networks = new List<int>();
-		availableCrew = new List<CrewMember>();
+		availableCrew = new ObservableCollection<CrewMember>();
 	}
 
 	//This is a debug class to make a blank settlement for testing
@@ -545,7 +546,7 @@ public class Settlement
 		this.tax_neutral = 0;
 		this.description = "FAKE SETTLEMENT--LOOK INTO THIS ERROR";
 		this.networks = new List<int>();
-		this.availableCrew = new List<CrewMember>();
+		availableCrew = new ObservableCollection<CrewMember>();
 
 	}
 
@@ -572,18 +573,21 @@ public class Ship : Model
 	public float speed;
 	public float cargo_capicity_kg;
 	public Resource[] cargo;
-	public int crewCapacity;
-	public int crew;
 	public float totalNumOfDaysTraveled;
 	public int networkID;
 	public List<CaptainsLogEntry> shipCaptainsLog;
-	public List<CrewMember> crewRoster;
 	public Journal playerJournal;
 	public int currentNavigatorTarget;
 	public Loan currentLoan;
 	public MainQuestLine mainQuest;
 	public List<int> networks;
 	public int originSettlement;
+
+	public int crew => crewRoster.Count;
+	public ObservableCollection<CrewMember> crewRoster;
+
+	private int _crewCapacity = StartingCrewCap;
+	public int crewCapacity { get => _crewCapacity; set { _crewCapacity = value; Notify(); } }
 
 	private bool _sailsAreUnfurled = true;
 	public bool sailsAreUnfurled { get => _sailsAreUnfurled; set { _sailsAreUnfurled = value; Notify(); } }
@@ -614,7 +618,7 @@ public class Ship : Model
 		this.health = health;
 		this.cargo_capicity_kg = cargo_capcity_kg;
 		this.shipCaptainsLog = new List<CaptainsLogEntry>();
-		this.crewRoster = new List<CrewMember>();
+		this.crewRoster = new ObservableCollection<CrewMember>();
 		this.playerJournal = new Journal();
 
 		cargo = new Resource[] {
@@ -637,7 +641,6 @@ public class Ship : Model
 
 		this.currency = 500;
 		this.crewCapacity = StartingCrewCap;
-		this.crew = 0;
 		this.playerClout = 50f;
 		this.currentNavigatorTarget = -1;
 		this.totalNumOfDaysTraveled = 0;

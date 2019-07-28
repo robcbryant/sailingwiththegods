@@ -75,13 +75,12 @@ public class TavernViewModel : Model
 {
 	GameVars GameVars => Globals.GameVars;
 
-	public ObservableCollection<CityViewModel> Cities { get; private set; }
+	public ICollectionModel<CityViewModel> Cities { get; private set; }
 
 	public TavernViewModel() {
-		Cities = new ObservableCollection<CityViewModel>(GameVars.playerShipVariables.ship.playerJournal.knownSettlements
+		Cities = ValueModel.Wrap(GameVars.playerShipVariables.ship.playerJournal.knownSettlements)
 			.Where(id => id != GameVars.currentSettlement.settlementID)
-			.Select(id => new TavernCityViewModel(GameVars.GetSettlementFromID(id)))
-			.Cast<CityViewModel>());
+			.Select(id => new TavernCityViewModel(GameVars.GetSettlementFromID(id)) as CityViewModel);
 	}
 }
 

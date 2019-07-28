@@ -27,7 +27,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
+using System.Collections.Specialized;
+using System.Collections.ObjectModel;
 using UnityEngine;
+using System.Collections;
 
 public class Model : INotifyPropertyChanged
 {
@@ -150,14 +153,261 @@ public interface IValueModel<T> : INotifyPropertyChanged
 	T Value { get; set; }
 }
 
+public class CompoundWrapperModel<TIn1, TIn2, TOut> : Model, IValueModel<TOut>
+{
+	// this is a Select that adds a dependency on a second model. it only works because it's a select
+
+	EventOwner Owner = new EventOwner();
+	DelegateHandle Handle1;
+	DelegateHandle Handle2;
+
+	IValueModel<TIn1> Source1;
+	IValueModel<TIn2> Source2;
+	Func<TIn1, TIn2, TOut> AdaptOut;
+
+	// keep a local cache of the value. we'll get notified if it ever changes
+	private TOut _value;
+	public TOut Value {
+		get => _value;
+		set => throw new NotImplementedException("Cannot set a compound wrapper model. It's a mapping from 2 models into one read-only model.");
+	}
+
+	void OnPropertyChanged(object sender, PropertyChangedEventArgs e) {
+		if (sender == Source1 || sender == Source2) {
+			Refresh();
+			NotifyAny();
+		}
+	}
+
+	void Refresh() {
+		_value = AdaptOut(Source1.Value, Source2.Value);
+	}
+
+	public void Dispose() {
+		Owner.Dispose();
+		Handle1.Dispose();
+		Handle2.Dispose();
+	}
+
+	public CompoundWrapperModel(IValueModel<TIn1> source1, IValueModel<TIn2> source2, Func<TIn1, TIn2, TOut> adaptOut) {
+		AdaptOut = adaptOut;
+
+		Bind(source1, source2);
+	}
+
+	public void Bind(IValueModel<TIn1> source1, IValueModel<TIn2> source2) {
+		if (source1 == null || source2 == null) Debug.LogError("Tried to bind a model to a null source model.");
+
+		Source1 = source1;
+		Source2 = source2;
+
+		Owner.Unsubscribe(Handle1);
+		Owner.Unsubscribe(Handle2);
+		Handle1 = Owner.Subscribe(() => source1.PropertyChanged += OnPropertyChanged, () => source1.PropertyChanged -= OnPropertyChanged);
+		Handle2 = Owner.Subscribe(() => source2.PropertyChanged += OnPropertyChanged, () => source2.PropertyChanged -= OnPropertyChanged);
+
+		Refresh();
+		NotifyAny();
+	}
+}
+
 public static class ValueModel
 {
 	public static ValueModel<T> New<T>(T value) => new ValueModel<T>(value);
 	public static WrapperModel<T, T> Wrap<T>(IValueModel<T> value) => new WrapperModel<T, T>(value, o => o, o => o);
+	public static ICollectionModel<T> Wrap<T>(ObservableCollection<T> source) => new CollectionWrapperModel<T>(source);
 
 	// adaptors
 	public static IValueModel<string> AsString<T>(this IValueModel<T> self) => new WrapperModel<T, string>(self, o => o.ToString(), o => throw new NotImplementedException("AsString is readonly"));
 	public static IValueModel<TOut> Select<T, TOut>(this IValueModel<T> self, Func<T, TOut> adaptor) => new WrapperModel<T, TOut>(self, o => adaptor(o), o => throw new NotImplementedException("Select is readonly"));
+	public static IValueModel<TOut> Select<TIn1, TIn2, TOut>(this IValueModel<TIn1> self, IValueModel<TIn2> second, Func<TIn1, TIn2, TOut> adaptor) => new CompoundWrapperModel<TIn1, TIn2, TOut>(self, second, (o1, o2) => adaptor(o1, o2));
+
+	// collection wrappers
+	public static CollectionWrapperModel<T, TOut, int> Select<T, TOut>(this ICollectionModel<T> self, Func<T, TOut> adaptor) => new CollectionWrapperModel<T, TOut, int>(self, o => true, o => adaptor(o), o => throw new NotImplementedException("Select is readonly"), o => 1);
+	public static CollectionWrapperModel<T, T, int> Where<T>(this ICollectionModel<T> self, Func<T, bool> filter) => new CollectionWrapperModel<T, T, int>(self, o => filter(o), o => o, o => o, o => 1);
+	public static CollectionWrapperModel<T, T, TOrderKey> OrderBy<T, TOrderKey>(this ICollectionModel<T> self, Func<T, TOrderKey> selector) => new CollectionWrapperModel<T, T, TOrderKey>(self, o => true, o => o, o => o, selector);
+}
+
+public interface ICollectionModel<T> : IValueModel<IEnumerable<T>>, ICollection<T>, INotifyCollectionChanged
+{
+}
+
+
+public class CollectionWrapperModel<T> : Model, ICollectionModel<T>
+{
+	// this is needed because IValueModel doesn't make sense for collections...
+	public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+	// lazy evaluation of the linq makes this work on every call
+	IEnumerable<T> Data => Source;
+
+	public IEnumerable<T> Value { get => Data; set => throw new NotImplementedException("Cannot set. CollectionWrapper is read-only."); }
+
+	EventOwner Owner = new EventOwner();
+	DelegateHandle Handle;
+
+	ObservableCollection<T> Source;
+
+	void OnPropertyChanged(object sender, NotifyCollectionChangedEventArgs e) {
+		if (sender == Source) {
+			NotifyCollection(e);
+			Notify();
+		}
+	}
+
+	public void Dispose() {
+		Owner.Dispose();
+		Handle.Dispose();
+	}
+
+	public CollectionWrapperModel(ObservableCollection<T> source) {
+		Bind(source);
+	}
+
+	public void Bind(ObservableCollection<T> source) {
+		if (source == null) Debug.LogError("Tried to bind a model to a null source model.");
+
+		Source = source;
+
+		Owner.Unsubscribe(Handle);
+		Handle = Owner.Subscribe(() => source.CollectionChanged += OnPropertyChanged, () => source.CollectionChanged -= OnPropertyChanged);
+
+		NotifyAny();
+		NotifyCollectionAny();
+	}
+
+	void NotifyCollection(NotifyCollectionChangedEventArgs e) {
+		CollectionChanged?.Invoke(this, e);
+	}
+
+	void NotifyCollectionAny() {
+		CollectionChanged?.Invoke(this, null);
+	}
+
+	#region ICollection<T> implementation
+
+	public int Count => Value.Count();
+	public bool IsReadOnly => false;
+
+	public void Add(T obj) => Source.Add(obj);
+	public bool Remove(T obj) => Source.Remove(obj);
+	public void Clear() => Source.Clear();
+
+	public IEnumerator<T> GetEnumerator() => Value.GetEnumerator();
+	IEnumerator IEnumerable.GetEnumerator() => Value.GetEnumerator();
+
+	public bool Contains(T item) => Value.Contains(item);
+	public void CopyTo(T[] array, int arrayIndex) => Value.ToList().CopyTo(array, arrayIndex);
+
+	#endregion
+}
+
+public class CollectionWrapperModel<TIn, TOut, TOrderKey> : Model, ICollectionModel<TOut>
+{
+	// this is needed because IValueModel doesn't make sense for collections...
+	public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+	// lazy evaluation of the linq makes this work on every call
+	IEnumerable<TOut> Data => Source.Value
+		.Where(o => Filter(o))
+		.Select(o => AdaptOut(o))
+		.OrderBy(OrderBy);
+
+	public IEnumerable<TOut> Value { get => Data; set => throw new NotImplementedException("Cannot set. CollectionWrapper is read-only."); }
+
+	EventOwner Owner = new EventOwner();
+	DelegateHandle Handle;
+
+	ICollectionModel<TIn> Source;
+	Func<TIn, TOut> AdaptOut;
+	Func<TOut, TIn> AdaptIn;
+	Func<TIn, bool> Filter;
+	Func<TOut, TOrderKey> OrderBy;
+
+	void OnPropertyChanged(object sender, NotifyCollectionChangedEventArgs e) {
+		if (sender == Source) {
+			if((e.OldItems != null && e.OldItems.Cast<TIn>().Any(o => Filter(o))) || (e.NewItems != null && e.NewItems.Cast<TIn>().Any(o => Filter(o)))) {
+
+				NotifyCollectionChangedEventArgs mappedArgs = null;
+
+				// observablecollection never has more than one item in each of its event args
+				switch (e.Action) {
+					case NotifyCollectionChangedAction.Add:
+						mappedArgs = new NotifyCollectionChangedEventArgs(e.Action, AdaptOut((TIn)e.NewItems[0]), e.NewStartingIndex);
+						break;
+					case NotifyCollectionChangedAction.Move:
+						mappedArgs = new NotifyCollectionChangedEventArgs(e.Action, AdaptOut((TIn)e.OldItems[0]), e.NewStartingIndex, e.OldStartingIndex);
+						break;
+					case NotifyCollectionChangedAction.Remove:
+						mappedArgs = new NotifyCollectionChangedEventArgs(e.Action, AdaptOut((TIn)e.OldItems[0]), e.OldStartingIndex);
+						break;
+					case NotifyCollectionChangedAction.Replace:
+						mappedArgs = new NotifyCollectionChangedEventArgs(e.Action, AdaptOut((TIn)e.NewItems[0]), AdaptOut((TIn)e.OldItems[0]), e.OldStartingIndex);
+						break;
+					case NotifyCollectionChangedAction.Reset:
+						mappedArgs = new NotifyCollectionChangedEventArgs(e.Action);
+						break;
+					default:
+						Debug.LogError("Unsupported collection change in CollectionWrapperModel.");
+						break;
+				}
+
+				NotifyCollection(mappedArgs);
+				Notify();
+			}
+		}
+	}
+
+	public void Dispose() {
+		Owner.Dispose();
+		Handle.Dispose();
+	}
+
+	public CollectionWrapperModel(ICollectionModel<TIn> source, Func<TIn, bool> filter, Func<TIn, TOut> adaptOut, Func<TOut, TIn> adaptIn, Func<TOut, TOrderKey> orderBy) {
+		AdaptOut = adaptOut;
+		AdaptIn = adaptIn;
+		Filter = filter;
+		OrderBy = orderBy;
+
+		Bind(source);
+	}
+
+	public void Bind(ICollectionModel<TIn> source) {
+		if (source == null) Debug.LogError("Tried to bind a model to a null source model.");
+
+		Source = source;
+
+		Owner.Unsubscribe(Handle);
+		Handle = Owner.Subscribe(() => source.CollectionChanged += OnPropertyChanged, () => source.CollectionChanged -= OnPropertyChanged);
+
+		NotifyAny();
+		NotifyCollectionAny();
+	}
+
+	void NotifyCollection(NotifyCollectionChangedEventArgs e) {
+		CollectionChanged?.Invoke(this, e);
+	}
+
+	void NotifyCollectionAny() {
+		CollectionChanged?.Invoke(this, null);
+	}
+
+	#region ICollection<T> implementation
+
+	public int Count => Value.Count();
+	public bool IsReadOnly => false;
+
+	public void Add(TOut obj) => Source.Add(AdaptIn(obj));
+	public bool Remove(TOut obj) => Source.Remove(AdaptIn(obj));
+	public void Clear() => Source.Clear();
+
+	public IEnumerator<TOut> GetEnumerator() => Value.GetEnumerator();
+	IEnumerator IEnumerable.GetEnumerator() => Value.GetEnumerator();
+
+	public bool Contains(TOut item) => Value.Contains(item);
+	public void CopyTo(TOut[] array, int arrayIndex) => Value.ToList().CopyTo(array, arrayIndex);
+
+	#endregion
 }
 
 public class WrapperModel<TIn, TOut> : Model, IValueModel<TOut>

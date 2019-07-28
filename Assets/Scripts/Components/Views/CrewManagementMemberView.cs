@@ -30,7 +30,7 @@ public class CrewManagementMemberViewModel : Model
 		"" : 
 		CitiesInNetwork.Count() + " Connections";
 
-	public readonly ObservableCollection<CityViewModel> CitiesInNetwork;
+	public readonly ICollectionModel<CityViewModel> CitiesInNetwork;
 
 	//TODO Temporary solution--need to add a clout check modifier
 	public int CostToHire => Member.clout * 2;
@@ -46,10 +46,10 @@ public class CrewManagementMemberViewModel : Model
 		
 		// don't bother building the network list if we're being created for a view that doesn't need it
 		if(onClickCity != null) {
-			CitiesInNetwork = new ObservableCollection<CityViewModel>(
+			CitiesInNetwork = ValueModel.Wrap(new ObservableCollection<CityViewModel>(
 				Globals.GameVars.Network.GetCrewMemberNetwork(Member)
 					.Select(s => new CityViewModel(s, onClickCity))
-			);
+			));
 		}
 	}
 }

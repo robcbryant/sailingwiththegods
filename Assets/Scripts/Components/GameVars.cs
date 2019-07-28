@@ -346,7 +346,8 @@ public class GameVars : MonoBehaviour
 		foreach (string crewID in parsedCrew) {
 			updatedCrew.Add(GetCrewMemberFromID(int.Parse(crewID)));
 		}
-		ship.crewRoster = updatedCrew;
+		ship.crewRoster.Clear();
+		updatedCrew.ForEach(c => ship.crewRoster.Add(c));
 
 		//Update Ship Position
 		string[] parsedXYZ = playerVars[27].Split(recordDelimiter, StringSplitOptions.None);
@@ -913,7 +914,6 @@ public class GameVars : MonoBehaviour
 		//	foreach (int crewID in playerShipVariables.ship.mainQuest.questSegments[0].crewmembersToAdd){
 		//		playerShipVariables.ship.crewRoster.Add (GetCrewMemberFromID(crewID));
 		//	}
-		playerShipVariables.ship.crew = playerShipVariables.ship.crewRoster.Count;
 
 		//Let's increase the ships cargo capacity
 		playerShipVariables.ship.cargo_capicity_kg = Ship.StartingCargoCap;
@@ -964,7 +964,8 @@ public class GameVars : MonoBehaviour
 
 		// setup each city with 5 crew available and for now, they never regenerate.
 		foreach(var settlement in settlement_masterList) {
-			settlement.availableCrew = GenerateRandomCrewMembers(5);
+			settlement.availableCrew.Clear();
+			GenerateRandomCrewMembers(5).ForEach(c => settlement.availableCrew.Add(c));
 		}
 
 		Debug.Log(playerShipVariables.ship.mainQuest.currentQuestSegment);
@@ -984,6 +985,7 @@ public class GameVars : MonoBehaviour
 		// add all the non-fireable story crew members now that you have your big boy ship
 		FillBeginStoryCrew();
 
+		Globals.UI.Hide<RepairsView>();
 		Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
 			Title = "Welcome to the Argonautica!",
 			Message = "Find your way through the dangerous seas to complete your quest! You have found yourself at Pagasae, where King Pelias has given you the task of sailing across " +
@@ -1009,8 +1011,6 @@ public class GameVars : MonoBehaviour
 				playerShipVariables.ship.crewRoster.Add(currentMember);
 			}
 		}
-
-		playerShipVariables.ship.crew = playerShipVariables.ship.crewRoster.Count;
 
 	}
 

@@ -10,28 +10,30 @@ public class CrewManagementViewModel : Model
 {
 	private GameVars GameVars;
 
-	public readonly ObservableCollection<CrewManagementMemberViewModel> AvailableCrew;
-	public readonly ObservableCollection<CrewManagementMemberViewModel> MyCrew;
+	public readonly ICollectionModel<CrewManagementMemberViewModel> AvailableCrew;
+	public readonly ICollectionModel<CrewManagementMemberViewModel> MyCrew;
 
-	public string Capacity => GameVars.playerShipVariables.ship.crewRoster.Count + " / " + GameVars.playerShipVariables.ship.crewCapacity + " crew";
+	public IValueModel<int> CrewCount;
+	public IValueModel<int> CrewCapacity;
+	public IValueModel<int> Money;
 
-	public BoundModel<int> Money;
+	Settlement Settlement { get; set; }
 
 	public CrewManagementViewModel(Settlement settlement) {
 		GameVars = Globals.GameVars;
+		Settlement = settlement;
 
 		Money = new BoundModel<int>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.currency));
+		CrewCapacity = new BoundModel<int>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.crewCapacity));
 
-		AvailableCrew = new ObservableCollection<CrewManagementMemberViewModel>(
-			settlement.availableCrew
-			.Where(crew => !GameVars.playerShipVariables.ship.crewRoster.Contains(crew))
-			.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null))
-		);
+		CrewCount = ValueModel.Wrap(GameVars.playerShipVariables.ship.crewRoster)
+			.Select(c => c.Count());
 
-		MyCrew = new ObservableCollection<CrewManagementMemberViewModel>(
-			GameVars.playerShipVariables.ship.crewRoster
-			.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null))
-		);
+		AvailableCrew = ValueModel.Wrap(settlement.availableCrew)
+			.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null));
+
+		MyCrew = ValueModel.Wrap(GameVars.playerShipVariables.ship.crewRoster)
+			.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null));
 	}
 
 	//=================================================================================================================
@@ -54,11 +56,7 @@ public class CrewManagementViewModel : Model
 		var crewman = crew.Member;
 
 		GameVars.playerShipVariables.ship.crewRoster.Remove(crewman);
-		MyCrew.Remove(crew);
-		AvailableCrew.Add(crew);
-
-		Notify(nameof(Capacity));
-		Notify(nameof(Money));
+		Settlement.availableCrew.Add(crewman);
 
 		GameVars.showNotification = true;
 		GameVars.notificationMessage = crewman.name + " looked at you sadly and said before leaving, 'I thought I was doing so well. I'm sorry I let you down. Guess I'll go drink some cheap wine...";
@@ -73,16 +71,10 @@ public class CrewManagementViewModel : Model
 			//Now check to see if there is room to hire a new crew member!
 			if (GameVars.playerShipVariables.ship.crewRoster.Count < GameVars.playerShipVariables.ship.crewCapacity) {
 				GameVars.playerShipVariables.ship.crewRoster.Add(crewman);
+				Settlement.availableCrew.Remove(crewman);
 
 				//Subtract the cost from the ship's money
 				GameVars.playerShipVariables.ship.currency -= crew.CostToHire;
-
-				//Remove Row
-				AvailableCrew.Remove(crew);
-				MyCrew.Add(crew);
-
-				Notify(nameof(Capacity));
-				Notify(nameof(Money));
 
 				//If there isn't room, then let the player know
 			}

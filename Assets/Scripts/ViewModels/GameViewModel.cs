@@ -72,7 +72,6 @@ public class GameViewModel : Model
 			GameVars.controlsLocked = false;
 			//For the argonautica, let's set the crew capacity to 30
 			GameVars.playerShipVariables.ship.crewCapacity = Ship.StartingCrewCap;
-			GameVars.playerShipVariables.ship.crew = GameVars.playerShipVariables.ship.crewRoster.Count;
 			//Let's increase the ships cargo capacity
 			GameVars.playerShipVariables.ship.cargo_capicity_kg = Ship.StartingCargoCap;
 			//Set the player's initial position to the new position

@@ -13,8 +13,8 @@ public class DashboardViewModel : Model
 	public string CaptainsLog => Globals.GameVars.currentCaptainsLog;
 	public readonly CargoInventoryViewModel WaterInventory;
 	public readonly CargoInventoryViewModel FoodInventory;
-	public readonly ObservableCollection<CargoInventoryViewModel> CargoList;
-	public readonly ObservableCollection<CrewManagementMemberViewModel> CrewList;
+	public readonly ICollectionModel<CargoInventoryViewModel> CargoList;
+	public readonly ICollectionModel<CrewManagementMemberViewModel> CrewList;
 
 	public BoundModel<float> Clout;
 	public CrewMember Jason => Globals.GameVars.masterCrewList.FirstOrDefault(c => c.isJason);
@@ -25,20 +25,18 @@ public class DashboardViewModel : Model
 
 		Clout = new BoundModel<float>(Globals.GameVars.playerShipVariables.ship, nameof(Globals.GameVars.playerShipVariables.ship.playerClout));
 
-		var water = Globals.GameVars.playerShipVariables.ship.cargo.FirstOrDefault(r => r.name == Resource.Water);
+		var water = GameVars.playerShipVariables.ship.cargo.FirstOrDefault(r => r.name == Resource.Water);
 		WaterInventory = new CargoInventoryViewModel(water);
 
-		var food = Globals.GameVars.playerShipVariables.ship.cargo.FirstOrDefault(r => r.name == Resource.Provisions);
+		var food = GameVars.playerShipVariables.ship.cargo.FirstOrDefault(r => r.name == Resource.Provisions);
 		FoodInventory = new CargoInventoryViewModel(food);
 
-		CargoList = new ObservableCollection<CargoInventoryViewModel>(Globals.GameVars.playerShipVariables.ship.cargo.Select(c => new CargoInventoryViewModel(c)));
-		
-		CrewList = new ObservableCollection<CrewManagementMemberViewModel>(Globals.GameVars.playerShipVariables.ship.crewRoster
-			.OrderBy(c => Globals.GameVars.Network.GetCrewMemberNetwork(c).Count())
-			.Select(c => new CrewManagementMemberViewModel(c, OnCrewClicked, OnCrewCityClicked))
-		);
+		CargoList = ValueModel.Wrap(new ObservableCollection<CargoInventoryViewModel>(GameVars.playerShipVariables.ship.cargo.Select(c => new CargoInventoryViewModel(c))));
 
-		SailsAreUnfurled = new BoundModel<bool>(Globals.GameVars.playerShipVariables.ship, nameof(Globals.GameVars.playerShipVariables.ship.sailsAreUnfurled));
+		CrewList = ValueModel.Wrap(GameVars.playerShipVariables.ship.crewRoster)
+			.Select(c => new CrewManagementMemberViewModel(c, OnCrewClicked, OnCrewCityClicked));
+
+		SailsAreUnfurled = new BoundModel<bool>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.sailsAreUnfurled));
 
 	}
 

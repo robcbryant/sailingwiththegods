@@ -26,17 +26,17 @@ public class ShrinesViewModel : Model
 		}
 	}
 
-	public ObservableCollection<ShrineOptionModel> Options { get; private set; }
+	public ICollectionModel<ShrineOptionModel> Options { get; private set; }
 
 	public ShrinesViewModel() {
-		Options = new ObservableCollection<ShrineOptionModel>(new[]
+		Options = ValueModel.Wrap(new ObservableCollection<ShrineOptionModel>(new[]
 		{
 			new ShrineOptionModel("Votive", BaseCost / 200, 1, "+1 Clout"),
 			new ShrineOptionModel("Feast", BaseCost / 10, 10, "+10 Clout"),
 			new ShrineOptionModel("Statue", BaseCost / 3, 30, "+30 Clout"),
 			new ShrineOptionModel("Shrine", BaseCost / 3 * 50, 50, "+50 Clout"),
 			new ShrineOptionModel("Temple", BaseCost / 3 * 50 * 20, 100, "+100 Clout")
-		});
+		}));
 	}
 }
 

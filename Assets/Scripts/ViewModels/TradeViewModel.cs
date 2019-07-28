@@ -16,8 +16,8 @@ public class TradeViewModel : CityViewModel
 {
 	public Ship Ship => GameVars.playerShipVariables.ship;
 
-	public readonly ObservableCollection<CargoItemTradeViewModel> Available;
-	public readonly ObservableCollection<CargoItemTradeViewModel> Mine;
+	public readonly ICollectionModel<CargoItemTradeViewModel> Available;
+	public readonly ICollectionModel<CargoItemTradeViewModel> Mine;
 
 	private TradeAction _TradeAction;
 	public TradeAction TradeAction { get => _TradeAction; set { _TradeAction = value; Notify(); } }
@@ -33,14 +33,15 @@ public class TradeViewModel : CityViewModel
 
 		Money = new BoundModel<int>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.currency));
 
-		Available = new ObservableCollection<CargoItemTradeViewModel>(GameVars.currentSettlement.cargo
+		// just wrap these non-observable lists as the resource list is static. only the contents change
+		Available = ValueModel.Wrap(new ObservableCollection<CargoItemTradeViewModel>(GameVars.currentSettlement.cargo
 			.Where(r => r.amount_kg > 0)
 			.Select(r => new CargoItemTradeViewModel(TradeAction.Buy, r, this))
-		);
-		Mine = new ObservableCollection<CargoItemTradeViewModel>(GameVars.playerShipVariables.ship.cargo
+		));
+		Mine = ValueModel.Wrap(new ObservableCollection<CargoItemTradeViewModel>(GameVars.playerShipVariables.ship.cargo
 			.Where(r => r.amount_kg > 0)
 			.Select(r => new CargoItemTradeViewModel(TradeAction.Sell, r, this))
-		);
+		));
 
 	}
 

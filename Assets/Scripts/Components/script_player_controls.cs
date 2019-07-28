@@ -121,9 +121,6 @@ public class script_player_controls : MonoBehaviour
 		//}
 
 
-		//Update the size of the crew every update
-		ship.crew = ship.crewRoster.Count;
-
 		//Make sure the camera transform is always tied to the front of the ship model's transform if the FPV camera is enabled
 		if (GameVars.FPVCamera.activeSelf)
 			GameVars.FPVCamera.transform.parent.parent.position = shipTransform.TransformPoint(new Vector3(shipTransform.localPosition.x, .31f, shipTransform.localPosition.z + .182f));

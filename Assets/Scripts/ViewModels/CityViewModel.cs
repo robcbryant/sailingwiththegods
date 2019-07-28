@@ -8,9 +8,9 @@ using UnityEngine;
 
 public class CityDetailsViewModel : CityViewModel
 {
-	public readonly ObservableCollection<CrewManagementMemberViewModel> Crew;
-	public readonly ObservableCollection<CargoInventoryViewModel> Buy;
-	public readonly ObservableCollection<CargoInventoryViewModel> Sell;
+	public readonly ICollectionModel<CrewManagementMemberViewModel> Crew;
+	public readonly ICollectionModel<CargoInventoryViewModel> Buy;
+	public readonly ICollectionModel<CargoInventoryViewModel> Sell;
 
 	class PriceInfo
 	{
@@ -29,26 +29,26 @@ public class CityDetailsViewModel : CityViewModel
 
 	public CityDetailsViewModel(Settlement city, Action<CityViewModel> onClick) : base(city, onClick) {
 
-		Crew = new ObservableCollection<CrewManagementMemberViewModel>(
+		Crew = ValueModel.Wrap(new ObservableCollection<CrewManagementMemberViewModel>(
 			GameVars.Network.CrewMembersWithNetwork(city)
 				.OrderBy(c => GameVars.Network.GetCrewMemberNetwork(c).Count())
 				.Take(5)
 				.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null))
-		);
+		));
 
-		Buy = new ObservableCollection<CargoInventoryViewModel>(
+		Buy = ValueModel.Wrap(new ObservableCollection<CargoInventoryViewModel>(
 			PriceInfos
 				.OrderBy(o => o.Price - o.AvgPrice)
 				.Take(5)
 				.Select(o => new CargoInventoryViewModel(o.Resource))
-		);
+		));
 
-		Sell = new ObservableCollection<CargoInventoryViewModel>(
+		Sell = ValueModel.Wrap(new ObservableCollection<CargoInventoryViewModel>(
 			PriceInfos
 				.OrderByDescending(o => o.Price - o.AvgPrice)
 				.Take(5)
 				.Select(o => new CargoInventoryViewModel(o.Resource))
-		);
+		));
 
 	}
 
