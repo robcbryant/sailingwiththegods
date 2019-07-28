@@ -70,10 +70,6 @@ public class GameViewModel : Model
 			GameVars.playerShipVariables.fogWall.SetActive(true);
 			//Now enable the controls
 			GameVars.controlsLocked = false;
-			//For the argonautica, let's set the crew capacity to 30
-			GameVars.playerShipVariables.ship.crewCapacity = Ship.StartingCrewCap;
-			//Let's increase the ships cargo capacity
-			GameVars.playerShipVariables.ship.cargo_capicity_kg = Ship.StartingCargoCap;
 			//Set the player's initial position to the new position
 			GameVars.playerShipVariables.lastPlayerShipPosition = GameVars.playerShip.transform.position;
 			//Update Ghost Route

@@ -262,6 +262,7 @@ public class PlayerRoute
 
 }
 
+// KDTODO: This needs to be rewritten to something less error prone. Probably JSONUtility
 public class PlayerJourneyLog
 {
 	//TODO This whole function needs retooling--rather htan 3 separate arrays, the PlayerRoute object should store all the necessary variables--In fact this could be replaced with a simple List of Player Routes rather than having two separate objects no apparent reason.
@@ -278,7 +279,7 @@ public class PlayerJourneyLog
 		this.CSVheader = "Unique_Machine_ID,timestamp,originE,originN,originZ,endE,endN,endZ," +
 			"Water_kg,Provisions_kg,Grain_kg,Wine_kg,Timber_kg,Gold_kg,Silver_kg," +
 			"Copper_kg,Tin_kg,Obsidian_kg,Lead_kg,Slaves_kg,Iron_kg,Bronze_kg,Luxury_kg,Is_Leaving_Port,PortID,PortName," +
-			"CrewMemberIDs,UnityXYZ,Current_Questleg,ShipHP,Clout,PlayerNetwork,DaysStarving,DaysThirsty,Currency,LoanAmount,LoanOriginID,CurrentNavigatorTarget,KnownSettlements,CaptainsLog\n";
+			"CrewMemberIDs,UnityXYZ,Current_Questleg,ShipHP,Clout,PlayerNetwork,DaysStarving,DaysThirsty,Currency,LoanAmount,LoanOriginID,CurrentNavigatorTarget,KnownSettlements,CaptainsLog,upgradeLevel,crewCap,cargoCap\n";
 	}
 
 	public void AddRoute(PlayerRoute routeToAdd, script_player_controls playerShipVars, string captainsLog) {
@@ -364,6 +365,10 @@ public class PlayerJourneyLog
 		string scrubbedLog = captainsLog.Replace(',', '^');
 		scrubbedLog = scrubbedLog.Replace('\n', '*');
 		CSVstring += "," + scrubbedLog;
+
+		CSVstring += "," + playerShip.upgradeLevel;
+		CSVstring += "," + playerShip.crewCapacity;
+		CSVstring += "," + playerShip.cargo_capicity_kg;
 
 		//Add a new row to match the route of all these attributes
 		this.otherAttributes.Add(CSVstring);

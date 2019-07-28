@@ -312,8 +312,9 @@ public class GameVars : MonoBehaviour
 			loadedJourney.cargoLog.Add(CSVcargo);
 
 			//Next add the other attributes string
+			// KDTODO: This needs to update whenever we add a new field right now. Needs a rewrite.
 			string CSVotherAtt = "";
-			for (int i = 23; i < 39; i++) {
+			for (int i = 23; i < 42; i++) {
 				CSVotherAtt += "," + records[i];
 			}
 			loadedJourney.otherAttributes.Add(CSVotherAtt);
@@ -414,7 +415,19 @@ public class GameVars : MonoBehaviour
 		currentCaptainsLog = restoreCommasAndNewLines.Replace('*', '\n');
 		//Debug.Log (currentCaptainsLog);
 
+		// KDTODO: This needs to be done every time we add a new field right now. Needs a rewrite.
+		ship.upgradeLevel = int.Parse(playerVars[40]);
+		ship.crewCapacity = int.Parse(playerVars[41]);
+		ship.cargo_capicity_kg = int.Parse(playerVars[42]);
+		SetShipModel(ship.upgradeLevel);
 
+		// KDTODO: Once the save game routines are rewritten, need to save the crew available in each city instead of regenerating since this is exploitable
+		// it's just too much hassle to support saving this right now because the save format is limiting
+		// setup each city with 5 crew available and for now, they never regenerate.
+		foreach (var settlement in settlement_masterList) {
+			settlement.availableCrew.Clear();
+			GenerateRandomCrewMembers(5).ForEach(c => settlement.availableCrew.Add(c));
+		}
 
 		//If no errors then return true
 		return true;
@@ -996,10 +1009,14 @@ public class GameVars : MonoBehaviour
 		});
 
 		// show the new ship model
+		SetShipModel(playerShipVariables.ship.upgradeLevel);
+	}
+
+	void SetShipModel(int shipLevel) {
 		foreach (var upgradeLevel in shipLevels) {
 			upgradeLevel.SetActive(false);
 		}
-		shipLevels[playerShipVariables.ship.upgradeLevel].SetActive(true);
+		shipLevels[shipLevel].SetActive(true);
 	}
 
 	// when you purchase the trireme, we add all the MUST have story crew members. 
