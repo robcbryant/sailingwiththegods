@@ -135,7 +135,7 @@ public class TradeViewModel : CityViewModel
 			// probably need to write some sort of wrapper that watches for amount == 0 and does this automatically
 			var available = Available.FirstOrDefault(n => n.Name == item.Name);
 			if (available == null) {
-				available = new CargoItemTradeViewModel(TradeAction.Sell, GameVars.currentSettlement.GetCargoByName(item.Name), this);
+				available = new CargoItemTradeViewModel(TradeAction.Buy, GameVars.currentSettlement.GetCargoByName(item.Name), this);
 				Available.Add(available);
 			}
 
