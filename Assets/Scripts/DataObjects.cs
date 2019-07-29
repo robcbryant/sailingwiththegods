@@ -578,7 +578,6 @@ public class Ship : Model
 	public float speed;
 	public float cargo_capicity_kg;
 	public Resource[] cargo;
-	public float totalNumOfDaysTraveled;
 	public int networkID;
 	public List<CaptainsLogEntry> shipCaptainsLog;
 	public Journal playerJournal;
@@ -590,6 +589,9 @@ public class Ship : Model
 
 	public int crew => crewRoster.Count;
 	public ObservableCollection<CrewMember> crewRoster;
+
+	private float _totalNumOfDaysTraveled;
+	public float totalNumOfDaysTraveled { get => _totalNumOfDaysTraveled; set { _totalNumOfDaysTraveled = value; Notify(); } }
 
 	private int _crewCapacity = StartingCrewCap;
 	public int crewCapacity { get => _crewCapacity; set { _crewCapacity = value; Notify(); } }

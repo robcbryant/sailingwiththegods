@@ -30425,6 +30425,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: kyrenia_lowPoly
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 48296405d5b627c4fbd9736485e7c92d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 48296405d5b627c4fbd9736485e7c92d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100016, guid: 48296405d5b627c4fbd9736485e7c92d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100018, guid: 48296405d5b627c4fbd9736485e7c92d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100020, guid: 48296405d5b627c4fbd9736485e7c92d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 100014, guid: 48296405d5b627c4fbd9736485e7c92d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -30485,14 +30505,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.3
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 48296405d5b627c4fbd9736485e7c92d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 100004, guid: 48296405d5b627c4fbd9736485e7c92d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 48296405d5b627c4fbd9736485e7c92d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -30505,18 +30517,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: cce6f79c71d06bf48948403c30cd2aa3, type: 2}
-    - target: {fileID: 100016, guid: 48296405d5b627c4fbd9736485e7c92d, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 100018, guid: 48296405d5b627c4fbd9736485e7c92d, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 100020, guid: 48296405d5b627c4fbd9736485e7c92d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2300006, guid: 48296405d5b627c4fbd9736485e7c92d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -50640,6 +50640,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2941274828213728862, guid: 585b20b052d2d944995ceb2669320f48,
+        type: 3}
+      propertyPath: m_Name
+      value: ScreenCanvas
+      objectReference: {fileID: 0}
     - target: {fileID: 9141261096652385557, guid: 585b20b052d2d944995ceb2669320f48,
         type: 3}
       propertyPath: m_isInputParsingRequired
@@ -50659,11 +50664,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2941274828213728862, guid: 585b20b052d2d944995ceb2669320f48,
-        type: 3}
-      propertyPath: m_Name
-      value: ScreenCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 530924700564548563, guid: 585b20b052d2d944995ceb2669320f48,
         type: 3}
