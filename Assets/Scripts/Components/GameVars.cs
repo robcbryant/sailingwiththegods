@@ -471,6 +471,15 @@ public class GameVars : MonoBehaviour
 
 	private void Update() {
 		UpdateCameraRotation();
+		DebugHotkeys();
+	}
+
+	void DebugHotkeys() {
+#if UNITY_EDITOR
+		if(Input.GetKeyUp(KeyCode.E)) {
+			RandomEvents.StormAtSea(playerShipVariables.ship, Globals.GameVars, playerShip.transform, 1, 0);
+		}
+#endif
 	}
 
 	//====================================================================================================

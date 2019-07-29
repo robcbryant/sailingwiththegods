@@ -260,8 +260,8 @@ public class script_GUI : MonoBehaviour
 			}
 
 			//`````````````````````````````````````````````````````````````````
-			// GAME OVER GUI
-			if (GameVars.isGameOver) {
+			// GAME OVER GUI (prevent blocking a more important UI if one is up using menuControlIsLock to check)
+			if (GameVars.isGameOver && !GameVars.menuControlsLock) {
 				GameVars.menuControlsLock = true;
 				GUI_ShowGameOverNotification();
 				GameVars.isGameOver = false;

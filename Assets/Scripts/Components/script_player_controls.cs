@@ -1274,6 +1274,12 @@ public class script_player_controls : MonoBehaviour
 		}
 	}
 
+	public bool IsOnLand(Vector3 pos) {
+		//set the layer mask to only check for collisions on layer 10 ("terrain")
+		int terrainLayerMask = 1 << 10;
+		const float radius = 0.05f;
+		return Physics.OverlapCapsule(pos, pos + Vector3.up * 10, radius, terrainLayerMask).Any();
+	}
 
 	public void DetectCoastLinesWithRayCasts() {
 		//This function Detects coast lines from 3 separate distances:
