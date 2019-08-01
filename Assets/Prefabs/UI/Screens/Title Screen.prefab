@@ -127,7 +127,7 @@ RectTransform:
   m_Children:
   - {fileID: 6274643974126449469}
   m_Father: {fileID: 7008280156569418319}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -213,6 +213,126 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!1 &3119513630174055169
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5742563503459661859}
+  - component: {fileID: 5010536104435667001}
+  m_Layer: 5
+  m_Name: Window
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5742563503459661859
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3119513630174055169}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7008280156778578058}
+  - {fileID: 7008280155777404916}
+  m_Father: {fileID: 7008280156646255310}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1418, y: 980}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &5010536104435667001
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3119513630174055169}
+  m_CullTransparentMesh: 0
+--- !u!1 &3929657687226052168
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2449527999778678032}
+  - component: {fileID: 2864662369895085601}
+  - component: {fileID: 4426995439351119037}
+  m_Layer: 5
+  m_Name: ModalBlocker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2449527999778678032
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3929657687226052168}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7008280156646255310}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2864662369895085601
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3929657687226052168}
+  m_CullTransparentMesh: 0
+--- !u!114 &4426995439351119037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3929657687226052168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.392}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
 --- !u!1 &7008280155486985397
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,8 +462,8 @@ RectTransform:
   m_Father: {fileID: 7008280157322540875}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.8421576}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 19.999996}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -416,7 +536,7 @@ RectTransform:
   m_Children:
   - {fileID: 7008280155655833487}
   m_Father: {fileID: 7008280156569418319}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -632,10 +752,10 @@ RectTransform:
   m_Father: {fileID: 7008280156974604701}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0.000009059906, y: 105.35004}
-  m_SizeDelta: {x: 580.9, y: 4125}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 269.8}
+  m_SizeDelta: {x: -87.099976, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &7008280155687583432
 CanvasRenderer:
@@ -678,81 +798,109 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\n\n\n\nDr. Sandra Blakely  Project Director, Emory University, Department
-    of Classics\r\n\r\nSandra Blakely is an Associate Professor of Classics at Emory
-    University, where her research integrates anthropological, archaeological and
-    Classical approaches to Greek religion and myth.  Her foci include mystery cults,
-    the fragmentary Greek historians Herodoros, Conon and Alexander Polyhistor, and
-    the daimones associated with metallurgy as well as with the Samothracian rites.
-    \ In her current book project, The Anthropology of an Island Cult: Maritime Networks
-    and the cult of the Great Gods of Samothrace, she brings Social Network Analysis
-    and Geographic Information Systems to the epigraphic record of the Great Gods
-    of Samothrace, to test the hypothesis that the safety at sea the Samothracian
-    rites promised was a social reality as well as a mythic metaphor.\r\n\r\n\r\nRobert
-    C. Bryant  Lead Programmer and Simulation Designer, University of Pennsylvania\r\n\r\nRobert
-    Bryant is the Lead Programmer and Simulation Designer behind the Samothracian
-    Networks game Sailing with the Gods: Argonauts and Samothracians in an Ancient
-    Sea. He completed his Masters degree in Computer Science at Georgia State University,
-    and has worked on projects from 3D Atlanta to the ongoing archaeological field
-    research in Oglangala, Azerbaijan (Naxivan). His work on the gamification of the
-    Great Gods of Samothrace is one among many contributions to gaming, history and
-    digital design. Hes currently the Programmer for the UPenn Museum TARA project,
-    and a PhD Student in the UPenn Anthropology department.\r\nJoanna C. Mundy  Digital
-    Projects Specialist, Emory Center for Digital Scholarship\r\n\r\n\r\n\r\nJoanna
-    Mundy is a Digital Projects Specialist in the Emory Center for Digital Scholarship.
-    Also as a PhD candidate at Emory University, in her dissertation she explores
-    the built domestic environment in ancient urban houses, domus and insulae, in
-    the city of Rome in the first to fifth century CE and includes a social network
-    analysis of households in the fourth century city. Her work for Samothracian Networks
-    includes mySQL database design, so that the project database interacts with geospatial
-    and network data. She works with network analysis software, produces network visualizations,
-    and manages the website.\r\nSara E. Palmer  Digital Text Specialist, Emory Center
-    for Digital Scholarship\r\n\r\n\r\n\r\nSara Palmer received an MA in Film and
-    Media Studies from Emory University in 2012. At the Emory Center for Digital Scholarship,
+  m_Text: "Dr. Sandra Blakely \u2013 Project Director, Emory University, Department
+    of Classics\r\nSandra Blakely is an Associate Professor of Classics at Emory University,
+    where her research integrates anthropological, archaeological and Classical approaches
+    to Greek religion and myth.  Her foci include mystery cults, the fragmentary Greek
+    historians Herodoros, Conon and Alexander Polyhistor, and the daimones associated
+    with metallurgy as well as with the Samothracian rites.  In her current book project,
+    The Anthropology of an Island Cult: Maritime Networks and the cult of the Great
+    Gods of Samothrace, she brings Social Network Analysis and Geographic Information
+    Systems to the epigraphic record of the Great Gods of Samothrace, to test the
+    hypothesis that the safety at sea the Samothracian rites promised was a social
+    reality as well as a mythic metaphor.\r\n\r\nRobert C. Bryant \u2013 Lead Programmer
+    and Simulation Designer, University of Pennsylvania\r\nRobert Bryant is the Lead
+    Programmer and Simulation Designer behind the Samothracian Networks game Sailing
+    with the Gods: Argonauts and Samothracians in an Ancient Sea. He completed his
+    Master\u2019s degree in Computer Science at Georgia State University, and has
+    worked on projects from 3D Atlanta to the ongoing archaeological field research
+    in Oglangala, Azerbaijan (Nax\xE7ivan). His work on the gamification of the Great
+    Gods of Samothrace is one among many contributions to gaming, history and digital
+    design. He\u2019s currently the Programmer for the UPenn Museum TARA project,
+    and a PhD Student in the UPenn Anthropology department.\r\n\r\nKevin Dressel \u2013
+    Programmer and Designer, Shiny Dolphin Games LLC\r\nKevin Dressel is another Programmer
+    developing Sailing with the Gods: Argonauts and Samothracians in an Ancient Sea.
+    Kevin founded Shiny Dolphin Games LLC in 2016. He is an independent programmer
+    who has previously worked at Zynga on games like CityVille, Ninja Kingdom, and
+    Puzzle Charms.\r\n\r\nDr. Joanna C. Mundy \u2013 Digital Projects Specialist,
+    Emory Center for Digital Scholarship\r\nJoanna Mundy is a Digital Projects Specialist
+    in the Emory Center for Digital Scholarship. She received her PhD from Emory University
+    in Art History, 2018. For her dissertation she explored the built domestic environment
+    in ancient urban houses, dom\u016Bs and insulae, in the city of Rome in the first
+    to fifth century CE and includes a social network analysis of households in the
+    fourth century city. Her work for Samothracian Networks includes mySQL database
+    design, so that the project database interacts with geospatial and network data.
+    She works with network analysis software, produces network visualizations, and
+    manages the website.\r\n\r\nSara E. Palmer \u2013 Digital Text Specialist, Emory
+    Center for Digital Scholarship\r\nSara Palmer received an MA in Film and Media
+    Studies from Emory University in 2012. At the Emory Center for Digital Scholarship,
     she consults with researchers on creating online exhibits, designing databases,
-    generating network visualizations, and performing textual markup and analysis.\r\nCraig
-    Brasco  Visual Interface Collaborator, Kennesaw State University, Assistant Professor
-    of Art | Graphic Communications\r\nDr. Philip Kiernan  Outreach and Consultant,
-    Kennesaw State University, Assistant Professor of Art History\r\nLeigh Cole Furrh
-    \ Research Assistant, Emory University\r\n\r\n\r\n\r\nLeigh (Cole) Furrh is a
-    post-baccalaureate student at Emory University studying Classics.  He researches,
+    generating network visualizations, and performing textual markup and analysis.\r\n\r\nCraig
+    Brasco \u2013 Visual Interface Collaborator, Kennesaw State University, Assistant
+    Professor of Art | Graphic Communications\r\nDr. Philip Kiernan \u2013 Outreach
+    and Consultant, Kennesaw State University, Assistant Professor of Art History\r\nLeigh
+    Cole Furrh \u2013 Research Assistant, Emory University\r\nLeigh (Cole) Furrh is
+    a post-baccalaureate student at Emory University studying Classics.  He researches,
     prepares, and enters data from multiple Argonautica sources both for the Game
     and the Social Network. He is a 2016 Jane C. Waldbaum Archaeological Field School
-    Scholarship recipient.\r\nAlex Jester  Research Assistant, Agnes Scott College\r\n\r\n\r\n\r\nAlex
-    Jester is pursuing a B.A. in Classical Languages and Literatures at Agnes Scott
-    College, where she also works at Information Technology Services. She is especially
-    interested in the intersection of Classics and technology, and plans to pursue
-    a career that incorporates this overlap. She researches numismatic data for Samothracian
-    Networks.\r\nJoe Fritsch  Digital Scholarship Associate, Emory Center for Digital
-    Scholarship\r\n\r\n\r\n\r\nIn his research Joe Fritsch, PhD candidate in English,
-    focuses on the intersection of global Anglophone poetry and histories of technology.
-    He supports Samothracian Networks in 3D modelling for the Game. His interest in
-    CAD and 3D design comes from first hand witness of the importance of space to
-    literacy while managing ILS databases in a New York pubic library; he recently
-    used CAD software to recreate the floor plan of the Globe Theatre in order to
-    teach students about Shakespeares London and digital methods.\r\nData:\r\n\r\n\r\n\r\n\r\nThe
-    mapping functions of the network data utilize names and positions provided by
-    Pleiades where possible.  Some maps were made with Natural Earth. Free vector
-    and raster map data @ naturalearthdata.com.\r\n\r\nGame code: The game code is
-    available on Github at https://github.com/robcbryant/sailingwiththegods licensed
-    under a GNU Lesser General Public License v3.0.  If you would like to contribute
-    to the game, the game can be downloaded from Github and imported into Unity 5.0.1.\r\n\r\n\r\n\r\n\r\nCreative
-    Commons License The data presented here is made available for sharing and reuse
-    under the terms of the Creative Commons Attribution 3.0 License (cc-by).  This
-    includes game visualizations and graphs.\r\nIllustrations:\r\n\r\nSome game illustrations
-    are licensed by the artists. Individual licenses will be listed here. A Creative
-    Commons Attribution Non-Commerical 4.0 License (cc-by-nc) is applicable to any
-    illustrations for which a license is not specified.\r\n\r\n\r\nThe game illustrations
-    Ainos Coin, Aigeai Coin, and Aegina Coin by Martiti C. Mundy are licensed under
-    a Creative Commons Attribution-NonCommercial 4.0 International License. Copyright
-    M. C. Mundy, 2017, some rights reserved.\r\n\r\n\r\n\r\nThe following illustrations
-    are Copyright Emory University  Samothracian Networks, 2017, some rights reserved.\r\n\r\n
-    \   The game illustrations Acarnania Coin, Histiaia Coin, Delos Coin, Apollonia
-    Coin, and Aegiale Coin, created by Kelin Michael.\r\n    The game illustration
-    Jason, created by Christina Gilstrap.  Jason is in the version alpha 4.4 of the
-    game.\r\n    The game illustrations for the Port Goods Icons, created by Seth
-    Byrd, Kennesaw State University. The Port Goods Icons can be seen in the port
-    menu in version alpha 4.4 of the game.\r\n\r\n"
+    Scholarship recipient.\r\n\r\nAlex Jester \u2013 Research Assistant, Agnes Scott
+    College\r\nAlex Jester is pursuing a B.A. in Classical Languages and Literatures
+    at Agnes Scott College, where she also works at Information Technology Services.
+    She is especially interested in the intersection of Classics and technology, and
+    plans to pursue a career that incorporates this overlap. She researches numismatic
+    data for Samothracian Networks.\r\n\r\nJoe Fritsch \u2013 Digital Scholarship
+    Associate, Emory Center for Digital Scholarship\r\nIn his research Joe Fritsch,
+    PhD candidate in English, focuses on the intersection of global Anglophone poetry
+    and histories of technology. He supports Samothracian Networks in 3D modelling
+    for the Game. His interest in CAD and 3D design comes from first hand witness
+    of the importance of space to literacy while managing ILS databases in a New York
+    pubic library; he recently used CAD software to recreate the floor plan of the
+    Globe Theatre in order to teach students about Shakespeare\u2019s London and digital
+    methods.\r\n\r\nThe mapping functions of the network data utilize names and positions
+    provided by Pleiades where possible.  Some maps were made with Natural Earth.
+    Free vector and raster map data @ naturalearthdata.com.\r\n\r\nGame code: The
+    game code is available on Github at https://github.com/robcbryant/sailingwiththegods
+    licensed under a GNU Lesser General Public License v3.0.  If you would like to
+    contribute to the game, the game can be downloaded from Github and imported into
+    Unity 5.0.1.\r\n\r\nCreative Commons License The data presented here is made available
+    for sharing and reuse under the terms of the Creative Commons Attribution 3.0
+    License (cc-by).  This includes game visualizations and graphs.\r\n\r\n\r\nIllustrations:\r\n\r\nSome
+    game illustrations are licensed by the artists. Individual licenses will be listed
+    here. A Creative Commons Attribution Non-Commerical 4.0 License (cc-by-nc) is
+    applicable to any illustrations for which a license is not specified.\r\n\r\nThe
+    game illustrations Ainos Coin, Aigeai Coin, and Aegina Coin by Martiti C. Mundy
+    are licensed under a Creative Commons Attribution-NonCommercial 4.0 International
+    License. Copyright M. C. Mundy, 2017, some rights reserved.\r\n\r\nThe following
+    illustrations are Copyright Emory University  Samothracian Networks, 2017, some
+    rights reserved.\r\n\r\n    The game illustrations Acarnania Coin, Histiaia Coin,
+    Delos Coin, Apollonia Coin, and Aegiale Coin, created by Kelin Michael.\r\n    The
+    game illustration Jason, created by Christina Gilstrap.  Jason is in the version
+    alpha 4.4 of the game.\r\n    The game illustrations for the Port Goods Icons,
+    created by Seth Byrd, Kennesaw State University. The Port Goods Icons can be seen
+    in the port menu in version alpha 4.4 of the game.\r\n    The game illustrations
+    for the \u201CCrew\u201D, created by Kennesaw State University spring 2018 Illustration
+    students. The \u201CCrew\u201D can be seen in the first selection menu in version
+    alpha 5.0 of the game.\r\n\t\tJulee Davis illustrated: Hylas, Admetus, Eurytion,
+    Telamon, Antipatros son of Iatrokleios, Aitolian Warrior, and Seleucid Sailor.\r\n\t\tPaola
+    Paniagua illustrated: Canthus, Erginus, Herokles, Peleus, Polyphemus, Spartan
+    Warrior, and Zollos.\r\n\t\tJason Volk illustrated: Orpheus, Asterion, Iphitus,
+    Kallipos son of Eukleidos, Diodotos son of Zenon, and Macedonian Warrior.\r\n\t\tBrooke
+    Barrett illustrated: Ancaeus, Polydeuces/Castor, Butes, Palemonius, Nikomedes
+    son of Diodoros, Theokles son of Nymphodoros, and Phoenician sailor.\r\n\t\tEloisa
+    Gallegos illustrated: Aethalides, Egyptian Sailor, Eukleides son of Antigonos,
+    Idas, Idmon, and Lysias son of Lysias.\r\n\t\tErica Sause illustrated: Ancaeus,
+    Billaros son of Hermios, Etruscan Warrior, Iphiclus, and Theodoros son of Pilodoxos.\r\n\t\tRen
+    Nesper illustrated: Periclymenus, Rhodian Sailor, Theodotos son of Badromios,
+    Tiphys, and Eurydamas.\r\n\r\nHulot, M. \"La Grande Rue de Selinonte.\" in Foug\xE8res,
+    G, and J Hulot. 1910. S\xE9linonte: la ville, l'acropole et les temples ; [Colonie
+    dorienne en Sicile]. Paris: Massin. Digitized by Universitatsbibliothek Heidelberg.
+    https://digi.ub.uni-heidelberg.de/diglit/fougeres1910/0212 CC-BY-SA\r\n\r\nGreek
+    Ship - Turbosquid Royalty Free License\r\nLow poly boat sail off - Turbosquid
+    Royalty Free License\r\nKyrenia Ancient Trade Ship - Turbosquid Royalty Free License\r\n3D
+    model Small fishing boat 043 - Turbosquid Royalty Free License\r\nTree pack 1
+    - Turbosquid Royalty Free License\r\nCartoon trees - Turbosquid Royalty Free License\r\nLow
+    Poly Palms by Rusoski - CC Attribution - Sketchfab  https://sketchfab.com/Rusoski
+    \r\n"
 --- !u!114 &7008280155687583438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -799,7 +947,7 @@ RectTransform:
   m_Children:
   - {fileID: 7008280156020845195}
   m_Father: {fileID: 7008280156569418319}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -911,19 +1059,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7008280155777404907}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7008280155988262888}
-  m_Father: {fileID: 7008280156646255310}
+  m_Father: {fileID: 5742563503459661859}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 180, y: 119}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 40, y: 40}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 1}
 --- !u!222 &7008280155777404919
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1102,7 +1250,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7008280155988262895}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1111,7 +1259,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -5.2, y: 8.1}
+  m_AnchoredPosition: {x: -0.40014648, y: 3.4500732}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7008280155988262890
@@ -1143,7 +1291,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 0e72c4a835116fe448dc4a1be7f21d7c, type: 3}
+    m_Font: {fileID: 12800000, guid: 048c8b2c83a7bcc4baa7b86f3b15107f, type: 3}
     m_FontSize: 14
     m_FontStyle: 1
     m_BestFit: 1
@@ -1155,7 +1303,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 0.65
-  m_Text: X
+  m_Text: x
 --- !u!1 &7008280156020176875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1190,11 +1338,11 @@ RectTransform:
   m_Father: {fileID: 7008280156790262787}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 337, y: 0}
-  m_SizeDelta: {x: 13.5, y: 610.6}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 12.5, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &7008280156020176887
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1272,7 +1420,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 7008280155647332747}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.15784241
+  m_Size: 0.36296296
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1403,20 +1551,20 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7008280155955849832}
-  - {fileID: 7008280156646255310}
   - {fileID: 7008280156768436523}
   - {fileID: 7008280157045861642}
   - {fileID: 7008280157177996597}
   - {fileID: 7008280155655826238}
   - {fileID: 7008280155689427310}
   - {fileID: 5548938057847473118}
+  - {fileID: 7008280156646255310}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8245126300566023594
 MonoBehaviour:
@@ -1547,7 +1695,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7008280156646255310
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1559,15 +1707,15 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 7008280156778578058}
-  - {fileID: 7008280155777404916}
+  - {fileID: 2449527999778678032}
+  - {fileID: 5742563503459661859}
   m_Father: {fileID: 7008280156569418319}
-  m_RootOrder: 1
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7008280156690983827
 GameObject:
@@ -1696,7 +1844,7 @@ RectTransform:
   m_Children:
   - {fileID: 7008280156600232214}
   m_Father: {fileID: 7008280156569418319}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1807,18 +1955,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7008280156778578057}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7008280156790262787}
-  m_Father: {fileID: 7008280156646255310}
+  m_Father: {fileID: 5742563503459661859}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -131.12003, y: -156.12503}
-  m_SizeDelta: {x: 691.7599, y: 589.3}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7008280156778578068
 CanvasRenderer:
@@ -1893,10 +2041,10 @@ RectTransform:
   m_Father: {fileID: 7008280156778578058}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000015258789, y: 0}
-  m_SizeDelta: {x: 692, y: 651.1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7008280156790262799
 CanvasRenderer:
@@ -2016,7 +2164,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -2.1, y: -5}
-  m_SizeDelta: {x: 667.4, y: 450.4}
+  m_SizeDelta: {x: 1311.7, y: 450.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7008280156974604703
 CanvasRenderer:
@@ -2087,7 +2235,7 @@ RectTransform:
   m_Children:
   - {fileID: 7008280155486985398}
   m_Father: {fileID: 7008280156569418319}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2205,7 +2353,7 @@ RectTransform:
   m_Children:
   - {fileID: 7008280156690983836}
   m_Father: {fileID: 7008280156569418319}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

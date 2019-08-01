@@ -121,9 +121,6 @@ public class script_player_controls : MonoBehaviour
 		//}
 
 
-		//Update the size of the crew every update
-		ship.crew = ship.crewRoster.Count;
-
 		//Make sure the camera transform is always tied to the front of the ship model's transform if the FPV camera is enabled
 		if (GameVars.FPVCamera.activeSelf)
 			GameVars.FPVCamera.transform.parent.parent.position = shipTransform.TransformPoint(new Vector3(shipTransform.localPosition.x, .31f, shipTransform.localPosition.z + .182f));
@@ -319,6 +316,9 @@ public class script_player_controls : MonoBehaviour
 					if (Input.GetButton("Select")) {
 						//lock controls so that the travel function is triggered on the next update cycle
 						GameVars.controlsLocked = true;
+
+						Globals.UI.Show<TimePassingView, IValueModel<float>>(new BoundModel<float>(ship, nameof(ship.totalNumOfDaysTraveled)));
+
 						//set the destination: using the players Y value so the ship always stays at a set elevation
 						currentDestination = new Vector3(firstRelevantHit.point.x, transform.position.y, firstRelevantHit.point.z);
 						//set the player ship's current position to be logged into the journey log
@@ -535,6 +535,8 @@ public class script_player_controls : MonoBehaviour
 				notEnoughSpeedToMove = false;
 				GameVars.controlsLocked = false;
 				shipTravelStartRotationFinished = false;
+
+				Globals.UI.Hide<TimePassingView>();
 
 				//reset coastline detection flag
 				rayCheck_stopShip = false;
@@ -1553,6 +1555,7 @@ public class script_player_controls : MonoBehaviour
 
 	public void PassTime(float amountToWait, bool isPort) {
 		GameVars.isPassingTime = true;
+		Globals.UI.Show<TimePassingView, IValueModel<float>>(new BoundModel<float>(ship, nameof(ship.totalNumOfDaysTraveled)));
 		StartCoroutine(WaitForTimePassing(.25f, false));
 	}
 
@@ -1578,6 +1581,9 @@ public class script_player_controls : MonoBehaviour
 		}
 		GameVars.isPassingTime = false;
 		GameVars.controlsLocked = false;
+
+		Globals.UI.Hide<TimePassingView>();
+
 		if (!isPort) {//If this isn't a port--then add a journey log at the end
 					  //Add a new route to the player journey log
 			journey.AddRoute(new PlayerRoute(transform.position, transform.position, ship.totalNumOfDaysTraveled), gameObject.GetComponent<script_player_controls>(), GameVars.currentCaptainsLog);

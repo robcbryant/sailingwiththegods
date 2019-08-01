@@ -71,7 +71,11 @@ public class PortScreen : ViewBehaviour<PortViewModel>
 		PortIcon?.Bind(new BoundModel<Sprite>(model, nameof(model.PortIcon)));
 
 		PortName.Bind(ValueModel.New(Model.PortName));
-		Capacity.Bind(new BoundModel<string>(Model.CrewManagement, nameof(Model.CrewManagement.Capacity)));
+
+		Capacity.Bind(Model.CrewManagement.CrewCapacity
+			.AsString()
+			.Select(Model.CrewManagement.CrewCount, (cap, count) => count + " / " + cap + " crew"));
+
 		Money.Bind(ValueModel.Wrap(Model.CrewManagement.Money)
 				.AsString()
 				.Select(s => s + " dr")

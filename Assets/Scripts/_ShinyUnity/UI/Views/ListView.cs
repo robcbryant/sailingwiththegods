@@ -31,7 +31,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public abstract class ListView<TModel, TCellModel> : ViewBehaviour<TModel> 
-	where TModel : INotifyCollectionChanged, INotifyPropertyChanged, ICollection<TCellModel>
+	where TModel : INotifyCollectionChanged, INotifyPropertyChanged, IEnumerable<TCellModel>
 	where TCellModel : INotifyPropertyChanged
 {
 	[SerializeField] private Transform CellParent = null;
