@@ -224,7 +224,7 @@ public class script_player_controls : MonoBehaviour
 				else {
 					//Check if we're in the menus or not
 					//	-If we aren't in the settlement menu then we know we're traveling
-					if (!GameVars.menuControlsLock) {
+					if (!GameVars.menuControlsLock && !Globals.UI.IsShown<TitleScreen>()) {
 						//If the ship is dead in the water--don't do anything
 						if (shipSpeed_Actual != 0)
 							TravelToSelectedTarget(currentDestination);
@@ -711,6 +711,12 @@ public class script_player_controls : MonoBehaviour
 		// i've turned off thirst and hunger modifiers. the penalty for those is crew members dying, not speed. hopefully an okay simplification.
 		var t = (float)ship.crewRoster.Count / (float)ship.crewCapacity;
 		var crewMultiplier = 3 * t * t;
+
+		// TODO: This is a hack to make sure that the ship doesn't end up lower than a reasonable min playable speed before hitting 0
+		if (t > 0 && t < 0.3f) {
+			crewMultiplier = 0.3f;
+		}
+
 		shipSpeedModifiers.Crew = ship.speed - (ship.speed * crewMultiplier);
 
 		/*
@@ -1277,7 +1283,7 @@ public class script_player_controls : MonoBehaviour
 	public bool IsOnLand(Vector3 pos) {
 		//set the layer mask to only check for collisions on layer 10 ("terrain")
 		int terrainLayerMask = 1 << 10;
-		const float radius = 0.05f;
+		const float radius = 0.1f;
 		return Physics.OverlapCapsule(pos, pos + Vector3.up * 10, radius, terrainLayerMask).Any();
 	}
 
