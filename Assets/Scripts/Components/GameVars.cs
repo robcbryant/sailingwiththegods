@@ -909,6 +909,7 @@ public class GameVars : MonoBehaviour
 		isTitleScreen = true;
 		runningMainGameGUI = false;
 
+		SetShipModel(playerShipVariables.ship.upgradeLevel);
 
 		//clear captains log
 		currentCaptainsLog = "";
