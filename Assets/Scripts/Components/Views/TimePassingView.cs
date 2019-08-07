@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class TimePassingView : ViewBehaviour<IValueModel<float>>
 {
-	[SerializeField] StringView Message;
+	[SerializeField] StringView Message = null;
 
 	public override void Bind(IValueModel<float> model) {
 		base.Bind(model);
