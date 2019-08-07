@@ -30,6 +30,7 @@ public class CrewManagementViewModel : Model
 			.Select(c => c.Count());
 
 		AvailableCrew = ValueModel.Wrap(settlement.availableCrew)
+			.Where(crew => !GameVars.playerShipVariables.ship.crewRoster.Contains(crew))
 			.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null));
 
 		MyCrew = ValueModel.Wrap(GameVars.playerShipVariables.ship.crewRoster)
@@ -55,6 +56,7 @@ public class CrewManagementViewModel : Model
 	public void GUI_FireCrewMember(CrewManagementMemberViewModel crew) {
 		var crewman = crew.Member;
 
+		// remove from your crew first so the where filter for not in your crew applies on add to settlement list
 		GameVars.playerShipVariables.ship.crewRoster.Remove(crewman);
 		Settlement.availableCrew.Add(crewman);
 
@@ -70,8 +72,10 @@ public class CrewManagementViewModel : Model
 		if (GameVars.playerShipVariables.ship.currency >= crew.CostToHire) {
 			//Now check to see if there is room to hire a new crew member!
 			if (GameVars.playerShipVariables.ship.crewRoster.Count < GameVars.playerShipVariables.ship.crewCapacity) {
-				GameVars.playerShipVariables.ship.crewRoster.Add(crewman);
+
+				// remove from settlement first so the where filter for not in your crew still applies on remove
 				Settlement.availableCrew.Remove(crewman);
+				GameVars.playerShipVariables.ship.crewRoster.Add(crewman);
 
 				//Subtract the cost from the ship's money
 				GameVars.playerShipVariables.ship.currency -= crew.CostToHire;
