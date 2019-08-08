@@ -307,11 +307,16 @@ public class CollectionWrapperModel<TIn, TOut, TOrderKey> : Model, ICollectionMo
 	// this is needed because IValueModel doesn't make sense for collections...
 	public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-	// lazy evaluation of the linq makes this work on every call
-	IEnumerable<TOut> Data => Source.Value
-		.Where(o => Filter(o))
+	// TODO: it's a little unintutive that a CollectionWrapperModel breaks linq's laziness, but we need this so we can keep track of the old index
+	// there must be a better way. this was inspired by: https://stackoverflow.com/questions/26784373/filter-and-update-a-readonlyobservablecollection
+	IEnumerable<TOut> Data => Filtered
 		.Select(o => AdaptOut(o))
 		.OrderBy(OrderBy);
+
+	IEnumerable<TIn> Filtered;
+	IEnumerable<TIn> RecomputeFiltered() => Source.Value
+		.Where(o => Filter(o))
+		.ToList();
 
 	public IEnumerable<TOut> Value { get => Data; set => throw new NotImplementedException("Cannot set. CollectionWrapper is read-only."); }
 
@@ -330,19 +335,22 @@ public class CollectionWrapperModel<TIn, TOut, TOrderKey> : Model, ICollectionMo
 
 				NotifyCollectionChangedEventArgs mappedArgs = null;
 
+				// need to preserve the original filtered list for this block so we can figure out the old indexes
+				var newFiltered = RecomputeFiltered();
+
 				// observablecollection never has more than one item in each of its event args
 				switch (e.Action) {
 					case NotifyCollectionChangedAction.Add:
-						mappedArgs = new NotifyCollectionChangedEventArgs(e.Action, AdaptOut((TIn)e.NewItems[0]), e.NewStartingIndex);
+						mappedArgs = new NotifyCollectionChangedEventArgs(e.Action, AdaptOut((TIn)e.NewItems[0]), IndexOf(newFiltered, (TIn)e.NewItems[0]));
 						break;
 					case NotifyCollectionChangedAction.Move:
-						mappedArgs = new NotifyCollectionChangedEventArgs(e.Action, AdaptOut((TIn)e.OldItems[0]), e.NewStartingIndex, e.OldStartingIndex);
+						mappedArgs = new NotifyCollectionChangedEventArgs(e.Action, AdaptOut((TIn)e.OldItems[0]), IndexOf(newFiltered, (TIn)e.OldItems[0]), IndexOf(Filtered, (TIn)e.OldItems[0]));
 						break;
 					case NotifyCollectionChangedAction.Remove:
-						mappedArgs = new NotifyCollectionChangedEventArgs(e.Action, AdaptOut((TIn)e.OldItems[0]), e.OldStartingIndex);
+						mappedArgs = new NotifyCollectionChangedEventArgs(e.Action, AdaptOut((TIn)e.OldItems[0]), IndexOf(Filtered, (TIn)e.OldItems[0]));
 						break;
 					case NotifyCollectionChangedAction.Replace:
-						mappedArgs = new NotifyCollectionChangedEventArgs(e.Action, AdaptOut((TIn)e.NewItems[0]), AdaptOut((TIn)e.OldItems[0]), e.OldStartingIndex);
+						mappedArgs = new NotifyCollectionChangedEventArgs(e.Action, AdaptOut((TIn)e.NewItems[0]), AdaptOut((TIn)e.OldItems[0]), IndexOf(Filtered, (TIn)e.OldItems[0]));
 						break;
 					case NotifyCollectionChangedAction.Reset:
 						mappedArgs = new NotifyCollectionChangedEventArgs(e.Action);
@@ -352,10 +360,22 @@ public class CollectionWrapperModel<TIn, TOut, TOrderKey> : Model, ICollectionMo
 						break;
 				}
 
+				Filtered = newFiltered;
 				NotifyCollection(mappedArgs);
 				Notify();
 			}
 		}
+	}
+
+	public int IndexOf(IEnumerable<TIn> haystack, TIn needle) {
+		for(var i = 0; i < haystack.Count(); i++) {
+			var curr = haystack.ElementAtOrDefault(i);
+			if (ReferenceEquals(curr, needle) || EqualityComparer<TIn>.Default.Equals(curr, needle)) {
+				return i;
+			}
+		}
+
+		return -1;
 	}
 
 	public void Dispose() {
@@ -370,6 +390,7 @@ public class CollectionWrapperModel<TIn, TOut, TOrderKey> : Model, ICollectionMo
 		OrderBy = orderBy;
 
 		Bind(source);
+		Filtered = RecomputeFiltered();
 	}
 
 	public void Bind(ICollectionModel<TIn> source) {
