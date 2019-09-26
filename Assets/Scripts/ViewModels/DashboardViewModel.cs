@@ -21,6 +21,8 @@ public class DashboardViewModel : Model
 
 	public BoundModel<bool> SailsAreUnfurled { get; private set; }
 
+	public BoundModel<string> Objective { get; private set; }
+
 	public DashboardViewModel() {
 
 		Clout = new BoundModel<float>(Globals.GameVars.playerShipVariables.ship, nameof(Globals.GameVars.playerShipVariables.ship.playerClout));
@@ -38,6 +40,7 @@ public class DashboardViewModel : Model
 
 		SailsAreUnfurled = new BoundModel<bool>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.sailsAreUnfurled));
 
+		Objective = new BoundModel<string>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.objective));
 	}
 
 	public void OnCrewCityClicked(CityViewModel city) {

@@ -22,6 +22,8 @@ public class Dashboard : ViewBehaviour<DashboardViewModel>
 	[SerializeField] SliderView CloutSlider = null;
 	[SerializeField] StringView CloutTitle = null;
 
+	[SerializeField] StringView Objective = null;
+
 	// subscreens
 	[SerializeField] MessageBoxView CaptainsLogScreen = null;
 	[SerializeField] CargoListView CargoList = null;
@@ -59,5 +61,7 @@ public class Dashboard : ViewBehaviour<DashboardViewModel>
 			Label = b ? "Furl Sails" : "Unfurl Sails",
 			OnClick = model.GUI_furlOrUnfurlSails
 		}));
+
+		Objective.Bind(Model.Objective);
 	}
 }

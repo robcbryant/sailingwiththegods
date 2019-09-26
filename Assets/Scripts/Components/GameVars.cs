@@ -946,37 +946,43 @@ public class GameVars : MonoBehaviour
 		playerShipVariables.ship.cargo[1].amount_kg = Ship.StartingFood;
 
 		//Increase the quest counter because the start screen takes care of the first leg
-
+		// KD: Your first quest is to find pagasae, not tomb of dolops
 		Debug.Log(playerShipVariables.ship.mainQuest.currentQuestSegment);
-		playerShipVariables.ship.mainQuest.currentQuestSegment++;
+		//playerShipVariables.ship.mainQuest.currentQuestSegment++;
+
+		var segment = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment];
 
 		//first show a window for the welcome message, and if there are any crew member changes, then let the player know.
-		notificationMessage = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].descriptionAtCompletion;
-		showNotification = true;
+		// KD: Removed the concept of the first welcome message
+		//notificationMessage = segment.descriptionAtCompletion;
+		//showNotification = true;
 		//Add this message to the captain's log
-		playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].destinationID, playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].descriptionOfQuest));
+		playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(segment.destinationID, segment.descriptionOfQuest));
 		playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry = playerShipVariables.ship.totalNumOfDaysTraveled + " days";
 		currentCaptainsLog = playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry + "\n" + playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].logEntry + "\n\n" + currentCaptainsLog;
 		//Now add the mentioned places attached to this quest leg
-		foreach (int i in playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].mentionedPlaces) {
+		foreach (int i in segment.mentionedPlaces) {
 			//Make sure we don't add any null values--a -1 represents no mentions of any settlements
 			if (i != -1)
 				playerShipVariables.ship.playerJournal.AddNewSettlementToLog(i);
 		}
 		Debug.Log(playerShipVariables.ship.mainQuest.currentQuestSegment);
+
 		//Then increment the questline to the in succession and update the player captains log with the new information for the next quest line
 		playerShipVariables.ship.mainQuest.currentQuestSegment++;
-		playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].destinationID, playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].descriptionOfQuest));
+		segment = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment];
+
+		playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(segment.destinationID, segment.descriptionOfQuest));
 		playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry = playerShipVariables.ship.totalNumOfDaysTraveled + " days";
 		currentCaptainsLog = playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry + "\n" + playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].logEntry + "\n\n" + currentCaptainsLog;
 		//Now add the mentioned places attached to this quest leg
-		foreach (int i in playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].mentionedPlaces) {
+		foreach (int i in segment.mentionedPlaces) {
 			//Make sure we don't add any null values--a -1 represents no mentions of any settlements
 			if (i != -1)
 				playerShipVariables.ship.playerJournal.AddNewSettlementToLog(i);
 		}
 		//Now add the city name of the next journey quest to the players known settlements
-		playerShipVariables.ship.playerJournal.AddNewSettlementToLog(playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].destinationID);
+		playerShipVariables.ship.playerJournal.AddNewSettlementToLog(segment.destinationID);
 		//Now teleport the player ship to an appropriate location near the first target
 		playerShip.transform.position = new Vector3(1702.414f, playerShip.transform.position.y, 2168.358f);
 		//Set the player's initial position to the new position
@@ -992,6 +998,12 @@ public class GameVars : MonoBehaviour
 		}
 
 		Debug.Log(playerShipVariables.ship.mainQuest.currentQuestSegment);
+
+		// set the objective to the first part of the argonautica quest
+		playerShipVariables.ship.objective = string.Concat(segment.descriptionOfQuest
+			.SkipWhile(c => c == '"')
+			.TakeWhile(c => c != '!')
+		);
 
 		//Flag the main GUI scripts to turn on
 		runningMainGameGUI = true;
@@ -1236,10 +1248,11 @@ public class GameVars : MonoBehaviour
 		if (playerShipVariables.ship.mainQuest.currentQuestSegment < playerShipVariables.ship.mainQuest.questSegments.Count) {
 			int currentQuestEnd;
 			int aeaID = 15;
+			var segment = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment];
 
 			//First we determine which part of the questleg the player is in which determines which part of the quest array the player can access
 			//If the player is in the first half before Aea--then only search for these quest segments, else only search for the last quest segments
-			if (playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].segmentID < aeaID) {
+			if (segment.segmentID < aeaID) {
 				//currentQuestBeginning = 0;
 				currentQuestEnd = aeaID;
 			}
@@ -1251,7 +1264,7 @@ public class GameVars : MonoBehaviour
 
 
 			//we add a +1 to the current questline so that the player can't continuously perform the quest at the same stop
-			for (int index = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].segmentID; index <= currentQuestEnd; index++) {
+			for (int index = segment.segmentID; index <= currentQuestEnd; index++) {
 				QuestSegment thisQuest = playerShipVariables.ship.mainQuest.questSegments[index];
 				Debug.Log(settlementID + "   : =? :   " + thisQuest.destinationID);
 				//If the current settlement matches the id of any target in the quest line, increment the quest line to that point--preferably we want it to be the next one in sequence--but we're expanding player behavioral choices.
@@ -1268,7 +1281,7 @@ public class GameVars : MonoBehaviour
 					currentCaptainsLog = playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry + "\n" + playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].logEntry + "\n\n" + currentCaptainsLog;
 
 					//Remove any crew members if the questline calls for it
-					foreach (int crewID in playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].crewmembersToRemove) {
+					foreach (int crewID in segment.crewmembersToRemove) {
 						Debug.Log("CREW ID REMOVING: " + crewID);
 						//Make sure the crew ID values are not -1(a null value which means no changes)
 						if (crewID != -1)
@@ -1280,7 +1293,7 @@ public class GameVars : MonoBehaviour
 					}
 
 					//Add any new crew members if the questline calls for it
-					foreach (int crewID in playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].crewmembersToAdd) {
+					foreach (int crewID in segment.crewmembersToAdd) {
 						//Make sure the crew ID values are not -1(a null value which means no changes)
 						if (crewID != -1)
 							playerShipVariables.ship.crewRoster.Add(GetCrewMemberFromID(crewID));
@@ -1288,16 +1301,22 @@ public class GameVars : MonoBehaviour
 
 					//Then increment the questline to the in succession and update the player captains log with the new information for the next quest line
 					playerShipVariables.ship.mainQuest.currentQuestSegment = thisQuest.segmentID + 1;
-					playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].destinationID, questMessageIntro + playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].descriptionOfQuest));
+					segment = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment];
+
+					playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(segment.destinationID, questMessageIntro + segment.descriptionOfQuest));
 					playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry = playerShipVariables.ship.totalNumOfDaysTraveled + " days";
 					currentCaptainsLog = playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry + "\n" + playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].logEntry + "\n\n" + currentCaptainsLog;
 
+					playerShipVariables.ship.objective = string.Concat(segment.descriptionOfQuest
+						.SkipWhile(c => c == '"')
+						.TakeWhile(c => c != '!')
+					);
 
 					//Now add the city name of the next journey quest to the players known settlements
-					playerShipVariables.ship.playerJournal.AddNewSettlementToLog(playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].destinationID);
-					Debug.Log("next seg: " + playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].destinationID);
+					playerShipVariables.ship.playerJournal.AddNewSettlementToLog(segment.destinationID);
+					Debug.Log("next seg: " + segment.destinationID);
 					//Now add the mentioned places attached to this quest leg
-					foreach (int i in playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].mentionedPlaces) {
+					foreach (int i in segment.mentionedPlaces) {
 						Debug.Log("mentioning: " + i);
 						//Make sure we don't add any null values--a -1 represents no mentions of any settlements
 						if (i != -1)

@@ -78,6 +78,7 @@ public class script_player_controls : MonoBehaviour
 		journey = new PlayerJourneyLog();
 		lastPlayerShipPosition = transform.position;
 		ship.mainQuest = CSVLoader.LoadMainQuestLine();
+		ship.objective = "Upgrade your Ship to a Trireme";
 
 		//Setup the day/night cycle
 		UpdateDayNightCycle(GameVars.IS_NEW_GAME);
