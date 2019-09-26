@@ -1032,6 +1032,7 @@ public class GameVars : MonoBehaviour
 					"Most are the sons of royal families, and each one has a unique skill.Once the heroes have all arrived, your crew stocks the ships and the people of Pagasae greet you all."
 		});
 
+		var segment = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment];
 		playerShipVariables.ship.objective = string.Concat(segment.descriptionOfQuest
 			.SkipWhile(c => c == '"')
 			.TakeWhile(c => c != '!')
