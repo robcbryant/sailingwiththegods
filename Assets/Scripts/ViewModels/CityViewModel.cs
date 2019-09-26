@@ -30,7 +30,7 @@ public class CityDetailsViewModel : CityViewModel
 	public CityDetailsViewModel(Settlement city, Action<CityViewModel> onClick) : base(city, onClick) {
 
 		Crew = ValueModel.Wrap(new ObservableCollection<CrewManagementMemberViewModel>(
-			GameVars.Network.CrewMembersWithNetwork(city)
+			GameVars.Network.CrewMembersWithNetwork(city, true)
 				.OrderBy(c => GameVars.Network.GetCrewMemberNetwork(c).Count())
 				.Take(5)
 				.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, OnCrewCityClicked))

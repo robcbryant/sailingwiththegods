@@ -70,6 +70,8 @@ public class GameVars : MonoBehaviour
 	public const string TD_minute = "0";
 	public const string TD_second = "0";
 
+	public CrewMember Jason => Globals.GameVars.masterCrewList.FirstOrDefault(c => c.isJason);
+
 	[Header("World Scene Refs")]
 	public GameObject FPVCamera;
 	public GameObject camera_Mapview;
