@@ -608,8 +608,10 @@ public class GameVars : MonoBehaviour
 	public void GenerateCityLights() {
 		for (int i = 0; i < settlement_masterList_parent.transform.childCount; i++) {
 			GameObject currentCityLight = Instantiate(Resources.Load("PF_cityLights", typeof(GameObject))) as GameObject;
-			currentCityLight.transform.position = settlement_masterList_parent.transform.GetChild(i).position;
-			currentCityLight.transform.parent = cityLightsParent.transform;
+
+			// use the center of the collider bounds instead of the position since the models are weirdly offset in many of these
+			currentCityLight.transform.SetParent(cityLightsParent.transform);
+			currentCityLight.transform.position = settlement_masterList_parent.transform.GetChild(i).GetComponent<script_settlement_functions>().anchor.position;
 		}
 	}
 
