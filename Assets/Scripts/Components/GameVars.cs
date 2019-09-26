@@ -1000,10 +1000,12 @@ public class GameVars : MonoBehaviour
 		Debug.Log(playerShipVariables.ship.mainQuest.currentQuestSegment);
 
 		// set the objective to the first part of the argonautica quest
-		playerShipVariables.ship.objective = string.Concat(segment.descriptionOfQuest
-			.SkipWhile(c => c == '"')
-			.TakeWhile(c => c != '!')
-		);
+		playerShipVariables.ship.objective = "Upgrade your ship to the Trireme";
+
+		Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
+			Title = "Trading in the Mediterranean",
+			Message = "You are Jason. Your story begins with a trade ship and a small crew. Sail to Pagasae and buy goods to sell around the bay.\n\nEarn enough money to upgrade your ship to a Trireme so your adventure can begin!"
+		});
 
 		//Flag the main GUI scripts to turn on
 		runningMainGameGUI = true;
@@ -1029,6 +1031,11 @@ public class GameVars : MonoBehaviour
 					"The task seems impossible!But you do not sail alone, Jason.You have assembled a group of the most powerful warriors, sailors, and prophets in Greece to help you in your quest. " +
 					"Most are the sons of royal families, and each one has a unique skill.Once the heroes have all arrived, your crew stocks the ships and the people of Pagasae greet you all."
 		});
+
+		playerShipVariables.ship.objective = string.Concat(segment.descriptionOfQuest
+			.SkipWhile(c => c == '"')
+			.TakeWhile(c => c != '!')
+		);
 
 		// show the new ship model
 		SetShipModel(playerShipVariables.ship.upgradeLevel);
@@ -1243,6 +1250,9 @@ public class GameVars : MonoBehaviour
 
 		//create a bool that can be accessed by this function's loops etc.
 		bool matchFound = false;
+
+		// you can't progress in the main quest until you finish the tutorial
+		if (playerShipVariables.ship.upgradeLevel == 0) return;
 
 		//First determine if the player has finished the entire questline or yet. We'll use the Count without a -1 to make sure the incremented quest leg is higher thant he last available leg
 		if (playerShipVariables.ship.mainQuest.currentQuestSegment < playerShipVariables.ship.mainQuest.questSegments.Count) {
