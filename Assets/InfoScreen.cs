@@ -36,7 +36,10 @@ public class InfoScreen : ViewBehaviour<InfoScreenModel>
 			return;
 		}
 
-		Icon?.Bind(new BoundModel<Sprite>(model, nameof(model.Icon)));
+		if(model.Icon != null) {
+			Icon?.Bind(new BoundModel<Sprite>(model, nameof(model.Icon)));
+		}
+
 		Subtitle?.Bind(new BoundModel<string>(model, nameof(Model.Subtitle)));
 		Title?.Bind(new BoundModel<string>(Model, nameof(Model.Title)));
 		Message?.Bind(new BoundModel<string>(Model, nameof(Model.Message)));
