@@ -809,7 +809,10 @@ public class script_player_controls : MonoBehaviour
 			notificationMessage += crewDeathCount + " crewmember(s) quit because you left without a full store of water.";
 		}
 		//now update the notification string with the message
-		GameVars.ShowANotificationMessage(notificationMessage);
+		if(!string.IsNullOrEmpty(notificationMessage)) {
+			// KD TODO: Need to revisit if i reimplemented this as robert had it
+			GameVars.ShowANotificationMessage(notificationMessage);
+		}
 	}
 
 	public void UpdateDayNightCycle(bool restartCycle) {
