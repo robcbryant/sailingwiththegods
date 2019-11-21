@@ -47,7 +47,7 @@ public class Owner : IDisposable
 	/// <summary>
 	/// Take ownership of this IDisposable. It will be automatically Disposed on Dispose.
 	/// </summary>
-	public IDisposable Own(IDisposable obj)
+	public T Own<T>(T obj) where T : IDisposable
 	{
 		OwnedDisposables.Add(obj);
 		return obj;
@@ -65,7 +65,7 @@ public class Owner : IDisposable
 	/// <summary>
 	/// Transfer ownership of this IDisposable to someone else. It will no longer be tracked by this group.
 	/// </summary>
-	public IDisposable Move(IDisposable obj)
+	public T Move<T>(T obj) where T : IDisposable
 	{
 		OwnedDisposables.Remove(obj);
 		return obj;

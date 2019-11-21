@@ -136,7 +136,7 @@ public abstract class OwnerBehaviour : MonoBehaviour
 	/// <summary>
 	/// Take ownership of this IDisposable. It will be automatically Disposed with the MonoBehaviour.
 	/// </summary>
-	protected IDisposable Own(IDisposable obj)
+	protected T Own<T>(T obj) where T : IDisposable
 	{
 		return Owned.Own(obj);
 	}
@@ -152,7 +152,7 @@ public abstract class OwnerBehaviour : MonoBehaviour
 	/// <summary>
 	/// Transfer ownership of this IDisposable to someone else. It will no longer be tracked by this MonoBehaviour.
 	/// </summary>
-	protected IDisposable Move(IDisposable obj)
+	protected T Move<T>(T obj) where T : IDisposable
 	{
 		return Owned.Move(obj);
 	}
