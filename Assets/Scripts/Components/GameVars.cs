@@ -478,7 +478,9 @@ public class GameVars : MonoBehaviour
 	void DebugHotkeys() {
 #if UNITY_EDITOR
 		if(Input.GetKeyUp(KeyCode.E)) {
-			RandomEvents.StormAtSea(playerShipVariables.ship, Globals.GameVars, playerShip.transform, 1, 0);
+			var storm = new StormAtSea();
+			storm.Init(this, playerShipVariables.ship, new ShipSpeedModifiers(), playerShip.transform, 1);
+			storm.Execute();
 		}
 #endif
 	}
