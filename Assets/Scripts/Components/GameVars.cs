@@ -148,13 +148,12 @@ public class GameVars : MonoBehaviour
 	[HideInInspector] public bool isPassingTime = false;
 
 	// notifications
-	//The main notifications are handled by the first two variables
-	//	--to make sure multiple notifications can be seen that might overlap, e.g. the player triggers two notifications in an action
-	//	--there are two and if the first is 'true' or showing a message, it will default to a secondary notification window
-	[HideInInspector] public bool showNotification = false;
-	[HideInInspector] public string notificationMessage = "";
-	[HideInInspector] public bool showSecondaryNotification = false;
-	[HideInInspector] public string secondaryNotificationMessage = "";
+	public bool NotificationQueued { get; private set; }
+	public string QueuedNotificationMessage { get; private set; }
+
+	public void ConsumeNotification() {
+		NotificationQueued = false;
+	}
 
 	// environment
 	[HideInInspector] public Light mainLightSource;
@@ -700,8 +699,7 @@ public class GameVars : MonoBehaviour
 			Debug.Log(Application.persistentDataPath);
 		}
 		catch (Exception e) {
-			showSecondaryNotification = true;
-			secondaryNotificationMessage = "ERROR: a backup wasn't saved at: " + Application.persistentDataPath + "  - which means it may not have uploaded either: " + e.Message;
+			ShowANotificationMessage("ERROR: a backup wasn't saved at: " + Application.persistentDataPath + "  - which means it may not have uploaded either: " + e.Message);
 		}
 		//Only upload to the server is the DebugMode is OFF
 		if (!DEBUG_MODE_ON) SaveUserGameDataToServer(filePath, fileNameServer);
@@ -775,14 +773,12 @@ public class GameVars : MonoBehaviour
 		}
 		catch (Exception e) {
 			Debug.LogError("Error uploading file: " + e.Message);
-			showNotification = true;
-			notificationMessage = "ERROR: No Upload--The server timed out or you currently do not have a stable internet connection\n" + e.Message;
+			ShowANotificationMessage("ERROR: No Upload--The server timed out or you currently do not have a stable internet connection\n" + e.Message);
 			return;
 		}
 
 		Debug.Log("Upload successful.");
-		showNotification = true;
-		notificationMessage = "File: '" + localFile + "' successfully uploaded to the server!";
+		ShowANotificationMessage("File: '" + localFile + "' successfully uploaded to the server!");
 	}
 
 	//TODO: This is an incredibly specific function that won't be needed later
@@ -1287,8 +1283,7 @@ public class GameVars : MonoBehaviour
 					//If there is a match, the player has moved on to a new leg of the quest line
 					//first show a window for the completion message, and if there are any crew member changes, then let the player know.
 					string questMessageIntro = "The Argonautica Quest: ";
-					notificationMessage = questMessageIntro + thisQuest.descriptionAtCompletion;
-					showNotification = true;
+					ShowANotificationMessage(questMessageIntro + thisQuest.descriptionAtCompletion);
 
 					//add the arrival message to Captain's log
 					playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(thisQuest.destinationID, questMessageIntro + thisQuest.descriptionAtCompletion));
@@ -1379,14 +1374,12 @@ public class GameVars : MonoBehaviour
 			//If it was an increase then show a positive message
 			if (clout < (clout + cloutAdjustment)) {
 				Debug.Log("Gained a level");
-				notificationMessage = "Congratulations! You have reached a new level of influence! Before this day you were Jason, " + GetCloutTitleEquivalency(clout) + ".....But now...You have become Jason " + GetCloutTitleEquivalency((int)playerShipVariables.ship.playerClout) + "!";
-				showNotification = true;
+				ShowANotificationMessage("Congratulations! You have reached a new level of influence! Before this day you were Jason, " + GetCloutTitleEquivalency(clout) + ".....But now...You have become Jason " + GetCloutTitleEquivalency((int)playerShipVariables.ship.playerClout) + "!");
 				//If it was a decrease then show a negative message to the player
 			}
 			else {
 				Debug.Log("Lost a level");
-				notificationMessage = "Unfortunately you sunk to a new low level of respect in the world! Before this day you were Jason, " + GetCloutTitleEquivalency(clout) + ".....But now...You have become Jason " + GetCloutTitleEquivalency((int)playerShipVariables.ship.playerClout) + "!";
-				showNotification = true;
+				ShowANotificationMessage("Unfortunately you sunk to a new low level of respect in the world! Before this day you were Jason, " + GetCloutTitleEquivalency(clout) + ".....But now...You have become Jason " + GetCloutTitleEquivalency((int)playerShipVariables.ship.playerClout) + "!");
 			}
 			MasterGUISystem.GetComponent<script_GUI>().GUI_UpdatePlayerCloutMeter();
 		}
@@ -1550,15 +1543,17 @@ public class GameVars : MonoBehaviour
 
 	public void ShowANotificationMessage(string message) {
 		//First check if we have a primary message going already
-		if (showNotification) {
+		if (NotificationQueued) {
 			//if we do then queue up a secondary message
-			showSecondaryNotification = true;
-			secondaryNotificationMessage = message;
+			// KD: This secondary notif concept was never fully implemented so I'm just removing it for now. I think what this should really do is just pop up stacked modals on top of each other
+			// and you can click through each one, but i'm holding on that for now. It just won't show the second notification (which preserves what the code was doing before since they never showed)
+			//_showSecondaryNotification = true;
+			//_secondaryNotificationMessage = message;
 			//otherwise show a normal primary message
 		}
 		else {
-			showNotification = true;
-			notificationMessage = message;
+			NotificationQueued = true;
+			QueuedNotificationMessage = message;
 		}
 	}
 

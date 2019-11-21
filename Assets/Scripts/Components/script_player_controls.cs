@@ -784,7 +784,6 @@ public class script_player_controls : MonoBehaviour
 					//Kill a crewmember
 					KillCrewMember();
 					crewDeathCount++;
-					GameVars.showNotification = true;
 					ProvisionsDeaths = true;
 				}
 			}
@@ -805,13 +804,12 @@ public class script_player_controls : MonoBehaviour
 					//Kill a crewmember
 					KillCrewMember();
 					crewDeathCount++;
-					GameVars.showNotification = true;
 				}
 			}
 			notificationMessage += crewDeathCount + " crewmember(s) quit because you left without a full store of water.";
 		}
 		//now update the notification string with the message
-		GameVars.notificationMessage = notificationMessage;
+		GameVars.ShowANotificationMessage(notificationMessage);
 	}
 
 	public void UpdateDayNightCycle(bool restartCycle) {
@@ -1272,10 +1270,9 @@ public class script_player_controls : MonoBehaviour
 				Debug.Log("Found match in memory lookup");
 				string settlementName = GameVars.GetSettlementFromID(id).name;
 				GameVars.playerGhostRoute.SetActive(true);
-				GameVars.notificationMessage = "After a long and difficult journey, you and your crew finally found your bearings in the great sea!" +
+				GameVars.ShowANotificationMessage("After a long and difficult journey, you and your crew finally found your bearings in the great sea!" +
 										  " You and your crew recognize the waters surrounding " + settlementName + " and remember the sea routes," +
-										  " you are all familiar with!";
-				GameVars.showNotification = true;
+										  " you are all familiar with!");
 				break;
 			}
 		}

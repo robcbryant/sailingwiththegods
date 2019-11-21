@@ -37,8 +37,7 @@ public class RepairsViewModel : Model
 		//make sure the hp can't go above 100
 		if (GameVars.playerShipVariables.ship.health > 100) {
 			GameVars.playerShipVariables.ship.health = 100;
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "Your ship is already fully repaired";
+			GameVars.ShowANotificationMessage("Your ship is already fully repaired");
 		}
 		else {
 			GameVars.playerShipVariables.ship.currency -= costToRepair;
@@ -49,8 +48,7 @@ public class RepairsViewModel : Model
 
 	public void GUI_RepairShipByAllHP() {
 		if (Mathf.CeilToInt(GameVars.playerShipVariables.ship.health) >= 100) {
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "Your ship is already fully repaired";
+			GameVars.ShowANotificationMessage("Your ship is already fully repaired");
 		}
 		else {
 			GameVars.playerShipVariables.ship.currency -= (int)(costToRepair * Mathf.CeilToInt(100 - GameVars.playerShipVariables.ship.health));
@@ -65,8 +63,7 @@ public class RepairsViewModel : Model
 			GameVars.UpgradeShip(costToBuyUpgrade);
 		}
 		else { 
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "Earn more drachma through trade to upgrade your ship!";
+			GameVars.ShowANotificationMessage("Earn more drachma through trade to upgrade your ship!");
 		}
 	}
 

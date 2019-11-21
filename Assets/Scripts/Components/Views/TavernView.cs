@@ -38,13 +38,11 @@ public class TavernCityViewModel : CityViewModel
 	public void GUI_BuyHint() {
 
 		if (GameVars.playerShipVariables.ship.currency < CostForHint) {
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "Not enough money to buy this information!";
+			GameVars.ShowANotificationMessage("Not enough money to buy this information!");
 		}
 		else {
 			GameVars.playerShipVariables.ship.currency -= CostForHint;
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = GetInfoOnNetworkedSettlementResource(City.cargo[UnityEngine.Random.Range(0, City.cargo.Length)]);
+			GameVars.ShowANotificationMessage(GetInfoOnNetworkedSettlementResource(City.cargo[UnityEngine.Random.Range(0, City.cargo.Length)]));
 		}
 
 	}
@@ -65,8 +63,7 @@ public class TavernCityViewModel : CityViewModel
 			//If not enough money, then let the player know
 		}
 		else {
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You can't afford to hire a navigator to " + City.name + ".";
+			GameVars.ShowANotificationMessage("You can't afford to hire a navigator to " + City.name + ".");
 		}
 	}
 }

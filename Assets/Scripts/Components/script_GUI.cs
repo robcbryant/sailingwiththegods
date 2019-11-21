@@ -199,10 +199,10 @@ public class script_GUI : MonoBehaviour
 
 			//`````````````````````````````````````````````````````````````````
 			//Check to see if we need to show any generic notifications ?
-			if (GameVars.showNotification) {
-				ShowNotification(GameVars.notificationMessage);
+			if (GameVars.NotificationQueued) {
+				ShowNotification(GameVars.QueuedNotificationMessage);
 				GameVars.menuControlsLock = true;
-				GameVars.showNotification = false;
+				GameVars.ConsumeNotification();
 			}
 
 			//=====================================================================================================================================	
@@ -253,10 +253,10 @@ public class script_GUI : MonoBehaviour
 
 			//`````````````````````````````````````````````````````````````````
 			//Check to see if we need to show any generic notifications ?
-			if (GameVars.showNotification) {
-				ShowNotification(GameVars.notificationMessage);
+			if (GameVars.NotificationQueued) {
+				ShowNotification(GameVars.QueuedNotificationMessage);
 				GameVars.menuControlsLock = true;
-				GameVars.showNotification = false;
+				GameVars.ConsumeNotification();
 			}
 
 			//`````````````````````````````````````````````````````````````````

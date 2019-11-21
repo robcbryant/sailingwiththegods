@@ -91,20 +91,17 @@ public static class RandomEvents
 									CrewMember crewToKill = RemoveRandomCrewMember(ship);
 									//If there is a crewmember to kill
 									if (crewToKill.ID != -1) {
-										gameVars.notificationMessage = "Your crew spots a distant ship closing in fast--definitely pirates! By the gods! You manage to escape after fending off their attack! As your crew cheers with victorious honor, "
-																+ "they suddenly stop upon realizing they lost a good crewman... " + crewToKill.name + "'s sacrifice has earned him great honor. You prepare the proper rites and cast the sailor asea.";
-										gameVars.showNotification = true;
+										gameVars.ShowANotificationMessage("Your crew spots a distant ship closing in fast--definitely pirates! By the gods! You manage to escape after fending off their attack! As your crew cheers with victorious honor, "
+																+ "they suddenly stop upon realizing they lost a good crewman... " + crewToKill.name + "'s sacrifice has earned him great honor. You prepare the proper rites and cast the sailor asea.");
 										//otherwise there is no crewmember to kill--either from not having enough crewmembers or no crewmembers that are killable so just give the success response without a death
 									}
 									else {
-										gameVars.notificationMessage = "Your crew spots a distant ship closing in fast--definitely pirates! By the gods! After a heated battle, you manage to escape after fending off their attack without any casualties! Your crew cheers with victorious honor!";
-										gameVars.showNotification = true;
+										gameVars.ShowANotificationMessage("Your crew spots a distant ship closing in fast--definitely pirates! By the gods! After a heated battle, you manage to escape after fending off their attack without any casualties! Your crew cheers with victorious honor!");
 									}
 									//No crewmembers died so it was a perfect defensive victory	
 								}
 								else {
-									gameVars.notificationMessage = "Your crew spots a distant ship closing in fast--definitely pirates! By the gods! After a heated battle, you manage to escape after fending off their attack without any casualties! Your crew cheers with victorious honor!";
-									gameVars.showNotification = true;
+									gameVars.ShowANotificationMessage("Your crew spots a distant ship closing in fast--definitely pirates! By the gods! After a heated battle, you manage to escape after fending off their attack without any casualties! Your crew cheers with victorious honor!");
 								}
 
 
@@ -138,17 +135,15 @@ public static class RandomEvents
 								}
 								//If the list of killed crew is empty, then we didn't kill any crewmembers so add a message that explains why
 								if (lostCrew.Count == 0) {
-									gameVars.notificationMessage = "Your crew spots a distant ship closing in fast--they are definitely pirates! Your crew prepares for battle as the ship rams at full speed into your hull." +
+									gameVars.ShowANotificationMessage("Your crew spots a distant ship closing in fast--they are definitely pirates! Your crew prepares for battle as the ship rams at full speed into your hull." +
 															  " Your crew fights valiantly against the onslaught, but the pirates successfully bring you to your knees! They rummage through your holds and take half your supplies with them as a generous bounty." +
-															  " They intended to take a number of you prisoner, but the pirate captain sensed a strange omen surrounding you and wanted no part in your crew's fate. They leave your dishonored ship with their newly acquired supplies.";
-									gameVars.showNotification = true;
+															  " They intended to take a number of you prisoner, but the pirate captain sensed a strange omen surrounding you and wanted no part in your crew's fate. They leave your dishonored ship with their newly acquired supplies.");
 									//Otherwise members died so alert the player
 								}
 								else {
-									gameVars.notificationMessage = "Your crew spots a distant ship closing in fast--they are definitely pirates! Your crew prepares for battle as the ship rams at full speed into your hull." +
+									gameVars.ShowANotificationMessage("Your crew spots a distant ship closing in fast--they are definitely pirates! Your crew prepares for battle as the ship rams at full speed into your hull." +
 																" Your crew fights valiantly against the onslaught, but the pirates successfully bring you to your knees! They rummage through your holds and take half your supplies with them as a generous bounty." +
-																" Unfortunately, you lose " + lostNames + " to death and kidnapping. The remaining crew are unsettled but fortunate for their lives.";
-									gameVars.showNotification = true;
+																" Unfortunately, you lose " + lostNames + " to death and kidnapping. The remaining crew are unsettled but fortunate for their lives.");
 
 								}
 
@@ -202,8 +197,7 @@ public static class RandomEvents
 							}
 
 							finalMessage += " You continue the journey with the crew--thankful that it wasn't any worse. A plague on a ship asea is quite dangerous.";
-							gameVars.notificationMessage = finalMessage;
-							gameVars.showNotification = true;
+							gameVars.ShowANotificationMessage(finalMessage);
 							break;
 
 
@@ -243,8 +237,7 @@ public static class RandomEvents
 
 							finalMessage += "You think to yourself, as the commander sails away with his small fleet, how odd it is to thank someone for stealing from them. Your crew seems equally frustrated, but equally glad they aren't sailing to some unknown battle against some unknown king. You unfurl the sails and go about your journey!";
 
-							gameVars.notificationMessage = finalMessage;
-							gameVars.showNotification = true;
+							gameVars.ShowANotificationMessage(finalMessage);
 							break;
 
 
@@ -309,8 +302,7 @@ public static class RandomEvents
 
 							//Now add what Provisions and water they give you to the message
 							finalMessage += messageWaterModifier + messageProvisionsModifier + " They bid you farewell and wish Poseidon's favor upon you!";
-							gameVars.notificationMessage = finalMessage;
-							gameVars.showNotification = true;
+							gameVars.ShowANotificationMessage(finalMessage);
 							break;
 						//=====================	
 						//ABADONED SHIP		
@@ -337,8 +329,7 @@ public static class RandomEvents
 
 							//now add the final bit to the event
 							finalMessage += "We watch the ship sink as we sail away--ever mindful that if we aren't careful, the same could happen to us!";
-							gameVars.notificationMessage = finalMessage;
-							gameVars.showNotification = true;
+							gameVars.ShowANotificationMessage(finalMessage);
 							break;
 						//=====================	
 						//FAVOR OF GODS		
@@ -349,8 +340,7 @@ public static class RandomEvents
 											" The waters seem to push you forward in a suspicious but fortunate manner!";
 							shipSpeedModifiers.Event++;
 
-							gameVars.notificationMessage = finalMessage;
-							gameVars.showNotification = true;
+							gameVars.ShowANotificationMessage(finalMessage);
 							break;
 						//=====================	
 						//POSEIDON'S BOUNTY		
@@ -375,8 +365,7 @@ public static class RandomEvents
 								"obviously it is a test by Poseidon on our avarice! We continue on our journey--despite the grumblings of the crew.";
 							}
 
-							gameVars.notificationMessage = finalMessage;
-							gameVars.showNotification = true;
+							gameVars.ShowANotificationMessage(finalMessage);
 							break;
 						//=====================	
 						//ZEUS'S BOUNTY		
@@ -401,8 +390,7 @@ public static class RandomEvents
 									"obviously it's a gift to Zeus' brother--not to us and not worth the risk! We continue on our journey--despite the grumblings of the crew.";
 							}
 
-							gameVars.notificationMessage = finalMessage;
-							gameVars.showNotification = true;
+							gameVars.ShowANotificationMessage(finalMessage);
 							break;
 
 					}
@@ -478,8 +466,7 @@ public static class RandomEvents
 
 			//Despite their lack of success--there might be a chance of losing a crewman to the storm
 			//The chance of a death is 20%  minus a total of 10% from the agregate clout score.
-			gameVars.notificationMessage = "A storm suddenly surges across the seas filling your crew with worry. The waves crash upon your ship and your sails whip in the winds, but your crew holds fast and successfully navigates the storm!";
-			gameVars.showNotification = true;
+			gameVars.ShowANotificationMessage("A storm suddenly surges across the seas filling your crew with worry. The waves crash upon your ship and your sails whip in the winds, but your crew holds fast and successfully navigates the storm!");
 
 			//Otherwise the storm was successful and the necessary penalties occur
 		}
@@ -548,31 +535,27 @@ public static class RandomEvents
 			}
 			//Display message telling the player what occured
 			if (lostCrew.Count == 0) {
-				gameVars.notificationMessage = "A storm suddenly surges across the seas filling your crew with worry. They struggle for hours " +
+				gameVars.ShowANotificationMessage("A storm suddenly surges across the seas filling your crew with worry. They struggle for hours " +
 										 "until the storm overcomes their senses and abilities. You all hold tight and let the storm take your ship where " +
-										"it will, leaving you lost asea without any known bearings across the waters.";
-				gameVars.showNotification = true;
+										"it will, leaving you lost asea without any known bearings across the waters.");
 			}
 			else if(isShipwrecked) {
-				gameVars.notificationMessage = "A storm suddenly surges across the seas filling your crew with worry. They struggle for hours " +
+				gameVars.ShowANotificationMessage("A storm suddenly surges across the seas filling your crew with worry. They struggle for hours " +
 									"until the storm overcomes their senses and abilities. You all hold tight and let the storm take your ship where " +
-									"it will, leaving you shipwrecked. Unfortunately, you lose ALL of your crew to the storm's wrath!";
-				gameVars.showNotification = true;
+									"it will, leaving you shipwrecked. Unfortunately, you lose ALL of your crew to the storm's wrath!");
 				gameVars.isGameOver = true;
 			}
 			else if(ship.crew == 0) {
-				gameVars.notificationMessage = "A storm suddenly surges across the seas filling your crew with worry. They struggle for hours " +
+				gameVars.ShowANotificationMessage("A storm suddenly surges across the seas filling your crew with worry. They struggle for hours " +
 									"until the storm overcomes their senses and abilities. You all hold tight and let the storm take your ship where " +
-									"it will. Unfortunately, you lose ALL of your crew to the storm's wrath!";
-				gameVars.showNotification = true;
+									"it will. Unfortunately, you lose ALL of your crew to the storm's wrath!");
 				gameVars.isGameOver = true;
 			}
 			else {
-				gameVars.notificationMessage = "A storm suddenly surges across the seas filling your crew with worry. They struggle for hours " +
+				gameVars.ShowANotificationMessage("A storm suddenly surges across the seas filling your crew with worry. They struggle for hours " +
 									"until the storm overcomes their senses and abilities. You all hold tight and let the storm take your ship where " +
 									"it will, leaving you lost asea without any known bearings across the waters. Unfortunately, you lose " + lostNames + " to the storm's wrath! You say a few prayers to Poseidon " +
-									"and struggle onward to find your way!";
-				gameVars.showNotification = true;
+									"and struggle onward to find your way!");
 			}
 
 
