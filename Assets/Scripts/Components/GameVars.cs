@@ -1004,10 +1004,19 @@ public class GameVars : MonoBehaviour
 		// set the objective to the first part of the argonautica quest
 		playerShipVariables.ship.objective = "Upgrade your ship to the Trireme";
 
+		
 		Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
 			Title = "Trading in the Mediterranean",
 			Message = "You are Jason. Your story begins with a trade ship and a small crew. Sail to Pagasae and buy goods to sell around the bay.\n\nEarn enough money to upgrade your ship to a Trireme so your adventure can begin!"
 		});
+
+
+		// KD TODO: Testing quizzes
+		/*Globals.UI.Show<QuizScreen, InfoScreenModel>(new InfoScreenModel {
+			Title = "Clashing Rocks",
+			Message = "You’re at the clashing rocks: oh no! do you remember your instructions from Phineus? Choose wisely – or you will be smashed to epic smithereens."
+		});
+		*/
 
 		//Flag the main GUI scripts to turn on
 		runningMainGameGUI = true;
