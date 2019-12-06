@@ -44,8 +44,7 @@ public class PortViewModel : CityViewModel
 
 		}
 		else {//Debug.Log ("Not Enough Drachma to Leave the Port!");
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "Not Enough Drachma to pay the port tax and leave!";
+			GameVars.ShowANotificationMessage("Not Enough Drachma to pay the port tax and leave!");
 		}
 	}
 }

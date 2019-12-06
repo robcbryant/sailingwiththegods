@@ -12,6 +12,10 @@ public static class Utils
 
 	}
 
+	public static T RandomElement<T>(this IEnumerable<T> list) {
+		return list.ElementAt(UnityEngine.Random.Range(0, list.Count() - 1));
+	}
+
 	public static bool FastApproximately(float a, float b, float threshold) {
 		return ((a < b) ? (b - a) : (a - b)) <= threshold;
 	}

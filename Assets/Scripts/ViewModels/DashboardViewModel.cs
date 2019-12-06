@@ -17,9 +17,11 @@ public class DashboardViewModel : Model
 	public readonly ICollectionModel<CrewManagementMemberViewModel> CrewList;
 
 	public BoundModel<float> Clout;
-	public CrewMember Jason => Globals.GameVars.masterCrewList.FirstOrDefault(c => c.isJason);
+	public CrewMember Jason => Globals.GameVars.Jason;
 
 	public BoundModel<bool> SailsAreUnfurled { get; private set; }
+
+	public BoundModel<string> Objective { get; private set; }
 
 	public DashboardViewModel() {
 
@@ -38,6 +40,7 @@ public class DashboardViewModel : Model
 
 		SailsAreUnfurled = new BoundModel<bool>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.sailsAreUnfurled));
 
+		Objective = new BoundModel<string>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.objective));
 	}
 
 	public void OnCrewCityClicked(CityViewModel city) {

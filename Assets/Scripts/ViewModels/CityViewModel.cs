@@ -30,10 +30,10 @@ public class CityDetailsViewModel : CityViewModel
 	public CityDetailsViewModel(Settlement city, Action<CityViewModel> onClick) : base(city, onClick) {
 
 		Crew = ValueModel.Wrap(new ObservableCollection<CrewManagementMemberViewModel>(
-			GameVars.Network.CrewMembersWithNetwork(city)
+			GameVars.Network.CrewMembersWithNetwork(city, true)
 				.OrderBy(c => GameVars.Network.GetCrewMemberNetwork(c).Count())
 				.Take(5)
-				.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, null))
+				.Select(crew => new CrewManagementMemberViewModel(crew, OnCrewClicked, OnCrewCityClicked))
 		));
 
 		Buy = ValueModel.Wrap(new ObservableCollection<CargoInventoryViewModel>(
@@ -58,6 +58,19 @@ public class CityDetailsViewModel : CityViewModel
 		Globals.UI.Hide<CrewDetailsScreen>();
 		Globals.UI.Show<CrewDetailsScreen, CrewManagementMemberViewModel>(crew);
 
+	}
+
+	// TODO: Yikes. I copied this from DashboardViewModel
+	public void OnCrewCityClicked(CityViewModel city) {
+		Debug.Log("City clicked: " + city.PortName);
+
+		if (Globals.UI.IsShown<CityView>()) {
+			Globals.UI.Hide<CityView>();
+		}
+
+		Globals.GameVars.MoveNavigatorBeacon(Globals.GameVars.crewBeacon, city.City.theGameObject.transform.position);
+		Globals.GameVars.RotateCameraTowards(city.City.theGameObject.transform.position);
+		Globals.UI.Show<CityView, CityViewModel>(new CityDetailsViewModel(city.City, null));
 	}
 }
 

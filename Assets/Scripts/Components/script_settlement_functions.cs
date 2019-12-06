@@ -8,10 +8,11 @@ public class script_settlement_functions : MonoBehaviour, IPointerEnterHandler, 
 {
 	bool IsTooltipPendingHide;
 
+	public Transform anchor;
 	public Settlement thisSettlement;
 	GameVars GameVars;
 
-
+	
 	void Start() {
 		GameVars = Globals.GameVars;
 	}

@@ -60,8 +60,7 @@ public class CrewManagementViewModel : Model
 		GameVars.playerShipVariables.ship.crewRoster.Remove(crewman);
 		Settlement.availableCrew.Add(crewman);
 
-		GameVars.showNotification = true;
-		GameVars.notificationMessage = crewman.name + " looked at you sadly and said before leaving, 'I thought I was doing so well. I'm sorry I let you down. Guess I'll go drink some cheap wine...";
+		GameVars.ShowANotificationMessage(crewman.name + " looked at you sadly and said before leaving, 'I thought I was doing so well. I'm sorry I let you down. Guess I'll go drink some cheap wine...");
 	}
 
 
@@ -83,19 +82,16 @@ public class CrewManagementViewModel : Model
 				//If there isn't room, then let the player know
 			}
 			else {
-				GameVars.showNotification = true;
-				GameVars.notificationMessage = "You don't have room on the ship to hire " + crewman.name + ".";
+				GameVars.ShowANotificationMessage("You don't have room on the ship to hire " + crewman.name + ".");
 			}
 			//If not enough money, then let the player know
 		}
 		else {
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You can't afford to hire " + crewman.name + ".";
+			GameVars.ShowANotificationMessage("You can't afford to hire " + crewman.name + ".");
 		}
 	}
 
 	public void GUI_GetBackgroundInfo(CrewManagementMemberViewModel crew) {
-		GameVars.showNotification = true;
-		GameVars.notificationMessage = crew.BackgroundInfo;
+		GameVars.ShowANotificationMessage(crew.BackgroundInfo);
 	}
 }

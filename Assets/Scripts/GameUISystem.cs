@@ -24,6 +24,7 @@ public class GameUISystem : UISystem
 	[SerializeField] ShrinesView ShrinesView = null;
 	[SerializeField] TavernView TavernView = null;
 	[SerializeField] InfoScreen InfoScreen = null;
+	[SerializeField] QuizScreen QuizScreen = null;
 	[SerializeField] TimePassingView TimePassingView = null;
 
 	void AddViews() {
@@ -40,6 +41,7 @@ public class GameUISystem : UISystem
 		Add(TavernView);
 		Add(InfoScreen);
 		Add(TimePassingView);
+		Add(QuizScreen);
 	}
 
 	void Start() {

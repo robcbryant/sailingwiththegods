@@ -583,9 +583,14 @@ public class Ship : Model
 	public Journal playerJournal;
 	public int currentNavigatorTarget;
 	public Loan currentLoan;
-	public MainQuestLine mainQuest;
 	public List<int> networks;
 	public int originSettlement;
+
+	public MainQuestLine mainQuest;
+
+	// TODO: Reconcile mainQuest and objective concepts. These systems seem like they should be merged
+	private string _objective;
+	public string objective { get => _objective; set { _objective = value; Notify(); } }
 
 	public int crew => crewRoster.Count;
 	public ObservableCollection<CrewMember> crewRoster;

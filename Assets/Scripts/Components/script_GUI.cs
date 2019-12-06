@@ -199,10 +199,10 @@ public class script_GUI : MonoBehaviour
 
 			//`````````````````````````````````````````````````````````````````
 			//Check to see if we need to show any generic notifications ?
-			if (GameVars.showNotification) {
-				ShowNotification(GameVars.notificationMessage);
+			if (GameVars.NotificationQueued) {
+				ShowNotification(GameVars.QueuedNotificationMessage);
 				GameVars.menuControlsLock = true;
-				GameVars.showNotification = false;
+				GameVars.ConsumeNotification();
 			}
 
 			//=====================================================================================================================================	
@@ -253,10 +253,10 @@ public class script_GUI : MonoBehaviour
 
 			//`````````````````````````````````````````````````````````````````
 			//Check to see if we need to show any generic notifications ?
-			if (GameVars.showNotification) {
-				ShowNotification(GameVars.notificationMessage);
+			if (GameVars.NotificationQueued) {
+				ShowNotification(GameVars.QueuedNotificationMessage);
 				GameVars.menuControlsLock = true;
-				GameVars.showNotification = false;
+				GameVars.ConsumeNotification();
 			}
 
 			//`````````````````````````````````````````````````````````````````
@@ -538,34 +538,14 @@ public class script_GUI : MonoBehaviour
 	//=================================================================================================================	
 
 	void ShowNotification(string message) {
-		//Declare our message as a string to ensure we have a unique instance passed
-		string notificationMessage = message;
 
-		//Set the Notification System to Active
-		notice_notificationSystem.SetActive(true);
-
-		//Clone the first child of the "Current Notifications" parent(This will be the template used to instantiate more notifications as needed
-		GameObject newNotification = Instantiate((GameObject)notice_notificationParent.transform.GetChild(0).gameObject) as GameObject;
-		newNotification.transform.SetParent((Transform)notice_notificationParent.transform);
-		newNotification.SetActive(true);
-
-		//Reset its transform values
-		newNotification.GetComponent<RectTransform>().localScale = Vector3.one;
-		newNotification.GetComponent<RectTransform>().localPosition = Vector3.zero;
-
-		//If there are more than 2 notifications present(there are more than 2 children--1 template + 1 notification) then let's
-		//	--give the second notification a random location within a specified range of  -600 < x < 600  and -180 < y < 180
-		if (notice_notificationParent.transform.childCount > 2) {
-			newNotification.GetComponent<RectTransform>().localPosition = new Vector3(Random.Range(-600, 600), Random.Range(-180, 180), 0);
-		}
-		//Setup the Message Text
-		newNotification.transform.Find("ScrollView/Content/Message").GetComponent<Text>().text = notificationMessage;
-
-		//Setup the confirmation button to destroy this specific notification instance
-		Button notificationButton = (Button)newNotification.transform.Find("Confirm Button").GetComponent<Button>();
-		notificationButton.onClick.RemoveAllListeners();
-		notificationButton.onClick.AddListener(() => GUI_RemoveNotification(newNotification));
-		//That's it
+		// KD: I don't think the complexity of stacked notifications is needed. pretty sure it'd be okay to queue them up (stack them so you close one by one)
+		// also changed to the new popup which i think looks better
+		Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
+			Title = "Attention!",
+			Message = message
+		});
+		
 	}
 
 	public void GUI_RemoveNotification(GameObject notification) {

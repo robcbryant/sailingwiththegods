@@ -70,6 +70,8 @@ public class GameVars : MonoBehaviour
 	public const string TD_minute = "0";
 	public const string TD_second = "0";
 
+	public CrewMember Jason => Globals.GameVars.masterCrewList.FirstOrDefault(c => c.isJason);
+
 	[Header("World Scene Refs")]
 	public GameObject FPVCamera;
 	public GameObject camera_Mapview;
@@ -146,13 +148,12 @@ public class GameVars : MonoBehaviour
 	[HideInInspector] public bool isPassingTime = false;
 
 	// notifications
-	//The main notifications are handled by the first two variables
-	//	--to make sure multiple notifications can be seen that might overlap, e.g. the player triggers two notifications in an action
-	//	--there are two and if the first is 'true' or showing a message, it will default to a secondary notification window
-	[HideInInspector] public bool showNotification = false;
-	[HideInInspector] public string notificationMessage = "";
-	[HideInInspector] public bool showSecondaryNotification = false;
-	[HideInInspector] public string secondaryNotificationMessage = "";
+	public bool NotificationQueued { get; private set; }
+	public string QueuedNotificationMessage { get; private set; }
+
+	public void ConsumeNotification() {
+		NotificationQueued = false;
+	}
 
 	// environment
 	[HideInInspector] public Light mainLightSource;
@@ -477,7 +478,9 @@ public class GameVars : MonoBehaviour
 	void DebugHotkeys() {
 #if UNITY_EDITOR
 		if(Input.GetKeyUp(KeyCode.E)) {
-			RandomEvents.StormAtSea(playerShipVariables.ship, Globals.GameVars, playerShip.transform, 1, 0);
+			var storm = new StormAtSea();
+			storm.Init(this, playerShipVariables.ship, new ShipSpeedModifiers(), playerShip.transform, 1);
+			storm.Execute();
 		}
 #endif
 	}
@@ -608,8 +611,10 @@ public class GameVars : MonoBehaviour
 	public void GenerateCityLights() {
 		for (int i = 0; i < settlement_masterList_parent.transform.childCount; i++) {
 			GameObject currentCityLight = Instantiate(Resources.Load("PF_cityLights", typeof(GameObject))) as GameObject;
-			currentCityLight.transform.position = settlement_masterList_parent.transform.GetChild(i).position;
-			currentCityLight.transform.parent = cityLightsParent.transform;
+
+			// use the center of the collider bounds instead of the position since the models are weirdly offset in many of these
+			currentCityLight.transform.SetParent(cityLightsParent.transform);
+			currentCityLight.transform.position = settlement_masterList_parent.transform.GetChild(i).GetComponent<script_settlement_functions>().anchor.position;
 		}
 	}
 
@@ -696,8 +701,7 @@ public class GameVars : MonoBehaviour
 			Debug.Log(Application.persistentDataPath);
 		}
 		catch (Exception e) {
-			showSecondaryNotification = true;
-			secondaryNotificationMessage = "ERROR: a backup wasn't saved at: " + Application.persistentDataPath + "  - which means it may not have uploaded either: " + e.Message;
+			ShowANotificationMessage("ERROR: a backup wasn't saved at: " + Application.persistentDataPath + "  - which means it may not have uploaded either: " + e.Message);
 		}
 		//Only upload to the server is the DebugMode is OFF
 		if (!DEBUG_MODE_ON) SaveUserGameDataToServer(filePath, fileNameServer);
@@ -771,14 +775,12 @@ public class GameVars : MonoBehaviour
 		}
 		catch (Exception e) {
 			Debug.LogError("Error uploading file: " + e.Message);
-			showNotification = true;
-			notificationMessage = "ERROR: No Upload--The server timed out or you currently do not have a stable internet connection\n" + e.Message;
+			ShowANotificationMessage("ERROR: No Upload--The server timed out or you currently do not have a stable internet connection\n" + e.Message);
 			return;
 		}
 
 		Debug.Log("Upload successful.");
-		showNotification = true;
-		notificationMessage = "File: '" + localFile + "' successfully uploaded to the server!";
+		ShowANotificationMessage("File: '" + localFile + "' successfully uploaded to the server!");
 	}
 
 	//TODO: This is an incredibly specific function that won't be needed later
@@ -946,37 +948,43 @@ public class GameVars : MonoBehaviour
 		playerShipVariables.ship.cargo[1].amount_kg = Ship.StartingFood;
 
 		//Increase the quest counter because the start screen takes care of the first leg
-
+		// KD: Your first quest is to find pagasae, not tomb of dolops
 		Debug.Log(playerShipVariables.ship.mainQuest.currentQuestSegment);
-		playerShipVariables.ship.mainQuest.currentQuestSegment++;
+		//playerShipVariables.ship.mainQuest.currentQuestSegment++;
+
+		var segment = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment];
 
 		//first show a window for the welcome message, and if there are any crew member changes, then let the player know.
-		notificationMessage = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].descriptionAtCompletion;
-		showNotification = true;
+		// KD: Removed the concept of the first welcome message
+		//notificationMessage = segment.descriptionAtCompletion;
+		//showNotification = true;
 		//Add this message to the captain's log
-		playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].destinationID, playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].descriptionOfQuest));
+		playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(segment.destinationID, segment.descriptionOfQuest));
 		playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry = playerShipVariables.ship.totalNumOfDaysTraveled + " days";
 		currentCaptainsLog = playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry + "\n" + playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].logEntry + "\n\n" + currentCaptainsLog;
 		//Now add the mentioned places attached to this quest leg
-		foreach (int i in playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].mentionedPlaces) {
+		foreach (int i in segment.mentionedPlaces) {
 			//Make sure we don't add any null values--a -1 represents no mentions of any settlements
 			if (i != -1)
 				playerShipVariables.ship.playerJournal.AddNewSettlementToLog(i);
 		}
 		Debug.Log(playerShipVariables.ship.mainQuest.currentQuestSegment);
+
 		//Then increment the questline to the in succession and update the player captains log with the new information for the next quest line
 		playerShipVariables.ship.mainQuest.currentQuestSegment++;
-		playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].destinationID, playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].descriptionOfQuest));
+		segment = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment];
+
+		playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(segment.destinationID, segment.descriptionOfQuest));
 		playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry = playerShipVariables.ship.totalNumOfDaysTraveled + " days";
 		currentCaptainsLog = playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry + "\n" + playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].logEntry + "\n\n" + currentCaptainsLog;
 		//Now add the mentioned places attached to this quest leg
-		foreach (int i in playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].mentionedPlaces) {
+		foreach (int i in segment.mentionedPlaces) {
 			//Make sure we don't add any null values--a -1 represents no mentions of any settlements
 			if (i != -1)
 				playerShipVariables.ship.playerJournal.AddNewSettlementToLog(i);
 		}
 		//Now add the city name of the next journey quest to the players known settlements
-		playerShipVariables.ship.playerJournal.AddNewSettlementToLog(playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].destinationID);
+		playerShipVariables.ship.playerJournal.AddNewSettlementToLog(segment.destinationID);
 		//Now teleport the player ship to an appropriate location near the first target
 		playerShip.transform.position = new Vector3(1702.414f, playerShip.transform.position.y, 2168.358f);
 		//Set the player's initial position to the new position
@@ -992,6 +1000,23 @@ public class GameVars : MonoBehaviour
 		}
 
 		Debug.Log(playerShipVariables.ship.mainQuest.currentQuestSegment);
+
+		// set the objective to the first part of the argonautica quest
+		playerShipVariables.ship.objective = "Upgrade your ship to the Trireme";
+
+		
+		Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
+			Title = "Trading in the Mediterranean",
+			Message = "You are Jason. Your story begins with a trade ship and a small crew. Sail to Pagasae and buy goods to sell around the bay.\n\nEarn enough money to upgrade your ship to a Trireme so your adventure can begin!"
+		});
+
+
+		// KD TODO: Testing quizzes
+		/*Globals.UI.Show<QuizScreen, InfoScreenModel>(new InfoScreenModel {
+			Title = "Clashing Rocks",
+			Message = "You’re at the clashing rocks: oh no! do you remember your instructions from Phineus? Choose wisely – or you will be smashed to epic smithereens."
+		});
+		*/
 
 		//Flag the main GUI scripts to turn on
 		runningMainGameGUI = true;
@@ -1017,6 +1042,12 @@ public class GameVars : MonoBehaviour
 					"The task seems impossible!But you do not sail alone, Jason.You have assembled a group of the most powerful warriors, sailors, and prophets in Greece to help you in your quest. " +
 					"Most are the sons of royal families, and each one has a unique skill.Once the heroes have all arrived, your crew stocks the ships and the people of Pagasae greet you all."
 		});
+
+		var segment = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment];
+		playerShipVariables.ship.objective = string.Concat(segment.descriptionOfQuest
+			.SkipWhile(c => c == '"')
+			.TakeWhile(c => c != '!')
+		);
 
 		// show the new ship model
 		SetShipModel(playerShipVariables.ship.upgradeLevel);
@@ -1232,14 +1263,18 @@ public class GameVars : MonoBehaviour
 		//create a bool that can be accessed by this function's loops etc.
 		bool matchFound = false;
 
+		// you can't progress in the main quest until you finish the tutorial
+		if (playerShipVariables.ship.upgradeLevel == 0) return;
+
 		//First determine if the player has finished the entire questline or yet. We'll use the Count without a -1 to make sure the incremented quest leg is higher thant he last available leg
 		if (playerShipVariables.ship.mainQuest.currentQuestSegment < playerShipVariables.ship.mainQuest.questSegments.Count) {
 			int currentQuestEnd;
 			int aeaID = 15;
+			var segment = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment];
 
 			//First we determine which part of the questleg the player is in which determines which part of the quest array the player can access
 			//If the player is in the first half before Aea--then only search for these quest segments, else only search for the last quest segments
-			if (playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].segmentID < aeaID) {
+			if (segment.segmentID < aeaID) {
 				//currentQuestBeginning = 0;
 				currentQuestEnd = aeaID;
 			}
@@ -1251,7 +1286,7 @@ public class GameVars : MonoBehaviour
 
 
 			//we add a +1 to the current questline so that the player can't continuously perform the quest at the same stop
-			for (int index = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].segmentID; index <= currentQuestEnd; index++) {
+			for (int index = segment.segmentID; index <= currentQuestEnd; index++) {
 				QuestSegment thisQuest = playerShipVariables.ship.mainQuest.questSegments[index];
 				Debug.Log(settlementID + "   : =? :   " + thisQuest.destinationID);
 				//If the current settlement matches the id of any target in the quest line, increment the quest line to that point--preferably we want it to be the next one in sequence--but we're expanding player behavioral choices.
@@ -1259,8 +1294,7 @@ public class GameVars : MonoBehaviour
 					//If there is a match, the player has moved on to a new leg of the quest line
 					//first show a window for the completion message, and if there are any crew member changes, then let the player know.
 					string questMessageIntro = "The Argonautica Quest: ";
-					notificationMessage = questMessageIntro + thisQuest.descriptionAtCompletion;
-					showNotification = true;
+					ShowANotificationMessage(questMessageIntro + thisQuest.descriptionAtCompletion);
 
 					//add the arrival message to Captain's log
 					playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(thisQuest.destinationID, questMessageIntro + thisQuest.descriptionAtCompletion));
@@ -1268,7 +1302,7 @@ public class GameVars : MonoBehaviour
 					currentCaptainsLog = playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry + "\n" + playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].logEntry + "\n\n" + currentCaptainsLog;
 
 					//Remove any crew members if the questline calls for it
-					foreach (int crewID in playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].crewmembersToRemove) {
+					foreach (int crewID in segment.crewmembersToRemove) {
 						Debug.Log("CREW ID REMOVING: " + crewID);
 						//Make sure the crew ID values are not -1(a null value which means no changes)
 						if (crewID != -1)
@@ -1280,7 +1314,7 @@ public class GameVars : MonoBehaviour
 					}
 
 					//Add any new crew members if the questline calls for it
-					foreach (int crewID in playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].crewmembersToAdd) {
+					foreach (int crewID in segment.crewmembersToAdd) {
 						//Make sure the crew ID values are not -1(a null value which means no changes)
 						if (crewID != -1)
 							playerShipVariables.ship.crewRoster.Add(GetCrewMemberFromID(crewID));
@@ -1288,16 +1322,22 @@ public class GameVars : MonoBehaviour
 
 					//Then increment the questline to the in succession and update the player captains log with the new information for the next quest line
 					playerShipVariables.ship.mainQuest.currentQuestSegment = thisQuest.segmentID + 1;
-					playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].destinationID, questMessageIntro + playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].descriptionOfQuest));
+					segment = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment];
+
+					playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(segment.destinationID, questMessageIntro + segment.descriptionOfQuest));
 					playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry = playerShipVariables.ship.totalNumOfDaysTraveled + " days";
 					currentCaptainsLog = playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry + "\n" + playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].logEntry + "\n\n" + currentCaptainsLog;
 
+					playerShipVariables.ship.objective = string.Concat(segment.descriptionOfQuest
+						.SkipWhile(c => c == '"')
+						.TakeWhile(c => c != '!')
+					);
 
 					//Now add the city name of the next journey quest to the players known settlements
-					playerShipVariables.ship.playerJournal.AddNewSettlementToLog(playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].destinationID);
-					Debug.Log("next seg: " + playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].destinationID);
+					playerShipVariables.ship.playerJournal.AddNewSettlementToLog(segment.destinationID);
+					Debug.Log("next seg: " + segment.destinationID);
 					//Now add the mentioned places attached to this quest leg
-					foreach (int i in playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment].mentionedPlaces) {
+					foreach (int i in segment.mentionedPlaces) {
 						Debug.Log("mentioning: " + i);
 						//Make sure we don't add any null values--a -1 represents no mentions of any settlements
 						if (i != -1)
@@ -1345,14 +1385,12 @@ public class GameVars : MonoBehaviour
 			//If it was an increase then show a positive message
 			if (clout < (clout + cloutAdjustment)) {
 				Debug.Log("Gained a level");
-				notificationMessage = "Congratulations! You have reached a new level of influence! Before this day you were Jason, " + GetCloutTitleEquivalency(clout) + ".....But now...You have become Jason " + GetCloutTitleEquivalency((int)playerShipVariables.ship.playerClout) + "!";
-				showNotification = true;
+				ShowANotificationMessage("Congratulations! You have reached a new level of influence! Before this day you were Jason, " + GetCloutTitleEquivalency(clout) + ".....But now...You have become Jason " + GetCloutTitleEquivalency((int)playerShipVariables.ship.playerClout) + "!");
 				//If it was a decrease then show a negative message to the player
 			}
 			else {
 				Debug.Log("Lost a level");
-				notificationMessage = "Unfortunately you sunk to a new low level of respect in the world! Before this day you were Jason, " + GetCloutTitleEquivalency(clout) + ".....But now...You have become Jason " + GetCloutTitleEquivalency((int)playerShipVariables.ship.playerClout) + "!";
-				showNotification = true;
+				ShowANotificationMessage("Unfortunately you sunk to a new low level of respect in the world! Before this day you were Jason, " + GetCloutTitleEquivalency(clout) + ".....But now...You have become Jason " + GetCloutTitleEquivalency((int)playerShipVariables.ship.playerClout) + "!");
 			}
 			MasterGUISystem.GetComponent<script_GUI>().GUI_UpdatePlayerCloutMeter();
 		}
@@ -1516,15 +1554,17 @@ public class GameVars : MonoBehaviour
 
 	public void ShowANotificationMessage(string message) {
 		//First check if we have a primary message going already
-		if (showNotification) {
+		if (NotificationQueued) {
 			//if we do then queue up a secondary message
-			showSecondaryNotification = true;
-			secondaryNotificationMessage = message;
+			// KD: This secondary notif concept was never fully implemented so I'm just removing it for now. I think what this should really do is just pop up stacked modals on top of each other
+			// and you can click through each one, but i'm holding on that for now. It just won't show the second notification (which preserves what the code was doing before since they never showed)
+			//_showSecondaryNotification = true;
+			//_secondaryNotificationMessage = message;
 			//otherwise show a normal primary message
 		}
 		else {
-			showNotification = true;
-			notificationMessage = message;
+			NotificationQueued = true;
+			QueuedNotificationMessage = message;
 		}
 	}
 

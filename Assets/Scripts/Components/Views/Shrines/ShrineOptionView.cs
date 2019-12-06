@@ -21,15 +21,13 @@ public class ShrineOptionModel : Model
 
 		if (GameVars.playerShipVariables.ship.currency > Cost) {
 			GameVars.playerShipVariables.ship.currency -= Cost;
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You built a " + Name + " for " + GameVars.currentSettlement.name + "! " + BenefitHint;
+			GameVars.ShowANotificationMessage("You built a " + Name + " for " + GameVars.currentSettlement.name + "! " + BenefitHint);
 			GameVars.AdjustPlayerClout(1);
 			GameVars.playerShipVariables.ship.builtMonuments += GameVars.currentSettlement.name + " -- " + Name + "\n";
 
 		}
 		else {
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You don't have enough money to build a " + Name + " for " + GameVars.currentSettlement.name;
+			GameVars.ShowANotificationMessage("You don't have enough money to build a " + Name + " for " + GameVars.currentSettlement.name);
 		}
 
 	}

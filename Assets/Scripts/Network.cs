@@ -45,7 +45,14 @@ public class Network
 		.SelectMany(crew => GetCrewMemberNetwork(crew))
 		.Concat(MyImmediateNetwork);
 
-	public IEnumerable<CrewMember> CrewMembersWithNetwork(Settlement settlement) => Ship.crewRoster.Where(crew => GetCrewMemberNetwork(crew).Contains(settlement));
+	public IEnumerable<CrewMember> CrewMembersWithNetwork(Settlement settlement, bool includeJason = false) {
+		var list = Ship.crewRoster.Where(crew => GetCrewMemberNetwork(crew).Contains(settlement));
+		if (includeJason && GetCrewMemberNetwork(GameVars.Jason).Contains(settlement)) {
+			list = list.Concat(new[] { GameVars.Jason });
+		}
+		return list;
+	}
+
 	public CrewMember CrewMemberWithNetwork(Settlement settlement) => CrewMembersWithNetwork(settlement).FirstOrDefault();
 
 	public bool CheckIfCityIDIsPartOfNetwork(int cityID) {

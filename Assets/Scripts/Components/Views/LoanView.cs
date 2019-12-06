@@ -42,16 +42,14 @@ public class LoanViewModel : Model
 		if (GameVars.playerShipVariables.ship.currency > amountDue) {
 			GameVars.playerShipVariables.ship.currency -= amountDue;
 			GameVars.playerShipVariables.ship.currentLoan = null;
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You paid back your loan and earned a little respect!";
+			GameVars.ShowANotificationMessage("You paid back your loan and earned a little respect!");
 			//give a boost to the players clout for paying back loan
 			GameVars.AdjustPlayerClout(3);
 
 			NotifyAny();
 		}
 		else {
-			GameVars.showNotification = true;
-			GameVars.notificationMessage = "You currently can't afford to pay your loan back! Better make some more money!";
+			GameVars.ShowANotificationMessage("You currently can't afford to pay your loan back! Better make some more money!");
 		}
 
 		NotifyAny();
@@ -63,8 +61,7 @@ public class LoanViewModel : Model
 
 		GameVars.playerShipVariables.ship.currentLoan = loan;
 		GameVars.playerShipVariables.ship.currency += loanAmount;
-		GameVars.showNotification = true;
-		GameVars.notificationMessage = "You took out a loan of " + loanAmount + " drachma! Remember to pay it back in due time!";
+		GameVars.ShowANotificationMessage("You took out a loan of " + loanAmount + " drachma! Remember to pay it back in due time!");
 
 		NotifyAny();
 	}
