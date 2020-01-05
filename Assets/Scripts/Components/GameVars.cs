@@ -146,11 +146,12 @@ public class GameVars : MonoBehaviour
 	// game state
 	[HideInInspector] public bool controlsLocked = false;
 	[HideInInspector] public bool isGameOver = false;
-	[HideInInspector] public bool justLeftPort = false;
 	[HideInInspector] public bool menuControlsLock = false;
+	[HideInInspector] public bool justLeftPort = false;
 	[HideInInspector] public bool gameIsFinished = false;
 	[HideInInspector] public bool isPerformingRandomEvent = false;
 	[HideInInspector] public bool isPassingTime = false;
+
 
 	// notifications
 	public bool NotificationQueued { get; private set; }

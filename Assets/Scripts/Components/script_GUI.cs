@@ -543,21 +543,11 @@ public class script_GUI : MonoBehaviour
 		// also changed to the new popup which i think looks better
 		Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
 			Title = "Attention!",
-			Message = message
-		});
+			Message = message,
+			OnClose = () => GameVars.menuControlsLock = false
+	});
 		
 	}
-
-	public void GUI_RemoveNotification(GameObject notification) {
-		//If there are only 2 children (the hidden template notification and the one we are about to delete), then turn off the notification system window and set it to active = false
-		if (notice_notificationParent.transform.childCount == 2) {
-			notice_notificationSystem.SetActive(false);
-			GameVars.menuControlsLock = false;
-		}
-		//Remove the current notification that flagged this event
-		GameObject.Destroy(notification);
-	}
-
 
 
 	//=================================================================================================================

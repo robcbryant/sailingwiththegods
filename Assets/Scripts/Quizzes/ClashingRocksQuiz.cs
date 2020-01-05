@@ -41,13 +41,16 @@ namespace Quizzes
 		}
 
 		private void Dead() {
-			Globals.GameVars.isGameOver = true;
-
-			Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
-				Title = "Clashing Rocks",
-				Message = "Smashed, shattered, drowned – you’re dead.",
-				Icon = null    // TODO: Grab the same icon as the quiz screen from before,
-			});
+			Globals.UI.Show<QuestScreen, QuizScreenModel>(new QuizScreenModel(
+				title: "Clashing Rocks",
+				message: "Smashed, shattered, drowned – you’re dead.",
+				icon: null,    // TODO: Grab the same icon as the quiz screen from before
+				choices: new ObservableCollection<ButtonViewModel> {
+					new ButtonViewModel { Label = "OK", OnClick = () => {
+						Globals.GameVars.isGameOver = true;
+					} }
+				}
+			));
 		}
 
 		private void Complete() {
