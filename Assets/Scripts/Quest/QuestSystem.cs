@@ -96,6 +96,10 @@ public class QuestSystem : MonoBehaviour
 					playerShipVariables.ship.playerJournal.AddNewSettlementToLog(i);
 			}
 		}
+		else {
+			// TODO: until we have a better idea, show the description as a message box for quest segments that aren't targeting a specific city (and so can't use the usual captain's log entry system which depends on city ids)
+			gameVars.ShowANotificationMessage(QuestMessageIntro + nextSegment.descriptionOfQuest);
+		}
 
 		playerShipVariables.ship.objective = nextSegment.objective;
 
