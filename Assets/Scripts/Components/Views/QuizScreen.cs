@@ -29,7 +29,6 @@ public class QuizScreen : ViewBehaviour<QuizScreenModel>
 {
 	[SerializeField] ImageView Icon = null;
 	[SerializeField] StringView Title = null;
-	[SerializeField] StringView Subtitle = null;
 	[SerializeField] StringView Message = null;
 	[SerializeField] ButtonView[] Choices = null;
 
