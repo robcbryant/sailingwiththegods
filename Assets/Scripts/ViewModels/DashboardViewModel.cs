@@ -10,7 +10,7 @@ public class DashboardViewModel : Model
 {
 	GameVars GameVars => Globals.GameVars;
 
-	public string CaptainsLog => Globals.GameVars.currentCaptainsLog;
+	public string CaptainsLog => Globals.GameVars.CaptainsLog;
 	public readonly CargoInventoryViewModel WaterInventory;
 	public readonly CargoInventoryViewModel FoodInventory;
 	public readonly ICollectionModel<CargoInventoryViewModel> CargoList;

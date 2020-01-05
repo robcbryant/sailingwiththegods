@@ -208,7 +208,7 @@ public class script_player_controls : MonoBehaviour
 						GameVars.controlsLocked = false;
 
 						//Initiate the main questline
-						GameVars.InitiateMainQuestLineForPlayer();
+						Globals.Quests.InitiateMainQuestLineForPlayer();
 
 						//Reset Start Game Button
 						GameVars.startGameButton_isPressed = false;
@@ -523,7 +523,7 @@ public class script_player_controls : MonoBehaviour
 			}
 			else if (!GameVars.showSettlementGUI || notEnoughSpeedToMove) { //check to see if we're in the trade menu otherwise we will indefintely write duplicate routes until we leave the trade menu
 																			//save this route to the PlayerJourneyLog
-				journey.AddRoute(new PlayerRoute(lastPlayerShipPosition, transform.position, ship.totalNumOfDaysTraveled), gameObject.GetComponent<script_player_controls>(), GameVars.currentCaptainsLog);
+				journey.AddRoute(new PlayerRoute(lastPlayerShipPosition, transform.position, ship.totalNumOfDaysTraveled), gameObject.GetComponent<script_player_controls>(), GameVars.CaptainsLog);
 				//Update player ghost route
 				UpdatePlayerGhostRouteLineRenderer(GameVars.IS_NOT_NEW_GAME);
 				//Reset the travel line to a distance of zero (turn it off)
@@ -598,7 +598,7 @@ public class script_player_controls : MonoBehaviour
 				//change the current settlement to this location (normally this is done by opening the docking menu--but in this case there is no docking menu)
 				GameVars.currentSettlement = trigger.transform.parent.GetComponent<script_settlement_functions>().thisSettlement;
 				//Check if current Settlement is part of the main quest line
-				GameVars.CheckIfCurrentSettlementIsPartOfMainQuest(GameVars.currentSettlement.settlementID);
+				Globals.Quests.CheckCityTriggers(GameVars.currentSettlement.settlementID);
 				GameVars.showNonPortDockButton = true;
 			}
 		}
@@ -1599,7 +1599,7 @@ public class script_player_controls : MonoBehaviour
 
 		if (!isPort) {//If this isn't a port--then add a journey log at the end
 					  //Add a new route to the player journey log
-			journey.AddRoute(new PlayerRoute(transform.position, transform.position, ship.totalNumOfDaysTraveled), gameObject.GetComponent<script_player_controls>(), GameVars.currentCaptainsLog);
+			journey.AddRoute(new PlayerRoute(transform.position, transform.position, ship.totalNumOfDaysTraveled), gameObject.GetComponent<script_player_controls>(), GameVars.CaptainsLog);
 			//Update player ghost route
 			UpdatePlayerGhostRouteLineRenderer(GameVars.IS_NOT_NEW_GAME);
 		}

@@ -415,7 +415,7 @@ public class script_GUI : MonoBehaviour
 		port_info_main.SetActive(false);
 		port_info_taxes.GetComponent<Text>().text = GameVars.currentPortTax.ToString();
 		//Check if current Settlement is part of the main quest line
-		GameVars.CheckIfCurrentSettlementIsPartOfMainQuest(GameVars.currentSettlement.settlementID);
+		Globals.Quests.CheckCityTriggers(GameVars.currentSettlement.settlementID);
 		//Add this settlement to the player's knowledge base
 		GameVars.playerShipVariables.ship.playerJournal.AddNewSettlementToLog(GameVars.currentSettlement.settlementID);
 		//Determine what settlements are available to the player in the tavern
@@ -430,7 +430,7 @@ public class script_GUI : MonoBehaviour
 		Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel());
 
 		//Add a new route to the player journey log as a port entry
-		GameVars.playerShipVariables.journey.AddRoute(new PlayerRoute(GameVars.playerShip.transform.position, Vector3.zero, GameVars.currentSettlement.settlementID, GameVars.currentSettlement.name, false, GameVars.playerShipVariables.ship.totalNumOfDaysTraveled), GameVars.playerShipVariables, GameVars.currentCaptainsLog);
+		GameVars.playerShipVariables.journey.AddRoute(new PlayerRoute(GameVars.playerShip.transform.position, Vector3.zero, GameVars.currentSettlement.settlementID, GameVars.currentSettlement.name, false, GameVars.playerShipVariables.ship.totalNumOfDaysTraveled), GameVars.playerShipVariables, GameVars.CaptainsLog);
 		//We should also update the ghost trail with this route otherwise itp roduce an empty 0,0,0 position later
 		GameVars.playerShipVariables.UpdatePlayerGhostRouteLineRenderer(GameVars.IS_NOT_NEW_GAME);
 

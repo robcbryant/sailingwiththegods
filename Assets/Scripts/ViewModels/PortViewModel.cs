@@ -29,7 +29,7 @@ public class PortViewModel : CityViewModel
 			GameVars.playerShipVariables.ship.currency -= GameVars.currentPortTax;
 
 			//Add a new route to the player journey log as a port exit
-			GameVars.playerShipVariables.journey.AddRoute(new PlayerRoute(new Vector3(GameVars.playerShip.transform.position.x, GameVars.playerShip.transform.position.y, GameVars.playerShip.transform.position.z), Vector3.zero, GameVars.currentSettlement.settlementID, GameVars.currentSettlement.name, true, GameVars.playerShipVariables.ship.totalNumOfDaysTraveled), GameVars.playerShipVariables, GameVars.currentCaptainsLog);
+			GameVars.playerShipVariables.journey.AddRoute(new PlayerRoute(new Vector3(GameVars.playerShip.transform.position.x, GameVars.playerShip.transform.position.y, GameVars.playerShip.transform.position.z), Vector3.zero, GameVars.currentSettlement.settlementID, GameVars.currentSettlement.name, true, GameVars.playerShipVariables.ship.totalNumOfDaysTraveled), GameVars.playerShipVariables, GameVars.CaptainsLog);
 			//We should also update the ghost trail with this route otherwise itp roduce an empty 0,0,0 position later
 			GameVars.playerShipVariables.UpdatePlayerGhostRouteLineRenderer(GameVars.IS_NOT_NEW_GAME);
 

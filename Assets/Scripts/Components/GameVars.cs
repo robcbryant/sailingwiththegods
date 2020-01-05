@@ -131,9 +131,14 @@ public class GameVars : MonoBehaviour
 	[HideInInspector] public script_player_controls playerShipVariables;
 
 	// captain's log
-	[HideInInspector] public string currentCaptainsLog = "";
-	[HideInInspector] public CaptainsLogEntry[] captainsLogEntries;
-	[HideInInspector] public List<CaptainsLogEntry> currentLogPool = new List<CaptainsLogEntry>();
+	private string currentCaptainsLog = "";
+	private CaptainsLogEntry[] captainsLogEntries;
+	private List<CaptainsLogEntry> currentLogPool = new List<CaptainsLogEntry>();
+	public string CaptainsLog => currentCaptainsLog;
+
+	public void AddToCaptainsLog(string message) {
+		currentCaptainsLog = message + "\n\n" + currentCaptainsLog;
+	}
 
 	// resources
 	[HideInInspector] public List<MetaResource> masterResourceList = new List<MetaResource>();
@@ -923,105 +928,6 @@ public class GameVars : MonoBehaviour
 
 	}
 
-	public void InitiateMainQuestLineForPlayer() {
-		Debug.Log("Main Quest TESTER");
-		//For the argonautica, let's set the crew capacity to 30
-		playerShipVariables.ship.crewCapacity = Ship.StartingCrewCap;
-
-		//Now let's add all the initial crew from the start screen selection and start the first leg of the quest
-		for (int i = 0; i < newGameAvailableCrew.Count; i++) {
-			if (newGameCrewSelectList[i]) {
-				playerShipVariables.ship.crewRoster.Add(newGameAvailableCrew[i]);
-				//Debug.Log (newGameCrewSelectList[i]);	
-			}
-		}
-		//Debug.Log (playerShipVariables.ship.mainQuest.questSegments[0].crewmembersToAdd.Count + "<<<<<<<<<<<<<CREW");
-		//	foreach (int crewID in playerShipVariables.ship.mainQuest.questSegments[0].crewmembersToAdd){
-		//		playerShipVariables.ship.crewRoster.Add (GetCrewMemberFromID(crewID));
-		//	}
-
-		//Let's increase the ships cargo capacity
-		playerShipVariables.ship.cargo_capicity_kg = Ship.StartingCargoCap;
-
-		//Let's increase the ships Provisions and water base to reflect starting crew members
-		playerShipVariables.ship.cargo[0].amount_kg = Ship.StartingWater;
-		playerShipVariables.ship.cargo[1].amount_kg = Ship.StartingFood;
-
-		//Increase the quest counter because the start screen takes care of the first leg
-		// KD: Your first quest is to find pagasae, not tomb of dolops
-		Debug.Log(playerShipVariables.ship.mainQuest.currentQuestSegment);
-		//playerShipVariables.ship.mainQuest.currentQuestSegment++;
-
-		var segment = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment];
-
-		//first show a window for the welcome message, and if there are any crew member changes, then let the player know.
-		// KD: Removed the concept of the first welcome message
-		//notificationMessage = segment.descriptionAtCompletion;
-		//showNotification = true;
-		//Add this message to the captain's log
-		playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(segment.destinationID, segment.descriptionOfQuest));
-		playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry = playerShipVariables.ship.totalNumOfDaysTraveled + " days";
-		currentCaptainsLog = playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry + "\n" + playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].logEntry + "\n\n" + currentCaptainsLog;
-		//Now add the mentioned places attached to this quest leg
-		foreach (int i in segment.mentionedPlaces) {
-			//Make sure we don't add any null values--a -1 represents no mentions of any settlements
-			if (i != -1)
-				playerShipVariables.ship.playerJournal.AddNewSettlementToLog(i);
-		}
-		Debug.Log(playerShipVariables.ship.mainQuest.currentQuestSegment);
-
-		//Then increment the questline to the in succession and update the player captains log with the new information for the next quest line
-		playerShipVariables.ship.mainQuest.currentQuestSegment++;
-		segment = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment];
-
-		playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(segment.destinationID, segment.descriptionOfQuest));
-		playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry = playerShipVariables.ship.totalNumOfDaysTraveled + " days";
-		currentCaptainsLog = playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry + "\n" + playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].logEntry + "\n\n" + currentCaptainsLog;
-		//Now add the mentioned places attached to this quest leg
-		foreach (int i in segment.mentionedPlaces) {
-			//Make sure we don't add any null values--a -1 represents no mentions of any settlements
-			if (i != -1)
-				playerShipVariables.ship.playerJournal.AddNewSettlementToLog(i);
-		}
-		//Now add the city name of the next journey quest to the players known settlements
-		playerShipVariables.ship.playerJournal.AddNewSettlementToLog(segment.destinationID);
-		//Now teleport the player ship to an appropriate location near the first target
-		playerShip.transform.position = new Vector3(1702.414f, playerShip.transform.position.y, 2168.358f);
-		//Set the player's initial position to the new position
-		playerShipVariables.lastPlayerShipPosition = playerShip.transform.position;
-
-		//Setup Difficulty Level
-		SetupBeginnerGameDifficulty();
-
-		// setup each city with 5 crew available and for now, they never regenerate.
-		foreach(var settlement in settlement_masterList) {
-			settlement.availableCrew.Clear();
-			GenerateRandomCrewMembers(5).ForEach(c => settlement.availableCrew.Add(c));
-		}
-
-		Debug.Log(playerShipVariables.ship.mainQuest.currentQuestSegment);
-
-		// set the objective to the first part of the argonautica quest
-		playerShipVariables.ship.objective = "Upgrade your ship to the Trireme";
-
-		
-		Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
-			Title = "Trading in the Mediterranean",
-			Message = "You are Jason. Your story begins with a trade ship and a small crew. Sail to Pagasae and buy goods to sell around the bay.\n\nEarn enough money to upgrade your ship to a Trireme so your adventure can begin!"
-		});
-
-
-		// KD TODO: Testing quizzes
-		/*Globals.UI.Show<QuizScreen, InfoScreenModel>(new InfoScreenModel {
-			Title = "Clashing Rocks",
-			Message = "You’re at the clashing rocks: oh no! do you remember your instructions from Phineus? Choose wisely – or you will be smashed to epic smithereens."
-		});
-		*/
-
-		//Flag the main GUI scripts to turn on
-		runningMainGameGUI = true;
-	}
-
 	public void UpgradeShip(int costToBuyUpgrade) {
 		playerShipVariables.ship.upgradeLevel = 1;
 		playerShipVariables.ship.currency -= costToBuyUpgrade;
@@ -1244,123 +1150,7 @@ public class GameVars : MonoBehaviour
 		}
 		return null;
 	}
-
-
-
-	//====================================================================================================
-	//    QUEST FUNCTIONS
-	//====================================================================================================   
-
-	public void CheckIfCurrentSettlementIsPartOfMainQuest(int settlementID) {
-
-		//We need to cylcle through each quest destination and see if this current area matches one of the destinations. Preferably the players should go in order--but we are designing it to allow players to
-		//skip ahead and in theory--go directly to the end destination. One of the issues is the removal and addition of crewmembers along the way that are important for the plot. Because the questline is a series
-		//of stock messages for each destination, parsing out the narrative that talks about non-existent crewmen is difficult. For now--the narrative will remain unchanged, but hercules might never actually leave
-		//the ship if they don't stop at a specific destination where he leaves. Some narratives might discuss sailors that aren't actually on the ship. Additionally--the endpoint of the questline is the origin so the questline needs to be
-		//split into 2 parts--the first ends at aea and the player can sell straight there, but must go there in order to return back to Pagasse and can return there directly or follow the questline back there.
-		//ALSO--once the player reachees a certain point in the questline, the player can't return to older points in the quest so the beginning id should start at the current quest segment
-
-		//create a bool that can be accessed by this function's loops etc.
-		bool matchFound = false;
-
-		// you can't progress in the main quest until you finish the tutorial
-		if (playerShipVariables.ship.upgradeLevel == 0) return;
-
-		//First determine if the player has finished the entire questline or yet. We'll use the Count without a -1 to make sure the incremented quest leg is higher thant he last available leg
-		if (playerShipVariables.ship.mainQuest.currentQuestSegment < playerShipVariables.ship.mainQuest.questSegments.Count) {
-			int currentQuestEnd;
-			int aeaID = 15;
-			var segment = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment];
-
-			//First we determine which part of the questleg the player is in which determines which part of the quest array the player can access
-			//If the player is in the first half before Aea--then only search for these quest segments, else only search for the last quest segments
-			if (segment.segmentID < aeaID) {
-				//currentQuestBeginning = 0;
-				currentQuestEnd = aeaID;
-			}
-			else {
-				//currentQuestBeginning = aeaID;
-				//set the end destination to the last position of the array
-				currentQuestEnd = playerShipVariables.ship.mainQuest.questSegments.Count - 1;
-			}
-
-
-			//we add a +1 to the current questline so that the player can't continuously perform the quest at the same stop
-			for (int index = segment.segmentID; index <= currentQuestEnd; index++) {
-				QuestSegment thisQuest = playerShipVariables.ship.mainQuest.questSegments[index];
-				Debug.Log(settlementID + "   : =? :   " + thisQuest.destinationID);
-				//If the current settlement matches the id of any target in the quest line, increment the quest line to that point--preferably we want it to be the next one in sequence--but we're expanding player behavioral choices.
-				if (settlementID == thisQuest.destinationID) {
-					//If there is a match, the player has moved on to a new leg of the quest line
-					//first show a window for the completion message, and if there are any crew member changes, then let the player know.
-					string questMessageIntro = "The Argonautica Quest: ";
-					ShowANotificationMessage(questMessageIntro + thisQuest.descriptionAtCompletion);
-
-					//add the arrival message to Captain's log
-					playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(thisQuest.destinationID, questMessageIntro + thisQuest.descriptionAtCompletion));
-					playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry = playerShipVariables.ship.totalNumOfDaysTraveled + " days";
-					currentCaptainsLog = playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry + "\n" + playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].logEntry + "\n\n" + currentCaptainsLog;
-
-					//Remove any crew members if the questline calls for it
-					foreach (int crewID in segment.crewmembersToRemove) {
-						Debug.Log("CREW ID REMOVING: " + crewID);
-						//Make sure the crew ID values are not -1(a null value which means no changes)
-						if (crewID != -1)
-							//foreach (CrewMember currentMember in playerShipVariables.ship.crewRoster){
-							//	Debug.Log ("Checking =  : " + currentMember.ID + " : " + crewID);
-							//	if (currentMember.ID == crewID)
-							playerShipVariables.ship.crewRoster.Remove(GetCrewMemberFromID(crewID));
-						//}
-					}
-
-					//Add any new crew members if the questline calls for it
-					foreach (int crewID in segment.crewmembersToAdd) {
-						//Make sure the crew ID values are not -1(a null value which means no changes)
-						if (crewID != -1)
-							playerShipVariables.ship.crewRoster.Add(GetCrewMemberFromID(crewID));
-					}
-
-					//Then increment the questline to the in succession and update the player captains log with the new information for the next quest line
-					playerShipVariables.ship.mainQuest.currentQuestSegment = thisQuest.segmentID + 1;
-					segment = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment];
-
-					playerShipVariables.ship.shipCaptainsLog.Add(new CaptainsLogEntry(segment.destinationID, questMessageIntro + segment.descriptionOfQuest));
-					playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry = playerShipVariables.ship.totalNumOfDaysTraveled + " days";
-					currentCaptainsLog = playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].dateTimeOfEntry + "\n" + playerShipVariables.ship.shipCaptainsLog[playerShipVariables.ship.shipCaptainsLog.Count - 1].logEntry + "\n\n" + currentCaptainsLog;
-
-					playerShipVariables.ship.objective = string.Concat(segment.descriptionOfQuest
-						.SkipWhile(c => c == '"')
-						.TakeWhile(c => c != '!')
-					);
-
-					//Now add the city name of the next journey quest to the players known settlements
-					playerShipVariables.ship.playerJournal.AddNewSettlementToLog(segment.destinationID);
-					Debug.Log("next seg: " + segment.destinationID);
-					//Now add the mentioned places attached to this quest leg
-					foreach (int i in segment.mentionedPlaces) {
-						Debug.Log("mentioning: " + i);
-						//Make sure we don't add any null values--a -1 represents no mentions of any settlements
-						if (i != -1)
-							playerShipVariables.ship.playerJournal.AddNewSettlementToLog(i);
-					}
-					//If we find a match, set the appropriate bool flag, and break from the loop
-					matchFound = true;
-					break;
-				}
-
-
-			}
-		}
-		if (!matchFound) {
-			//if it's not a quest line, just tell the player nothing
-			//notificationMessage = "You found " + currentSettlement.name + "!";
-			//showNotification = true;
-		}
-
-	}
-
-
-
+	
 	//====================================================================================================
 	//    PLAYER MODIFICATION FUNCTIONS
 	//====================================================================================================   
@@ -1434,6 +1224,8 @@ public class GameVars : MonoBehaviour
 	public void RemoveEntriesFromCurrentLogPool(int logID) {
 		currentLogPool.RemoveAll(entry => entry.settlementID == logID);
 	}
+
+	public CaptainsLogEntry GetRandomCaptainsLogFromPool() => currentLogPool.RandomElement();
 
 
 

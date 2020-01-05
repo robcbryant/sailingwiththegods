@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,9 @@ public class InfoScreenModel : Model
 
 	private float _IconScale = 1;
 	public float IconScale { get => _IconScale; set { _IconScale = value; Notify(); } }
+
+	private Action _OnClose;
+	public Action OnClose { get => _OnClose; set { _OnClose = value; Notify(); } }
 }
 
 public class InfoScreen : ViewBehaviour<InfoScreenModel>
@@ -27,6 +31,7 @@ public class InfoScreen : ViewBehaviour<InfoScreenModel>
 	[SerializeField] StringView Title = null;
 	[SerializeField] StringView Subtitle = null;
 	[SerializeField] StringView Message = null;
+	[SerializeField] ClosableDialog Closable = null;
 
 	public override void Bind(InfoScreenModel model) {
 		base.Bind(model);
@@ -43,6 +48,10 @@ public class InfoScreen : ViewBehaviour<InfoScreenModel>
 		Subtitle?.Bind(new BoundModel<string>(model, nameof(Model.Subtitle)));
 		Title?.Bind(new BoundModel<string>(Model, nameof(Model.Title)));
 		Message?.Bind(new BoundModel<string>(Model, nameof(Model.Message)));
+
+		if(Closable != null) {
+			Closable.Callback = model.OnClose;
+		}
 	}
 
 	protected override void Refresh(object sender, string propertyChanged) {

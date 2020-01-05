@@ -165,11 +165,54 @@ public static class CSVLoader
 		return captainsLogEntries;
 	}
 
+	static List<int> ParseIntList(string cellData) {
+		return cellData.Split('_')
+			.Select(id => int.Parse(id))
+			.ToList();
+	}
+
+	static List<float> ParseFloatList(string cellData) {
+		return cellData.Split('_')
+			.Select(id => float.Parse(id))
+			.ToList();
+	}
+
+	static Vector2 ToVector2(this List<float> list) {
+		return new Vector2(list[0], list[1]);
+	}
+	
+	static QuestSegment.Trigger ParseTrigger(string triggerTypeCell, string triggerDataCell) {
+		var triggerType = (QuestSegment.TriggerType)Enum.Parse(typeof(QuestSegment.TriggerType), triggerTypeCell);
+		switch(triggerType) {
+			case QuestSegment.TriggerType.City:
+				return new QuestSegment.CityTrigger(int.Parse(triggerDataCell));
+			case QuestSegment.TriggerType.Coord:
+				return new QuestSegment.CoordTrigger(ParseFloatList(triggerDataCell).ToVector2());
+			case QuestSegment.TriggerType.None:
+				return new QuestSegment.NoneTrigger();
+			default:
+				return null;
+		}
+	}
+
+	static QuestSegment.ArrivalEvent ParseArrivalEvent(string eventTypeCell, string eventDataCell) {
+		var triggerType = (QuestSegment.ArrivalEventType)Enum.Parse(typeof(QuestSegment.ArrivalEventType), eventTypeCell);
+		switch (triggerType) {
+			case QuestSegment.ArrivalEventType.Message:
+				return new QuestSegment.MessageArrivalEvent(eventDataCell);
+			case QuestSegment.ArrivalEventType.Quiz:
+				return new QuestSegment.QuizArrivalEvent(eventDataCell);
+			case QuestSegment.ArrivalEventType.None:
+				return new QuestSegment.NoneArrivalEvent();
+			default:
+				return null;
+		}
+	}
+
 	//This loads the main quest line from a CSV file in the resources
 	public static MainQuestLine LoadMainQuestLine() {
 		MainQuestLine mainQuest = new MainQuestLine();
 		char[] lineDelimiter = new char[] { '@' };
-		char[] lineDelimiterB = new char[] { '_' };
 		string filename = "main_questline_database";
 
 		string[] fileByLine = TryLoadListFromGameFolder(filename);
@@ -178,34 +221,24 @@ public static class CSVLoader
 		//For each line of the main quest file (the row)
 		for (int row = 1; row < fileByLine.Length; row++) {
 			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
-			//Debug.Log (row);
-			//Debug.Log
-			//let's parse out all the crew roster changes
-			//Debug.Log ("LOADQUEST--Leg: " + records[0] + " )( removals: " + records[6]);
-			string[] crewRosterAdd = records[5].Split(lineDelimiterB, StringSplitOptions.None);
-			string[] crewRosterRemove = records[6].Split(lineDelimiterB, StringSplitOptions.None);
-			string[] mentionedSpots = records[4].Split(lineDelimiterB, StringSplitOptions.None);
 
-			List<int> crewToAdd = new List<int>();
-			foreach (string id in crewRosterAdd) {
-				crewToAdd.Add(int.Parse(id));
-			}
-			List<int> crewToRemove = new List<int>();
-			foreach (string id in crewRosterRemove) {
-				crewToRemove.Add(int.Parse(id));
-			}
-			List<int> mentionedPlaces = new List<int>();
-			foreach (string id in mentionedSpots) {
-				mentionedPlaces.Add(int.Parse(id));
-			}
 			//now let's see if we're on the last segment of the questline
 			bool isEnd = false;
 			if (row == fileByLine.Length - 1)
 				isEnd = true;
-			//Debug.Log("***************************");
-			//Debug.Log (records[1]);
+
 			//now add the segment to the main questline
-			mainQuest.questSegments.Add(new QuestSegment(int.Parse(records[0]), int.Parse(records[1]), records[2], records[3], crewToAdd, crewToRemove, isEnd, mentionedPlaces));
+			mainQuest.questSegments.Add(new QuestSegment(
+				segmentID: int.Parse(records[0]), 
+				trigger: ParseTrigger(records[1], records[2]), 
+				descriptionOfQuest: records[3], 
+				arrivalEvent: ParseArrivalEvent(records[4], records[5]),
+				crewmembersToAdd: ParseIntList(records[7]), 
+				crewmembersToRemove: ParseIntList(records[8]), 
+				isFinalSegment: isEnd, 
+				// TODO: Add the images. Every stop on the quest should show an image now, not just quizzes.
+				mentionedPlaces: ParseIntList(records[6])
+			));
 		}
 
 		return mainQuest;

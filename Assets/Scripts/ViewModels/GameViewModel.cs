@@ -37,7 +37,7 @@ public class GameViewModel : Model
 		GameVars.controlsLocked = false;
 
 		//Initiate the main questline
-		GameVars.InitiateMainQuestLineForPlayer();
+		Globals.Quests.InitiateMainQuestLineForPlayer();
 
 		//Reset Start Game Button
 		GameVars.startGameButton_isPressed = false;

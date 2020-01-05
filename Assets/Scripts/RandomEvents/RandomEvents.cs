@@ -61,9 +61,12 @@ public static class RandomEvents
 			//If we do or don't get a random event, we should always get a message from the crew--let's call them tales
 			//here they describe things like any cities nearby if the crew is familiar or snippets of greek mythology, or they
 			//may be from a list of messages concering any nearby zones of influence from passing settlements/locations of interest
-			ship.shipCaptainsLog.Add(gameVars.currentLogPool[Random.Range(0, gameVars.currentLogPool.Count)]);
-			ship.shipCaptainsLog[ship.shipCaptainsLog.Count - 1].dateTimeOfEntry = ship.totalNumOfDaysTraveled + " days";
-			gameVars.currentCaptainsLog = ship.shipCaptainsLog[ship.shipCaptainsLog.Count - 1].dateTimeOfEntry + "\n" + ship.shipCaptainsLog[ship.shipCaptainsLog.Count - 1].logEntry + "\n\n" + gameVars.currentCaptainsLog;
+			var log = gameVars.GetRandomCaptainsLogFromPool();
+			if(log != null) {
+				ship.shipCaptainsLog.Add(log);
+				log.dateTimeOfEntry = ship.totalNumOfDaysTraveled + " days";
+				gameVars.AddToCaptainsLog(log.dateTimeOfEntry + "\n" + log.logEntry);
+			}
 		}
 
 

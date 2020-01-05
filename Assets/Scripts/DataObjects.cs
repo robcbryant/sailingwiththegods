@@ -29,20 +29,126 @@ public class Loan
 
 public class QuestSegment
 {
+	#region Triggers
+	public abstract class Trigger
+	{
+		public abstract TriggerType Type { get; }
+	}
+
+	public class CityTrigger : Trigger
+	{
+		public override TriggerType Type => TriggerType.City;
+
+		public readonly int DestinationId;
+
+		public CityTrigger(int destinationId) : base() {
+			DestinationId = destinationId;
+		}
+	}
+
+	public class CoordTrigger : Trigger
+	{
+		public override TriggerType Type => TriggerType.Coord;
+
+		public readonly Vector2 LatLongCoord;
+
+		public CoordTrigger(Vector2 latLongCoord) : base() {
+			LatLongCoord = latLongCoord;
+		}
+	}
+
+	public class UpgradeShipTrigger : Trigger
+	{
+		public override TriggerType Type => TriggerType.UpgradeShip;
+	}
+
+	public class NoneTrigger : Trigger
+	{
+		public override TriggerType Type => TriggerType.None;
+	}
+
+	public enum TriggerType
+	{
+		None,
+		City,
+		Coord,
+		UpgradeShip
+	}
+	#endregion
+
+	#region Arrival Events
+
+	public abstract class ArrivalEvent
+	{
+		protected QuestSegment Segment { get; private set; }
+		public abstract ArrivalEventType Type { get; }
+		public abstract void Execute(QuestSegment segment);
+	}
+
+	public class MessageArrivalEvent : ArrivalEvent
+	{
+		public override ArrivalEventType Type => ArrivalEventType.Message;
+
+		public override void Execute(QuestSegment segment) {
+			Globals.GameVars.ShowANotificationMessage(QuestSystem.QuestMessageIntro + Message);
+			Globals.Quests.CompleteQuestSegment(segment);
+		}
+
+		public readonly string Message;
+
+		public MessageArrivalEvent(string message) {
+			Message = message;
+		}
+	}
+
+	public class QuizArrivalEvent : ArrivalEvent
+	{
+		public override ArrivalEventType Type => ArrivalEventType.Quiz;
+
+		readonly string QuizName;
+
+		public override void Execute(QuestSegment segment) {
+			Quizzes.QuizSystem.StartQuiz(QuizName, () => Globals.Quests.CompleteQuestSegment(segment));
+		}
+
+		public QuizArrivalEvent(string quizName) {
+			QuizName = quizName;
+		}
+	}
+
+	public class NoneArrivalEvent : ArrivalEvent
+	{
+		public override ArrivalEventType Type => ArrivalEventType.None;
+
+		// just immediately start the next quest with no additional popups
+		public override void Execute(QuestSegment segment) {
+			Globals.Quests.CompleteQuestSegment(segment);
+		}
+	}
+
+	public enum ArrivalEventType
+	{
+		None,
+		Message,
+		Quiz
+	}
+
+	#endregion
+
 	public int segmentID;
-	public int destinationID;
+	public Trigger trigger;
 	public bool isFinalSegment;
 	public List<int> crewmembersToAdd;
 	public List<int> crewmembersToRemove;
 	public string descriptionOfQuest;
-	public string descriptionAtCompletion;
+	public ArrivalEvent arrivalEvent;
 	public List<int> mentionedPlaces;
 
-	public QuestSegment(int segmentID, int destinationID, string descriptionOfQuest, string descriptionAtCompletion, List<int> crewmembersToAdd, List<int> crewmembersToRemove, bool isFinalSegment, List<int> mentionedPlaces) {
+	public QuestSegment(int segmentID, Trigger trigger, string descriptionOfQuest, ArrivalEvent arrivalEvent, List<int> crewmembersToAdd, List<int> crewmembersToRemove, bool isFinalSegment, List<int> mentionedPlaces) {
 		this.segmentID = segmentID;
-		this.destinationID = destinationID;
+		this.trigger = trigger;
 		this.descriptionOfQuest = descriptionOfQuest;
-		this.descriptionAtCompletion = descriptionAtCompletion;
+		this.arrivalEvent = arrivalEvent;
 		this.crewmembersToAdd = crewmembersToAdd;
 		this.crewmembersToRemove = crewmembersToRemove;
 		this.isFinalSegment = isFinalSegment;
