@@ -16,6 +16,15 @@ public static class Utils
 		return list.ElementAt(UnityEngine.Random.Range(0, list.Count() - 1));
 	}
 
+	// Based on: https://stackoverflow.com/questions/11883469/takewhile-but-get-the-element-that-stopped-it-also
+	public static IEnumerable<T> TakeUntil<T>(this IEnumerable<T> data, Func<T, bool> predicate) {
+		foreach (var item in data) {
+			yield return item;
+			if (predicate(item))
+				break;
+		}
+	}
+
 	public static bool FastApproximately(float a, float b, float threshold) {
 		return ((a < b) ? (b - a) : (a - b)) <= threshold;
 	}

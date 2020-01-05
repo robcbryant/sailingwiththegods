@@ -119,7 +119,7 @@ public class QuestSystem : MonoBehaviour
 		//First determine if the player has finished the entire questline yet (null). We'll use the Count without a -1 to make sure the incremented quest leg is higher thant he last available leg
 		//If the current settlement matches the id of any target in the quest line, increment the quest line to that point--preferably we want it to be the next one in sequence--but we're expanding player behavioral choices.
 		var match = CurrLegRemaining
-			.TakeWhile(seg => seg.skippable)
+			.TakeUntil(seg => !seg.skippable)
 			.FirstOrDefault(seg => 
 				seg.trigger is QuestSegment.CityTrigger city && 
 				city.DestinationId == settlementID
@@ -132,7 +132,7 @@ public class QuestSystem : MonoBehaviour
 
 	public void CheckCoordTriggers(Vector2 position) {
 		var match = CurrLegRemaining
-			.TakeWhile(seg => seg.skippable)
+			.TakeUntil(seg => !seg.skippable)
 			.FirstOrDefault(seg => 
 				seg.trigger is QuestSegment.CoordTrigger coord &&
 				Vector2.Distance(position, coord.LatLongCoord) < CoordTriggerDistance
@@ -145,7 +145,7 @@ public class QuestSystem : MonoBehaviour
 
 	public void CheckUpgradeShipTriggers() {
 		var match = CurrLegRemaining
-			.TakeWhile(seg => seg.skippable)
+			.TakeUntil(seg => !seg.skippable)
 			.FirstOrDefault(seg => seg.trigger is QuestSegment.UpgradeShipTrigger);
 
 		if (match != null) {
@@ -241,6 +241,7 @@ public class QuestSystem : MonoBehaviour
 			gameVars.GenerateRandomCrewMembers(5).ForEach(c => settlement.availableCrew.Add(c));
 		}
 
+		Globals.Quests.StartQuestSegment(0);
 		Debug.Log(quest.currentQuestSegment);
 
 		//Flag the main GUI scripts to turn on

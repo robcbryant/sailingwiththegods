@@ -940,20 +940,7 @@ public class GameVars : MonoBehaviour
 		FillBeginStoryCrew();
 
 		Globals.UI.Hide<RepairsView>();
-		Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
-			Title = "Welcome to the Argonautica!",
-			Message = "Find your way through the dangerous seas to complete your quest! You have found yourself at Pagasae, where King Pelias has given you the task of sailing across " +
-					"the Aegean and the Black Sea to retrieve the Golden Fleece. This is the hide of the flying ram that brought Phrixus from Boetia to Aea. The hide now hangs on a tree on the other side of the Black" +
-					" Sea in the city of Aea. The great lord Aeetes prizes the fleece, and a very large dragon guards it.\n\n" +
-					"The task seems impossible!But you do not sail alone, Jason.You have assembled a group of the most powerful warriors, sailors, and prophets in Greece to help you in your quest. " +
-					"Most are the sons of royal families, and each one has a unique skill.Once the heroes have all arrived, your crew stocks the ships and the people of Pagasae greet you all."
-		});
-
-		var segment = playerShipVariables.ship.mainQuest.questSegments[playerShipVariables.ship.mainQuest.currentQuestSegment];
-		playerShipVariables.ship.objective = string.Concat(segment.descriptionOfQuest
-			.SkipWhile(c => c == '"')
-			.TakeWhile(c => c != '!')
-		);
+		Globals.Quests.CheckUpgradeShipTriggers();
 
 		// show the new ship model
 		SetShipModel(playerShipVariables.ship.upgradeLevel);

@@ -188,6 +188,8 @@ public static class CSVLoader
 				return new QuestSegment.CityTrigger(int.Parse(triggerDataCell));
 			case QuestSegment.TriggerType.Coord:
 				return new QuestSegment.CoordTrigger(ParseFloatList(triggerDataCell).ToVector2());
+			case QuestSegment.TriggerType.UpgradeShip:
+				return new QuestSegment.UpgradeShipTrigger();
 			case QuestSegment.TriggerType.None:
 				return new QuestSegment.NoneTrigger();
 			default:
