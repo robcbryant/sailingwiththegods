@@ -97,11 +97,7 @@ public class QuestSystem : MonoBehaviour
 			}
 		}
 
-		// TODO: Need to add a new Objective field since this will pretty always give a non-good string, but it'll work as a standin for now
-		playerShipVariables.ship.objective = string.Concat(nextSegment.descriptionOfQuest
-			.SkipWhile(c => c == '"')
-			.TakeWhile(c => c != '!')
-		);
+		playerShipVariables.ship.objective = nextSegment.objective;
 
 		return nextSegment;
 	}

@@ -234,14 +234,14 @@ public static class CSVLoader
 				segmentID: int.Parse(records[0]), 
 				trigger: ParseTrigger(records[1], records[2]), 
 				skippable: bool.Parse(records[3]),
-				descriptionOfQuest: records[4], 
-				arrivalEvent: ParseArrivalEvent(records[5], records[6]),
-				crewmembersToAdd: ParseIntList(records[8]), 
-				crewmembersToRemove: ParseIntList(records[9]), 
+				objective: records[4],
+				descriptionOfQuest: records[5], 
+				arrivalEvent: ParseArrivalEvent(records[6], records[7]),
+				crewmembersToAdd: ParseIntList(records[9]), 
+				crewmembersToRemove: ParseIntList(records[10]), 
 				isFinalSegment: isEnd, 
-				// TODO: Add the images. Every stop on the quest should show an image now, not just quizzes.
-				mentionedPlaces: ParseIntList(records[7]),
-				image: Resources.Load<Sprite>(records[10])
+				mentionedPlaces: ParseIntList(records[8]),
+				image: Resources.Load<Sprite>(records[11])
 			));
 		}
 

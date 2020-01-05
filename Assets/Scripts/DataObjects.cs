@@ -147,6 +147,7 @@ public class QuestSegment
 	public int segmentID;
 	public Trigger trigger;
 	public bool skippable;
+	public string objective;
 	public bool isFinalSegment;
 	public List<int> crewmembersToAdd;
 	public List<int> crewmembersToRemove;
@@ -155,10 +156,11 @@ public class QuestSegment
 	public List<int> mentionedPlaces;
 	public Sprite image;
 
-	public QuestSegment(int segmentID, Trigger trigger, bool skippable, string descriptionOfQuest, ArrivalEvent arrivalEvent, List<int> crewmembersToAdd, List<int> crewmembersToRemove, bool isFinalSegment, List<int> mentionedPlaces, Sprite image) {
+	public QuestSegment(int segmentID, Trigger trigger, bool skippable, string objective, string descriptionOfQuest, ArrivalEvent arrivalEvent, List<int> crewmembersToAdd, List<int> crewmembersToRemove, bool isFinalSegment, List<int> mentionedPlaces, Sprite image) {
 		this.segmentID = segmentID;
 		this.trigger = trigger;
 		this.skippable = skippable;
+		this.objective = objective;
 		this.descriptionOfQuest = descriptionOfQuest;
 		this.arrivalEvent = arrivalEvent;
 		this.crewmembersToAdd = crewmembersToAdd;
