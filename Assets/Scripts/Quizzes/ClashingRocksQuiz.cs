@@ -28,7 +28,7 @@ namespace Quizzes
 			Globals.UI.Show<QuizScreen, QuizScreenModel>(new QuizScreenModel(
 				title: "Clashing Rocks",
 				message: "You’re at the clashing rocks: oh no! do you remember your instructions from Phineus? Choose wisely – or you will be smashed to epic smithereens.",
-				icon: null,  // TODO: Where to put these?
+				icon: Resources.Load<Sprite>("stop_9"),
 				choices: new ObservableCollection<ButtonViewModel> {
 					new ButtonViewModel { Label = "Pray to Athena", OnClick = Dead },
 					new ButtonViewModel { Label = "Apologize to Zeus", OnClick = Dead },
@@ -44,7 +44,7 @@ namespace Quizzes
 			Globals.UI.Show<QuestScreen, QuizScreenModel>(new QuizScreenModel(
 				title: "Clashing Rocks",
 				message: "Smashed, shattered, drowned – you’re dead.",
-				icon: null,    // TODO: Grab the same icon as the quiz screen from before
+				icon: Resources.Load<Sprite>("stop_9"),
 				choices: new ObservableCollection<ButtonViewModel> {
 					new ButtonViewModel { Label = "OK", OnClick = () => {
 						Globals.GameVars.isGameOver = true;

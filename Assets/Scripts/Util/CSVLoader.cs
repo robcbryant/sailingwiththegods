@@ -240,7 +240,8 @@ public static class CSVLoader
 				crewmembersToRemove: ParseIntList(records[9]), 
 				isFinalSegment: isEnd, 
 				// TODO: Add the images. Every stop on the quest should show an image now, not just quizzes.
-				mentionedPlaces: ParseIntList(records[7])
+				mentionedPlaces: ParseIntList(records[7]),
+				image: Resources.Load<Sprite>(records[10])
 			));
 		}
 

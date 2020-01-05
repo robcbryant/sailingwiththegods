@@ -90,7 +90,16 @@ public class QuestSegment
 		public override ArrivalEventType Type => ArrivalEventType.Message;
 
 		public override void Execute(QuestSegment segment) {
-			Globals.GameVars.ShowANotificationMessage(QuestSystem.QuestMessageIntro + Message);
+
+			Globals.UI.Show<QuestScreen, QuizScreenModel>(new QuizScreenModel(
+				title: QuestSystem.QuestMessageIntro,
+				message: Message,
+				icon: segment.image,
+				choices: new ObservableCollection<ButtonViewModel> {
+					new ButtonViewModel { Label = "OK", OnClick = () => Globals.UI.Hide<QuestScreen>() }
+				}
+			));
+
 			Globals.Quests.CompleteQuestSegment(segment);
 		}
 
@@ -144,8 +153,9 @@ public class QuestSegment
 	public string descriptionOfQuest;
 	public ArrivalEvent arrivalEvent;
 	public List<int> mentionedPlaces;
+	public Sprite image;
 
-	public QuestSegment(int segmentID, Trigger trigger, bool skippable, string descriptionOfQuest, ArrivalEvent arrivalEvent, List<int> crewmembersToAdd, List<int> crewmembersToRemove, bool isFinalSegment, List<int> mentionedPlaces) {
+	public QuestSegment(int segmentID, Trigger trigger, bool skippable, string descriptionOfQuest, ArrivalEvent arrivalEvent, List<int> crewmembersToAdd, List<int> crewmembersToRemove, bool isFinalSegment, List<int> mentionedPlaces, Sprite image) {
 		this.segmentID = segmentID;
 		this.trigger = trigger;
 		this.skippable = skippable;
@@ -155,6 +165,7 @@ public class QuestSegment
 		this.crewmembersToRemove = crewmembersToRemove;
 		this.isFinalSegment = isFinalSegment;
 		this.mentionedPlaces = mentionedPlaces;
+		this.image = image;
 	}
 }
 
