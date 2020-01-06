@@ -44,6 +44,8 @@ public class script_player_controls : MonoBehaviour
 	[HideInInspector] public int dayCounterStarving = 0;
 	[HideInInspector] public int dayCounterThirsty = 0;
 
+	[ReadOnly] public Vector2 longXLatY;
+
 	bool notEnoughSpeedToMove = false;
 
 	float initialAngle = 0f;
@@ -121,6 +123,8 @@ public class script_player_controls : MonoBehaviour
 		//	MGV.DEBUG_currentQuestLegIncrease = false;
 		//}
 
+		// debug tool to see where you are in lat long
+		longXLatY = CoordinateUtil.ConvertWebMercatorToWGS1984(CoordinateUtil.Convert_UnityWorld_WebMercator(GameVars.playerShip.transform.position));
 
 		//Make sure the camera transform is always tied to the front of the ship model's transform if the FPV camera is enabled
 		if (GameVars.FPVCamera.activeSelf)
@@ -471,8 +475,6 @@ public class script_player_controls : MonoBehaviour
 			Vector3 travelDirection = Vector3.Normalize(destination - transform.position);
 			float distance = Vector3.Distance(destination, transform.position);
 
-
-
 			//figure out the actual speed of the ship if currents/wind are present and if the sails are unfurled or not
 			Vector3 windAndWaterVector = GetCurrentWindWaterForceVector(travelDirection);
 
@@ -519,6 +521,10 @@ public class script_player_controls : MonoBehaviour
 
 				//Fire off the coast line raycasts to detect for the coast
 				DetectCoastLinesWithRayCasts();
+
+				// only bother to check coord triggers while moving. this prevents them from getting triggered more 
+				// than once since the quest system will drop anchor and prevent this from running again
+				Globals.Quests.CheckCoordTriggers(GameVars.playerShip.transform.position.XZ());
 
 			}
 			else if (!GameVars.showSettlementGUI || notEnoughSpeedToMove) { //check to see if we're in the trade menu otherwise we will indefintely write duplicate routes until we leave the trade menu

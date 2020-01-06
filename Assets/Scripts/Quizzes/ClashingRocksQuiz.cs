@@ -41,12 +41,14 @@ namespace Quizzes
 		}
 
 		private void Dead() {
+			Globals.UI.Hide<QuizScreen>();
 			Globals.UI.Show<QuestScreen, QuizScreenModel>(new QuizScreenModel(
 				title: "Clashing Rocks",
 				message: "Smashed, shattered, drowned – you’re dead.",
 				icon: Resources.Load<Sprite>("stop_9"),
 				choices: new ObservableCollection<ButtonViewModel> {
 					new ButtonViewModel { Label = "OK", OnClick = () => {
+						Globals.UI.Hide<QuestScreen>();
 						Globals.GameVars.isGameOver = true;
 					} }
 				}
@@ -54,8 +56,23 @@ namespace Quizzes
 		}
 
 		private void Complete() {
-			// there's no message here, it just shows the next quest description which says you succeeded
-			CompleteCallback?.Invoke();
+
+			Globals.UI.Hide<QuizScreen>();
+			Globals.UI.Show<QuestScreen, QuizScreenModel>(new QuizScreenModel(
+				title: "Clashing Rocks",
+				message: Globals.Quests.NextSegment.descriptionOfQuest,
+				icon: Resources.Load<Sprite>("stop_9"),
+				choices: new ObservableCollection<ButtonViewModel> {
+					new ButtonViewModel {
+						Label = "OK",
+						OnClick = () => {
+							Globals.UI.Hide<QuestScreen>();
+							CompleteCallback?.Invoke();
+						}
+					}
+				}
+			));
+
 		}
 	}
 }

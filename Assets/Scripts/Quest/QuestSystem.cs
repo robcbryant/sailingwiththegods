@@ -14,13 +14,15 @@ public class QuestSystem : MonoBehaviour
 	MainQuestLine quest => playerShipVariables.ship.mainQuest;
 	script_player_controls playerShipVariables => gameVars.playerShipVariables;
 
-	const float CoordTriggerDistance = 2;
+	// manually chosen to cover the entire space where the clashing rocks are so you can't miss it (in unity world space)
+	const float CoordTriggerDistance = 10;
 
 	public int CurrDestinationId => CurrSegment?.trigger is QuestSegment.CityTrigger cityTrigger ? cityTrigger.DestinationId : -1;
 
-	bool IsComplete(QuestSegment s) => s.segmentID < quest.currentQuestSegment;
+	public QuestSegment CurrSegment => quest.questSegments.ElementAtOrDefault(quest.currentQuestSegment);
+	public QuestSegment NextSegment => quest.questSegments.ElementAtOrDefault(quest.currentQuestSegment + 1);
 
-	QuestSegment CurrSegment => quest.questSegments.ElementAtOrDefault(quest.currentQuestSegment);
+	bool IsComplete(QuestSegment s) => s.segmentID < quest.currentQuestSegment;
 
 	// the quest is split into two "legs". up through Aea and after Aea
 	// First we determine which part of the questleg the player is in which determines which part of the quest array the player can access
@@ -90,17 +92,18 @@ public class QuestSystem : MonoBehaviour
 			// this is only valid for city destinations, obviously
 			playerShipVariables.ship.playerJournal.AddNewSettlementToLog(cityTrigger2.DestinationId);
 			Debug.Log("next seg: " + cityTrigger2.DestinationId);
-			//Now add the mentioned places attached to this quest leg
-			foreach (int i in nextSegment.mentionedPlaces) {
-				Debug.Log("mentioning: " + i);
-				//Make sure we don't add any null values--a -1 represents no mentions of any settlements
-				if (i != -1)
-					playerShipVariables.ship.playerJournal.AddNewSettlementToLog(i);
-			}
 		}
 		else {
 			// TODO: until we have a better idea, show the description as a message box for quest segments that aren't targeting a specific city (and so can't use the usual captain's log entry system which depends on city ids)
 			gameVars.ShowANotificationMessage(QuestMessageIntro + nextSegment.descriptionOfQuest);
+		}
+
+		//Now add the mentioned places attached to this quest leg
+		foreach (int i in nextSegment.mentionedPlaces) {
+			Debug.Log("mentioning: " + i);
+			//Make sure we don't add any null values--a -1 represents no mentions of any settlements
+			if (i != -1)
+				playerShipVariables.ship.playerJournal.AddNewSettlementToLog(i);
 		}
 
 		playerShipVariables.ship.objective = nextSegment.objective;
@@ -137,10 +140,14 @@ public class QuestSystem : MonoBehaviour
 			.TakeUntil(seg => !seg.skippable)
 			.FirstOrDefault(seg => 
 				seg.trigger is QuestSegment.CoordTrigger coord &&
-				Vector2.Distance(position, coord.LatLongCoord) < CoordTriggerDistance
+				Vector2.Distance(
+					position, 
+					CoordinateUtil.Convert_WebMercator_UnityWorld(CoordinateUtil.ConvertWGS1984ToWebMercator(coord.LongXLatY))
+				) < CoordTriggerDistance
 			);
 
 		if (match != null) {
+			gameVars.playerShipVariables.rayCheck_stopShip = true;		// drop anchor (TODO: ought to be a function)
 			match.arrivalEvent.Execute(match);
 		}
 	}

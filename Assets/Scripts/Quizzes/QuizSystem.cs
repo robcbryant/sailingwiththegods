@@ -29,7 +29,7 @@ namespace Quizzes
 
 		public static void StartQuiz(string name, Action onComplete) {
 			var quiz = GetQuiz(name);
-			if (quiz == null) {
+			if (quiz != null) {
 				quiz.Start(onComplete);
 			}
 		}

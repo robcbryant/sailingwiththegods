@@ -50,10 +50,10 @@ public class QuestSegment
 	{
 		public override TriggerType Type => TriggerType.Coord;
 
-		public readonly Vector2 LatLongCoord;
+		public readonly Vector2 LongXLatY;
 
-		public CoordTrigger(Vector2 latLongCoord) : base() {
-			LatLongCoord = latLongCoord;
+		public CoordTrigger(Vector2 longXLatY) : base() {
+			LongXLatY = longXLatY;
 		}
 	}
 

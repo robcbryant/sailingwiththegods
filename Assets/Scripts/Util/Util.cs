@@ -12,6 +12,9 @@ public static class Utils
 
 	}
 
+	public static Vector2 XZ(this Vector3 self) => new Vector2(self.x, self.z);
+	public static Vector2 Reverse(this Vector2 self) => new Vector2(self.y, self.x);
+
 	public static Vector2 With(this Vector2 self, float? x = null, float? y = null) =>
 		new Vector2(x ?? self.x, y ?? self.y);
 

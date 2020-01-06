@@ -36462,6 +36462,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1514207109}
   m_CullTransparentMesh: 0
+--- !u!1 &1521492877
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1521492878}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1521492878
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521492877}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 41.207638, y: 0, z: 29.117577}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 20
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1525659790
 GameObject:
   m_ObjectHideFlags: 0
@@ -39210,8 +39240,8 @@ MonoBehaviour:
   playerShipVariables: {fileID: 0}
   controlsLocked: 0
   isGameOver: 0
-  justLeftPort: 0
   menuControlsLock: 0
+  justLeftPort: 0
   gameIsFinished: 0
   isPerformingRandomEvent: 0
   isPassingTime: 0
@@ -42929,6 +42959,7 @@ MonoBehaviour:
   numOfDaysWithoutWater: 0
   dayCounterStarving: 0
   dayCounterThirsty: 0
+  longXLatY: {x: 0, y: 0}
   cursorRing: {fileID: 1928260897}
   fogWall: {fileID: 358151443}
   rayCheck_stopShip: 0
@@ -50315,11 +50346,6 @@ PrefabInstance:
     - target: {fileID: 2689380567116285407, guid: 585b20b052d2d944995ceb2669320f48,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2689380567116285407, guid: 585b20b052d2d944995ceb2669320f48,
-        type: 3}
-      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2099944311476948699, guid: 585b20b052d2d944995ceb2669320f48,

@@ -187,7 +187,7 @@ public static class CSVLoader
 			case QuestSegment.TriggerType.City:
 				return new QuestSegment.CityTrigger(int.Parse(triggerDataCell));
 			case QuestSegment.TriggerType.Coord:
-				return new QuestSegment.CoordTrigger(ParseFloatList(triggerDataCell).ToVector2());
+				return new QuestSegment.CoordTrigger(ParseFloatList(triggerDataCell).ToVector2().Reverse());			// csv uses is (lat/easting, long/northing) but the game uses (long/northing, lat/easting) 
 			case QuestSegment.TriggerType.UpgradeShip:
 				return new QuestSegment.UpgradeShipTrigger();
 			case QuestSegment.TriggerType.None:

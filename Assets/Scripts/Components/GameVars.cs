@@ -364,6 +364,9 @@ public class GameVars : MonoBehaviour
 		//Update Current Quest Leg
 		ship.mainQuest.currentQuestSegment = int.Parse(playerVars[28]);
 
+		// Update objective
+		ship.objective = Globals.Quests.CurrSegment?.objective;
+
 		//Update Ship Health
 		ship.health = float.Parse(playerVars[29]);
 
