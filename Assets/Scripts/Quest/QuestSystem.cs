@@ -184,20 +184,10 @@ public class QuestSystem : MonoBehaviour
 		playerShipVariables.ship.cargo[0].amount_kg = Ship.StartingWater;
 		playerShipVariables.ship.cargo[1].amount_kg = Ship.StartingFood;
 
-		//Increase the quest counter because the start screen takes care of the first leg
-		// KD: Your first quest is to find pagasae, not tomb of dolops
-		// KDTODO: Maybe should come back??????????? Think about this.
 		// now we start on quest 0 at the beginning of the game, with an upgradeship trigger assumed.
 		Debug.Log(quest.currentQuestSegment);
-		//quest.currentQuestSegment++;
 
 		var segment = quest.questSegments[quest.currentQuestSegment];
-
-		//first show a window for the welcome message, and if there are any crew member changes, then let the player know.
-		// KD: Removed the concept of the first welcome message
-		// KDTODO: Maybe should come back??????????? Think about this.
-		//notificationMessage = segment.descriptionAtCompletion;
-		//showNotification = true;
 
 		// TODO: KD: I believe this whole block is unnecessary now that the first quest segment is to upgrade your ship and not a city. just leaving the log blank since
 		// only cities are supported in log entries at the moment. i imagine this will come back in some form, but it doesn't make sense for now.
