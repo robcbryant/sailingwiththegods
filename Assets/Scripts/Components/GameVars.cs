@@ -937,10 +937,9 @@ public class GameVars : MonoBehaviour
 		playerShipVariables.ship.crewCapacity = 30;
 		playerShipVariables.ship.cargo_capicity_kg = 1200;
 
-		// add all the non-fireable story crew members now that you have your big boy ship
-		FillBeginStoryCrew();
-
 		Globals.UI.Hide<RepairsView>();
+
+		// this will automatically add the story crew that was previously being added manually in a hack
 		Globals.Quests.CheckUpgradeShipTriggers();
 
 		// show the new ship model
@@ -952,18 +951,6 @@ public class GameVars : MonoBehaviour
 			upgradeLevel.SetActive(false);
 		}
 		shipLevels[shipLevel].SetActive(true);
-	}
-
-	// when you purchase the trireme, we add all the MUST have story crew members. 
-	public void FillBeginStoryCrew() {
-
-		foreach (int crewID in playerShipVariables.ship.mainQuest.questSegments[0].crewmembersToAdd) {
-			CrewMember currentMember = GetCrewMemberFromID(crewID);
-			if (!currentMember.isKillable && !currentMember.isJason) {
-				playerShipVariables.ship.crewRoster.Add(currentMember);
-			}
-		}
-
 	}
 
 	public void FillNewGameCrewRosterAvailability() {
