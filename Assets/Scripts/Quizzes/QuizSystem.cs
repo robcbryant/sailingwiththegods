@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,62 @@ namespace Quizzes
 {
 	abstract class Quiz
 	{
+		private Action CompleteCallback;
+
 		public abstract string Name { get; }
-		public abstract void Start(Action onComplete);
+
+		protected abstract string Title { get; }
+		protected abstract string Image { get; }
+
+		public virtual void Start(Action onComplete) {
+			Debug.Log("Started Quiz: " + Name);
+
+			// reset state
+			CompleteCallback = onComplete;
+		}
+
+		private void HideAnyScreens() {
+			Globals.UI.Hide<QuizScreen>();
+			Globals.UI.Hide<QuestScreen>();
+		}
+
+		protected void Question(string message, ButtonViewModel[] options) {
+			HideAnyScreens();
+
+			Globals.UI.Show<QuizScreen, QuizScreenModel>(new QuizScreenModel(
+				title: Title,
+				message: message,
+				icon: Resources.Load<Sprite>(Image),
+				choices: new ObservableCollection<ButtonViewModel>(options)
+			));
+		}
+
+		protected void Message(string message, Action callback) {
+			HideAnyScreens();
+
+			Globals.UI.Show<QuestScreen, QuizScreenModel>(new QuizScreenModel(
+				title: Title,
+				message: message,
+				icon: Resources.Load<Sprite>(Image),
+				choices: new ObservableCollection<ButtonViewModel> {
+					new ButtonViewModel { Label = "OK", OnClick = callback }
+				}
+			));
+		}
+
+		protected void GameOver() {
+			Debug.Log("Failed Quiz: " + Name);
+
+			HideAnyScreens();
+			Globals.GameVars.isGameOver = true;
+		}
+
+		protected void Complete() {
+			Debug.Log("Completed Quiz: " + Name);
+
+			HideAnyScreens();
+			CompleteCallback?.Invoke();
+		}
 	}
 
 	public static class QuizSystem
