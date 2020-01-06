@@ -12,6 +12,15 @@ public static class Utils
 
 	}
 
+	public static Vector2 With(this Vector2 self, float? x = null, float? y = null) =>
+		new Vector2(x ?? self.x, y ?? self.y);
+
+	public static Vector3 With(this Vector3 self, float? x = null, float? y = null, float? z = null) =>
+		new Vector3(x ?? self.x, y ?? self.y, z ?? self.z);
+
+	public static Color With(this Color self, float? r = null, float? g = null, float? b = null, float? a = null) =>
+		new Color(r ?? self.r, g ?? self.g, b ?? self.b, a ?? self.a);
+
 	public static T RandomElement<T>(this IEnumerable<T> list) {
 		return list.ElementAt(UnityEngine.Random.Range(0, list.Count() - 1));
 	}

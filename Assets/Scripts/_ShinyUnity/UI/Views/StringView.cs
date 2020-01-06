@@ -30,8 +30,10 @@ public class StringView : ViewBehaviour<IValueModel<string>>
 {
 	[SerializeField] TMPro.TextMeshProUGUI Text = null;
 
-	private void Awake() {
-		if(Text == null) {
+	public override void Bind(IValueModel<string> model) {
+		base.Bind(model);
+
+		if (Text == null) {
 			Text = GetComponent<TMPro.TextMeshProUGUI>();
 		}
 	}

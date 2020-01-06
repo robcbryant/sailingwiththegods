@@ -1208,18 +1208,16 @@ public class script_player_controls : MonoBehaviour
 
 		//If the distance is less than 100, start fading the beacon to transparent, and fading it's size and reverse
 		//	that if it is 100. We'll be using the same formula to fade the celestial sphere colors.
+		var line = beacon.GetComponent<LineRenderer>();
 
 		//Update size
 		float calculatedWidth = Utils.GetRange(distance, 0, 100f, .1f, 5f);
-		beacon.GetComponent<LineRenderer>().startWidth = calculatedWidth;
-		beacon.GetComponent<LineRenderer>().endWidth = calculatedWidth;
+		line.startWidth = calculatedWidth;
+		line.endWidth = calculatedWidth;
 
-		Color colorEnd = new Color(6f / 255f, 167f / 255f, 1f, 0);
-
-		//Update transparency
+		//Update transparency (infer color from the inspector set values to reduce hardcoding and allow navigator and crew beacons to differ)
 		float alpha = Utils.GetRange(distance, 0, 100f, 0, 1f);
-		beacon.GetComponent<LineRenderer>().startColor = new Color(88f / 255f, 1f, 211 / 255f, alpha);
-		beacon.GetComponent<LineRenderer>().endColor = colorEnd;
+		line.startColor = line.startColor.With(a: alpha);
 	}
 
 

@@ -39,22 +39,20 @@ public class ButtonView : ViewBehaviour<IValueModel<ButtonViewModel>>
 {
 	[SerializeField] StringView Label = null;
 	[SerializeField] Button Button = null;
-
-	private void Awake() {
-		if(Label == null) {
-			Label = GetComponentInChildren<StringView>();
-		}
-		if(Button == null) {
-			Button = GetComponent<Button>();
-		}
-	}
-
+	
 	private void Start() {
 		Subscribe(Button.onClick, OnClick);
 	}
 
 	public override void Bind(IValueModel<ButtonViewModel> model) {
 		base.Bind(model);
+
+		if (Label == null) {
+			Label = GetComponentInChildren<StringView>();
+		}
+		if (Button == null) {
+			Button = GetComponent<Button>();
+		}
 
 		if (model == null) 
 		{

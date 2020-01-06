@@ -21,10 +21,6 @@ public class CargoItemTradeView : ViewBehaviour<CargoItemTradeViewModel>
 
 	DelegateHandle SelectedHandle;
 
-	private void Awake() {
-		Interactable = GetComponent<InteractableBehaviour>();
-	}
-
 	private void Start() {
 		if (Interactable != null) {
 			Subscribe(Interactable.PointerClick, Clicked);
@@ -33,6 +29,8 @@ public class CargoItemTradeView : ViewBehaviour<CargoItemTradeViewModel>
 
 	public override void Bind(CargoItemTradeViewModel model) {
 		base.Bind(model);
+
+		Interactable = GetComponent<InteractableBehaviour>();
 
 		Amount?.Bind(new BoundModel<int>(Model, nameof(Model.AmountKg)).AsString());
 		Name?.Bind(new BoundModel<string>(Model, nameof(Model.Name)));
