@@ -48,8 +48,12 @@ public class QuizScreen : ViewBehaviour<QuizScreenModel>
 		Message?.Bind(new BoundModel<string>(Model, nameof(Model.Message)));
 
 		// TODO: populate from the collection directly
-		for(var i = 0; i < Choices.Length; i++) {
+		foreach(var choice in Choices) {
+			choice.gameObject.SetActive(false);
+		}
+		for (var i = 0; i < model.Choices.Count; i++) {
 			Choices[i]?.Bind(ValueModel.New(model.Choices.ElementAtOrDefault(i)));
+			Choices[i].gameObject.SetActive(true);
 		}
 	}
 }

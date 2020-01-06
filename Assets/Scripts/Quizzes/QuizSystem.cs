@@ -24,7 +24,7 @@ namespace Quizzes
 			CompleteCallback = onComplete;
 		}
 
-		private void HideAnyScreens() {
+		protected void HideAnyScreens() {
 			Globals.UI.Hide<QuizScreen>();
 			Globals.UI.Hide<QuestScreen>();
 		}
@@ -78,6 +78,7 @@ namespace Quizzes
 
 		static QuizSystem() {
 			Add(new ClashingRocksQuiz());
+			Add(new GoldenFleeceQuiz());
 		}
 
 		static Quiz GetQuiz(string name) => _quizzes.ContainsKey(name) ? _quizzes[name] : null;

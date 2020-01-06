@@ -29,7 +29,7 @@ public class QuestSystem : MonoBehaviour
 	// If the player is in the first half before Aea--then only search for these quest segments, else only search for the last quest segments
 	const int FirstLegEndId = 15;
 	IEnumerable<QuestSegment> CurrLeg =>
-		CurrSegment.segmentID < FirstLegEndId ?
+		CurrSegment.segmentID <= FirstLegEndId ?
 		quest.questSegments.Take(FirstLegEndId + 1) :
 		quest.questSegments.Skip(FirstLegEndId + 1);
 
