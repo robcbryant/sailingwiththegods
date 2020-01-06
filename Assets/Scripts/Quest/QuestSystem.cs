@@ -16,6 +16,8 @@ public class QuestSystem : MonoBehaviour
 
 	const float CoordTriggerDistance = 2;
 
+	public int CurrDestinationId => CurrSegment?.trigger is QuestSegment.CityTrigger cityTrigger ? cityTrigger.DestinationId : -1;
+
 	bool IsComplete(QuestSegment s) => s.segmentID < quest.currentQuestSegment;
 
 	QuestSegment CurrSegment => quest.questSegments.ElementAtOrDefault(quest.currentQuestSegment);

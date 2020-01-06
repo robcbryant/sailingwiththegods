@@ -45,10 +45,12 @@ public class CrewManagementMemberViewModel : Model
 		Portrait = Resources.Load<Sprite>(ResourcePath + "/" + member.ID) ?? Resources.Load<Sprite>(DefaultPortrait);
 		
 		// don't bother building the network list if we're being created for a view that doesn't need it
+		// sort by port name so you can easily look up a port in the list
 		if(onClickCity != null) {
 			CitiesInNetwork = ValueModel.Wrap(new ObservableCollection<CityViewModel>(
 				Globals.GameVars.Network.GetCrewMemberNetwork(Member)
 					.Select(s => new CityViewModel(s, onClickCity))
+					.OrderBy(c => c.PortName)
 			));
 		}
 	}
