@@ -16,6 +16,7 @@ namespace Quizzes
 
 		protected abstract string Title { get; }
 		protected abstract string Image { get; }
+		protected abstract string Caption { get; }		// TODO: The caption should be pulled from the quest data instead, but since we're hardcoding the image too this will do for now.
 
 		public virtual void Start(Action onComplete) {
 			Debug.Log("Started Quiz: " + Name);
@@ -35,6 +36,7 @@ namespace Quizzes
 			Globals.UI.Show<QuizScreen, QuizScreenModel>(new QuizScreenModel(
 				title: Title,
 				message: message,
+				caption: Caption,
 				icon: Resources.Load<Sprite>(Image),
 				choices: new ObservableCollection<ButtonViewModel>(options)
 			));
@@ -46,6 +48,7 @@ namespace Quizzes
 			Globals.UI.Show<QuestScreen, QuizScreenModel>(new QuizScreenModel(
 				title: Title,
 				message: message,
+				caption: Caption,
 				icon: Resources.Load<Sprite>(Image),
 				choices: new ObservableCollection<ButtonViewModel> {
 					new ButtonViewModel { Label = "OK", OnClick = callback }

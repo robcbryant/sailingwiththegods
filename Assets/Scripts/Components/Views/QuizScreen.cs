@@ -12,14 +12,18 @@ public class QuizScreenModel : Model
 	private string _Message;
 	public string Message { get => _Message; set { _Message = value; Notify(); } }
 
+	private string _Caption;
+	public string Caption { get => _Caption; set { _Caption = value; Notify(); } }
+
 	private Sprite _Icon;
 	public Sprite Icon { get => _Icon; set { _Icon = value; Notify(); } }
 
 	public readonly ICollectionModel<ButtonViewModel> Choices;
 
-	public QuizScreenModel(string title, string message, Sprite icon, ObservableCollection<ButtonViewModel> choices) {
+	public QuizScreenModel(string title, string message, string caption, Sprite icon, ObservableCollection<ButtonViewModel> choices) {
 		Title = title;
 		Message = message;
+		Caption = caption;
 		Icon = icon;
 		Choices = ValueModel.Wrap(choices);
 	}
@@ -30,6 +34,7 @@ public class QuizScreen : ViewBehaviour<QuizScreenModel>
 	[SerializeField] ImageView Icon = null;
 	[SerializeField] StringView Title = null;
 	[SerializeField] StringView Message = null;
+	[SerializeField] StringView Caption = null;
 	[SerializeField] ButtonView[] Choices = null;
 
 	public override void Bind(QuizScreenModel model) {
@@ -46,9 +51,10 @@ public class QuizScreen : ViewBehaviour<QuizScreenModel>
 
 		Title?.Bind(new BoundModel<string>(Model, nameof(Model.Title)));
 		Message?.Bind(new BoundModel<string>(Model, nameof(Model.Message)));
+		Caption?.Bind(new BoundModel<string>(Model, nameof(Model.Caption)));
 
 		// TODO: populate from the collection directly
-		foreach(var choice in Choices) {
+		foreach (var choice in Choices) {
 			choice.gameObject.SetActive(false);
 		}
 		for (var i = 0; i < model.Choices.Count; i++) {

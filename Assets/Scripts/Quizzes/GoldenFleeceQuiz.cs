@@ -15,10 +15,15 @@ namespace Quizzes
 		protected override string Title => "The Golden Fleece";
 
 		const string FirstImage = "stop_16";
+		const string FirstCaption = "“De Medee a Iason (Epîtres d’Ovide, Octavien de Saint Gelais)” Source gallica.bnf.fr / Bibliothèque nationale de France";
+
 		const string SecondImage = "stop_17";
+		const string SecondCaption = "“The Golden Fleece” from Stories of gods and heroes (1920) by Bulfinch Thomas Bulfinch with color illustrations drawn by Sybil Tawse / Source Wikimedia";
 
 		private string _image = FirstImage;
+		private string _caption = FirstCaption;
 		protected override string Image => _image;
+		protected override string Caption => _caption;
 
 		public override void Start(Action onComplete) {
 			base.Start(onComplete);
@@ -51,6 +56,8 @@ namespace Quizzes
 
 		void Question3() {
 			_image = SecondImage;
+			_caption = SecondCaption;
+
 			Question(
 				"Now time to cash in on your good looks so you can get a magical bride. Aphrodite has helped you with the arrow of Eros, but Medea is still in torment: you are asking her to betray her father and fatherland, and she lives still in the house of her father, sequestered away from the wide world on which you’ve written your name and fortune. You must promise her something beyond your dazzling charms: is it...",
 				new[] {

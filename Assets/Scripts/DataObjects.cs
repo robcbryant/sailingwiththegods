@@ -94,6 +94,7 @@ public class QuestSegment
 			Globals.UI.Show<QuestScreen, QuizScreenModel>(new QuizScreenModel(
 				title: QuestSystem.QuestMessageIntro,
 				message: Message,
+				caption: segment.caption,
 				icon: segment.image,
 				choices: new ObservableCollection<ButtonViewModel> {
 					new ButtonViewModel { Label = "OK", OnClick = () => Globals.UI.Hide<QuestScreen>() }
@@ -155,8 +156,9 @@ public class QuestSegment
 	public ArrivalEvent arrivalEvent;
 	public List<int> mentionedPlaces;
 	public Sprite image;
+	public string caption;
 
-	public QuestSegment(int segmentID, Trigger trigger, bool skippable, string objective, string descriptionOfQuest, ArrivalEvent arrivalEvent, List<int> crewmembersToAdd, List<int> crewmembersToRemove, bool isFinalSegment, List<int> mentionedPlaces, Sprite image) {
+	public QuestSegment(int segmentID, Trigger trigger, bool skippable, string objective, string descriptionOfQuest, ArrivalEvent arrivalEvent, List<int> crewmembersToAdd, List<int> crewmembersToRemove, bool isFinalSegment, List<int> mentionedPlaces, Sprite image, string caption) {
 		this.segmentID = segmentID;
 		this.trigger = trigger;
 		this.skippable = skippable;
@@ -168,6 +170,7 @@ public class QuestSegment
 		this.isFinalSegment = isFinalSegment;
 		this.mentionedPlaces = mentionedPlaces;
 		this.image = image;
+		this.caption = caption;
 	}
 }
 

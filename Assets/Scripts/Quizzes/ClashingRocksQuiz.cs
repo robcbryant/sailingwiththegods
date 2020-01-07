@@ -14,6 +14,7 @@ namespace Quizzes
 
 		protected override string Title => "Clashing Rocks";
 		protected override string Image => "stop_9";
+		protected override string Caption => "“The Argonauts at the Clashing Rocks” in folio g1v: beginning of book 4 (detail) from the Argonautica printed in 1519 by Josse Bade in Paris / Source University of Glasgow Library";
 
 		public override void Start(Action onComplete) {
 			base.Start(onComplete);

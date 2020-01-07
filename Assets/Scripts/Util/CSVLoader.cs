@@ -241,7 +241,8 @@ public static class CSVLoader
 				crewmembersToRemove: ParseIntList(records[10]), 
 				isFinalSegment: isEnd, 
 				mentionedPlaces: ParseIntList(records[8]),
-				image: Resources.Load<Sprite>(records[11])
+				image: Resources.Load<Sprite>(records[11]),
+				caption: records[12]
 			));
 		}
 
