@@ -11,6 +11,7 @@ public static class Globals
 	public static GameVars GameVars => Get<GameVars>();
 	public static GameUISystem UI => Get<GameUISystem>();
 	public static QuestSystem Quests => Get<QuestSystem>();
+	public static MiniGames MiniGames => Get<MiniGames>();
 
 	public static void Register<T>(T obj)
 	{

@@ -152,6 +152,9 @@ public class GameVars : MonoBehaviour
 	[HideInInspector] public bool isPerformingRandomEvent = false;
 	[HideInInspector] public bool isPassingTime = false;
 
+	// TODO: Should really make all this game state stuff an actual state machine at some point
+	public bool IsCutsceneMode = false;
+
 
 	// notifications
 	public bool NotificationQueued { get; private set; }

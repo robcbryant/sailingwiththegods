@@ -123,6 +123,17 @@ public class script_player_controls : MonoBehaviour
 		//	MGV.DEBUG_currentQuestLegIncrease = false;
 		//}
 
+		// TODO: Remove - this is just here as an initial test of minigames
+		if(Input.GetKeyUp(KeyCode.B)) {
+			Globals.MiniGames.Enter<TestChildMiniGame>();
+		}
+		if(Input.GetKeyUp(KeyCode.N)) {
+			Globals.MiniGames.Enter("TestSceneMiniGame");
+		}
+		if(Input.GetKeyUp(KeyCode.M)) {
+			Globals.MiniGames.Exit();
+		}
+
 		// debug tool to see where you are in lat long
 		longXLatY = CoordinateUtil.ConvertWebMercatorToWGS1984(CoordinateUtil.Convert_UnityWorld_WebMercator(GameVars.playerShip.transform.position));
 
@@ -167,7 +178,7 @@ public class script_player_controls : MonoBehaviour
 				}
 
 				// don't let the player use the cursor, rotate the camera, or zoom when the mouse is over a blocking UI
-				if(!UISystem.IsMouseOverUI()) {
+				if(!UISystem.IsMouseOverUI() && !GameVars.IsCutsceneMode) {
 					//If we aren't locking the controls for a GUI pop up then look for player cursor
 					CheckForPlayerNavigationCursor();
 					AnimateCursorRing();
