@@ -70,7 +70,10 @@ public class GameVars : MonoBehaviour
 	public const string TD_minute = "0";
 	public const string TD_second = "0";
 
-	public CrewMember Jason => Globals.GameVars.masterCrewList.FirstOrDefault(c => c.isJason);
+	public CrewMember Jason => masterCrewList.FirstOrDefault(c => c.isJason);
+	public IEnumerable<CrewMember> StandardCrew => masterCrewList.Where(c => !c.isPirate);
+	public IEnumerable<CrewMember> Pirates => masterCrewList.Where(c => c.isPirate);
+	public IEnumerable<PirateType> PirateTypes => masterPirateTypeList;
 
 	[Header("World Scene Refs")]
 	public GameObject FPVCamera;
@@ -179,7 +182,8 @@ public class GameVars : MonoBehaviour
 	//###################################
 	//	Crew Member Variables
 	//###################################
-	[HideInInspector] public List<CrewMember> masterCrewList = new List<CrewMember>();
+	List<PirateType> masterPirateTypeList = new List<PirateType>();
+	List<CrewMember> masterCrewList = new List<CrewMember>();
 
 	//###################################
 	//	GUI VARIABLES
@@ -242,7 +246,8 @@ public class GameVars : MonoBehaviour
 		Trade = new Trade(this);
 
 		//Load all txt database files
-		masterCrewList = CSVLoader.LoadMasterCrewRoster();
+		masterPirateTypeList = CSVLoader.LoadMasterPirateTypes();
+		masterCrewList = CSVLoader.LoadMasterCrewRoster(masterPirateTypeList);
 		captainsLogEntries = CSVLoader.LoadCaptainsLogEntries();
 		masterResourceList = CSVLoader.LoadResourceList();
 		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list and crew list
@@ -980,7 +985,7 @@ public class GameVars : MonoBehaviour
 		}
 
 		//Now let's add all the possible non-quest historical people for hire
-		foreach (CrewMember thisMember in masterCrewList) {
+		foreach (CrewMember thisMember in StandardCrew) {
 			//make sure we don't go over 40 listings
 			if (newGameAvailableCrew.Count == 40)
 				break;
@@ -1026,8 +1031,9 @@ public class GameVars : MonoBehaviour
 		//	--the most it has available
 		List<CrewMember> availableCrew = new List<CrewMember>();
 		int numOfIterations = 0;
+		int numStandardCrew = StandardCrew.Count();
 		while (numberOfCrewmanNeeded != availableCrew.Count) {
-			CrewMember thisMember = masterCrewList[UnityEngine.Random.Range(0, masterCrewList.Count)];
+			CrewMember thisMember = StandardCrew.RandomElement();
 			if (!thisMember.isPartOfMainQuest) {
 				//Now make sure this crewmember isn't already in the current crew
 				if(!playerShipVariables.ship.crewRoster.Contains(thisMember)) {
@@ -1035,7 +1041,7 @@ public class GameVars : MonoBehaviour
 				}
 			}
 			//Break from the main loop if we've tried enough crewman
-			if (masterCrewList.Count == numOfIterations)
+			if (numStandardCrew == numOfIterations)
 				break;
 			numOfIterations++;
 		}

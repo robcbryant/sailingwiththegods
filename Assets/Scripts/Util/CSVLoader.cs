@@ -249,12 +249,31 @@ public static class CSVLoader
 		return mainQuest;
 	}
 
-	public static List<CrewMember> LoadMasterCrewRoster() {
-		
+	public static List<PirateType> LoadMasterPirateTypes() {
 		char[] lineDelimiter = new char[] { '@' };
+		string filename = "pirate_types";
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
+		var masterPirateTypeList = new List<PirateType>();
+
+		//start at index 1 to skip the record headers
+		//For each line of the main quest file (the row)
+		for (int row = 1; row < fileByLine.Length; row++) {
+			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
+
+			masterPirateTypeList.Add(new PirateType {
+				ID = row,
+				name = records[1],
+				difficulty = int.Parse(records[2])
+			});
+		}
+
+		return masterPirateTypeList;
+	}
+
+	public static List<CrewMember> LoadMasterCrewRoster(List<PirateType> pirateTypes) {
+		char[] lineDelimiter = new char[] { '@' };
 		string filename = "crewmembers_database";
-
 		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
 		var masterCrewList = new List<CrewMember>();
@@ -270,9 +289,23 @@ public static class CSVLoader
 				isKillable = true;
 			if (int.Parse(records[7]) == 1)
 				isPartOfMainQuest = true;
+
+			bool isPirate = records[8] == "1";              // TODO: change to TRUE/FALSE in spreadsheet so bool.Parse will work
+
 			//Let's add a crewmember to the master roster
-			// TODO: Change CrewType in CSV to a string so it's more readable and use Enum.Parse
-			masterCrewList.Add(new CrewMember(int.Parse(records[0]), records[1], int.Parse(records[2]), int.Parse(records[3]), (CrewType)int.Parse(records[4]), records[5], isKillable, isPartOfMainQuest));
+			// TODO: Change CrewType+PirateType in CSV to a string so it's more readable and use Enum.Parse
+			masterCrewList.Add(new CrewMember(
+				ID: int.Parse(records[0]), 
+				name: records[1], 
+				originCity: int.Parse(records[2]), 
+				clout: int.Parse(records[3]), 
+				typeOfCrew: (CrewType)int.Parse(records[4]), 
+				backgroundInfo: records[5], 
+				isKillable: isKillable, 
+				isPartOfMainQuest: isPartOfMainQuest, 
+				isPirate: isPirate,
+				pirateType: isPirate ? pirateTypes[int.Parse(records[9]) - 1] : null
+			));
 		}
 
 		return masterCrewList;
