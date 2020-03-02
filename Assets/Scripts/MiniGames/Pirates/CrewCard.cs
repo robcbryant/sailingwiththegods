@@ -49,15 +49,13 @@ public class CrewCard : MonoBehaviour
 
 	public void OverDropSpot(Vector2 pos) 
 	{
-		Debug.Log("Over drop spot");
 		overSpot = true;
 		dropPos = pos;
 	}
 
 	public void LeaveDropSpot(Vector2 pos) 
 	{
-		Debug.Log("Left drop spot");
-		if (pos == dropPos) 
+		if (pos.Equals(dropPos)) 
 		{
 			overSpot = false;
 		}
