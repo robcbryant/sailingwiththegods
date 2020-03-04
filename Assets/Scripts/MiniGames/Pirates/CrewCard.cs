@@ -26,13 +26,12 @@ public class CrewCard : MonoBehaviour
 
 	public void Drag() 
 	{
-		Debug.Log("Dragging...");
+		transform.SetAsLastSibling();
 		isDragging = true;
 	}
 
 	public void Drop() 
 	{
-		Debug.Log("Drop");
 		isDragging = false;
 
 		if (overSpot) 
