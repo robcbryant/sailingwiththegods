@@ -11,7 +11,13 @@ public class RandomSlotPopulator : MonoBehaviour
 	public GameObject[] playableSlotsOdd;
 	public GameObject[] crewMemberSlots;
 
-	public GameObject[] enemyBackgrounds; 
+	public Pirate pirate;
+	public Transform pirateParent;
+
+	public CrewCard crew;
+	public Transform crewParent;
+
+	public Vector2Int pirateRange = new Vector2Int(1, 12);
 
 	// Start is called before the first frame update
 	void Start()
@@ -30,25 +36,18 @@ public class RandomSlotPopulator : MonoBehaviour
 	{
 		//random number of enemy priates created (1-12) 
 		//different ranging numbers of prirates will be added later
-		int enAndPlayCnt = Random.Range(1, 12);
+		int enAndPlayCnt = Random.Range(pirateRange.x, pirateRange.y+1);
 
 		//print to the console for development team to check and make sure the call is going correctly
 		print(enAndPlayCnt);
 
-		//shaded background for enemy slots (to show difference) 
-		//one for each row of enemy slots
-		if(enAndPlayCnt<= 6) {
-			enemyBackgrounds[0].SetActive(true);
-		}
-		else {
-			enemyBackgrounds[0].SetActive(true);
-			enemyBackgrounds[1].SetActive(true);
-		}
-
 		//if the number is even, the even array objects will be called 
-		if (enAndPlayCnt % 2 == 0) {
+		if(enAndPlayCnt % 2 == 0) {
 			for (int x = 0; x < enAndPlayCnt; x++) {
 				enemySlotsEven[x].SetActive(true);
+				Pirate g = Instantiate(pirate);
+				g.GetComponent<RectTransform>().anchoredPosition = enemySlotsEven[x].GetComponent<RectTransform>().anchoredPosition;
+				g.transform.SetParent(pirateParent);
 				playableSlotsEven[x].SetActive(true);
 			}
 		}
@@ -56,8 +55,19 @@ public class RandomSlotPopulator : MonoBehaviour
 			//the odd array objects are called here 
 			for (int x = 0; x < enAndPlayCnt; x++) {
 				enemySlotsOdd[x].SetActive(true);
+				Pirate g = Instantiate(pirate);
+				g.GetComponent<RectTransform>().anchoredPosition = enemySlotsOdd[x].GetComponent<RectTransform>().anchoredPosition;
+				g.transform.SetParent(pirateParent);
 				playableSlotsOdd[x].SetActive(true);
 			}
+		}
+
+		for (int i = 0; i < crewMemberSlots.Length; i++) 
+		{
+			CrewCard c = Instantiate(crew);
+			c.GetComponent<RectTransform>().anchoredPosition = crewMemberSlots[i].GetComponent<RectTransform>().anchoredPosition;
+			c.transform.SetParent(crewParent);
+			c.gameObject.SetActive(crewMemberSlots[i].activeSelf);
 		}
 	}
 }
