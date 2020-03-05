@@ -11,6 +11,11 @@ public class RandomSlotPopulator : MonoBehaviour
 	public GameObject[] playableSlotsOdd;
 	public GameObject[] crewMemberSlots;
 
+	public CrewCard pirate;
+	public Transform pirateParent;
+
+	public Vector2Int pirateRange = new Vector2Int(1, 12);
+
 	// Start is called before the first frame update
 	void Start()
     {
@@ -28,7 +33,7 @@ public class RandomSlotPopulator : MonoBehaviour
 	{
 		//random number of enemy priates created (1-12) 
 		//different ranging numbers of prirates will be added later
-		int enAndPlayCnt = Random.Range(0, 12);
+		int enAndPlayCnt = Random.Range(pirateRange.x, pirateRange.y+1);
 
 		//print to the console for development team to check and make sure the call is going correctly
 		print(enAndPlayCnt);
@@ -37,6 +42,9 @@ public class RandomSlotPopulator : MonoBehaviour
 		if(enAndPlayCnt % 2 == 0) {
 			for (int x = 0; x < enAndPlayCnt; x++) {
 				enemySlotsEven[x].SetActive(true);
+				CrewCard g = Instantiate(pirate);
+				g.GetComponent<RectTransform>().anchoredPosition = enemySlotsEven[x].GetComponent<RectTransform>().anchoredPosition;
+				g.transform.SetParent(pirateParent);
 				playableSlotsEven[x].SetActive(true);
 			}
 		}
@@ -44,6 +52,9 @@ public class RandomSlotPopulator : MonoBehaviour
 			//the odd array objects are called here 
 			for (int x = 0; x < enAndPlayCnt; x++) {
 				enemySlotsOdd[x].SetActive(true);
+				CrewCard g = Instantiate(pirate);
+				g.GetComponent<RectTransform>().anchoredPosition = enemySlotsOdd[x].GetComponent<RectTransform>().anchoredPosition;
+				g.transform.SetParent(pirateParent);
 				playableSlotsOdd[x].SetActive(true);
 			}
 		}

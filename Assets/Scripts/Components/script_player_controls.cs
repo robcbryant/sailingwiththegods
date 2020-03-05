@@ -1481,7 +1481,7 @@ public class script_player_controls : MonoBehaviour
 		foreach (string zoneName in windZoneNamesToTurnOn) {
 			//TODO:This is a quick and dirty way to make sure we don't get errors when on game world edge trying to turn zones on/off that don't exist
 			try {
-				Debug.Log("WIND" + zoneName);
+				//Debug.Log("WIND" + zoneName);
 				GameVars.windZoneParent.transform.Find(zoneName).transform.GetChild(0).gameObject.SetActive(true);
 			}
 			catch { }

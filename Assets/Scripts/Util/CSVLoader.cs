@@ -76,7 +76,7 @@ public static class CSVLoader
 			}
 			//Add model/prefab name to settlement
 			settlement.prefabName = records[records.Length - 2];
-			Debug.Log("********PREFAB NAME:     " + settlement.prefabName);
+			//Debug.Log("********PREFAB NAME:     " + settlement.prefabName);
 			//Add description to settlement
 			settlement.description = records[records.Length - 1];
 
@@ -325,8 +325,8 @@ public static class CSVLoader
 				localFile = File.ReadAllText(filePath);
 			}
 
-			Debug.Log(Application.dataPath + "/" + filename + ".txt");
-			Debug.Log(localFile);
+			//Debug.Log(Application.dataPath + "/" + filename + ".txt");
+			//Debug.Log(localFile);
 			if (localFile == "") {
 				TextAsset file = (TextAsset)Resources.Load(filename, typeof(TextAsset));
 				return file.text;
