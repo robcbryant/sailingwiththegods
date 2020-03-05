@@ -11,6 +11,8 @@ public class RandomSlotPopulator : MonoBehaviour
 	public GameObject[] playableSlotsOdd;
 	public GameObject[] crewMemberSlots;
 
+	public GameObject[] enemyBackgrounds; 
+
 	// Start is called before the first frame update
 	void Start()
     {
@@ -28,13 +30,23 @@ public class RandomSlotPopulator : MonoBehaviour
 	{
 		//random number of enemy priates created (1-12) 
 		//different ranging numbers of prirates will be added later
-		int enAndPlayCnt = Random.Range(0, 12);
+		int enAndPlayCnt = Random.Range(1, 12);
 
 		//print to the console for development team to check and make sure the call is going correctly
 		print(enAndPlayCnt);
 
+		//shaded background for enemy slots (to show difference) 
+		//one for each row of enemy slots
+		if(enAndPlayCnt<= 6) {
+			enemyBackgrounds[0].SetActive(true);
+		}
+		else {
+			enemyBackgrounds[0].SetActive(true);
+			enemyBackgrounds[1].SetActive(true);
+		}
+
 		//if the number is even, the even array objects will be called 
-		if(enAndPlayCnt % 2 == 0) {
+		if (enAndPlayCnt % 2 == 0) {
 			for (int x = 0; x < enAndPlayCnt; x++) {
 				enemySlotsEven[x].SetActive(true);
 				playableSlotsEven[x].SetActive(true);
