@@ -11,7 +11,7 @@ public class RandomSlotPopulator : MonoBehaviour
 	public GameObject[] playableSlotsOdd;
 	public GameObject[] crewMemberSlots;
 
-	public CrewCard pirate;
+	public Pirate pirate;
 	public Transform pirateParent;
 
 	public Vector2Int pirateRange = new Vector2Int(1, 12);
@@ -42,7 +42,7 @@ public class RandomSlotPopulator : MonoBehaviour
 		if(enAndPlayCnt % 2 == 0) {
 			for (int x = 0; x < enAndPlayCnt; x++) {
 				enemySlotsEven[x].SetActive(true);
-				CrewCard g = Instantiate(pirate);
+				Pirate g = Instantiate(pirate);
 				g.GetComponent<RectTransform>().anchoredPosition = enemySlotsEven[x].GetComponent<RectTransform>().anchoredPosition;
 				g.transform.SetParent(pirateParent);
 				playableSlotsEven[x].SetActive(true);
@@ -52,7 +52,7 @@ public class RandomSlotPopulator : MonoBehaviour
 			//the odd array objects are called here 
 			for (int x = 0; x < enAndPlayCnt; x++) {
 				enemySlotsOdd[x].SetActive(true);
-				CrewCard g = Instantiate(pirate);
+				Pirate g = Instantiate(pirate);
 				g.GetComponent<RectTransform>().anchoredPosition = enemySlotsOdd[x].GetComponent<RectTransform>().anchoredPosition;
 				g.transform.SetParent(pirateParent);
 				playableSlotsOdd[x].SetActive(true);
