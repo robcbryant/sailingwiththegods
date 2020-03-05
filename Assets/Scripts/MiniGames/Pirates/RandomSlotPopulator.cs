@@ -14,6 +14,9 @@ public class RandomSlotPopulator : MonoBehaviour
 	public Pirate pirate;
 	public Transform pirateParent;
 
+	public CrewCard crew;
+	public Transform crewParent;
+
 	public Vector2Int pirateRange = new Vector2Int(1, 12);
 
 	// Start is called before the first frame update
@@ -57,6 +60,14 @@ public class RandomSlotPopulator : MonoBehaviour
 				g.transform.SetParent(pirateParent);
 				playableSlotsOdd[x].SetActive(true);
 			}
+		}
+
+		for (int i = 0; i < crewMemberSlots.Length; i++) 
+		{
+			CrewCard c = Instantiate(crew);
+			c.GetComponent<RectTransform>().anchoredPosition = crewMemberSlots[i].GetComponent<RectTransform>().anchoredPosition;
+			c.transform.SetParent(crewParent);
+			c.gameObject.SetActive(crewMemberSlots[i].activeSelf);
 		}
 	}
 }
