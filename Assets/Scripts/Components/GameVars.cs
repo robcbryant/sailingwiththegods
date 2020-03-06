@@ -180,6 +180,8 @@ public class GameVars : MonoBehaviour
 	//	Crew Member Variables
 	//###################################
 	[HideInInspector] public List<CrewMember> masterCrewList = new List<CrewMember>();
+	[HideInInspector] public List<CrewMember> hireableCrewList = new List<CrewMember>();
+	[HideInInspector] public List<CrewMember> pirateCrewList = new List<CrewMember>();
 
 	//###################################
 	//	GUI VARIABLES
