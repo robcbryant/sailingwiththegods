@@ -17,7 +17,7 @@ public class RandomSlotPopulator : MonoBehaviour
 	public CrewCard crew;
 	public Transform crewParent;
 
-	public Vector2Int pirateRange = new Vector2Int(1, 12);
+	public Vector2Int pirateRange = new Vector2Int(1, 5);
 
 	// Start is called before the first frame update
 	void Start()

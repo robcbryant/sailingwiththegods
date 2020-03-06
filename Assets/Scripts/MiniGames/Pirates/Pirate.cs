@@ -1,18 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Pirate : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public int clout;
+	public string pirateName;
+	public Sprite pirateImage;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public Pirate(int clout, string pirateName, Sprite pirateImage) {
+		this.clout = clout;
+		this.pirateName = pirateName;
+		this.pirateImage = pirateImage;
+	}
 }
