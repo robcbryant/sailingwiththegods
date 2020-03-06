@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CrewCard : MonoBehaviour
 {
+	public bool dragable = true;
+
 	private RectTransform rect;
 	private bool isDragging = false;
 	private Vector2 startPos;
@@ -14,11 +17,12 @@ public class CrewCard : MonoBehaviour
 	{
 		rect = GetComponent<RectTransform>();
 		startPos = rect.anchoredPosition;
+		//Scale();
 	}
 
 	private void Update() 
 	{
-		if (isDragging) 
+		if (dragable && isDragging) 
 		{
 			ToMousePos();
 		}
@@ -58,5 +62,15 @@ public class CrewCard : MonoBehaviour
 		{
 			overSpot = false;
 		}
+	}
+
+	private void Scale() 
+	{
+		CanvasScaler cs = transform.GetComponentInParent<CanvasScaler>();
+		Vector2 defaultResolution = cs.referenceResolution;
+		Vector2 currentResolution = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
+		Vector2 scaleFactor = new Vector2(defaultResolution.x / currentResolution.x, defaultResolution.y / currentResolution.y);
+		Debug.Log($"Scale: {defaultResolution.x}/{currentResolution.x}:{scaleFactor.x} x {defaultResolution.y}/{currentResolution.y}:{scaleFactor.y}");
+		rect.localScale = new Vector3(scaleFactor.x, scaleFactor.y, 1);
 	}
 }
