@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Pirate : MonoBehaviour
+public class Pirate : CrewCard
 {
 	public int clout;
 	public string pirateName;

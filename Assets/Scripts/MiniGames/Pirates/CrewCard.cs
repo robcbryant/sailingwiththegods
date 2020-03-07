@@ -5,19 +5,27 @@ using UnityEngine.UI;
 
 public class CrewCard : MonoBehaviour
 {
+	private const string ResourcePath = "crew_portraits";
+	private const string DefaultPortrait = "crew_portraits/phoenician_sailor";
+
 	public bool dragable = true;
+	public TMPro.TextMeshProUGUI nameText;
+	public TMPro.TextMeshProUGUI powerText;
+	public Image crewImage;
 
 	private RectTransform rect;
 	private bool isDragging = false;
 	private Vector2 startPos;
 	private bool overSpot;
 	private Vector2 dropPos;
+	private CrewMember crew;
+
+	private int power;
 
 	private void Start() 
 	{
 		rect = GetComponent<RectTransform>();
 		startPos = rect.anchoredPosition;
-		//Scale();
 	}
 
 	private void Update() 
@@ -64,13 +72,23 @@ public class CrewCard : MonoBehaviour
 		}
 	}
 
-	private void Scale() 
+	public void SetCrew(CrewMember c) 
 	{
-		CanvasScaler cs = transform.GetComponentInParent<CanvasScaler>();
-		Vector2 defaultResolution = cs.referenceResolution;
-		Vector2 currentResolution = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
-		Vector2 scaleFactor = new Vector2(defaultResolution.x / currentResolution.x, defaultResolution.y / currentResolution.y);
-		Debug.Log($"Scale: {defaultResolution.x}/{currentResolution.x}:{scaleFactor.x} x {defaultResolution.y}/{currentResolution.y}:{scaleFactor.y}");
-		rect.localScale = new Vector3(scaleFactor.x, scaleFactor.y, 1);
+		crew = c;
+		SetPower();
+		ShowCrewData();
+	}
+
+	private void SetPower() 
+	{
+		//Will eventually do some fun calculations in here to get the actual number
+		power = crew.clout;
+	}
+
+	private void ShowCrewData() 
+	{
+		nameText.text = crew.name;
+		powerText.text = power.ToString();
+		crewImage.sprite = Resources.Load<Sprite>(ResourcePath + "/" + crew.ID) ?? Resources.Load<Sprite>(DefaultPortrait);
 	}
 }
