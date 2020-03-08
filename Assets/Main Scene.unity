@@ -8163,7 +8163,7 @@ GameObject:
   m_Component:
   - component: {fileID: 339724267}
   m_Layer: 0
-  m_Name: Crew Cards
+  m_Name: Crew Card Origin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19974,6 +19974,41 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f2f136d91074d4596ebd14d3078558, type: 3}
+--- !u!1 &767722861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 767722862}
+  m_Layer: 0
+  m_Name: Crew Cards
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &767722862
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767722861}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1607239035}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!1 &770848704
 GameObject:
   m_ObjectHideFlags: 0
@@ -42924,7 +42959,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1607239035
 RectTransform:
   m_ObjectHideFlags: 0
@@ -42945,6 +42980,7 @@ RectTransform:
   - {fileID: 2034611887}
   - {fileID: 1068734977}
   - {fileID: 1273458903}
+  - {fileID: 767722862}
   m_Father: {fileID: 1521492878}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -43154,7 +43190,8 @@ MonoBehaviour:
   pirate: {fileID: 1539814812676412813, guid: 11328d9a847a1e948ba0cf3491ebaebb, type: 3}
   pirateParent: {fileID: 2034611887}
   crew: {fileID: 3936637011897073576, guid: 008c5c7a50a3e5e488341813f04f353d, type: 3}
-  crewParent: {fileID: 339724267}
+  crewParent: {fileID: 767722862}
+  crewParentInOrigin: {fileID: 339724267}
   pirateRange: {x: 1, y: 12}
 --- !u!114 &1607239042
 MonoBehaviour:

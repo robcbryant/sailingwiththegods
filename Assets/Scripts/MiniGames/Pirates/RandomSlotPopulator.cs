@@ -27,6 +27,7 @@ public class RandomSlotPopulator : MonoBehaviour
 
 	public CrewCard crew;
 	public Transform crewParent;
+	public Transform crewParentInOrigin;
 
 	public Vector2Int pirateRange = new Vector2Int(1, 12);
 
@@ -36,6 +37,8 @@ public class RandomSlotPopulator : MonoBehaviour
 	void Start()
     {
 		SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
+		crewNum = Globals.GameVars.playerShipVariables.ship.crew;
+		Debug.Log($"Crew num {crewNum}");
 		//call currently being used for testing purposes 
 		populateScreen();
 	}
@@ -88,10 +91,20 @@ public class RandomSlotPopulator : MonoBehaviour
 		{
 			for (int c = 0; c < slotsPerRow; c++) 
 			{
+				//Spawns a new crew slot
 				GameObject slot = Instantiate(crewMemberSlot);
 				slot.transform.SetParent(crewSlotParent);
 				RectTransform slotRect = slot.GetComponent<RectTransform>();
 				slotRect.anchoredPosition = new Vector2(xPos, yPos);
+				slot.GetComponent<CardDropZone>().SetOccupied(true);
+
+				//Spawns a new crew member
+				CrewCard newCrew = Instantiate(crew);
+				newCrew.SetRSP(this);
+				newCrew.GetComponent<RectTransform>().anchoredPosition = slotRect.position;
+				newCrew.transform.SetParent(crewParentInOrigin);
+
+				//Moves to the next point
 				xPos += paddingX;
 				spawnedSlots++;
 				if (spawnedSlots == crewNum) 

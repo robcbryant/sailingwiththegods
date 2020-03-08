@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CardDropZone : MonoBehaviour
 {
+	public bool startingPoint;
 	private bool occupied;
 
 	private void OnTriggerEnter2D(Collider2D collision) 
@@ -11,8 +12,8 @@ public class CardDropZone : MonoBehaviour
 		if (collision.CompareTag("CrewCard") && !occupied) 
 		{
 			CrewCard cc = collision.GetComponent<CrewCard>();
-			occupied = true;
-			cc.OverDropSpot(GetComponent<RectTransform>().position);
+			SetOccupied(true);
+			cc.OverDropSpot(GetComponent<RectTransform>().position, startingPoint);
 		}
 	}
 
@@ -21,8 +22,13 @@ public class CardDropZone : MonoBehaviour
 		if (collision.CompareTag("CrewCard")) 
 		{
 			CrewCard cc = collision.GetComponent<CrewCard>();
-			occupied = false;
-			cc.LeaveDropSpot(GetComponent<RectTransform>().anchoredPosition);
+			SetOccupied(false);
+			cc.LeaveDropSpot(GetComponent<RectTransform>().position);
 		}
+	}
+
+	public void SetOccupied(bool occupy) 
+	{
+		occupied = occupy;
 	}
 }

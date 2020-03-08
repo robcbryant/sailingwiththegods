@@ -21,6 +21,8 @@ public class CrewCard : MonoBehaviour
 	private CrewMember crew;
 
 	private int power;
+	private bool overStart = true;
+	private RandomSlotPopulator rsp;
 
 	private void Start() 
 	{
@@ -36,8 +38,14 @@ public class CrewCard : MonoBehaviour
 		}
 	}
 
+	public void SetRSP(RandomSlotPopulator r) 
+	{
+		rsp = r;
+	}
+
 	public void Drag() 
 	{
+		transform.SetParent(rsp.crewParent);
 		transform.SetAsLastSibling();
 		isDragging = true;
 	}
@@ -49,8 +57,12 @@ public class CrewCard : MonoBehaviour
 		if (overSpot) 
 		{
 			startPos = dropPos;
+			if (overStart) 
+			{
+				transform.SetParent(rsp.crewParentInOrigin);
+			}
 		}
-		rect.anchoredPosition = startPos;
+		rect.position = startPos;
 	}
 
 	private void ToMousePos() 
@@ -58,10 +70,11 @@ public class CrewCard : MonoBehaviour
 		rect.anchoredPosition = Input.mousePosition;
 	}
 
-	public void OverDropSpot(Vector2 pos) 
+	public void OverDropSpot(Vector2 pos, bool isStart) 
 	{
 		overSpot = true;
 		dropPos = pos;
+		overStart = isStart;
 	}
 
 	public void LeaveDropSpot(Vector2 pos) 
