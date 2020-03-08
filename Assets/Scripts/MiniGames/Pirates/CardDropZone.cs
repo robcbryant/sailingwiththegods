@@ -12,14 +12,14 @@ public class CardDropZone : MonoBehaviour
 		{
 			CrewCard cc = collision.GetComponent<CrewCard>();
 			occupied = true;
-			cc.OverDropSpot(GetComponent<RectTransform>().anchoredPosition);
+			cc.OverDropSpot(GetComponent<RectTransform>().position);
 		}
 	}
 
 	private void OnTriggerExit2D(Collider2D collision) 
 	{
 		if (collision.CompareTag("CrewCard")) 
-			{
+		{
 			CrewCard cc = collision.GetComponent<CrewCard>();
 			occupied = false;
 			cc.LeaveDropSpot(GetComponent<RectTransform>().anchoredPosition);

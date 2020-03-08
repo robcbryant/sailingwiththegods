@@ -6,12 +6,20 @@ using UnityEngine;
 public class RandomSlotPopulator : MonoBehaviour
 {
 	//Arrays of the drops zones (names respectively to their roles) are public so they may be edited in the future
-	[Header("Slots and Drop Zones")]
+	[Header("Drop Zones")]
 	public GameObject[] enemySlotsEven;
 	public GameObject[] enemySlotsOdd;
 	public GameObject[] playableSlotsEven;
 	public GameObject[] playableSlotsOdd;
 	public GameObject[] crewMemberSlots;
+	[Header("Crew Slots")]
+	public GameObject crewMemberSlot;
+	public Transform crewSlotParent;
+	public int slotsPerRow;
+	public float paddingX;
+	public float paddingY;
+	public Vector2 startPos;
+	public int crewNum = 25;
 
 	[Header("Spawning")]
 	public Pirate pirate;
@@ -71,12 +79,39 @@ public class RandomSlotPopulator : MonoBehaviour
 			playerSlots[x].SetActive(true);
 		}
 
-		for (int i = 0; i < crewMemberSlots.Length; i++) 
+		int totalCrewRows = Mathf.CeilToInt((crewNum * 1.0f) / slotsPerRow);
+		float xPos = startPos.x;
+		float yPos = startPos.y;
+		int spawnedSlots = 0;
+
+		for (int r = 0; r < totalCrewRows; r++) 
 		{
-			CrewCard c = Instantiate(crew);
-			c.GetComponent<RectTransform>().anchoredPosition = crewMemberSlots[i].GetComponent<RectTransform>().anchoredPosition;
-			c.transform.SetParent(crewParent);
-			c.gameObject.SetActive(crewMemberSlots[i].activeSelf);
+			for (int c = 0; c < slotsPerRow; c++) 
+			{
+				GameObject slot = Instantiate(crewMemberSlot);
+				slot.transform.SetParent(crewSlotParent);
+				RectTransform slotRect = slot.GetComponent<RectTransform>();
+				slotRect.anchoredPosition = new Vector2(xPos, yPos);
+				xPos += paddingX;
+				spawnedSlots++;
+				if (spawnedSlots == crewNum) 
+				{
+					break;
+				}
+			}
+			xPos = startPos.x;
+			yPos += paddingY;
+			if (spawnedSlots == crewNum) 
+			{
+				break;
+			}
 		}
+
+		//for (int i = 0; i < crewMemberSlots.Length; i++) {
+		//	CrewCard c = Instantiate(crew);
+		//	c.GetComponent<RectTransform>().anchoredPosition = crewMemberSlots[i].GetComponent<RectTransform>().position;
+		//	c.transform.SetParent(crewParent);
+		//	c.gameObject.SetActive(crewMemberSlots[i].activeSelf);
+		//}
 	}
 }
