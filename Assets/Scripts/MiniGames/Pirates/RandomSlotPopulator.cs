@@ -11,7 +11,6 @@ public class RandomSlotPopulator : MonoBehaviour
 	public GameObject[] enemySlotsOdd;
 	public GameObject[] playableSlotsEven;
 	public GameObject[] playableSlotsOdd;
-	public GameObject[] crewMemberSlots;
 	[Header("Crew Slots")]
 	public GameObject crewMemberSlot;
 	public Transform crewSlotParent;
@@ -103,6 +102,7 @@ public class RandomSlotPopulator : MonoBehaviour
 				newCrew.SetRSP(this);
 				newCrew.GetComponent<RectTransform>().anchoredPosition = slotRect.position;
 				newCrew.transform.SetParent(crewParentInOrigin);
+				newCrew.SetCrew(Globals.GameVars.playerShipVariables.ship.crewRoster[spawnedSlots]);
 
 				//Moves to the next point
 				xPos += paddingX;
