@@ -57,6 +57,7 @@ public class RandomSlotPopulator : MonoBehaviour
 	{
 		//random number of enemy priates created (1-12) 
 		//different ranging numbers of prirates will be added later
+		pirateRange.y = Mathf.Min(pirateRange.y, crewNum);
 		int enAndPlayCnt = Random.Range(pirateRange.x, pirateRange.y+1);
 
 		//print to the console for development team to check and make sure the call is going correctly
