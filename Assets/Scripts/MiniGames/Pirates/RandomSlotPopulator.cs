@@ -42,10 +42,6 @@ public class RandomSlotPopulator : MonoBehaviour
 		populateScreen();
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
 
 	public void SetPirateType(PirateType t) 
 	{

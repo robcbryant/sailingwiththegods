@@ -20,7 +20,7 @@ public class CrewCard : MonoBehaviour
 	private Vector2 dropPos;
 	private CrewMember crew;
 
-	private int power;
+	public int power;
 	private bool overStart = true;
 	private RandomSlotPopulator rsp;
 

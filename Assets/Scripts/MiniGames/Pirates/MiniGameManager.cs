@@ -3,39 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum FightState { PLAYERTURN, ENEMYTURN, WON, LOSS}
+
 
 public class MiniGameManager : MonoBehaviour
 {
+	public FightState state;
 	public GameObject piratesParent, crewParent;
 	private Color tempColor;
-	public float timer;
 
 	private void Start() {
-		timer = .2f;
+		state = FightState.PLAYERTURN;
 		tempColor = piratesParent.transform.GetChild(0).gameObject.GetComponent<Image>().color;
 	}
 
-	private void FixedUpdate() {
-		if(timer >= 0) {
-			timer -= Time.deltaTime;
-		}
-		else {
-			foreach (Transform pirate in piratesParent.transform) {
-				pirate.gameObject.GetComponent<Image>().color = tempColor;
+	public void Fight() {
+		state = FightState.ENEMYTURN;
+		CrewCard crewMember, pirate;
+		for (int index = 0; index <= crewParent.transform.childCount - 1; index++) {
+			crewMember = crewParent.transform.GetChild(index).GetComponent<CrewCard>();
+			pirate = piratesParent.transform.GetChild(index).GetComponent<CrewCard>();
+
+			if (crewMember.power < pirate.power) {
+				crewParent.transform.GetChild(index).gameObject.SetActive(false);
 			}
-			timer = .2f;
+			else if(crewMember.power > pirate.power) {
+				piratesParent.transform.GetChild(index).gameObject.SetActive(false);
+			}
+			else {
+				crewParent.transform.GetChild(index).gameObject.SetActive(false);
+				piratesParent.transform.GetChild(index).gameObject.SetActive(false);
+			}
 		}
-	}
-
-	public void Attack() {
-
-		foreach(Transform pirate in piratesParent.transform) {
-
-			AnimateAttack(pirate.gameObject);
-		}
+		
 	}
 
 	public void AnimateAttack(GameObject pirate) {
-		pirate.gameObject.GetComponent<Image>().color = Color.red;
 	}
 }
