@@ -12,9 +12,10 @@ public class MiniGameManager : MonoBehaviour
 	public GameObject piratesParent, crewParent;
 	private Color tempColor;
 
-	private void Start() {
+	private void Start() 
+	{
 		state = FightState.PLAYERTURN;
-		tempColor = piratesParent.transform.GetChild(0).gameObject.GetComponent<Image>().color;
+		//tempColor = piratesParent.transform.GetChild(0).gameObject.GetComponent<Image>().color;
 	}
 
 	public void Fight() {

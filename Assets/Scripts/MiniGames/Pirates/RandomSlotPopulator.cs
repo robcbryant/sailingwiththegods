@@ -14,11 +14,10 @@ public class RandomSlotPopulator : MonoBehaviour
 	[Header("Crew Slots")]
 	public GameObject crewMemberSlot;
 	public Transform crewSlotParent;
-	public int slotsPerRow;
-	public float paddingX;
-	public float paddingY;
+	public int crewPerRow = 5;
+	public float paddingX = 250;
+	public float paddingY = 250;
 	public Vector2 startPos;
-	public int crewNum = 25;
 
 	[Header("Spawning")]
 	public Pirate pirate;
@@ -32,14 +31,18 @@ public class RandomSlotPopulator : MonoBehaviour
 
 	private PirateType typeToSpawn;
 
+	private CardDropZone[,] spawnedCrewSlots;
+
+	private int crewNum;
+
 	// Start is called before the first frame update
 	void Start()
     {
 		SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
 		crewNum = Globals.GameVars.playerShipVariables.ship.crew;
-		Debug.Log($"Crew num {crewNum}");
 		//call currently being used for testing purposes 
-		populateScreen();
+		PopulateScreen();
+		ActivateCrewRow(0);
 	}
 
 
@@ -49,7 +52,7 @@ public class RandomSlotPopulator : MonoBehaviour
 		Debug.Log($"Spawning only pirates of type {typeToSpawn.name}");
 	}
 
-	public void populateScreen() 
+	public void PopulateScreen() 
 	{
 		//random number of enemy priates created (1-12) 
 		//different ranging numbers of prirates will be added later
@@ -78,50 +81,52 @@ public class RandomSlotPopulator : MonoBehaviour
 			playerSlots[x].SetActive(true);
 		}
 
-		int totalCrewRows = Mathf.CeilToInt((crewNum * 1.0f) / slotsPerRow);
+		int totalCrewRows = Mathf.CeilToInt((crewNum * 1.0f) / crewPerRow);
 		float xPos = startPos.x;
 		float yPos = startPos.y;
 		int spawnedSlots = 0;
+		spawnedCrewSlots = new CardDropZone[totalCrewRows, crewPerRow];
 
 		for (int r = 0; r < totalCrewRows; r++) 
 		{
-			for (int c = 0; c < slotsPerRow; c++) 
+			for (int c = 0; c < crewPerRow; c++) 
 			{
 				//Spawns a new crew slot
 				GameObject slot = Instantiate(crewMemberSlot);
 				slot.transform.SetParent(crewSlotParent);
 				RectTransform slotRect = slot.GetComponent<RectTransform>();
 				slotRect.anchoredPosition = new Vector2(xPos, yPos);
-				slot.GetComponent<CardDropZone>().SetOccupied(true);
+				CardDropZone cdz = slot.GetComponent<CardDropZone>();
+				spawnedCrewSlots[r, c] = cdz;
 
 				//Spawns a new crew member
-				CrewCard newCrew = Instantiate(crew);
-				newCrew.SetRSP(this);
-				newCrew.GetComponent<RectTransform>().anchoredPosition = slotRect.position;
-				newCrew.transform.SetParent(crewParentInOrigin);
-				newCrew.SetCrew(Globals.GameVars.playerShipVariables.ship.crewRoster[spawnedSlots]);
-
+				if (spawnedSlots < crewNum) 
+				{
+					CrewCard newCrew = Instantiate(crew);
+					newCrew.SetRSP(this);
+					newCrew.GetComponent<RectTransform>().anchoredPosition = slotRect.position;
+					newCrew.transform.SetParent(crewParentInOrigin);
+					newCrew.SetCrew(Globals.GameVars.playerShipVariables.ship.crewRoster[spawnedSlots]);
+					cdz.SetOccupied(true);
+				}
+				
 				//Moves to the next point
 				xPos += paddingX;
 				spawnedSlots++;
-				if (spawnedSlots == crewNum) 
-				{
-					break;
-				}
 			}
 			xPos = startPos.x;
 			yPos += paddingY;
-			if (spawnedSlots == crewNum) 
+		}
+	}
+
+	public void ActivateCrewRow(int rowNum) 
+	{
+		for (int r = 0; r < spawnedCrewSlots.GetLength(0); r++) 
+		{
+			for (int c = 0; c < spawnedCrewSlots.GetLength(1); c++) 
 			{
-				break;
+				spawnedCrewSlots[r, c].ToggleDropping(r == rowNum);
 			}
 		}
-
-		//for (int i = 0; i < crewMemberSlots.Length; i++) {
-		//	CrewCard c = Instantiate(crew);
-		//	c.GetComponent<RectTransform>().anchoredPosition = crewMemberSlots[i].GetComponent<RectTransform>().position;
-		//	c.transform.SetParent(crewParent);
-		//	c.gameObject.SetActive(crewMemberSlots[i].activeSelf);
-		//}
 	}
 }

@@ -17,7 +17,7 @@ public class MGScrollButtonController : MonoBehaviour
 	private void Start() 
 	{
 		//-1 here so it goes from 0 to n-1 instead of 1 to n
-		totalRows = Mathf.CeilToInt((Globals.GameVars.playerShipVariables.ship.crew * 1.0f) / rsp.slotsPerRow) - 1;
+		totalRows = Mathf.CeilToInt((Globals.GameVars.playerShipVariables.ship.crew * 1.0f) / rsp.crewPerRow) - 1;
 		CheckButtons();
 	}
 
@@ -27,6 +27,7 @@ public class MGScrollButtonController : MonoBehaviour
 		{
 			MoveArrayObjects(scrollObjects, new Vector3(0, scrollDistance));
 			currentRow++;
+			rsp.ActivateCrewRow(currentRow);
 		}
 	}
 
@@ -36,6 +37,7 @@ public class MGScrollButtonController : MonoBehaviour
 		{
 			MoveArrayObjects(scrollObjects, new Vector3(0, -scrollDistance));
 			currentRow--;
+			rsp.ActivateCrewRow(currentRow);
 		}
 	}
 

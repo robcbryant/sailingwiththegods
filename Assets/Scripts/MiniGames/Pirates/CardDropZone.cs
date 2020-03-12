@@ -7,9 +7,11 @@ public class CardDropZone : MonoBehaviour
 	public bool startingPoint;
 	private bool occupied;
 
+	private bool allowDropping = true;
+
 	private void OnTriggerEnter2D(Collider2D collision) 
 	{
-		if (collision.CompareTag("CrewCard") && !occupied) 
+		if (collision.CompareTag("CrewCard") && !occupied && allowDropping) 
 		{
 			CrewCard cc = collision.GetComponent<CrewCard>();
 			SetOccupied(true);
@@ -30,5 +32,10 @@ public class CardDropZone : MonoBehaviour
 	public void SetOccupied(bool occupy) 
 	{
 		occupied = occupy;
+	}
+
+	public void ToggleDropping(bool drop) 
+	{
+		allowDropping = drop;
 	}
 }

@@ -27,7 +27,7 @@ public class CrewCard : MonoBehaviour
 	private void Start() 
 	{
 		rect = GetComponent<RectTransform>();
-		startPos = rect.anchoredPosition;
+		startPos = rect.position;
 	}
 
 	private void Update() 
