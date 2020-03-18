@@ -9,5 +9,6 @@ public class HintArrow : MonoBehaviour
 	private void Update() 
 	{
 		transform.LookAt(target);
+		transform.eulerAngles -= new Vector3(transform.eulerAngles.x, 0, 0);
 	}
 }
