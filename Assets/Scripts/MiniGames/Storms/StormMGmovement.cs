@@ -6,6 +6,8 @@ public class StormMGmovement : MonoBehaviour
 {
 	//the bpat the player identifies as in the MG
 	public GameObject playerBoat;
+	public float boatHealth;
+	public float currentClout; 
 	
 	void Update() {
 		MoveBoat();
