@@ -20,7 +20,8 @@ public class ShipHealth : MonoBehaviour
 		leftSlider.maxValue = maxShipHealth / 2f;
 		rightSlider.maxValue = maxShipHealth / 2f;
 
-		currentShipHealth = Globals.GameVars.playerShipVariables.ship.health;
+		currentShipHealth = maxShipHealth;
+		//currentShipHealth = Globals.GameVars.playerShipVariables.ship.health;
 
 		UpdateHealthBar();
 	}
@@ -39,7 +40,7 @@ public class ShipHealth : MonoBehaviour
 			damage = 0;
 			LoseGame();
 		}
-		SetHealth(currentShipHealth);
+		//SetHealth(currentShipHealth);
 		UpdateHealthBar();
 	}
 
