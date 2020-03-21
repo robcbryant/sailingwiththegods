@@ -42933,6 +42933,7 @@ GameObject:
   - component: {fileID: 1607239041}
   - component: {fileID: 1607239042}
   - component: {fileID: 1607239043}
+  - component: {fileID: 1607239044}
   m_Layer: 0
   m_Name: Pirate Game
   m_TagString: Untagged
@@ -43176,6 +43177,19 @@ MonoBehaviour:
   piratesParent: {fileID: 2034611886}
   crewParent: {fileID: 767722861}
   pirates: []
+--- !u!114 &1607239044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607239034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dca35407b19af324c87d435025b0474f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runAwayBttn: {fileID: 1640844178}
 --- !u!1 &1614366357
 GameObject:
   m_ObjectHideFlags: 0
@@ -43931,6 +43945,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1640009779}
   m_CullTransparentMesh: 0
+--- !u!114 &1640844178 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3921104145471194577, guid: cf164d3cf5dfd7747b43a390d790a840,
+    type: 3}
+  m_PrefabInstance: {fileID: 1639892146}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1658341345
 GameObject:
   m_ObjectHideFlags: 0
@@ -48835,6 +48861,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crew Scroll Buttons
       objectReference: {fileID: 0}
+    - target: {fileID: 6041409999966986982, guid: b2fed5698f0fd31458b929606e852eee,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6041409999966986982, guid: b2fed5698f0fd31458b929606e852eee,
+        type: 3}
+      propertyPath: m_Name
+      value: Down Button On
+      objectReference: {fileID: 0}
     - target: {fileID: 4903504978748807469, guid: b2fed5698f0fd31458b929606e852eee,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -48890,6 +48926,16 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 6041410000199341181, guid: b2fed5698f0fd31458b929606e852eee,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6041410000199341181, guid: b2fed5698f0fd31458b929606e852eee,
+        type: 3}
+      propertyPath: m_Name
+      value: Up Button On
+      objectReference: {fileID: 0}
     - target: {fileID: 4903504979047165878, guid: b2fed5698f0fd31458b929606e852eee,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -48944,26 +48990,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 6041409999966986982, guid: b2fed5698f0fd31458b929606e852eee,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6041409999966986982, guid: b2fed5698f0fd31458b929606e852eee,
-        type: 3}
-      propertyPath: m_Name
-      value: Down Button On
-      objectReference: {fileID: 0}
-    - target: {fileID: 6041410000199341181, guid: b2fed5698f0fd31458b929606e852eee,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6041410000199341181, guid: b2fed5698f0fd31458b929606e852eee,
-        type: 3}
-      propertyPath: m_Name
-      value: Up Button On
       objectReference: {fileID: 0}
     - target: {fileID: 6041409999877272056, guid: b2fed5698f0fd31458b929606e852eee,
         type: 3}

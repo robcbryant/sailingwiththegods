@@ -24,6 +24,7 @@ public static class RandomEvents
 		float tenthPlaceTemp = (ship.totalNumOfDaysTraveled - Mathf.FloorToInt(ship.totalNumOfDaysTraveled));
 		tenthPlaceTemp *= 10;
 		//Debug.Log (tenthPlaceTemp + "  " + hundredthPlaceTemp);
+
 		//If we are at a half day's travel, then see if a random event occurs
 		if ((Mathf.FloorToInt(tenthPlaceTemp) == 5 || Mathf.FloorToInt(tenthPlaceTemp) == 9) && !gameVars.isPerformingRandomEvent) {
 			gameVars.isPerformingRandomEvent = true;
