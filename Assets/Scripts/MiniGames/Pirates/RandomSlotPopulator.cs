@@ -89,6 +89,7 @@ public class RandomSlotPopulator : MonoBehaviour
 			//CrewMember randomPirate = Globals.GameVars.Pirates.RandomElement();
 			CrewMember randomPirate = possiblePirates.RandomElement();
 			g.SetCrew(randomPirate);
+			g.Bind();
 			possiblePirates.Remove(randomPirate);
 			g.GetComponent<RectTransform>().anchoredPosition = pirateSlots[x].GetComponent<RectTransform>().anchoredPosition;
 			g.transform.SetParent(pirateParent);

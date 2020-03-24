@@ -8,6 +8,8 @@ public class CrewCard : MonoBehaviour
 	private const string ResourcePath = "crew_portraits";
 	private const string DefaultPortrait = "crew_portraits/phoenician_sailor";
 
+	[SerializeField] ButtonView infoButton;
+
 	public bool dragable = true;
 	public TMPro.TextMeshProUGUI nameText;
 	public TMPro.TextMeshProUGUI powerText;
@@ -103,5 +105,17 @@ public class CrewCard : MonoBehaviour
 		nameText.text = crew.name;
 		powerText.text = power.ToString();
 		crewImage.sprite = Resources.Load<Sprite>(ResourcePath + "/" + crew.ID) ?? Resources.Load<Sprite>(DefaultPortrait);
+	}
+
+	public void Bind() 
+	{
+		infoButton?.Bind(ValueModel.New(new ButtonViewModel {
+			OnClick = () => Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
+				Icon = crewImage.sprite,
+				Title = crew.name,
+				Subtitle = Globals.GameVars.GetJobClassEquivalency(crew.typeOfCrew),
+				Message = crew.backgroundInfo
+			})
+		}));
 	}
 }
