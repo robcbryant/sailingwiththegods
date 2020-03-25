@@ -11,7 +11,7 @@ public class MiniGameManager : MonoBehaviour
 {
 	public FightState state;
 	public GameObject piratesParent, crewParent;
-	public List<GameObject> pirates;
+	public List<GameObject> pirates, crew;
 	private Color tempColor;
 
 	private void Start() 
@@ -27,16 +27,18 @@ public class MiniGameManager : MonoBehaviour
 			pirates.Add(p.gameObject);
 		}
 		pirates = pirates.OrderBy(GameObject => GameObject.transform.position.x).ToList<GameObject>();
-		foreach (GameObject p in pirates) {
-			Debug.Log(p.transform.GetComponent<CrewCard>().nameText.text);
+		foreach (Transform c in crewParent.transform) {
+			crew.Add(c.gameObject);
 		}
+		crew = crew.OrderBy(GameObject => GameObject.transform.position.x).ToList<GameObject>();
 		for (int index = 0; index <= crewParent.transform.childCount - 1; index++) {
-			crewMember = crewParent.transform.GetChild(index).GetComponent<CrewCard>();
+			crewMember = crew[index].transform.GetComponent<CrewCard>();
 			pirate = pirates[index].transform.GetComponent<CrewCard>();
 
 			if (crewMember.gameObject.activeSelf && pirate.gameObject.activeSelf) {
 				if (crewMember.power < pirate.power) {
 					crewMember.gameObject.SetActive(false);
+					crew.Remove(crewMember.gameObject);
 				}
 				else if (crewMember.power > pirate.power) {
 					pirate.gameObject.SetActive(false);
