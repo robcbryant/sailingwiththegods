@@ -1,6 +1,8 @@
 sailingwiththegods
 ===================
 
+![](docs/images/screenshot.png)
+
 This game is designed to:
 
 * maximize immersion in the realities of sailing the ancient sea, closing the gap between our modern perspectives of sea travel and ancient realities
