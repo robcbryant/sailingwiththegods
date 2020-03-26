@@ -6,9 +6,9 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ develop ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -21,21 +21,35 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
+      with:
+        submodules: true
 
     # Runs a single command using the runners shell
     - name: Run a one-line script
       run: echo Starting Unity
 
-    - name: Unity Runner
-      uses: MirrorNG/unity-runner@0.1
+    - name: Unity - Builder
+      uses: webbertakken/unity-builder@v0.12
+      env:
+        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
       with:
-        # Arguments to pass to unity
-        args: -projectPath . -buildWindows64Player ./Build/SWTG.exe
+        # Version of unity to use for building the project.
+        unityVersion: 2018.3.8f1
+        # Platform that the build should target.
+        targetPlatform: StandaloneWindows64  
+        # Relative path to the project to be built.
+        projectPath: ./
         
     - name: File Existence
       uses: andstor/file-existence-action@v1.0.0
       with:
         # Comma separated string with paths to files and directories to check for existence.
-        files: ./Build/SWTG.exe
+        files: ./build/*/*.exe
         # Makes the Action fail on missing files.
         allow_failure: true
+        
+    - name: Artifact Upload
+      uses: actions/upload-artifact@v1
+      with:
+        name: Build
+        path: build
