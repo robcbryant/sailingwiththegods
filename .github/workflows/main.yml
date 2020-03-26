@@ -25,6 +25,12 @@ jobs:
         token: ${{ secrets.ACCESS_TOKEN }}
         submodules: true
 
+    # Cache
+    - uses: actions/cache@v1.1.0
+      with:
+        path: Library
+        key: Library
+
     # Runs a single command using the runners shell
     - name: Run a one-line script
       run: echo Starting Unity
@@ -40,17 +46,19 @@ jobs:
         targetPlatform: StandaloneWindows64  
         # Relative path to the project to be built.
         projectPath: ./
-        
-    - name: File Existence
-      uses: andstor/file-existence-action@v1.0.0
-      with:
-        # Comma separated string with paths to files and directories to check for existence.
-        files: ./build/*/*.exe
-        # Makes the Action fail on missing files.
-        allow_failure: true
-        
+        buildName: SailingWithTheGods 
+    
     - name: Artifact Upload
       uses: actions/upload-artifact@v1
       with:
         name: Build
         path: build
+        
+    - name: File Existence
+      uses: andstor/file-existence-action@v1.0.0
+      with:
+        # Comma separated string with paths to files and directories to check for existence.
+        files: ./build/SailingWithTheGods.exe
+        # Makes the Action fail on missing files.
+        allow_failure: true
+        
