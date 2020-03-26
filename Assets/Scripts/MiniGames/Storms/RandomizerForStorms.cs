@@ -8,6 +8,7 @@ public class RandomizerForStorms : MonoBehaviour
 
 	private Vector3 randomMGwaterSize;
 
+	public Transform rockHolder;
 	public GameObject miniGameRock;
 	public GameObject[] stormClouds;
 
@@ -50,7 +51,8 @@ void Start() {
 		//cannot have rocks spawn too close to the ship start point 
 		//ship start pnt = (1024, 782, -950)
 		if ((randomAreaForSpawningRocks.x > 1040 || randomAreaForSpawningRocks.x < 1015) && (randomAreaForSpawningRocks.z > -935 || randomAreaForSpawningRocks.z < -969)) {
-			Instantiate(miniGameRock, randomAreaForSpawningRocks, transform.rotation);
+			GameObject rock = Instantiate(miniGameRock, randomAreaForSpawningRocks, transform.rotation);
+			rock.transform.SetParent(rockHolder);
 		}
 	}
 

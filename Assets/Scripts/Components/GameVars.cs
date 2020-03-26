@@ -208,6 +208,7 @@ public class GameVars : MonoBehaviour
 	//	RANDOM EVENT VARIABLES
 	//###################################
 	[HideInInspector] public List<int> activeSettlementInfluenceSphereList = new List<int>();
+	[HideInInspector] public List<Ritual> stormRituals = new List<Ritual>();
 
 	//###################################
 	//	DEBUG VARIABLES
@@ -250,6 +251,7 @@ public class GameVars : MonoBehaviour
 		masterCrewList = CSVLoader.LoadMasterCrewRoster(masterPirateTypeList);
 		captainsLogEntries = CSVLoader.LoadCaptainsLogEntries();
 		masterResourceList = CSVLoader.LoadResourceList();
+		stormRituals = CSVLoader.LoadRituals();
 		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list and crew list
 
 		CreateSettlementsFromList();
