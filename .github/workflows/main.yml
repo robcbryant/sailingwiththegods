@@ -58,7 +58,7 @@ jobs:
       uses: andstor/file-existence-action@v1.0.0
       with:
         # Comma separated string with paths to files and directories to check for existence.
-        files: ./build/SailingWithTheGods.exe
+        files: ./build/StandaloneWindows64/SailingWithTheGods.exe
         # Makes the Action fail on missing files.
         allow_failure: true
         
