@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class RandomizerForStorms : MonoBehaviour
 {
@@ -49,6 +50,8 @@ void Start() {
 		for (int x = 0; x <= rndNumForClouds; x++) {
 			PopulateNearbyAreaWithClouds();
 		}
+
+		SetDifficulty();
 	}
 
 	void Update() {
@@ -104,4 +107,23 @@ void Start() {
 		}
 	}
 
+	private void SetDifficulty() {
+		float difficulty = 1;
+
+		difficulty *= PlayerPrefs.GetFloat("title");
+
+		float test = Globals.GameVars.playerShipVariables.ship.playerClout;
+
+		print(test);
+
+		print("Current difficulty is: " + difficulty);
+
+		//for (int x = 0; x <= rndNumForRocks; x++) {
+		//	PopulateNearbyAreaWithRocks();
+		//}
+
+		//for (int x = 0; x <= rndNumForClouds; x++) {
+		//	PopulateNearbyAreaWithClouds();
+		//}
+	}
 }
