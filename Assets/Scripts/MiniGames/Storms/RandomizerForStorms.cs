@@ -13,6 +13,27 @@ public class RandomizerForStorms : MonoBehaviour
 	public GameObject[] stormClouds;
 
 void Start() {
+		//easy, medium, and hard difficulties will be set here
+		//current numbers in place will be for medium, and are good for someone who has played the game before, 
+		//or someone who has been playing the game for a few days
+
+		//Difficulty changes:
+
+		//EASY
+		//randomMGwaterSize = new Vector3(Random.Range(20, 40), 1, Random.Range(20, 40));
+		//int rndNumForRocks = Random.Range(20,50);
+		//int rndNumForClouds = Random.Range(200,400);
+
+		//MEDIUM
+		//randomMGwaterSize = new Vector3(Random.Range(20, 60), 1, Random.Range(20, 60));
+		//int rndNumForRocks = Random.Range(50, 100);
+		//int rndNumForClouds = Random.Range(400, 500);
+
+		//HARD
+		//randomMGwaterSize = new Vector3(Random.Range(60, 100), 1, Random.Range(60, 100));
+		//int rndNumForRocks = Random.Range(100, 200);
+		//int rndNumForClouds = Random.Range(500, 1000);
+
 		//creates a randomly sized rectangle of water 
 		randomMGwaterSize = new Vector3(Random.Range(20, 60), 1, Random.Range(20, 60));
 		miniGameWater.transform.localScale = randomMGwaterSize;
