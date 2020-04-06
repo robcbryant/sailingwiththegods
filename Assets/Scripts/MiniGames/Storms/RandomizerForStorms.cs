@@ -14,32 +14,15 @@ public class RandomizerForStorms : MonoBehaviour
 	public GameObject[] stormClouds;
 
 void Start() {
-		//easy, medium, and hard difficulties will be set here
+		//easy, medium, and hard difficulties will be set here by the SetDifficulty method when it is operational 
 		//current numbers in place will be for medium, and are good for someone who has played the game before, 
 		//or someone who has been playing the game for a few days
-
-		//Difficulty changes:
-
-		//EASY
-		//randomMGwaterSize = new Vector3(Random.Range(20, 40), 1, Random.Range(20, 40));
-		//int rndNumForRocks = Random.Range(20,50);
-		//int rndNumForClouds = Random.Range(200,400);
-
-		//MEDIUM
-		//randomMGwaterSize = new Vector3(Random.Range(20, 60), 1, Random.Range(20, 60));
-		//int rndNumForRocks = Random.Range(50, 100);
-		//int rndNumForClouds = Random.Range(400, 500);
-
-		//HARD
-		//randomMGwaterSize = new Vector3(Random.Range(60, 100), 1, Random.Range(60, 100));
-		//int rndNumForRocks = Random.Range(100, 200);
-		//int rndNumForClouds = Random.Range(500, 1000);
 
 		//creates a randomly sized rectangle of water 
 		randomMGwaterSize = new Vector3(Random.Range(20, 60), 1, Random.Range(20, 60));
 		miniGameWater.transform.localScale = randomMGwaterSize;
 
-		//far fewer rocks will need to be included than clouds at this current time (03/21/2020)
+		//creates a random spawning sequence for rocks and clouds
 		int rndNumForRocks = Random.Range(50, 100);
 		int rndNumForClouds = Random.Range(400, 500);
 
@@ -51,7 +34,7 @@ void Start() {
 			PopulateNearbyAreaWithClouds();
 		}
 
-		SetDifficulty();
+		//SetDifficulty();
 	}
 
 	void Update() {
@@ -107,23 +90,68 @@ void Start() {
 		}
 	}
 
-	private void SetDifficulty() {
-		float difficulty = 1;
+	//private void SetDifficulty() {
+	//	//Difficulty changes:
 
-		difficulty *= PlayerPrefs.GetFloat("title");
+	//	//EASY
+	//	//clout range between 1 and 1500 (first three clout titles)
+	//	//randomMGwaterSize = new Vector3(Random.Range(20, 40), 1, Random.Range(20, 40));
+	//	//int rndNumForRocks = Random.Range(20,50);
+	//	//int rndNumForClouds = Random.Range(200,400);
 
-		float test = Globals.GameVars.playerShipVariables.ship.playerClout;
+	//	//MEDIUM
+	//	//clout range between 1500 and 4000 (next five clout titles)
+	//	//randomMGwaterSize = new Vector3(Random.Range(20, 60), 1, Random.Range(20, 60));
+	//	//int rndNumForRocks = Random.Range(50, 100);
+	//	//int rndNumForClouds = Random.Range(400, 500);
 
-		print(test);
+	//	//HARD
+	//	//clout range between 4000 and infinity (last three clout titles)
+	//	//randomMGwaterSize = new Vector3(Random.Range(60, 100), 1, Random.Range(60, 100));
+	//	//int rndNumForRocks = Random.Range(100, 200);
+	//	//int rndNumForClouds = Random.Range(500, 1000);
 
-		print("Current difficulty is: " + difficulty);
+	//  //NOTE: the below call for clout information on the player might need to be changed (04/06/2020)
+	//	float testPlayerClout = Globals.GameVars.playerShipVariables.ship.playerClout;
+	//	print(testPlayerClout);
 
-		//for (int x = 0; x <= rndNumForRocks; x++) {
-		//	PopulateNearbyAreaWithRocks();
-		//}
+	//	Vector3 randomMGwaterSize;
+	//	int rndNumForRocks, rndNumForClouds;
 
-		//for (int x = 0; x <= rndNumForClouds; x++) {
-		//	PopulateNearbyAreaWithClouds();
-		//}
-	}
+	//	print("Current difficulty value is: " + testPlayerClout);
+		
+	//	if (testPlayerClout < 1500) {
+	//		print("Difficulty setting is: EASY");
+
+	//		randomMGwaterSize = new Vector3(Random.Range(20, 40), 1, Random.Range(20, 40));
+	//		rndNumForRocks = Random.Range(20,50);
+	//		rndNumForClouds = Random.Range(200,400);
+	//	}
+	//	else if (testPlayerClout > 3999) {
+	//		print("Difficulty setting is: HARD");
+
+	//		randomMGwaterSize = new Vector3(Random.Range(60, 100), 1, Random.Range(60, 100));
+	//		rndNumForRocks = Random.Range(100, 200);
+	//		rndNumForClouds = Random.Range(500, 1000);
+	//	}
+	//	else {
+	//		print("Difficulty setting is: MEDIUM");
+
+	//		randomMGwaterSize = new Vector3(Random.Range(20, 60), 1, Random.Range(20, 60));
+	//		rndNumForRocks = Random.Range(50, 100);
+	//		rndNumForClouds = Random.Range(400, 500);
+	//	}
+
+	//	//creates a randomly sized rectangle of water 
+	//	miniGameWater.transform.localScale = randomMGwaterSize;
+
+	//	//creates a random spawning sequence for rocks and clouds
+	//	for (int x = 0; x <= rndNumForRocks; x++) {
+	//		PopulateNearbyAreaWithRocks();
+	//	}
+
+	//	for (int x = 0; x <= rndNumForClouds; x++) {
+	//		PopulateNearbyAreaWithClouds();
+	//	}
+	//}
 }
