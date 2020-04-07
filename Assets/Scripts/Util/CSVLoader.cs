@@ -403,10 +403,6 @@ public static class CSVLoader
 			rituals.Add(r);
 		}
 
-		for (int i = 0; i < rituals.Count; i++) {
-			Debug.Log(rituals[i].ToString());
-		}
-
 		return rituals;
 	}
 

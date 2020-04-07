@@ -11,6 +11,7 @@ public class RandomizerForStorms : MonoBehaviour
 
 	public Transform rockHolder;
 	public GameObject miniGameRock;
+	public Transform cloudHolder;
 	public GameObject[] stormClouds;
 
 void Start() {
@@ -86,7 +87,8 @@ void Start() {
 		//ship start pnt = (1024, 782, -950)
 		if ((randomAreaForSpawningClouds.x > 1040 || randomAreaForSpawningClouds.x < 1015) && (randomAreaForSpawningClouds.z > -935 || randomAreaForSpawningClouds.z < -969)) {
 			int randCloud = Random.Range(0, 4);
-			Instantiate(stormClouds[randCloud], randomAreaForSpawningClouds, transform.rotation);
+			GameObject cloud = Instantiate(stormClouds[randCloud], randomAreaForSpawningClouds, transform.rotation);
+			cloud.transform.SetParent(cloudHolder);
 		}
 	}
 
