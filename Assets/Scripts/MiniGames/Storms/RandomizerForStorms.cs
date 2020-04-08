@@ -87,7 +87,14 @@ void Start() {
 		//ship start pnt = (1024, 782, -950)
 		if ((randomAreaForSpawningClouds.x > 1040 || randomAreaForSpawningClouds.x < 1015) && (randomAreaForSpawningClouds.z > -935 || randomAreaForSpawningClouds.z < -969)) {
 			int randCloud = Random.Range(0, 4);
+			float randomRotation = Random.Range(0, 360);
+
 			GameObject cloud = Instantiate(stormClouds[randCloud], randomAreaForSpawningClouds, transform.rotation);
+			cloud.transform.rotation = Quaternion.Euler(0, randomRotation, 0);
+
+			Vector3 rndCloudScale = new Vector3(Random.Range(1, 3), 1, Random.Range(1, 3));
+			cloud.transform.localScale = rndCloudScale;
+
 			cloud.transform.SetParent(cloudHolder);
 		}
 	}
@@ -96,13 +103,13 @@ void Start() {
 	//	//Difficulty changes:
 
 	//	//EASY
-	//	//clout range between 1 and 1500 (first three clout titles)
+	//	//clout range between 1 and 1499 (first three clout titles)
 	//	//randomMGwaterSize = new Vector3(Random.Range(20, 40), 1, Random.Range(20, 40));
 	//	//int rndNumForRocks = Random.Range(20,50);
 	//	//int rndNumForClouds = Random.Range(200,400);
 
 	//	//MEDIUM
-	//	//clout range between 1500 and 4000 (next five clout titles)
+	//	//clout range between 1500 and 3999 (next five clout titles)
 	//	//randomMGwaterSize = new Vector3(Random.Range(20, 60), 1, Random.Range(20, 60));
 	//	//int rndNumForRocks = Random.Range(50, 100);
 	//	//int rndNumForClouds = Random.Range(400, 500);
