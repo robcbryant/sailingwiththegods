@@ -12,16 +12,14 @@ public class MiniGameManager : MonoBehaviour
 	public FightState state;
 	public GameObject piratesParent, crewParent;
 	public List<GameObject> pirates, crew;
+	public Transform[] pirateSpaces, crewSpaces;
 	private Color tempColor;
 
 	private void Start() 
 	{
-		state = FightState.PLAYERTURN;
-		//tempColor = piratesParent.transform.GetChild(0).gameObject.GetComponent<Image>().color;
 	}
 
 	public void Fight() {
-		state = FightState.ENEMYTURN;
 		CrewCard crewMember, pirate;
 		foreach(Transform p in piratesParent.transform) {
 			pirates.Add(p.gameObject);
@@ -38,7 +36,6 @@ public class MiniGameManager : MonoBehaviour
 			if (crewMember.gameObject.activeSelf && pirate.gameObject.activeSelf) {
 				if (crewMember.power < pirate.power) {
 					crewMember.gameObject.SetActive(false);
-					crew.Remove(crewMember.gameObject);
 				}
 				else if (crewMember.power > pirate.power) {
 					pirate.gameObject.SetActive(false);
@@ -51,7 +48,5 @@ public class MiniGameManager : MonoBehaviour
 		}
 		
 	}
-
-	public void AnimateAttack(GameObject pirate) {
-	}
+	
 }
