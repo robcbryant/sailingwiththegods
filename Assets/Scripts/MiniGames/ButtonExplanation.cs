@@ -31,15 +31,6 @@ public class ButtonExplanation : MonoBehaviour
 
 	public void SetExplanationText(string toDisplay) 
 	{
-		//string[] lines = toDisplay.Split('\n');
-		//float lineHeight = text.fontSize;
-
-		//float boxHeight = lines.Length * lineHeight + (2 * edging);
-		//float boxWidth = lines[0].Length * lineHeight + (2 * edging);
-
-		//Debug.Log($"{lines.Length} lines at {lineHeight} size plus 2 * {edging} = {boxHeight}");
-		//Debug.Log($"line 1 is {lines[0].Length} characters at {lineHeight} size plus 2 * {edging} = {boxWidth}");
-
 		text.text = toDisplay;
 
 		float boxWidth = text.preferredWidth + (2 * edging);
