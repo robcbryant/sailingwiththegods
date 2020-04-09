@@ -119,6 +119,7 @@ public class RandomSlotPopulator : MonoBehaviour
 				{
 					CrewCard newCrew = Instantiate(crew);
 					newCrew.SetRSP(this);
+					newCrew.Bind();
 					newCrew.GetComponent<RectTransform>().anchoredPosition = slotRect.position;
 					newCrew.transform.SetParent(crewParentInOrigin);
 					newCrew.SetCrew(Globals.GameVars.playerShipVariables.ship.crewRoster[spawnedSlots]);
