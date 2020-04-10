@@ -11,6 +11,9 @@ public class RitualController : MonoBehaviour
 	public MiniGameInfoScreen mgInfo;
 
 	public Sprite stormIcon;
+
+	public ButtonExplanation performButton;
+	public ButtonExplanation rejectButton;
 	
 	[Tooltip("Ordered: start, ritual, ritual results, storm results")]
 	[TextArea(1, 3)]
@@ -33,11 +36,12 @@ public class RitualController : MonoBehaviour
 	public string[] stormResultsText;
 
 	private Ritual currentRitual;
+	private CrewMember chosenCrew;
 
 	private void OnEnable() 
 	{
-		Debug.Log("ritual controller on enable");
 		currentRitual = null;
+		chosenCrew = null;
 		DisplayStartingText();
 	}
 
@@ -47,20 +51,56 @@ public class RitualController : MonoBehaviour
 		mgInfo.DisplayText(titles[0], subtitles[0], startingText[RandomIndex(startingText)], stormIcon, MiniGameInfoScreen.MiniGame.StormStart);
 	}
 
-	public void ChooseRitual() {
+	public void ChooseRitual() 
+	{
 		//Determine if the player has a seer or not
+		List<Ritual> possibleRituals = new List<Ritual>();
+
+		bool hasSeer = CheckForSeer();
 		
+		for (int i = 0; i < Globals.GameVars.stormRituals.Count; i++) 
+		{
+			if (Globals.GameVars.stormRituals[i].HasSeer == hasSeer) 
+			{
+				possibleRituals.Add(Globals.GameVars.stormRituals[i]);
+			}
+		}
+
 		//Select an appropriate ritual
+		currentRitual = possibleRituals[RandomIndex(possibleRituals)];
+		chosenCrew = Globals.GameVars.playerShipVariables.ship.crewRoster[RandomIndex(Globals.GameVars.playerShipVariables.ship.crewRoster)];
 
 		DisplayRitualText();
 	}
 
-	public void DisplayRitualText() {
-		//Show the ritual's flavor text
+	public void DisplayRitualText() 
+	{
+		string ritualText = currentRitual.RitualText;
+		string finalRitualText = ritualText.Replace("{0}", chosenCrew.name);
 
-		//Show the ritual buttons
+		mgInfo.DisplayText(titles[1], subtitles[1], finalRitualText, stormIcon, MiniGameInfoScreen.MiniGame.Storm);
 
-		//Set the ritual buttons' text
+		string performText = $"{currentRitual.SuccessChance * 100}% Success Chance";
+		for (int i = 0; i < currentRitual.ResourceTypes.Length; i++) 
+		{
+			string resourceName = "";
+			switch (currentRitual.ResourceTypes[i]) 
+			{
+				case (-1):
+					resourceName = "Crewmember";
+					break;
+				case (-2):
+					resourceName = "Drachma";
+					break;
+				default:
+					resourceName = Globals.GameVars.masterResourceList[currentRitual.ResourceTypes[i]].name;
+					break;
+			}
+			performText += $"\n-{currentRitual.ResourceAmounts[i]} {resourceName}";
+		}
+
+		performButton.SetExplanationText(performText);
+		rejectButton.SetExplanationText("If you refuse to do the ritual, the storm will surely get worse!");
 	}
 
 	public void CalculateRitualResults(int action) {
@@ -108,5 +148,17 @@ public class RitualController : MonoBehaviour
 	private int RandomIndex<T>(IList<T> array) 
 	{
 		return Random.Range(0, array.Count);
+	}
+
+	private bool CheckForSeer() 
+	{
+		bool hasSeer = false;
+
+		for (int i = 0; i < Globals.GameVars.playerShipVariables.ship.crew; i++) 
+		{
+			hasSeer = hasSeer || (Globals.GameVars.playerShipVariables.ship.crewRoster[i].typeOfCrew == CrewType.Seer);
+		}
+
+		return hasSeer;
 	}
 }

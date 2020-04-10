@@ -65,7 +65,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: TESTING TESTING TESTING
+  m_text: If you refuse to do the ritual, the storm will surely get worse!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 500a774bee390f141ac5a2b8f365a951, type: 2}
   m_sharedMaterial: {fileID: 21154367425838356, guid: 500a774bee390f141ac5a2b8f365a951,
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_firstOverflowCharacterIndex: -1
@@ -135,12 +135,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 2271455057551298776}
-    characterCount: 23
+    characterCount: 64
     spriteCount: 0
-    spaceCount: 2
-    wordCount: 3
+    spaceCount: 12
+    wordCount: 13
     linkCount: 0
-    lineCount: 1
+    lineCount: 2
     pageCount: 1
     materialCount: 1
   m_havePropertiesChanged: 0
@@ -172,13 +172,14 @@ GameObject:
   - component: {fileID: 5070310819036600468}
   - component: {fileID: 4637640292754106256}
   - component: {fileID: 6239746431562481992}
+  - component: {fileID: 2498454739303992871}
   m_Layer: 5
   m_Name: Explanation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5070310819036600468
 RectTransform:
   m_ObjectHideFlags: 0
@@ -197,7 +198,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 289.89, y: 151.19}
+  m_SizeDelta: {x: 550, y: 151.2}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &4637640292754106256
 CanvasRenderer:
@@ -236,6 +237,27 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!223 &2498454739303992871
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2210736372027217838}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_SortingLayerID: 0
+  m_SortingOrder: 5
+  m_TargetDisplay: 0
 --- !u!114 &8020951657689297370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,6 +359,7 @@ MonoBehaviour:
   explanation: {fileID: 2210736372027217838}
   text: {fileID: 2271455057551298776}
   edging: 30
+  maxWidth: 500
 --- !u!1001 &8594244152170143596
 PrefabInstance:
   m_ObjectHideFlags: 0

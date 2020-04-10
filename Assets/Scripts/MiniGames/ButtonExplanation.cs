@@ -8,20 +8,19 @@ public class ButtonExplanation : MonoBehaviour
 	public GameObject explanation;
 	public TMPro.TextMeshProUGUI text;
 	public float edging = 25;
+	public float maxWidth;
 
 	private RectTransform explanationRect;
 
-	private void Start() 
+	private void OnEnable() 
 	{
 		explanationRect = explanation.GetComponent<RectTransform>();
+		HideText();
 	}
 
 	public void DisplayText() 
 	{
-		//TESTING
-		SetExplanationText("TESTING TESTING 1 LINE\nTESTING TESTING 2 LINES\nTESTING TESTING REALLY LONG 3 LINE");
-
-		explanation.SetActive(true);
+		explanation.SetActive(true);		
 	}
 
 	public void HideText() 
@@ -33,9 +32,15 @@ public class ButtonExplanation : MonoBehaviour
 	{
 		text.text = toDisplay;
 
-		float boxWidth = text.preferredWidth + (2 * edging);
-		float boxHeight = text.preferredHeight + (2 * edging);
+		SetSize();
+	}
 
+	private void SetSize() 
+	{
+		float boxWidth = Mathf.Min(text.preferredWidth, maxWidth) + (2 * edging);
+		explanationRect.sizeDelta = new Vector2(boxWidth, text.fontSize);
+
+		float boxHeight = text.preferredHeight + (2 * edging);
 		explanationRect.sizeDelta = new Vector2(boxWidth, boxHeight);
 	}
 }

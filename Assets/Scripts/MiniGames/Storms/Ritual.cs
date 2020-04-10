@@ -4,28 +4,29 @@ using UnityEngine;
 
 public class Ritual
 {
-	private bool hasSeer;
-	private string ritualText;
-	private float successChance;
-	private int cloutGain;
-	private int cloutLoss;
-	private int[] resourceTypes;
-	private int[] resourceAmounts;
+	public bool HasSeer { get; set; }
+	public string RitualText { get; set; }
+	public float SuccessChance { get; set; }
+	public int CloutGain { get; set; }
+	public int CloutLoss { get; set; }
+	public int[] ResourceTypes { get; set; }
+	public int[] ResourceAmounts { get; set; }
 
 	public Ritual(bool seer, string text, float success, int gain, int loss, int[] resources, int[] resourceQtys) 
 	{
-		hasSeer = seer;
-		ritualText = text;
-		successChance = success;
-		cloutGain = gain;
-		cloutLoss = loss;
-		resourceTypes = resources;
-		resourceAmounts = resourceQtys;
+		HasSeer = seer;
+		RitualText = text;
+		SuccessChance = success;
+		CloutGain = gain;
+		CloutLoss = loss;
+		ResourceTypes = resources;
+		ResourceAmounts = resourceQtys;
 	}
 
-	public override string ToString() {
-		string shortened = ritualText.Substring(0, 25) + "...";
+	public override string ToString() 
+	{
+		string shortened = RitualText.Substring(0, 25) + "...";
 
-		return $"Seer: {hasSeer} | Text: {shortened} | Success: {successChance} | Clout Gain: {cloutGain} | Clout Loss {cloutLoss} | Requires {resourceTypes.Length} types of resource";
+		return $"Seer: {HasSeer} | Text: {shortened} | Success: {SuccessChance} | Clout Gain: {CloutGain} | Clout Loss {CloutLoss} | Requires {ResourceTypes.Length} types of resource";
 	}
 }
