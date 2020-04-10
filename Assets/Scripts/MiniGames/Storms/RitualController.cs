@@ -4,26 +4,58 @@ using UnityEngine;
 
 public class RitualController : MonoBehaviour
 {
+	public enum RitualResult
+	{
+		Success, Failure, Refusal
+	}
+	public MiniGameInfoScreen mgInfo;
+
+	public Sprite stormIcon;
+	
+	[Tooltip("Ordered: start, ritual, ritual results, storm results")]
+	[TextArea(1, 3)]
+	public string[] titles;
+
+	[Tooltip("Ordered: start, ritual, ritual results, storm results")]
+	[TextArea(1, 3)]
+	public string[] subtitles;
+
+	[Tooltip("Unordered, will be chosen at random")]
+	[TextArea(2, 10)]
+	public string[] startingText;
+
+	[Tooltip("Ordered: success, failure, refusal")]
+	[TextArea(2, 10)]
+	public string[] ritualResultsText;
+
+	[Tooltip("Ordered by success, from no damage to game loss")]
+	[TextArea(2, 10)]
+	public string[] stormResultsText;
+
 	private Ritual currentRitual;
+
+	private void OnEnable() 
+	{
+		Debug.Log("ritual controller on enable");
+		currentRitual = null;
+		DisplayStartingText();
+	}
 
 	public void DisplayStartingText() 
 	{
-		//Show the start text
-
-		//Show the storm start buttons
+		mgInfo.gameObject.SetActive(true);
+		mgInfo.DisplayText(titles[0], subtitles[0], startingText[RandomIndex(startingText)], stormIcon, MiniGameInfoScreen.MiniGame.StormStart);
 	}
 
-	public void ChooseRitual() 
-	{
+	public void ChooseRitual() {
 		//Determine if the player has a seer or not
-
+		
 		//Select an appropriate ritual
 
 		DisplayRitualText();
 	}
 
-	public void DisplayRitualText() 
-	{
+	public void DisplayRitualText() {
 		//Show the ritual's flavor text
 
 		//Show the ritual buttons
@@ -31,27 +63,23 @@ public class RitualController : MonoBehaviour
 		//Set the ritual buttons' text
 	}
 
-	public void CalculateRitualResults(int action) 
-	{
+	public void CalculateRitualResults(int action) {
 		int result = -1;
 		string resultsText = "";
 
-		if (action >= 0) 
-		{
+		if (action >= 0) {
 			//Ritual is being performed
 
 			//Get a random number 0-1 and check it against the ritual's success chance
-			
+
 		}
-		else 
-		{
+		else {
 			//Ritual was rejected
-			
+
 		}
 
 		//Based on the result, set the result text
-		switch (result) 
-		{
+		switch (result) {
 			case (0):
 				//Easy difficulty (success)
 				break;
@@ -70,11 +98,15 @@ public class RitualController : MonoBehaviour
 		//Send the result to the difficulty calculator for the storm
 	}
 
-	private bool CheckResources() 
-	{
+	private bool CheckResources() {
 		//Check if the player has the needed resources
 
 		//Make sure you remember: -1 is a crewmember, -2 is money
 		return true;
+	}
+
+	private int RandomIndex<T>(IList<T> array) 
+	{
+		return Random.Range(0, array.Count);
 	}
 }

@@ -13331,6 +13331,7 @@ GameObject:
   m_Component:
   - component: {fileID: 379815289}
   - component: {fileID: 379815290}
+  - component: {fileID: 379815291}
   m_Layer: 0
   m_Name: Storm Game
   m_TagString: Untagged
@@ -13386,6 +13387,39 @@ MonoBehaviour:
   - {fileID: 7653758620165034016, guid: 23548d77aefce4943b7ed5dc6c094ee1, type: 3}
   - {fileID: 7837580452261017821, guid: 6ce58c1b99ccdf24bae4c9069fe75a58, type: 3}
   - {fileID: 2540205547307448384, guid: b9b78f96e7f756848a06854367c5e6ba, type: 3}
+--- !u!114 &379815291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 379815288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3535cee79575a444292c7656b0b2ab5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mgInfo: {fileID: 848135780}
+  stormIcon: {fileID: 21300000, guid: 0934a1d6c2fc81d4a9f55f24156c4f7b, type: 3}
+  titles:
+  - Storm!
+  - Ritual
+  - The Results
+  - The Aftermath
+  subtitles:
+  - Dark Clouds on the Horizon
+  - An Attempt to Appease the Gods
+  - Did the Ritual Help?
+  - What's Left After the Storm
+  startingText:
+  - This is the text that shows up when a storm has hit
+  ritualResultsText:
+  - Ritual success!
+  - Ritual failure!
+  - Did not perform ritual!
+  stormResultsText:
+  - You escaped the storm!
+  - You crashed and sank and died, game over
 --- !u!1 &380466884
 GameObject:
   m_ObjectHideFlags: 0
@@ -31455,6 +31489,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 842168635}
   m_Mesh: {fileID: 4300062, guid: fc0e6f1a8932ea14598c2ab8a62cedd0, type: 3}
+--- !u!114 &848135780 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8975131220611963577, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
+    type: 3}
+  m_PrefabInstance: {fileID: 5096116810118933588}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe95da60678663e409abe64e46a2d9fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &850927970
 GameObject:
   m_ObjectHideFlags: 0
