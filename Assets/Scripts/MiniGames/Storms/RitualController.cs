@@ -103,37 +103,22 @@ public class RitualController : MonoBehaviour
 		rejectButton.SetExplanationText("If you refuse to do the ritual, the storm will surely get worse!");
 	}
 
-	public void CalculateRitualResults(int action) {
+	public void CalculateRitualResults(int action) 
+	{
 		int result = -1;
-		string resultsText = "";
 
 		if (action >= 0) {
 			//Ritual is being performed
-
-			//Get a random number 0-1 and check it against the ritual's success chance
-
+			float check = Random.Range(0.0f, 1.0f);
+			result = check < currentRitual.SuccessChance ? 0 : 1;
+			Debug.Log($"{check} : {currentRitual.SuccessChance} so ritual {result}");
 		}
 		else {
 			//Ritual was rejected
-
+			result = 2;
 		}
 
-		//Based on the result, set the result text
-		switch (result) {
-			case (0):
-				//Easy difficulty (success)
-				break;
-			case (1):
-				//Medium difficulty (failure)
-				break;
-			case (2):
-				//Hard difficulty (rejection)
-				break;
-			default:
-				//Something went wrong
-				Debug.Log("Something went wrong with determining ritual results");
-				break;
-		}
+		mgInfo.DisplayText(titles[2], subtitles[2], result > -1 ? ritualResultsText[result] : "something went wrong", stormIcon, MiniGameInfoScreen.MiniGame.Start);
 
 		//Send the result to the difficulty calculator for the storm
 	}

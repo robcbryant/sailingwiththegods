@@ -6,7 +6,7 @@ using TMPro;
 
 public class MiniGameInfoScreen : MonoBehaviour
 {
-	public enum MiniGame { Pirates, StormStart, Storm }
+	public enum MiniGame { Pirates, StormStart, Storm, Start }
 
 	public TextMeshProUGUI titleText;
 	public TextMeshProUGUI subtitleText;
@@ -36,5 +36,10 @@ public class MiniGameInfoScreen : MonoBehaviour
 				buttons[i].SetActive(false);
 			}
 		}
+	}
+
+	public void CloseDialog() 
+	{
+		gameObject.SetActive(false);
 	}
 }
