@@ -83,20 +83,24 @@ public class RitualController : MonoBehaviour
 		string performText = $"{currentRitual.SuccessChance * 100}% Success Chance";
 		for (int i = 0; i < currentRitual.ResourceTypes.Length; i++) 
 		{
-			string resourceName = "";
 			switch (currentRitual.ResourceTypes[i]) 
 			{
 				case (-1):
-					resourceName = "Crewmember";
+					performText += $"\n{chosenCrew.name} will die as a sacrifice";
 					break;
 				case (-2):
-					resourceName = "Drachma";
+					performText += $"\n-{currentRitual.ResourceAmounts[i]} Drachma";
 					break;
 				default:
-					resourceName = Globals.GameVars.masterResourceList[currentRitual.ResourceTypes[i]].name;
+					performText += $"\n-{currentRitual.ResourceAmounts[i]} {Globals.GameVars.masterResourceList[currentRitual.ResourceTypes[i]].name}";
 					break;
 			}
-			performText += $"\n-{currentRitual.ResourceAmounts[i]} {resourceName}";
+		}
+
+		bool hasResources = CheckResources();
+		if (!hasResources) {
+			mgInfo.AddToText("\n\nUnfortunately, you are missing some needed resources and will not be able to perform the ritual.");
+			performText += "\nYou are missing some resources!";
 		}
 
 		performButton.SetExplanationText(performText);
@@ -106,28 +110,75 @@ public class RitualController : MonoBehaviour
 	public void CalculateRitualResults(int action) 
 	{
 		int result = -1;
+		string extraText = "";
 
 		if (action >= 0) {
 			//Ritual is being performed
-			float check = Random.Range(0.0f, 1.0f);
-			result = check < currentRitual.SuccessChance ? 0 : 1;
-			Debug.Log($"{check} : {currentRitual.SuccessChance} so ritual {result}");
+			if (CheckResources()) {
+				float check = Random.Range(0.0f, 1.0f);
+				result = check < currentRitual.SuccessChance ? 0 : 1;
+				SubtractCosts();
+			}
+			else {
+				result = 1;
+				extraText = "You were missing some resources, so you were unable to perform the ritual.\n\n";
+			}
 		}
 		else {
 			//Ritual was rejected
 			result = 2;
 		}
 
-		mgInfo.DisplayText(titles[2], subtitles[2], result > -1 ? ritualResultsText[result] : "something went wrong", stormIcon, MiniGameInfoScreen.MiniGame.Start);
+		mgInfo.DisplayText(titles[2], subtitles[2], result > -1 ? extraText + ritualResultsText[result] : "something went wrong", stormIcon, MiniGameInfoScreen.MiniGame.Start);
 
 		//Send the result to the difficulty calculator for the storm
 	}
 
-	private bool CheckResources() {
-		//Check if the player has the needed resources
-
+	private bool CheckResources() 
+	{
 		//Make sure you remember: -1 is a crewmember, -2 is money
-		return true;
+		bool hasResources = true;
+
+		for (int i = 0; i < currentRitual.ResourceTypes.Length; i++) 
+		{
+			if (currentRitual.ResourceTypes[i] == -2) {
+				hasResources = hasResources && (Globals.GameVars.playerShipVariables.ship.currency > currentRitual.ResourceAmounts[i]);
+				Debug.Log($"Ritual needs {currentRitual.ResourceAmounts[i]} dr, player has {Globals.GameVars.playerShipVariables.ship.currency} dr");
+			}
+			else if (currentRitual.ResourceTypes[i] == -1) {
+				//skip - you know they have a crewmember
+			}
+			else {
+				hasResources = hasResources && (Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].amount_kg > currentRitual.ResourceAmounts[i]);
+				Debug.Log($"Ritual needs {currentRitual.ResourceAmounts[i]} {Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].name}, " +
+					$"player has {Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].amount_kg}");
+			}
+		}
+		return hasResources;
+	}
+
+	private void SubtractCosts() 
+	{
+		for (int i = 0; i < currentRitual.ResourceTypes.Length; i++) {
+			switch (currentRitual.ResourceTypes[i]) {
+				case (-2):
+					Debug.Log($"Money beforehand: {Globals.GameVars.playerShipVariables.ship.currency}");
+					Globals.GameVars.playerShipVariables.ship.currency -= currentRitual.ResourceAmounts[i];
+					Debug.Log($"Money after subtracting {currentRitual.ResourceAmounts[i]}: {Globals.GameVars.playerShipVariables.ship.currency}");
+					break;
+				case (-1):
+					Debug.Log($"Crewmembers before sacrifice: {Globals.GameVars.playerShipVariables.ship.crew}");
+					Globals.GameVars.playerShipVariables.ship.crewRoster.Remove(chosenCrew);
+					Debug.Log($"Crewmembers after: {Globals.GameVars.playerShipVariables.ship.crew}");
+					break;
+				default:
+					Debug.Log($"{Globals.GameVars.masterResourceList[currentRitual.ResourceTypes[i]].name} beforehand: {Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].amount_kg}");
+					Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].amount_kg -= currentRitual.ResourceAmounts[i];
+					Debug.Log($"{Globals.GameVars.masterResourceList[currentRitual.ResourceTypes[i]].name} after subtracting {currentRitual.ResourceAmounts[i]}:" +
+						$" {Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].amount_kg}");
+					break;
+			}
+		}
 	}
 
 	private int RandomIndex<T>(IList<T> array) 

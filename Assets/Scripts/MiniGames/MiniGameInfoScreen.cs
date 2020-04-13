@@ -38,6 +38,10 @@ public class MiniGameInfoScreen : MonoBehaviour
 		}
 	}
 
+	public void AddToText(string add) {
+		contentText.text += add;
+	}
+
 	public void CloseDialog() 
 	{
 		gameObject.SetActive(false);
