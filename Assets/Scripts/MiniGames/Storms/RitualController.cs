@@ -109,29 +109,31 @@ public class RitualController : MonoBehaviour
 
 	public void CalculateRitualResults(int action) 
 	{
-		int result = -1;
+		RandomizerForStorms.StormDifficulty result = RandomizerForStorms.StormDifficulty.Error;
 		string extraText = "";
 
 		if (action >= 0) {
 			//Ritual is being performed
 			if (CheckResources()) {
 				float check = Random.Range(0.0f, 1.0f);
-				result = check < currentRitual.SuccessChance ? 0 : 1;
+				result = check < currentRitual.SuccessChance ? RandomizerForStorms.StormDifficulty.Easy : RandomizerForStorms.StormDifficulty.Medium;
 				SubtractCosts();
 			}
 			else {
-				result = 1;
+				result = RandomizerForStorms.StormDifficulty.Medium;
 				extraText = "You were missing some resources, so you were unable to perform the ritual.\n\n";
 			}
 		}
 		else {
 			//Ritual was rejected
-			result = 2;
+			result = RandomizerForStorms.StormDifficulty.Hard;
 		}
 
-		mgInfo.DisplayText(titles[2], subtitles[2], result > -1 ? extraText + ritualResultsText[result] : "something went wrong", stormIcon, MiniGameInfoScreen.MiniGame.Start);
+		mgInfo.DisplayText(titles[2], subtitles[2], result != RandomizerForStorms.StormDifficulty.Error ? extraText + ritualResultsText[(int)result] : "something went wrong", 
+			stormIcon, MiniGameInfoScreen.MiniGame.Start);
 
 		//Send the result to the difficulty calculator for the storm
+		GetComponent<RandomizerForStorms>().SetDifficulty(result);
 	}
 
 	private bool CheckResources() 

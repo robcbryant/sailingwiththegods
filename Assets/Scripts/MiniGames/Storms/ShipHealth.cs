@@ -40,7 +40,7 @@ public class ShipHealth : MonoBehaviour
 			damage = 0;
 			LoseGame();
 		}
-		//SetHealth(currentShipHealth);
+		SetHealth(currentShipHealth);
 		UpdateHealthBar();
 	}
 
@@ -54,14 +54,4 @@ public class ShipHealth : MonoBehaviour
 		leftSlider.value = currentShipHealth / 2f;
 		rightSlider.value = currentShipHealth / 2f;
 	}
-
-	private void OnCollisionEnter(Collision collision) 
-	{
-		if (collision.gameObject.CompareTag("MGrock")) 
-		{
-			StormHazard s = collision.gameObject.GetComponent<StormHazard>();
-			TakeDamage(s.damage);
-		}
-	}
-
 }
