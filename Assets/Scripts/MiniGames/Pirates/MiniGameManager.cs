@@ -4,16 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
-public enum FightState { PLAYERTURN, ENEMYTURN, WON, LOSS}
-
 
 public class MiniGameManager : MonoBehaviour
 {
-	public FightState state;
 	public GameObject piratesParent, crewParent;
 	public List<GameObject> pirates, crew;
 	public Transform[] pirateSpaces, crewSpaces;
-	private Color tempColor;
 
 	private void Start() 
 	{
