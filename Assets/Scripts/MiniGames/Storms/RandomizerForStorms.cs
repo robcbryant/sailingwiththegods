@@ -12,11 +12,10 @@ public class RandomizerForStorms : MonoBehaviour
 	public Vector2 waterSizeBounds = new Vector2(20, 60);
 
 	[Header("Ship")]
+	public GameObject[] shipModels;
 	public Transform shipStartPoint;
-	public Vector3 shipSizeMod = new Vector3(.5f, .5f, .5f);
 	public GameObject cam;
 	public Vector3 camOffset = new Vector3(0f, 64f, 0f);
-	public GameObject tempShip;
 
 	[Header("Obstacles")]
 	public float shipClearanceRange;
@@ -76,15 +75,14 @@ void Start() {
 
 	private void InitializeView() 
 	{
-		ship = Instantiate(tempShip);
+		ship = Instantiate(shipModels[Globals.GameVars.playerShipVariables.ship.upgradeLevel]);
 		ship.tag = "StormShip";
 		ship.transform.SetParent(transform);
-		ship.transform.localScale = shipSizeMod;
 		cam.transform.SetParent(ship.transform);
-		cam.transform.localPosition = camOffset;
-		hintArrow.transform.SetParent(ship.transform);
+		cam.transform.position = ship.transform.position + camOffset;
 		ship.transform.position = shipStartPoint.position;
-
+		hintArrow.transform.SetParent(ship.transform);
+		
 		GetComponent<StormMGmovement>().playerBoat = ship;
 	}
 
@@ -113,6 +111,7 @@ void Start() {
 
 	private void PopulateWithObstacles(int num, GameObject[] obstacle, Transform parent, Vector2 scaleRange) 
 	{
+		Debug.Log(parent != null ? parent.name : "parent is null");
 		for (int i = 0; i < num; i++) 
 		{
 			float xPos = Random.Range(-range, range);
@@ -126,13 +125,13 @@ void Start() {
 			}
 
 			int spawnIndex = Random.Range(0, obstacle.Length);
-			Debug.Log($"trying index {spawnIndex} out of total length {obstacle.Length}");
 			GameObject spawn = Instantiate(obstacle[spawnIndex]);
 			float scaleFactor = Random.Range(scaleRange.x, scaleRange.y);
+			spawn.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
 			spawn.transform.SetParent(parent);
+			Debug.Log($"parent of new spawn: {spawn.transform.parent.name}");
 			spawn.transform.localPosition = spawnPoint;
 			spawn.transform.localEulerAngles = new Vector3(0f, Random.Range(0f, 360f), 0f);
-			spawn.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
 		}
 	}
 
@@ -141,68 +140,14 @@ void Start() {
 		Transform[] children = parent.GetComponentsInChildren<Transform>();
 		for (int i = 0; i < children.Length; i++) 
 		{
-			Destroy(children[i].gameObject);
+			if (children[i] != parent) {
+				Destroy(children[i].gameObject);
+			}
+			
 		}
 	}
 
-	private void PopulateNearbyAreaWithRocks(int rockNum) {
-		////rocks need to spawn within the water's area
-		////spawning on x axis should occur between ((water.scale.x * 5)+ 1024) and ((water.scale.x * -5)+ 1024)  
-		////spawning on x axis should occur between ((water.scale.z * -5)- 948) and ((water.scale.z * 5)- 948)  
-
-		//float minX = ((miniGameWater.transform.localScale.x * -5) + 1024);
-		//float maxX = ((miniGameWater.transform.localScale.x * 5) + 1024);
-
-		//float minZ = ((miniGameWater.transform.localScale.z * -5) - 948);
-		//float maxZ = ((miniGameWater.transform.localScale.z * 5) - 948);
-
-		////Vector3 randomAreaForSpawningRocks = new Vector3(Random.Range(822, 1222), 783, Random.Range(-1150, -750));
-		//Vector3 randomAreaForSpawningRocks = new Vector3(Random.Range(minX, maxX), 783, Random.Range(minZ, maxZ));
-
-		////cannot have rocks spawn too close to the ship start point 
-		////ship start pnt = (1024, 782, -950)
-		//if ((randomAreaForSpawningRocks.x > 1040 || randomAreaForSpawningRocks.x < 1015) && (randomAreaForSpawningRocks.z > -935 || randomAreaForSpawningRocks.z < -969)) {
-		//	GameObject rock = Instantiate(miniGameRock, randomAreaForSpawningRocks, transform.rotation);
-		//	rock.transform.SetParent(rockHolder);
-		//}
-	}
-
-	//the below method works very similarly to the above
-	//minor changes for spawning clouds have been implimented 
-	private void PopulateNearbyAreaWithClouds() 
-	{
-		////Clouds need to spawn within the water's area
-		////spawning on x axis should occur between ((water.scale.x * 5)+ 1024) and ((water.scale.x * -5)+ 1024)  
-		////spawning on x axis should occur between ((water.scale.z * -5)- 948) and ((water.scale.z * 5)- 948)  
-
-		//float minX = ((miniGameWater.transform.localScale.x * -5) + 1024);
-		//float maxX = ((miniGameWater.transform.localScale.x * 5) + 1024);
-
-		//float minZ = ((miniGameWater.transform.localScale.z * -5) - 948);
-		//float maxZ = ((miniGameWater.transform.localScale.z * 5) - 948);
-
-		////clouds will spawn in a similar matter, as they should only be within the minigame area
-		////the Y value will have an additional 50 units added to it, so that clouds will act more so like they should 
-		////Vector3 randomAreaForSpawningClouds = new Vector3(Random.Range(822, 1222), 808, Random.Range(-1150, -750));
-		//Vector3 randomAreaForSpawningClouds = new Vector3(Random.Range(minX, maxX), 808, Random.Range(minZ, maxZ));
-
-		////clouds will follow the Rock spawn requirements as to make starting the MG more user friendly
-		////cannot have clouds spawn too close to the ship start point 
-		////ship start pnt = (1024, 782, -950)
-		//if ((randomAreaForSpawningClouds.x > 1040 || randomAreaForSpawningClouds.x < 1015) && (randomAreaForSpawningClouds.z > -935 || randomAreaForSpawningClouds.z < -969)) {
-		//	int randCloud = Random.Range(0, 4);
-		//	float randomRotation = Random.Range(0, 360);
-
-		//	GameObject cloud = Instantiate(stormClouds[randCloud], randomAreaForSpawningClouds, transform.rotation);
-		//	cloud.transform.rotation = Quaternion.Euler(0, randomRotation, 0);
-
-		//	Vector3 rndCloudScale = new Vector3(Random.Range(1, 3), 1, Random.Range(1, 3));
-		//	cloud.transform.localScale = rndCloudScale;
-
-		//	cloud.transform.SetParent(cloudHolder);
-		//}
-	}
-
+	
 	//private void SetDifficulty() {
 	//	//Difficulty changes:
 
