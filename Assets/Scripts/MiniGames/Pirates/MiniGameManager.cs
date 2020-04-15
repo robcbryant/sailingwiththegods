@@ -35,9 +35,11 @@ public class MiniGameManager : MonoBehaviour
 
 			if (crewMember.gameObject.activeSelf && pirate.gameObject.activeSelf) {
 				if (crewMember.power < pirate.power) {
+					pirate.updatePower(pirate.power -= crewMember.power);
 					crewMember.gameObject.SetActive(false);
 				}
 				else if (crewMember.power > pirate.power) {
+					crewMember.updatePower(crewMember.power -= pirate.power);
 					pirate.gameObject.SetActive(false);
 				}
 				else {

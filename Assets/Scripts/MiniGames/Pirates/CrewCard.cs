@@ -100,6 +100,11 @@ public class CrewCard : MonoBehaviour
 		power = crew.clout;
 	}
 
+	public void updatePower(int tempPower) {
+		power = tempPower;
+		powerText.text = power.ToString();
+	}
+
 	private void ShowCrewData() 
 	{
 		nameText.text = crew.name;
