@@ -102,6 +102,7 @@ public class CrewCard : MonoBehaviour
 
 	public void updatePower(int tempPower) {
 		power = tempPower;
+		powerText.text = power.ToString();
 		powerText.color = Color.red;
 	}
 
