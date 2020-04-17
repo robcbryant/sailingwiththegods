@@ -12175,6 +12175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3535cee79575a444292c7656b0b2ab5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  noResourcesMod: 0.5
   mgInfo: {fileID: 848135780}
   stormIcon: {fileID: 21300000, guid: 0934a1d6c2fc81d4a9f55f24156c4f7b, type: 3}
   performButton: {fileID: 270536803}
@@ -12189,12 +12190,173 @@ MonoBehaviour:
   - An Attempt to Appease the Gods
   - Did the Ritual Help?
   - What's Left After the Storm
+  starter: A storm has hit! Gods make storms for many different reasons; a ritual
+    that pleases the gods may calm the storm. A seer may know why the gods are angry
+    - do you have one on board?
   startingText:
-  - This is the text that shows up when a storm has hit
+  - 'Often along the streaming hair of the gray salt water
+
+    They pray for sweet homecoming won in spite of the sea
+
+    (Archilochus fr. 12, 7th c BC)'
+  - 'The open sea is churning to a wash of waves
+
+    Deep within, A cloud stands upright over the Cyrean caps,
+
+    Signal of a storm, and terror rises from the unforseen
+
+    (Archilochus fr. 15, 7th c BC)'
+  - 'Long waves surge, churned up on the sea by the east and south winds, hurtling
+    down from heavens;
+
+    as the west wind sweeps through the high-standing grain
+
+    With its violent blast, and the ears all shudder and bow
+
+    (Adapted from Iliad 2.131)'
+  - 'The winds crack and crash,
+
+    As when a wave of the loud-roaring sea
+
+    Crashes upon a beach and the surf keeps resounding
+
+    (Iliad 1.198-200)'
+  - 'The Pleiades flee mighty Orion, and plunge into the misty deep: all the gusty
+    winds are raging!
+
+    (Hesiod Works and Days 620-621)'
+  seerIntro: You say to your crewmate, 'You are a seer, a mortal with the ability
+    to read the signs that the gods put into the natural world, like the flight of
+    birds and the fallilng of stars. This storm means the gods are mad. Oh Seer, what
+    has angered the gods?'
+  seerRitualFlavor:
+  - 'The seer determines that Poseidon needs to be soothed, and instructs you to perform
+    the following hymn:
+
+    Holy spirit of the Sea-god Poseidon, mighty earth-shaker,
+
+    Be gracious to others who cross the Aegean sea,
+
+    As you have gently granted me,
+
+    Driven swiftly by the breezes of Thrace,
+
+    The harbor I wished to reach
+
+    (Crinagoras, 10.24)'
+  - 'The seer realizes it''s the god of the harbor who wants a gift! Perform the following
+    poem for him, singing and dancing together in unison:
+
+    Blessed god of the harbor, send a gentle breeze
+
+    To the departing sails of Archelaus
+
+    So that he may sail undisturbed through the waters
+
+    To the open sea. You who rule the farthest shore,
+
+    Guard the voyager, so that he reaches the Pythian shrine of Apollo.
+
+    If all singers are dear to him, I will sail with full trust in the fair western
+    wind.
+
+    (Antiphilus 10.17)'
+  - 'The seer knows the tale of Ino''s son, and determines he must be the cause of
+    our troubles. Perform this song in his honor, along with a solemn dance performed
+    by your three best sailors:
+
+    O Melicertes, son of Ino, and see-green
+
+    Leukothea, mistress of Ocean, divinity who
+
+    Shields from harm; chorus of Nereids and the waves
+
+    And you, Lord Poseidon, and Thracian Zephyr.
+
+    Most gentle of winds, cary me propitiously, speeding
+
+    Through broad smooth waves, safe to the sweet shore
+
+    (Philodemus)'
+  - "Your seer remembers the importance of Apollo as the god who accompanies ships
+    at departure and return; he tells you to offer a sacrifice at the ship's altar
+    while singing:\nApollo who rules over the steep cliffs of Leukas\nThe cliffs visible
+    to mariners from afar, on which\nThe waters of the Ionian sea crash with foam
+    - \nReceive from these sailors the hand-kneaded barley cakes,\nLittle cups of
+    libations, and a flickering lamp with\nIts small bit of oil: in response, send
+    favorable winds,\nRunning with us to the harbors of Actium\n(Philippus)"
+  noSeerIntro: You say 'We have no Seer with insight into the gods' motives. Let's
+    have our best-known man give the ritual a try.'
+  noSeerRitualFlavor:
+  - 'A random crewmember takes a guess - who could it be but Poseidon? He stands up
+    and performs the following song to appease the god:
+
+    Poseidon, god who rules swift-sailing ships!
+
+    Lover of horses, and denizen of the cliffs of Euboia,
+
+    Grant your worshippers a favorable voyage
+
+    To the city of Ares!
+
+    (Alphaeus)'
+  - 'Among your crew are those who know the power of Artemis, the goddess of the hunt,
+    when it comes to perils at sea; they suggest a song honoring her, and perform
+    it as follows:
+
+    I promise you, Artemis of the harbor,
+
+    A fine red mullet fish and hake fish, plus
+
+    A cup of wine, full to the brim, and a bit of
+
+    Dry bread - the sacrifice of a poor fisherman!
+
+    (Apollonides)'
+  - 'Among your crew are initiates into the Orphic mysteries. They know a hymn for
+    Leukothea, and perform it to draw down her favors:
+
+    I Call Leukothea, child of Kadmos
+
+    Nurse of Bacchus, who wears ivy leaves.
+
+    Hearken, oh powerful goddess, in the mighty depths of the sea,
+
+    Wide and profound, over which you hold swap:
+
+    You who rejoice in waves and help mankind.
+
+    You alone grant eliverance to ships
+
+    When the storms are raging,
+
+    When our skills are failing,
+
+    And our strength runs out.
+
+    When the billows are angry,
+
+    And the sailor overcome.
+
+    You hear us, you feel pity, and
+
+    Answer prayers with intervention
+
+    And life spared. Be with us always!
+
+    Grant prosperous voyages, bringing
+
+    Your mystics through stormy seas
+
+    To the shores they long to reach
+
+    (Orphic Hymn 73: To Leukothea)'
   ritualResultsText:
-  - Ritual success!
-  - Ritual failure!
-  - Did not perform ritual!
+  - Great job! The ritual was a complete success. The storm seems much less fearsome,
+    and you are less likely to capsize and meet a watery end.
+  - Some small gods may have heard you, but you see no change in the weather.
+  - You chose not to perform a ritual at all. Yours will surely be the hardest of
+    passages!
   stormResultsText:
   - You escaped the storm!
   - You crashed and sank and died, game over

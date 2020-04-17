@@ -5,6 +5,7 @@ using UnityEngine;
 public class StormMGmovement : MonoBehaviour
 {
 	//the bpat the player identifies as in the MG
+	[HideInInspector]
 	public GameObject playerBoat;
 	public float speed;
 	

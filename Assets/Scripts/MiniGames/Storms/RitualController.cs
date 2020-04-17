@@ -8,6 +8,8 @@ public class RitualController : MonoBehaviour
 	{
 		Success, Failure, Refusal
 	}
+
+	public float noResourcesMod = 0.5f;
 	public MiniGameInfoScreen mgInfo;
 
 	public Sprite stormIcon;
@@ -23,17 +25,35 @@ public class RitualController : MonoBehaviour
 	[TextArea(1, 3)]
 	public string[] subtitles;
 
+	[TextArea(2, 10)]
+	public string starter;
 	[Tooltip("Unordered, will be chosen at random")]
 	[TextArea(2, 10)]
 	public string[] startingText;
+
+	[TextArea(2, 10)]
+	public string seerIntro;
+	[TextArea(2, 10)]
+	public string[] seerRitualFlavor;
+
+	[TextArea(2, 10)]
+	public string noSeerIntro;
+	[TextArea(2, 10)]
+	public string[] noSeerRitualFlavor;
 
 	[Tooltip("Ordered: success, failure, refusal")]
 	[TextArea(2, 10)]
 	public string[] ritualResultsText;
 
-	[Tooltip("Ordered by success, from no damage to game loss")]
 	[TextArea(2, 10)]
-	public string[] stormResultsText;
+	public string gameSuccessIntro;
+	[TextArea(2, 10)]
+	public string[] gameSuccessFlavor;
+
+	[TextArea(2, 10)]
+	public string gameFailureIntro;
+	[TextArea(2, 10)]
+	public string[] stormFailureFlavor;
 
 	private Ritual currentRitual;
 	private CrewMember chosenCrew;
@@ -48,7 +68,7 @@ public class RitualController : MonoBehaviour
 	public void DisplayStartingText() 
 	{
 		mgInfo.gameObject.SetActive(true);
-		mgInfo.DisplayText(titles[0], subtitles[0], startingText[RandomIndex(startingText)], stormIcon, MiniGameInfoScreen.MiniGame.StormStart);
+		mgInfo.DisplayText(titles[0], subtitles[0], starter + "\n" + startingText[RandomIndex(startingText)], stormIcon, MiniGameInfoScreen.MiniGame.StormStart);
 	}
 
 	public void ChooseRitual() 
@@ -76,11 +96,25 @@ public class RitualController : MonoBehaviour
 	public void DisplayRitualText() 
 	{
 		string ritualText = currentRitual.RitualText;
-		string finalRitualText = ritualText.Replace("{0}", chosenCrew.name);
+		string introText = currentRitual.HasSeer ? seerIntro : noSeerIntro;
+		string closeText = currentRitual.HasSeer ? seerRitualFlavor[RandomIndex(seerRitualFlavor)] : noSeerRitualFlavor[RandomIndex(noSeerRitualFlavor)];
+		string finalRitualText = introText + "\n" + ritualText.Replace("{0}", chosenCrew.name) + "\n" + closeText;
 
 		mgInfo.DisplayText(titles[1], subtitles[1], finalRitualText, stormIcon, MiniGameInfoScreen.MiniGame.Storm);
 
-		string performText = $"{currentRitual.SuccessChance * 100}% Success Chance";
+		bool hasResources = CheckResources();
+		string performText = "";
+		if (!hasResources) 
+		{
+			mgInfo.AddToText("\n\nUnfortunately, you are missing some needed resources and will have a harder time with the ritual!");
+			performText += $"{currentRitual.SuccessChance * noResourcesMod * 100}% Success Chance";
+		}
+		else 
+		{
+			performText += $"{currentRitual.SuccessChance * 100}% Success Chance";
+		}
+
+		
 		for (int i = 0; i < currentRitual.ResourceTypes.Length; i++) 
 		{
 			switch (currentRitual.ResourceTypes[i]) 
@@ -97,10 +131,9 @@ public class RitualController : MonoBehaviour
 			}
 		}
 
-		bool hasResources = CheckResources();
-		if (!hasResources) {
-			mgInfo.AddToText("\n\nUnfortunately, you are missing some needed resources and will not be able to perform the ritual.");
-			performText += "\nYou are missing some resources!";
+		if (!hasResources) 
+		{
+			performText += "\nYou are missing resources, so you will use what you have and hope for the best";
 		}
 
 		performButton.SetExplanationText(performText);
@@ -114,15 +147,10 @@ public class RitualController : MonoBehaviour
 
 		if (action >= 0) {
 			//Ritual is being performed
-			if (CheckResources()) {
-				float check = Random.Range(0.0f, 1.0f);
-				result = check < currentRitual.SuccessChance ? RandomizerForStorms.StormDifficulty.Easy : RandomizerForStorms.StormDifficulty.Medium;
-				SubtractCosts();
-			}
-			else {
-				result = RandomizerForStorms.StormDifficulty.Medium;
-				extraText = "You were missing some resources, so you were unable to perform the ritual.\n\n";
-			}
+			float mod = CheckResources() ? 1 : noResourcesMod;
+			float check = Random.Range(0.0f, 1.0f);
+			result = check < (currentRitual.SuccessChance * mod) ? RandomizerForStorms.StormDifficulty.Easy : RandomizerForStorms.StormDifficulty.Medium;
+			SubtractCosts();
 		}
 		else {
 			//Ritual was rejected
@@ -145,15 +173,12 @@ public class RitualController : MonoBehaviour
 		{
 			if (currentRitual.ResourceTypes[i] == -2) {
 				hasResources = hasResources && (Globals.GameVars.playerShipVariables.ship.currency > currentRitual.ResourceAmounts[i]);
-				Debug.Log($"Ritual needs {currentRitual.ResourceAmounts[i]} dr, player has {Globals.GameVars.playerShipVariables.ship.currency} dr");
 			}
 			else if (currentRitual.ResourceTypes[i] == -1) {
 				//skip - you know they have a crewmember
 			}
 			else {
 				hasResources = hasResources && (Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].amount_kg > currentRitual.ResourceAmounts[i]);
-				Debug.Log($"Ritual needs {currentRitual.ResourceAmounts[i]} {Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].name}, " +
-					$"player has {Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].amount_kg}");
 			}
 		}
 		return hasResources;
@@ -162,22 +187,17 @@ public class RitualController : MonoBehaviour
 	private void SubtractCosts() 
 	{
 		for (int i = 0; i < currentRitual.ResourceTypes.Length; i++) {
-			switch (currentRitual.ResourceTypes[i]) {
+			switch (currentRitual.ResourceTypes[i]) 
+			{
 				case (-2):
-					Debug.Log($"Money beforehand: {Globals.GameVars.playerShipVariables.ship.currency}");
-					Globals.GameVars.playerShipVariables.ship.currency -= currentRitual.ResourceAmounts[i];
-					Debug.Log($"Money after subtracting {currentRitual.ResourceAmounts[i]}: {Globals.GameVars.playerShipVariables.ship.currency}");
+					Globals.GameVars.playerShipVariables.ship.currency = Mathf.Max(0, Globals.GameVars.playerShipVariables.ship.currency - currentRitual.ResourceAmounts[i]);
 					break;
 				case (-1):
-					Debug.Log($"Crewmembers before sacrifice: {Globals.GameVars.playerShipVariables.ship.crew}");
 					Globals.GameVars.playerShipVariables.ship.crewRoster.Remove(chosenCrew);
-					Debug.Log($"Crewmembers after: {Globals.GameVars.playerShipVariables.ship.crew}");
 					break;
 				default:
-					Debug.Log($"{Globals.GameVars.masterResourceList[currentRitual.ResourceTypes[i]].name} beforehand: {Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].amount_kg}");
-					Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].amount_kg -= currentRitual.ResourceAmounts[i];
-					Debug.Log($"{Globals.GameVars.masterResourceList[currentRitual.ResourceTypes[i]].name} after subtracting {currentRitual.ResourceAmounts[i]}:" +
-						$" {Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].amount_kg}");
+					int j = currentRitual.ResourceTypes[i];
+					Globals.GameVars.playerShipVariables.ship.cargo[j].amount_kg = Mathf.Max(0f, Globals.GameVars.playerShipVariables.ship.cargo[j].amount_kg - currentRitual.ResourceAmounts[i]);
 					break;
 			}
 		}
