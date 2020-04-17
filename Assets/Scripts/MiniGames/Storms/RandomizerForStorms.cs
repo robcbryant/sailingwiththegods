@@ -7,6 +7,8 @@ public class RandomizerForStorms : MonoBehaviour
 {
 	public enum StormDifficulty { Easy, Medium, Hard, Error }
 
+	[ColorUsage(true, true)]
+	public Color stormLighting;
 	[Header("Water")]
 	public GameObject miniGameWater;
 	public Vector2 waterSizeBounds = new Vector2(20, 60);
@@ -35,29 +37,11 @@ public class RandomizerForStorms : MonoBehaviour
 
 	private Vector3 randomMGwaterSize;
 	private GameObject ship;
+	private Color baseLighting;
 
-void Start() {
-		////easy, medium, and hard difficulties will be set here by the SetDifficulty method when it is operational 
-		////current numbers in place will be for medium, and are good for someone who has played the game before, 
-		////or someone who has been playing the game for a few days
-
-		////creates a randomly sized rectangle of water 
-		//randomMGwaterSize = new Vector3(Random.Range(waterSizeBounds.x, waterSizeBounds.y), 1, Random.Range(waterSizeBounds.x, waterSizeBounds.y));
-		//miniGameWater.transform.localScale = randomMGwaterSize;
-
-		////creates a random spawning sequence for rocks and clouds
-		//int rndNumForRocks = Random.Range(50, 100);
-		//int rndNumForClouds = Random.Range(400, 500);
-
-		//for (int x = 0; x <= rndNumForRocks; x++) {
-		//	PopulateNearbyAreaWithRocks();
-		//}
-
-		//for (int x = 0; x <= rndNumForClouds; x++) {
-		//	PopulateNearbyAreaWithClouds();
-		//}
-
-		////SetDifficulty();
+	private void Start() 
+	{
+		baseLighting = RenderSettings.ambientLight;
 	}
 
 	private void OnEnable() 
@@ -70,7 +54,14 @@ void Start() {
 		DestroyAllChildren(rockHolder);
 		DestroyAllChildren(cloudHolder);
 
+		RenderSettings.ambientLight = stormLighting;
+
 		InitializeView();
+	}
+
+	private void OnDisable() 
+	{
+		RenderSettings.ambientLight = baseLighting;
 	}
 
 	private void InitializeView() 
@@ -111,27 +102,28 @@ void Start() {
 
 	private void PopulateWithObstacles(int num, GameObject[] obstacle, Transform parent, Vector2 scaleRange) 
 	{
-		Debug.Log(parent != null ? parent.name : "parent is null");
 		for (int i = 0; i < num; i++) 
 		{
 			float xPos = Random.Range(-range, range);
 			float zPos = Random.Range(-range, range);
 			Vector3 spawnPoint = new Vector3(xPos, 0, zPos);
-			while (Vector3.Distance(shipStartPoint.position, spawnPoint) < shipClearanceRange) 
-			{
-				xPos = Random.Range(-range, range);
-				zPos = Random.Range(-range, range);
-				spawnPoint = new Vector3(xPos, 0, zPos);
-			}
 
 			int spawnIndex = Random.Range(0, obstacle.Length);
 			GameObject spawn = Instantiate(obstacle[spawnIndex]);
 			float scaleFactor = Random.Range(scaleRange.x, scaleRange.y);
 			spawn.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
 			spawn.transform.SetParent(parent);
-			Debug.Log($"parent of new spawn: {spawn.transform.parent.name}");
 			spawn.transform.localPosition = spawnPoint;
 			spawn.transform.localEulerAngles = new Vector3(0f, Random.Range(0f, 360f), 0f);
+
+			while (Vector3.Distance(shipStartPoint.position, spawn.transform.position) < shipClearanceRange) 
+			{
+				xPos = Random.Range(-range, range);
+				zPos = Random.Range(-range, range);
+				spawn.transform.localPosition = new Vector3(xPos, 0, zPos);
+			}
+
+			
 		}
 	}
 

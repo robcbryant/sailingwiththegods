@@ -4965,7 +4965,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 425a29ad85bfb82408a473fc167a11c7, type: 2}
+  - {fileID: 2100000, guid: feb8fa075dadecf4dbc81aa9979431f3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8742,6 +8742,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90.00001
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb3f1b2c36539e540ba15b0628e76bc0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
 --- !u!1 &269188468 stripped
@@ -12126,6 +12130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daf8e1f559caa23468b4dc9a14cc8f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stormLighting: {r: 0.038223643, g: 0.054150164, b: 0.07604913, a: 1}
   miniGameWater: {fileID: 151305731}
   waterSizeBounds: {x: 20, y: 60}
   shipModels:
@@ -12133,7 +12138,7 @@ MonoBehaviour:
   - {fileID: 8508497137051089795, guid: 782997a7b5468464183f7a8842b9d3b7, type: 3}
   shipStartPoint: {fileID: 1921440572}
   cam: {fileID: 593431157}
-  camOffset: {x: 0, y: 150, z: 0}
+  camOffset: {x: 0, y: 65, z: 0}
   shipClearanceRange: 0.15
   range: 5
   rockHolder: {fileID: 1873486132}
@@ -39307,6 +39312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daf8e1f559caa23468b4dc9a14cc8f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stormLighting: {r: 0, g: 0, b: 0, a: 0}
   miniGameWater: {fileID: 1643993089}
   waterSizeBounds: {x: 20, y: 60}
   shipModels: []
