@@ -1,0 +1,1585 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3696558122851317210
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558122851317209}
+  - component: {fileID: 3696558122851317207}
+  - component: {fileID: 3696558122851317208}
+  - component: {fileID: 3696558122851317206}
+  m_Layer: 0
+  m_Name: Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3696558122851317209
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558122851317210}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 64.69997, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3696558123618646742}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!20 &3696558122851317207
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558122851317210}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_projectionMatrixMode: 1
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_GateFitMode: 2
+  m_FocalLength: 50
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 100
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 2096949
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 0
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!81 &3696558122851317208
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558122851317210}
+  m_Enabled: 0
+--- !u!114 &3696558122851317206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558122851317210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dfa26c487c427744a8622b1ea7fcbf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableFog: 0
+  revertFogState: 0
+--- !u!1 &3696558123011869756
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558123011869755}
+  - component: {fileID: 3696558123011869753}
+  - component: {fileID: 3696558123011869754}
+  m_Layer: 5
+  m_Name: Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3696558123011869755
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123011869756}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3696558123318984732}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0.25}
+  m_AnchorMax: {x: 1, y: 0.75}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &3696558123011869753
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123011869756}
+  m_CullTransparentMesh: 0
+--- !u!114 &3696558123011869754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123011869756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!1 &3696558123291366913
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558123291366912}
+  m_Layer: 0
+  m_Name: Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3696558123291366912
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123291366913}
+  m_LocalRotation: {x: 0.000000081460335, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 34.1, y: 0, z: 12}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_Children: []
+  m_Father: {fileID: 3696558123618646742}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3696558123293114796
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558123293114795}
+  - component: {fileID: 3696558123293114792}
+  - component: {fileID: 3696558123293114793}
+  - component: {fileID: 3696558123293114794}
+  m_Layer: 0
+  m_Name: Mini Game Water
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3696558123293114795
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123293114796}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.000061035156, z: 0}
+  m_LocalScale: {x: 60, y: 1, z: 60}
+  m_Children:
+  - {fileID: 3696558123735522971}
+  - {fileID: 3696558124314093979}
+  - {fileID: 3696558124498401092}
+  m_Father: {fileID: 3696558123618646742}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &3696558123293114792
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123293114796}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &3696558123293114793
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123293114796}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: feb8fa075dadecf4dbc81aa9979431f3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!64 &3696558123293114794
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123293114796}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &3696558123318984733
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558123318984732}
+  - component: {fileID: 3696558123318984731}
+  m_Layer: 5
+  m_Name: Left Slider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3696558123318984732
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123318984733}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3696558123011869755}
+  - {fileID: 3696558123385122352}
+  m_Father: {fileID: 3696558123807021843}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 120}
+  m_SizeDelta: {x: 386.4, y: 75.8}
+  m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &3696558123318984731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123318984733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -113659843, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 0
+  m_TargetGraphic: {fileID: 0}
+  m_FillRect: {fileID: 3696558123580685749}
+  m_HandleRect: {fileID: 0}
+  m_Direction: 1
+  m_MinValue: 0
+  m_MaxValue: 50
+  m_WholeNumbers: 0
+  m_Value: 50
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!1 &3696558123385122353
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558123385122352}
+  m_Layer: 5
+  m_Name: Fill Area
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3696558123385122352
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123385122353}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3696558123580685749}
+  m_Father: {fileID: 3696558123318984732}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0.25}
+  m_AnchorMax: {x: 1, y: 0.75}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &3696558123489545623
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558123489545622}
+  m_Layer: 5
+  m_Name: Fill Area
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3696558123489545622
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123489545623}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3696558124280618753}
+  m_Father: {fileID: 3696558124685674673}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0.25}
+  m_AnchorMax: {x: 1, y: 0.75}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &3696558123580685750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558123580685749}
+  - component: {fileID: 3696558123580685747}
+  - component: {fileID: 3696558123580685748}
+  m_Layer: 5
+  m_Name: Fill
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3696558123580685749
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123580685750}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3696558123385122352}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &3696558123580685747
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123580685750}
+  m_CullTransparentMesh: 0
+--- !u!114 &3696558123580685748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123580685750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!1 &3696558123618646743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558123618646742}
+  - component: {fileID: 3696558123618646741}
+  - component: {fileID: 3696558123618646740}
+  - component: {fileID: 3696558123618646738}
+  - component: {fileID: 3696558123618646739}
+  m_Layer: 0
+  m_Name: Storm Game
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &3696558123618646742
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123618646743}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1024, y: 782, z: -931}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3696558123293114795}
+  - {fileID: 3696558124727819312}
+  - {fileID: 3696558124224406675}
+  - {fileID: 3696558122851317209}
+  - {fileID: 3696558123291366912}
+  - {fileID: 3696558123807021843}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3696558123618646741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123618646743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daf8e1f559caa23468b4dc9a14cc8f29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stormLighting: {r: 0.038223643, g: 0.054150164, b: 0.07604913, a: 1}
+  miniGameWater: {fileID: 3696558123293114796}
+  waterSizeBounds: {x: 20, y: 60}
+  shipModels:
+  - {fileID: 1794280630024534100, guid: f19be55d3dd3d814780089a25569c4ca, type: 3}
+  - {fileID: 8508497137051089795, guid: 782997a7b5468464183f7a8842b9d3b7, type: 3}
+  shipStartPoint: {fileID: 3696558124224406675}
+  cam: {fileID: 3696558122851317210}
+  camOffset: {x: 0, y: 65, z: 0}
+  shipClearanceRange: 0.15
+  range: 5
+  rockHolder: {fileID: 3696558123735522971}
+  rockScaleBounds: {x: 1, y: 4}
+  stormRocks:
+  - {fileID: 3217353607499389584, guid: 0da2e1bd4485aad48b2650399da06437, type: 3}
+  - {fileID: 105575357220499537, guid: 8f300d1b7d1a2d84c9f13ace77a62d51, type: 3}
+  - {fileID: 8130734356660257883, guid: b72ca4fb40a2ab245bf35caf73d89e34, type: 3}
+  - {fileID: 7230220209382398406, guid: 479775f1f98c92d458672cc8ddd4e619, type: 3}
+  - {fileID: 192518213476457187, guid: 2fd409d2a2e777044b228812aeba8686, type: 3}
+  cloudHolder: {fileID: 3696558124314093979}
+  cloudScaleBounds: {x: 1, y: 3}
+  stormClouds:
+  - {fileID: 5498604549913085531, guid: 34083cf702e9d494eb95c7bda707a679, type: 3}
+  - {fileID: 7653758620165034016, guid: 23548d77aefce4943b7ed5dc6c094ee1, type: 3}
+  - {fileID: 7837580452261017821, guid: 6ce58c1b99ccdf24bae4c9069fe75a58, type: 3}
+  - {fileID: 2540205547307448384, guid: b9b78f96e7f756848a06854367c5e6ba, type: 3}
+  hintArrow: {fileID: 3696558124727819313}
+  difficultyModifiers:
+  - 0.8
+  - 1
+  - 1.5
+  cloutRanges: 
+  cloutModifiers: []
+--- !u!114 &3696558123618646740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123618646743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3535cee79575a444292c7656b0b2ab5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noResourcesMod: 0.5
+  mgInfo: {fileID: 0}
+  stormIcon: {fileID: 21300000, guid: 14603015bfab36247acc85b8765d06ae, type: 3}
+  performButton: {fileID: 0}
+  rejectButton: {fileID: 0}
+  titles:
+  - Storm!
+  - Ritual
+  - The Results
+  - The Aftermath
+  subtitles:
+  - Dark Clouds on the Horizon
+  - An Attempt to Appease the Gods
+  - Did the Ritual Help?
+  - What's Left After the Storm
+  starter: A storm has hit! Gods make storms for many different reasons; a ritual
+    that pleases the gods may calm the storm. A seer may know why the gods are angry
+    - do you have one on board?
+  startingText:
+  - 'Often along the streaming hair of the gray salt water
+
+    They pray for sweet homecoming won in spite of the sea
+
+    (Archilochus fr. 12, 7th c BC)'
+  - 'The open sea is churning to a wash of waves
+
+    Deep within, A cloud stands upright over the Cyrean caps,
+
+    Signal of a storm, and terror rises from the unforseen
+
+    (Archilochus fr. 15, 7th c BC)'
+  - 'Long waves surge, churned up on the sea by the east and south winds, hurtling
+    down from heavens;
+
+    as the west wind sweeps through the high-standing grain
+
+    With its violent blast, and the ears all shudder and bow
+
+    (Adapted from Iliad 2.131)'
+  - 'The winds crack and crash,
+
+    As when a wave of the loud-roaring sea
+
+    Crashes upon a beach and the surf keeps resounding
+
+    (Iliad 1.198-200)'
+  - 'The Pleiades flee mighty Orion, and plunge into the misty deep: all the gusty
+    winds are raging!
+
+    (Hesiod Works and Days 620-621)'
+  seerIntro: You say to your crewmate, 'You are a seer, a mortal with the ability
+    to read the signs that the gods put into the natural world, like the flight of
+    birds and the fallilng of stars. This storm means the gods are mad. Oh Seer, what
+    has angered the gods?'
+  seerRitualFlavor:
+  - 'The seer determines that Poseidon needs to be soothed, and instructs you to perform
+    the following hymn:
+
+    Holy spirit of the Sea-god Poseidon, mighty earth-shaker,
+
+    Be gracious to others who cross the Aegean sea,
+
+    As you have gently granted me,
+
+    Driven swiftly by the breezes of Thrace,
+
+    The harbor I wished to reach
+
+    (Crinagoras, 10.24)'
+  - 'The seer realizes it''s the god of the harbor who wants a gift! Perform the following
+    poem for him, singing and dancing together in unison:
+
+    Blessed god of the harbor, send a gentle breeze
+
+    To the departing sails of Archelaus
+
+    So that he may sail undisturbed through the waters
+
+    To the open sea. You who rule the farthest shore,
+
+    Guard the voyager, so that he reaches the Pythian shrine of Apollo.
+
+    If all singers are dear to him, I will sail with full trust in the fair western
+    wind.
+
+    (Antiphilus 10.17)'
+  - 'The seer knows the tale of Ino''s son, and determines he must be the cause of
+    our troubles. Perform this song in his honor, along with a solemn dance performed
+    by your three best sailors:
+
+    O Melicertes, son of Ino, and see-green
+
+    Leukothea, mistress of Ocean, divinity who
+
+    Shields from harm; chorus of Nereids and the waves
+
+    And you, Lord Poseidon, and Thracian Zephyr.
+
+    Most gentle of winds, cary me propitiously, speeding
+
+    Through broad smooth waves, safe to the sweet shore
+
+    (Philodemus)'
+  - "Your seer remembers the importance of Apollo as the god who accompanies ships
+    at departure and return; he tells you to offer a sacrifice at the ship's altar
+    while singing:\nApollo who rules over the steep cliffs of Leukas\nThe cliffs visible
+    to mariners from afar, on which\nThe waters of the Ionian sea crash with foam
+    - \nReceive from these sailors the hand-kneaded barley cakes,\nLittle cups of
+    libations, and a flickering lamp with\nIts small bit of oil: in response, send
+    favorable winds,\nRunning with us to the harbors of Actium\n(Philippus)"
+  noSeerIntro: You say 'We have no Seer with insight into the gods' motives. Let's
+    have our best-known man give the ritual a try.'
+  noSeerRitualFlavor:
+  - 'A random crewmember takes a guess - who could it be but Poseidon? He stands up
+    and performs the following song to appease the god:
+
+    Poseidon, god who rules swift-sailing ships!
+
+    Lover of horses, and denizen of the cliffs of Euboia,
+
+    Grant your worshippers a favorable voyage
+
+    To the city of Ares!
+
+    (Alphaeus)'
+  - 'Among your crew are those who know the power of Artemis, the goddess of the hunt,
+    when it comes to perils at sea; they suggest a song honoring her, and perform
+    it as follows:
+
+    I promise you, Artemis of the harbor,
+
+    A fine red mullet fish and hake fish, plus
+
+    A cup of wine, full to the brim, and a bit of
+
+    Dry bread - the sacrifice of a poor fisherman!
+
+    (Apollonides)'
+  - 'Among your crew are initiates into the Orphic mysteries. They know a hymn for
+    Leukothea, and perform it to draw down her favors:
+
+    I Call Leukothea, child of Kadmos
+
+    Nurse of Bacchus, who wears ivy leaves.
+
+    Hearken, oh powerful goddess, in the mighty depths of the sea,
+
+    Wide and profound, over which you hold swap:
+
+    You who rejoice in waves and help mankind.
+
+    You alone grant eliverance to ships
+
+    When the storms are raging,
+
+    When our skills are failing,
+
+    And our strength runs out.
+
+    When the billows are angry,
+
+    And the sailor overcome.
+
+    You hear us, you feel pity, and
+
+    Answer prayers with intervention
+
+    And life spared. Be with us always!
+
+    Grant prosperous voyages, bringing
+
+    Your mystics through stormy seas
+
+    To the shores they long to reach
+
+    (Orphic Hymn 73: To Leukothea)'
+  ritualResultsText:
+  - Great job! The ritual was a complete success. The storm seems much less fearsome,
+    and you are less likely to capsize and meet a watery end.
+  - Some small gods may have heard you, but you see no change in the weather.
+  - You chose not to perform a ritual at all. Yours will surely be the hardest of
+    passages!
+  gameSuccessIntro: 'You have escaped the storm! You now set up a nice poem thanking
+    the gods for helping you. Regardless of the ritual from earlier, at this point
+    you realize: good things only happen when the gods are on your side.'
+  gameSuccessFlavor:
+  - "Aphrodite was celebrated with epithets Euploia (\u2018good sailing\u2019) and
+    Zephyrion (\u201Cof the gentle west wind,\r best for sailors\u2019); she was also
+    equated to Arsinoe II, the Ptolemaic queen of Egypt, who through her\r articulated
+    her own maritime ambitions. Offer her as your means allow \u2013 dedicate some
+    sea shells, or a\r fine vase of perfumed oil, a sacrifice of doves or a statue
+    of the goddess surrounded by the leaping fish of\r the sea, attended by the west
+    wind. Inscribe it with the following:\nLet us stand on the low beach of the sea-washed
+    promontory,\r\ngazing at the sanctuary of Kypris of the Sea,\r\nand the spring
+    overshadowed by poplars from which\r\nthe yellow kingfishers sip with their bills
+    the running water.\r\n(Anthologia Palatina IX, 333 (ed. Beckby) \u2013 by Mnasalikes,
+    3 rd c BC)"
+  - "Leukothea attends on heroes in distress, offer this goddess a bronze\r tripod
+    worthy of a hero, and on it write:\nThis tripod \u2013 gleaming with bronze -
+    I dedicate to Leukothea, merciful goddess of the waves,\r\nShe of whom Homer sang:\r\n\"Kadmos'
+    daughter, slender-ankled Ino who is also Leukothea; once she had been a mortal
+    and spoken\r\nwith human voice, but now she lives in the salt seas and the gods
+    give her the honor that is her due.\"\n(Homer Odyssey 5.333)"
+  - "Delphin was the daimon who took the shape of a dolphin and served Poseidon:\r
+    he was dear to Poseidon for the service he rendered when that sea god sought to\r
+    persuade Amphitrite of his love. The dolphins may be considered their\r equivalent:
+    those who know the story of the god see the truth behind these sea\r mammals!
+    Set up for them a statue of a horde of them swimming alongside\r Poseidon, and
+    write on it:\nThe Delphines both rejoice in the echoing shores and dwell in the
+    deep seas, and there is no sea without\r Delphines: for Poseidon loves them exceedingly,
+    inasmuch as when he was seeking Amphitrite the dark-\reyed daughter of Nereus
+    who fled from his embraces, Delphines (the Dolphins) marked her hiding in the\r
+    halls of Okeanos (Oceanus) and told Poseidon; and the god of the dark hair straightway
+    carried off the\r maiden and overcame her against her will. Her he made his bride,
+    queen of the sea, and for their tidings\r he commended his kindly attendants and
+    bestowed on them exceeding honour for their portion. \n(Oppian,\r Halieutica 1.383,
+    3 rd c AD)"
+  - "Nereus, known as the old man of the sea, is famous for being able to change\r
+    his form, just like the ever-changing surface of the sea. He is also a master
+    of\r prophecy, a key ritual power when facing the uncertain dangers of ocean\r
+    voyages. For him, set up a finely carved marble in the shape of a conch shell,
+    and inscribe your offering as follows:\nTruthful Nereus who tells no lies, eldest
+    of his sons. They call him the Old Gentleman (Ger\xF4n) because he\r is trustworthy,
+    and gentle, and never forgetful of what is right, but the thoughts of his mind
+    are mild and\r righteous. \n(Hesiod Theogony 235)"
+  - "Proteus is an old man of the sea, possessor of prophetic power and the shepherd
+    of\r seals. Give him images of the seals he loves, and honor him with paintings
+    of the\r many forms he took when he wrestled with Odysseus: first a lion, then
+    a snake, a\r panther, a boar, running water and finally a tree! (Homer Odyssey
+    4.365ff)\nProteus I call, whom fate decrees to keep the keys which lock the chambers
+    of the deep; first-born, by\r whose illustrious power alone all nature's principles
+    were clearly shown. Pure sacred matter to transmute\r is thine, and decorate with
+    forms all-various and divine. All-honored, prudent, whose sagacious mind\r knows
+    all that was and is of every kind, with all that shall be in succeeding time,
+    so vast thy wisdom,\r wondrous and sublime: for all things Nature first to thee
+    consigned, and in thy essence omniform\r confined. O father, to the mystics' rites
+    attend, and grant, a blessed life a prosperous end.\n(Orphic Hymn 25, trans. Taylor,
+    3 rd -2 nd c BC)"
+  - "To Psamathe, the Sand Goddess, and her child the Seal: If you find yourself,
+    after\r a storm or battle, suddenly awakening in a quiet harbor full of seals,
+    surrounded\r by fine sandy shores, make an altar, sacrifice a fish, and inscribe
+    on the altar the\r following story, to honor the goddess and god who brought you
+    here: \nOf the\r daughters of Nereus, the Old man of the Sea (halios geron), Psamathe
+    (Sand-\rGoddess) the fair goddess, was loved by Aiakos (Aeacus) through golden\r
+    Aphrodite and bare Phokos (Phocus, Seal). \n(Hesiod, Theogony 1003)"
+  gameFailureIntro: 'You are in a very bad situation: your ship is lost, your men
+    have drowned, and you sit bedraggled on a rocky shore with nothing but your memories
+    of the recent trauma. The least you can do is ensure that the souls of your drowned
+    comrades will be taken care of. You set up an empty tomb, as their bodies are
+    lost at sea, and on it inscribe the following poem:'
+  stormFailureFlavor:
+  - "This headstone has your name alone, Stranger, and the sea your body \n(Peek,\r
+    Griechische Vers-Inschriften 1746.1)"
+  - "Shedding tears, this empty tomb demands Lysicles\u2019 body back, and blames
+    the\r gods for the suffering he endured \u2013 he who was the first voice of the
+    Academy!\r The shores and the gray wave possess him now, no one knows where\r\n(Posidippus,
+    P.Mil.Vogl. VIII 309, XIV 3-6)"
+  - "Think it through, and if ever you were accustomed to sail the waves, do not be
+    a\r hasty Black Sea sailor, since you look upon the empty tomb of Dorus; some\r
+    random sea dunes hold him, somewhere far from Parium. \n(Posidippus, P.\r Mil.VOgl.
+    VIII 309, XIV 11-14)"
+  - "Black Earth, wherever you hold the good Pythermus \u2013 for he met his end under\r
+    chill Capricorn \u2013 shroud him lightly. But if you, Father of the Sea, are
+    now\r hiding him, leave him unwounded somewhere, easy to spot, on the sparse shore\r
+    of Kyme, and, Lord of the Sea, return his corpse, as is due, to his fatherland\r\n(Posidippus,
+    P.Mil.Vogl. VIII 309, XIV 19-24)"
+  - "Leophantus mourned for me, killed at sea, and buried my shipwrecked corpse\r
+    with care, even though he had little means, as he was traveling through a foreign\r
+    land. But I am too small to repay this great favor. \n(Posidippus P.Mil.Vogl.
+    VIII\r 309, XIV 25-28)"
+  - "Blowing with dreadful force, Boreas the North Wind killed the man Archeanax\r
+    near the wretched island of Skyros, as the man swamp in the Aegean sea, able to\r
+    see land on both sides. But two stades at sea is longer than great spaces of dry\r
+    plain. \n(Posidippus P.Mil.Vogl. 309, XIC 7-10)"
+  - "Every crewmember accompanied the ship as it sank to the floor of the sea.\r\n(Posidippus
+    P.Mil.Vogl. VIII 309, XIV 15-18)"
+  - "This is a drowned man\u2019s tomb. Stranger, sail on, Just as the other ships
+    sailed on\r while we surrendered to the waves. \n(Theodoridas)"
+  - "Thymodes also, weeping over sorrows he could not have expected, Built this\r
+    empty tomb for his son Lykos, who did not get a grave, even a foreign one, but
+    is\r held by some Thynian headland or Pontic island. There, without funeral rites,
+    lie\r his shining bones, naked on a hostile shore (Damagetus)"
+  - "A blasting squall, rushing sharp upon us from the east, And dark night, and the\r
+    waves of the dark setting of Orion \u2013 these were my end! I, Callaeschus, lost
+    my\r grip on life as I sped along the mid-Libyan sea: Now I roll, drifting, in
+    the ocean,\r Food for fish, and this stone lies, declaring it stands above me.
+    \n(Leonidas of\r Tarentum)"
+  - "The sea is the sea is the sea \u2013 everywhere you go. Why do we blame in vain
+    the\r Cyclades for this, the Hellespont for that, the \u2018eye of the needle\u2019
+    for its\r challenges? They are famously hard, but with no good reason. If not,
+    why is it\r that once I escaped their clutches, I met my fate in the harbor of
+    Scarphe? Go\r ahead, Pray for a safe passage. Aristagoras, who is buried here,
+    knows that the\r sea is the sea is the sea. \n(Antipater of Sidon)"
+  - "O mariners, o sailors! Ariston of Cyrene begs you all, In the name of Zeus the\r
+    Protector, to tell his father Meno that his body lies on the Icarian rocks, That
+    he\r gave up the ghost in the Aegean Sea \n(Theaetetus)"
+  - "Stranger passing by! I mourn for Polyanthus. His wife, soon after their nuptials,\r
+    placed his dust and bones into a grave. The foul-flowing wave of the Aegean did\r
+    him in off Sciathus; It was fishermen, stranger, who at first light drew his sorry\r
+    corpse into the harbor of Torone. \n(Phaedimus)"
+--- !u!114 &3696558123618646738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123618646743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e567bd7ca3fa53c478b4af84b02a8444, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerBoat: {fileID: 0}
+  speed: 0.5
+--- !u!114 &3696558123618646739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123618646743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ec1428d484ef449b4f3f22352bb96c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftSlider: {fileID: 3696558123318984731}
+  rightSlider: {fileID: 3696558124685674672}
+--- !u!1 &3696558123735522972
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558123735522971}
+  m_Layer: 0
+  m_Name: Rocks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3696558123735522971
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123735522972}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3696558123293114795}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3696558123807021844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558123807021843}
+  - component: {fileID: 3696558123807021840}
+  - component: {fileID: 3696558123807021841}
+  - component: {fileID: 3696558123807021842}
+  m_Layer: 5
+  m_Name: Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3696558123807021843
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123807021844}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 3696558123318984732}
+  - {fileID: 3696558124685674673}
+  m_Father: {fileID: 3696558123618646742}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!223 &3696558123807021840
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123807021844}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &3696558123807021841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123807021844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+--- !u!114 &3696558123807021842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123807021844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!1 &3696558124224406676
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558124224406675}
+  m_Layer: 0
+  m_Name: Ship Start
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3696558124224406675
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124224406676}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.52, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3696558123618646742}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3696558124280618754
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558124280618753}
+  - component: {fileID: 3696558124280618783}
+  - component: {fileID: 3696558124280618752}
+  m_Layer: 5
+  m_Name: Fill
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3696558124280618753
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124280618754}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3696558123489545622}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &3696558124280618783
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124280618754}
+  m_CullTransparentMesh: 0
+--- !u!114 &3696558124280618752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124280618754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!1 &3696558124314093980
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558124314093979}
+  m_Layer: 0
+  m_Name: Clouds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3696558124314093979
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124314093980}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 30, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3696558123293114795}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3696558124498401093
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558124498401092}
+  - component: {fileID: 3696558124498401089}
+  - component: {fileID: 3696558124498401090}
+  - component: {fileID: 3696558124498401091}
+  m_Layer: 1
+  m_Name: Temporary Aid for seeing water (delete later)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3696558124498401092
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124498401093}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.000061035156, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3696558123293114795}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &3696558124498401089
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124498401093}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &3696558124498401090
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124498401093}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 6f018ecfb3286ee428953f41ea0660d1, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!64 &3696558124498401091
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124498401093}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &3696558124635987918
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558124635987917}
+  - component: {fileID: 3696558124635987915}
+  - component: {fileID: 3696558124635987916}
+  m_Layer: 5
+  m_Name: Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3696558124635987917
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124635987918}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3696558124685674673}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0.25}
+  m_AnchorMax: {x: 1, y: 0.75}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &3696558124635987915
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124635987918}
+  m_CullTransparentMesh: 0
+--- !u!114 &3696558124635987916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124635987918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!1 &3696558124685674674
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558124685674673}
+  - component: {fileID: 3696558124685674672}
+  m_Layer: 5
+  m_Name: Right Slider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3696558124685674673
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124685674674}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3696558124635987917}
+  - {fileID: 3696558123489545622}
+  m_Father: {fileID: 3696558123807021843}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 120}
+  m_SizeDelta: {x: 386.4, y: 75.8}
+  m_Pivot: {x: 0, y: 0.5}
+--- !u!114 &3696558124685674672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124685674674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -113659843, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 0
+  m_TargetGraphic: {fileID: 0}
+  m_FillRect: {fileID: 3696558124280618753}
+  m_HandleRect: {fileID: 0}
+  m_Direction: 0
+  m_MinValue: 0
+  m_MaxValue: 50
+  m_WholeNumbers: 0
+  m_Value: 50
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!1 &3696558124727819313
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696558124727819312}
+  - component: {fileID: 3696558124727819279}
+  m_Layer: 0
+  m_Name: Hint Arrow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3696558124727819312
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124727819313}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 10.00002, z: 5.23}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3696558123188781902}
+  m_Father: {fileID: 3696558123618646742}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3696558124727819279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558124727819313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 838df1d572b6fd841992459ec2fcd023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 3696558123291366912}
+--- !u!1001 &3696558123189180878
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3696558124727819312}
+    m_Modifications:
+    - target: {fileID: 100000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_Name
+      value: hint_arrow
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90.00001
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb3f1b2c36539e540ba15b0628e76bc0, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+--- !u!4 &3696558123188781902 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: d91b6a6e2401a69428b09dd52e708bf4,
+    type: 3}
+  m_PrefabInstance: {fileID: 3696558123189180878}
+  m_PrefabAsset: {fileID: 0}
