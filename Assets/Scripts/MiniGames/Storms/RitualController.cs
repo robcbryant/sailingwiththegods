@@ -9,6 +9,7 @@ public class RitualController : MonoBehaviour
 		Success, Failure, Refusal
 	}
 
+	[Header("General")]
 	public float noResourcesMod = 0.5f;
 	public MiniGameInfoScreen mgInfo;
 
@@ -17,6 +18,7 @@ public class RitualController : MonoBehaviour
 	public ButtonExplanation performButton;
 	public ButtonExplanation rejectButton;
 	
+	[Header("Titles and Subtitles")]
 	[Tooltip("Ordered: start, ritual, ritual results, storm results")]
 	[TextArea(1, 3)]
 	public string[] titles;
@@ -25,34 +27,40 @@ public class RitualController : MonoBehaviour
 	[TextArea(1, 3)]
 	public string[] subtitles;
 
+	[Header("Starting Text")]
 	[TextArea(2, 10)]
 	public string starter;
 	[Tooltip("Unordered, will be chosen at random")]
-	[TextArea(2, 10)]
+	[TextArea(2, 15)]
 	public string[] startingText;
 
+	[Header("Ritual Text - Seer")]
 	[TextArea(2, 10)]
 	public string seerIntro;
-	[TextArea(2, 10)]
+	[TextArea(2, 15)]
 	public string[] seerRitualFlavor;
 
+	[Header("Ritual Text - No Seer")]
 	[TextArea(2, 10)]
 	public string noSeerIntro;
-	[TextArea(2, 10)]
+	[TextArea(2, 15)]
 	public string[] noSeerRitualFlavor;
 
+	[Header("Ritual Results")]
 	[Tooltip("Ordered: success, failure, refusal")]
-	[TextArea(2, 10)]
+	[TextArea(2, 15)]
 	public string[] ritualResultsText;
 
+	[Header("Game Results - Success")]
 	[TextArea(2, 10)]
 	public string gameSuccessIntro;
-	[TextArea(2, 10)]
+	[TextArea(2, 15)]
 	public string[] gameSuccessFlavor;
 
+	[Header("Game Results - Failure")]
 	[TextArea(2, 10)]
 	public string gameFailureIntro;
-	[TextArea(2, 10)]
+	[TextArea(2, 15)]
 	public string[] stormFailureFlavor;
 
 	private Ritual currentRitual;
@@ -68,7 +76,7 @@ public class RitualController : MonoBehaviour
 	public void DisplayStartingText() 
 	{
 		mgInfo.gameObject.SetActive(true);
-		mgInfo.DisplayText(titles[0], subtitles[0], starter + "\n" + startingText[RandomIndex(startingText)], stormIcon, MiniGameInfoScreen.MiniGame.StormStart);
+		mgInfo.DisplayText(titles[0], subtitles[0], starter + "\n\n" + startingText[RandomIndex(startingText)], stormIcon, MiniGameInfoScreen.MiniGame.StormStart);
 	}
 
 	public void ChooseRitual() 
@@ -98,7 +106,7 @@ public class RitualController : MonoBehaviour
 		string ritualText = currentRitual.RitualText;
 		string introText = currentRitual.HasSeer ? seerIntro : noSeerIntro;
 		string closeText = currentRitual.HasSeer ? seerRitualFlavor[RandomIndex(seerRitualFlavor)] : noSeerRitualFlavor[RandomIndex(noSeerRitualFlavor)];
-		string finalRitualText = introText + "\n" + ritualText.Replace("{0}", chosenCrew.name) + "\n" + closeText;
+		string finalRitualText = introText + "\n\n" + ritualText.Replace("{0}", chosenCrew.name) + "\n\n" + closeText;
 
 		mgInfo.DisplayText(titles[1], subtitles[1], finalRitualText, stormIcon, MiniGameInfoScreen.MiniGame.Storm);
 

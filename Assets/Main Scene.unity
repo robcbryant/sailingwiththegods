@@ -12177,7 +12177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noResourcesMod: 0.5
   mgInfo: {fileID: 848135780}
-  stormIcon: {fileID: 21300000, guid: 0934a1d6c2fc81d4a9f55f24156c4f7b, type: 3}
+  stormIcon: {fileID: 21300000, guid: 14603015bfab36247acc85b8765d06ae, type: 3}
   performButton: {fileID: 270536803}
   rejectButton: {fileID: 1773050393}
   titles:
@@ -12357,9 +12357,88 @@ MonoBehaviour:
   - Some small gods may have heard you, but you see no change in the weather.
   - You chose not to perform a ritual at all. Yours will surely be the hardest of
     passages!
-  stormResultsText:
-  - You escaped the storm!
-  - You crashed and sank and died, game over
+  gameSuccessIntro: 'You have escaped the storm! You now set up a nice poem thanking
+    the gods for helping you. Regardless of the ritual from earlier, at this point
+    you realize: good things only happen when the gods are on your side.'
+  gameSuccessFlavor:
+  - "Aphrodite was celebrated with epithets Euploia (\u2018good sailing\u2019) and
+    Zephyrion (\u201Cof the gentle west wind,\r best for sailors\u2019); she was also
+    equated to Arsinoe II, the Ptolemaic queen of Egypt, who through her\r articulated
+    her own maritime ambitions. Offer her as your means allow \u2013 dedicate some
+    sea shells, or a\r fine vase of perfumed oil, a sacrifice of doves or a statue
+    of the goddess surrounded by the leaping fish of\r the sea, attended by the west
+    wind. Inscribe it with the following:\nLet us stand on the low beach of the sea-washed
+    promontory,\r\ngazing at the sanctuary of Kypris of the Sea,\r\nand the spring
+    overshadowed by poplars from which\r\nthe yellow kingfishers sip with their bills
+    the running water.\r\n(Anthologia Palatina IX, 333 (ed. Beckby) \u2013 by Mnasalikes,
+    3 rd c BC)"
+  - "Leukothea attends on heroes in distress, offer this goddess a bronze\r tripod
+    worthy of a hero, and on it write:\nThis tripod \u2013 gleaming with bronze -
+    I dedicate to Leukothea, merciful goddess of the waves,\r\nShe of whom Homer sang:\r\n\"Kadmos'
+    daughter, slender-ankled Ino who is also Leukothea; once she had been a mortal
+    and spoken\r\nwith human voice, but now she lives in the salt seas and the gods
+    give her the honor that is her due.\"\n(Homer Odyssey 5.333)"
+  - "Delphin was the daimon who took the shape of a dolphin and served Poseidon:\r
+    he was dear to Poseidon for the service he rendered when that sea god sought to\r
+    persuade Amphitrite of his love. The dolphins may be considered their\r equivalent:
+    those who know the story of the god see the truth behind these sea\r mammals!
+    Set up for them a statue of a horde of them swimming alongside\r Poseidon, and
+    write on it:\nThe Delphines both rejoice in the echoing shores and dwell in the
+    deep seas, and there is no sea without\r Delphines: for Poseidon loves them exceedingly,
+    inasmuch as when he was seeking Amphitrite the dark-\reyed daughter of Nereus
+    who fled from his embraces, Delphines (the Dolphins) marked her hiding in the\r
+    halls of Okeanos (Oceanus) and told Poseidon; and the god of the dark hair straightway
+    carried off the\r maiden and overcame her against her will. Her he made his bride,
+    queen of the sea, and for their tidings\r he commended his kindly attendants and
+    bestowed on them exceeding honour for their portion. \n(Oppian,\r Halieutica 1.383,
+    3 rd c AD)"
+  - "Nereus, known as the old man of the sea, is famous for being able to change\r
+    his form, just like the ever-changing surface of the sea. He is also a master
+    of\r prophecy, a key ritual power when facing the uncertain dangers of ocean\r
+    voyages. For him, set up a finely carved marble in the shape of a conch shell,
+    and inscribe your offering as follows:\nTruthful Nereus who tells no lies, eldest
+    of his sons. They call him the Old Gentleman (Ger\xF4n) because he\r is trustworthy,
+    and gentle, and never forgetful of what is right, but the thoughts of his mind
+    are mild and\r righteous. \n(Hesiod Theogony 235)"
+  - "Proteus is an old man of the sea, possessor of prophetic power and the shepherd
+    of\r seals. Give him images of the seals he loves, and honor him with paintings
+    of the\r many forms he took when he wrestled with Odysseus: first a lion, then
+    a snake, a\r panther, a boar, running water and finally a tree! (Homer Odyssey
+    4.365ff)\nProteus I call, whom fate decrees to keep the keys which lock the chambers
+    of the deep; first-born, by\r whose illustrious power alone all nature's principles
+    were clearly shown. Pure sacred matter to transmute\r is thine, and decorate with
+    forms all-various and divine. All-honored, prudent, whose sagacious mind\r knows
+    all that was and is of every kind, with all that shall be in succeeding time,
+    so vast thy wisdom,\r wondrous and sublime: for all things Nature first to thee
+    consigned, and in thy essence omniform\r confined. O father, to the mystics' rites
+    attend, and grant, a blessed life a prosperous end.\n(Orphic Hymn 25, trans. Taylor,
+    3 rd -2 nd c BC)"
+  - "To Psamathe, the Sand Goddess, and her child the Seal: If you find yourself,
+    after\r a storm or battle, suddenly awakening in a quiet harbor full of seals,
+    surrounded\r by fine sandy shores, make an altar, sacrifice a fish, and inscribe
+    on the altar the\r following story, to honor the goddess and god who brought you
+    here: \nOf the\r daughters of Nereus, the Old man of the Sea (halios geron), Psamathe
+    (Sand-\rGoddess) the fair goddess, was loved by Aiakos (Aeacus) through golden\r
+    Aphrodite and bare Phokos (Phocus, Seal). \n(Hesiod, Theogony 1003)"
+  gameFailureIntro: 'You are in a very bad situation: your ship is lost, your men
+    have drowned, and you sit bedraggled on a rocky shore with nothing but your memories
+    of the recent trauma. The least you can do is ensure that the souls of your drowned
+    comrades will be taken care of. You set up an empty tomb, as their bodies are
+    lost at sea, and on it inscribe the following poem:'
+  stormFailureFlavor:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
 --- !u!114 &379815292
 MonoBehaviour:
   m_ObjectHideFlags: 0
