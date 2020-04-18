@@ -350,6 +350,62 @@ public static class CSVLoader
 		return masterResourceList;
 	}
 
+	public static List<Ritual> LoadRituals() 
+	{
+		List<Ritual> rituals = new List<Ritual>();
+
+		char[] lineDelimiter = new char[] { '@' };
+		char[] resourcesDelimiter = new char[] { ';' };
+		string filename = "ritual_types";
+
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		//Ignore top header row
+		for (int lineCount = 1; lineCount < fileByLine.Length; lineCount++) 
+		{
+			//0: has seer or not (int to be cast into a bool)
+			//1: flavor text (string)
+			//2: success chance (float)
+			//3: clout gain (int)
+			//4: lost resource ID (blank for none, int otherwise, separated by ; if more than one)
+			//5: lost resource quantity (0 for none, int otherwise, separated by ; if more than one)
+
+			string[] ritualInfo = fileByLine[lineCount].Split(lineDelimiter, StringSplitOptions.None);
+			bool hasSeer = int.Parse(ritualInfo[0]) != 0;
+			float successChance = float.Parse(ritualInfo[2]);
+			int cloutGain = int.Parse(ritualInfo[3]);
+			int cloutLoss = 10;
+			int[] resourceID;
+			if (ritualInfo[4] == "") {
+				resourceID = new int[0];
+			}
+			else {
+				string[] resources = ritualInfo[4].Split(resourcesDelimiter, StringSplitOptions.None);
+				resourceID = new int[resources.Length];
+				for (int i = 0; i < resources.Length; i++) {
+					resourceID[i] = int.Parse(resources[i]);
+				}
+			}
+
+			int[] resourceAmounts = new int[resourceID.Length];
+			if (resourceAmounts.Length > 0) {
+				string[] amts = ritualInfo[5].Split(resourcesDelimiter, StringSplitOptions.None);
+				if (resourceAmounts.Length != amts.Length) {
+					Debug.Log("Wrong quantities for resources");
+				}
+				for (int i = 0; i < resourceAmounts.Length; i++) {
+					resourceAmounts[i] = int.Parse(amts[i]);
+				}
+			}
+
+			Ritual r = new Ritual(hasSeer, ritualInfo[1], successChance, cloutGain, cloutLoss, resourceID, resourceAmounts);
+
+			rituals.Add(r);
+		}
+
+		return rituals;
+	}
+
 	static string TryLoadFromGameFolder(string filename) {
 		try {
 			var localFile = "";
