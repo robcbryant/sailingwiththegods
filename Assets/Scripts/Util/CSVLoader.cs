@@ -406,10 +406,51 @@ public static class CSVLoader
 		return rituals;
 	}
 
+	public static void LoadStormText(out List<string> titles, out List<string> subtitles, out List<string> startText, out List<string> ritualTextSeer, 
+		out List<string> ritualTextNoSeer, out List<string> resultsText, out List<string> successText, out List<string> failText) 
+	{
+		List<List<string>> textList = new List<List<string>> {
+			(titles = new List<string>()),
+			(subtitles = new List<string>()),
+			(startText = new List<string>()),
+			(ritualTextSeer = new List<string>()),
+			(ritualTextNoSeer = new List<string>()),
+			(resultsText = new List<string>()),
+			(successText = new List<string>()),
+			(failText = new List<string>())
+		};
+
+		char[] lineDelimiter = new char[] { '@' };
+		string filename = "storm_flavor";
+
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		if (textList.Count != fileByLine.Length) 
+		{
+			Debug.Log($"ERROR: wrong number of lines in the Storm Flavor file!\nShould have {textList.Count} but actually has {fileByLine.Length}");
+		}
+
+		for (int i = 0; i < fileByLine.Length; i++) 
+		{
+			string[] texts = fileByLine[i].Split(lineDelimiter);
+			Debug.Log($"Line {i}: {texts.Length} entries");
+			for (int j = 0; j < texts.Length; j++) 
+			{
+				if (texts[j] != "") 
+				{
+					textList[i].Add(texts[j]);
+				}
+				
+			}
+		}
+
+	}
+
 	static string TryLoadFromGameFolder(string filename) {
 		try {
 			var localFile = "";
 			var filePath = Application.dataPath + "/" + filename + ".txt";
+			Debug.Log($"File path: {filePath}");
 			if (File.Exists(filePath)) {
 				localFile = File.ReadAllText(filePath);
 			}

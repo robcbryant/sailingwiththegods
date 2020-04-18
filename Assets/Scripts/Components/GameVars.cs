@@ -209,6 +209,14 @@ public class GameVars : MonoBehaviour
 	//###################################
 	[HideInInspector] public List<int> activeSettlementInfluenceSphereList = new List<int>();
 	[HideInInspector] public List<Ritual> stormRituals = new List<Ritual>();
+	[HideInInspector] public List<string> stormTitles;
+	[HideInInspector] public List<string> stormSubtitles;
+	[HideInInspector] public List<string> stormStartText;
+	[HideInInspector] public List<string> stormSeerText;
+	[HideInInspector] public List<string> stormNoSeerText;
+	[HideInInspector] public List<string> stormRitualResultsText;
+	[HideInInspector] public List<string> stormSuccessText;
+	[HideInInspector] public List<string> stormFailureText;
 
 	//###################################
 	//	DEBUG VARIABLES
@@ -252,6 +260,9 @@ public class GameVars : MonoBehaviour
 		captainsLogEntries = CSVLoader.LoadCaptainsLogEntries();
 		masterResourceList = CSVLoader.LoadResourceList();
 		stormRituals = CSVLoader.LoadRituals();
+		CSVLoader.LoadStormText(out stormTitles, out stormSubtitles, out stormStartText, out stormSeerText, out stormNoSeerText, 
+			out stormRitualResultsText, out stormSuccessText, out stormFailureText);
+		Debug.Log($"Storm titles length: {stormTitles.Count}");
 		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list and crew list
 
 		CreateSettlementsFromList();
