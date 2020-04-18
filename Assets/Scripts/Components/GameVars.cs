@@ -262,7 +262,7 @@ public class GameVars : MonoBehaviour
 		stormRituals = CSVLoader.LoadRituals();
 		CSVLoader.LoadStormText(out stormTitles, out stormSubtitles, out stormStartText, out stormSeerText, out stormNoSeerText, 
 			out stormRitualResultsText, out stormSuccessText, out stormFailureText);
-		Debug.Log($"Storm titles length: {stormTitles.Count}");
+
 		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list and crew list
 
 		CreateSettlementsFromList();

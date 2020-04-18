@@ -412,10 +412,10 @@ public static class CSVLoader
 		List<List<string>> textList = new List<List<string>> {
 			(titles = new List<string>()),
 			(subtitles = new List<string>()),
+			(resultsText = new List<string>()),
 			(startText = new List<string>()),
 			(ritualTextSeer = new List<string>()),
 			(ritualTextNoSeer = new List<string>()),
-			(resultsText = new List<string>()),
 			(successText = new List<string>()),
 			(failText = new List<string>())
 		};
@@ -433,12 +433,15 @@ public static class CSVLoader
 		for (int i = 0; i < fileByLine.Length; i++) 
 		{
 			string[] texts = fileByLine[i].Split(lineDelimiter);
-			Debug.Log($"Line {i}: {texts.Length} entries");
 			for (int j = 0; j < texts.Length; j++) 
 			{
 				if (texts[j] != "") 
 				{
-					textList[i].Add(texts[j]);
+					string addText = texts[j].Replace('%', '\n');
+					if (addText[0] == '\"') {
+						addText = addText.Substring(1, addText.Length - 2);
+					}
+					textList[i].Add(addText);
 				}
 				
 			}
@@ -450,7 +453,6 @@ public static class CSVLoader
 		try {
 			var localFile = "";
 			var filePath = Application.dataPath + "/" + filename + ".txt";
-			Debug.Log($"File path: {filePath}");
 			if (File.Exists(filePath)) {
 				localFile = File.ReadAllText(filePath);
 			}
