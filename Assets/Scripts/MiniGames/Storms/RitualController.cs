@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RitualController : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class RitualController : MonoBehaviour
 
 	public ButtonExplanation performButton;
 	public ButtonExplanation rejectButton;
+	public Button finishButton;
+	public string winFinishText = "You escaped!";
+	public string loseFinishText = "Game over!";
 	
 	[Header("Titles and Subtitles")]
 	[Tooltip("Ordered: start, ritual, ritual results, storm results")]
@@ -226,5 +230,25 @@ public class RitualController : MonoBehaviour
 		}
 
 		return hasSeer;
+	}
+
+	public void WinGame()
+	{
+		mgInfo.gameObject.SetActive(true);
+		mgInfo.DisplayText(titles[3], subtitles[3], gameSuccessIntro + "\n\n" + gameSuccessFlavor[RandomIndex(gameSuccessFlavor)], stormIcon, MiniGameInfoScreen.MiniGame.Finish);
+		finishButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = winFinishText;
+	}
+
+	public void LoseGame() 
+	{
+		mgInfo.gameObject.SetActive(true);
+		mgInfo.DisplayText(titles[3], subtitles[3], gameFailureIntro + "\n\n" + stormFailureFlavor[RandomIndex(stormFailureFlavor)], stormIcon, MiniGameInfoScreen.MiniGame.Finish);
+		finishButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = loseFinishText;
+		finishButton.onClick.AddListener(EndGame);
+	}
+
+	public void EndGame() 
+	{
+		Globals.GameVars.isGameOver = true;
 	}
 }

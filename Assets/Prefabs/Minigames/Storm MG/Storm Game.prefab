@@ -213,6 +213,7 @@ GameObject:
   - component: {fileID: 3696558123293114792}
   - component: {fileID: 3696558123293114793}
   - component: {fileID: 3696558123293114794}
+  - component: {fileID: 1830496976844626170}
   m_Layer: 0
   m_Name: Mini Game Water
   m_TagString: Untagged
@@ -296,6 +297,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1830496976844626170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696558123293114796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b58104fd9b56e449af3481c2960d08c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rc: {fileID: 3696558123618646740}
 --- !u!1 &3696558123318984733
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,7 +502,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -548,7 +562,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3696558123618646742
 Transform:
   m_ObjectHideFlags: 0
@@ -631,6 +645,9 @@ MonoBehaviour:
   stormIcon: {fileID: 21300000, guid: 14603015bfab36247acc85b8765d06ae, type: 3}
   performButton: {fileID: 0}
   rejectButton: {fileID: 0}
+  finishButton: {fileID: 0}
+  winFinishText: You escaped!
+  loseFinishText: Game over!
   titles:
   - Storm!
   - Ritual
@@ -803,9 +820,14 @@ MonoBehaviour:
 
     (Orphic Hymn 73: To Leukothea)'
   ritualResultsText:
-  - Great job! The ritual was a complete success. The storm seems much less fearsome,
+  - 'Great job! The ritual was a complete success. The storm seems much less fearsome,
     and you are less likely to capsize and meet a watery end.
-  - Some small gods may have heard you, but you see no change in the weather.
+
+
+    Your seer has an idea of the best way out of the storm. There are other paths,
+    but following his directions is likely to lead you to safety.'
+  - Some small gods may have heard you, but you see no change in the weather. The
+    clouds are just as thick as before.
   - You chose not to perform a ritual at all. Yours will surely be the hardest of
     passages!
   gameSuccessIntro: 'You have escaped the storm! You now set up a nice poem thanking
@@ -813,22 +835,22 @@ MonoBehaviour:
     you realize: good things only happen when the gods are on your side.'
   gameSuccessFlavor:
   - "Aphrodite was celebrated with epithets Euploia (\u2018good sailing\u2019) and
-    Zephyrion (\u201Cof the gentle west wind,\r best for sailors\u2019); she was also
-    equated to Arsinoe II, the Ptolemaic queen of Egypt, who through her\r articulated
-    her own maritime ambitions. Offer her as your means allow \u2013 dedicate some
-    sea shells, or a\r fine vase of perfumed oil, a sacrifice of doves or a statue
-    of the goddess surrounded by the leaping fish of\r the sea, attended by the west
+    Zephyrion ('of the gentle west wind,\r best for sailors\u2019); she was also equated
+    to Arsinoe II, the Ptolemaic queen of Egypt, who through her\r articulated her
+    own maritime ambitions. Offer her as your means allow \u2013 dedicate some sea
+    shells, or a\r fine vase of perfumed oil, a sacrifice of doves or a statue of
+    the goddess surrounded by the leaping fish of\r the sea, attended by the west
     wind. Inscribe it with the following:\nLet us stand on the low beach of the sea-washed
     promontory,\r\ngazing at the sanctuary of Kypris of the Sea,\r\nand the spring
     overshadowed by poplars from which\r\nthe yellow kingfishers sip with their bills
     the running water.\r\n(Anthologia Palatina IX, 333 (ed. Beckby) \u2013 by Mnasalikes,
-    3 rd c BC)"
+    3 rd c BC)\n"
   - "Leukothea attends on heroes in distress, offer this goddess a bronze\r tripod
     worthy of a hero, and on it write:\nThis tripod \u2013 gleaming with bronze -
-    I dedicate to Leukothea, merciful goddess of the waves,\r\nShe of whom Homer sang:\r\n\"Kadmos'
+    I dedicate to Leukothea, merciful goddess of the waves,\r\nShe of whom Homer sang:\r\n''Kadmos'
     daughter, slender-ankled Ino who is also Leukothea; once she had been a mortal
     and spoken\r\nwith human voice, but now she lives in the salt seas and the gods
-    give her the honor that is her due.\"\n(Homer Odyssey 5.333)"
+    give her the honor that is her due.''\n(Homer Odyssey 5.333)"
   - "Delphin was the daimon who took the shape of a dolphin and served Poseidon:\r
     he was dear to Poseidon for the service he rendered when that sea god sought to\r
     persuade Amphitrite of his love. The dolphins may be considered their\r equivalent:
@@ -877,55 +899,55 @@ MonoBehaviour:
     comrades will be taken care of. You set up an empty tomb, as their bodies are
     lost at sea, and on it inscribe the following poem:'
   stormFailureFlavor:
-  - "This headstone has your name alone, Stranger, and the sea your body \n(Peek,\r
-    Griechische Vers-Inschriften 1746.1)"
+  - "This headstone has your name alone, Stranger, and the sea your body\r\n(Peek,
+    Griechische Vers-Inschriften 1746.1)\r"
   - "Shedding tears, this empty tomb demands Lysicles\u2019 body back, and blames
     the\r gods for the suffering he endured \u2013 he who was the first voice of the
     Academy!\r The shores and the gray wave possess him now, no one knows where\r\n(Posidippus,
     P.Mil.Vogl. VIII 309, XIV 3-6)"
   - "Think it through, and if ever you were accustomed to sail the waves, do not be
     a\r hasty Black Sea sailor, since you look upon the empty tomb of Dorus; some\r
-    random sea dunes hold him, somewhere far from Parium. \n(Posidippus, P.\r Mil.VOgl.
+    random sea dunes hold him, somewhere far from Parium.\n(Posidippus, P.\r Mil.VOgl.
     VIII 309, XIV 11-14)"
   - "Black Earth, wherever you hold the good Pythermus \u2013 for he met his end under\r
     chill Capricorn \u2013 shroud him lightly. But if you, Father of the Sea, are
     now\r hiding him, leave him unwounded somewhere, easy to spot, on the sparse shore\r
-    of Kyme, and, Lord of the Sea, return his corpse, as is due, to his fatherland\r\n(Posidippus,
+    of Kyme, and, Lord of the Sea, return his corpse, as is due, to his fatherland\n(Posidippus,
     P.Mil.Vogl. VIII 309, XIV 19-24)"
   - "Leophantus mourned for me, killed at sea, and buried my shipwrecked corpse\r
     with care, even though he had little means, as he was traveling through a foreign\r
-    land. But I am too small to repay this great favor. \n(Posidippus P.Mil.Vogl.
-    VIII\r 309, XIV 25-28)"
+    land. But I am too small to repay this great favor.\n(Posidippus P.Mil.Vogl. VIII\r
+    309, XIV 25-28)"
   - "Blowing with dreadful force, Boreas the North Wind killed the man Archeanax\r
     near the wretched island of Skyros, as the man swamp in the Aegean sea, able to\r
     see land on both sides. But two stades at sea is longer than great spaces of dry\r
-    plain. \n(Posidippus P.Mil.Vogl. 309, XIC 7-10)"
+    plain.\n(Posidippus P.Mil.Vogl. 309, XIC 7-10)"
   - "Every crewmember accompanied the ship as it sank to the floor of the sea.\r\n(Posidippus
     P.Mil.Vogl. VIII 309, XIV 15-18)"
   - "This is a drowned man\u2019s tomb. Stranger, sail on, Just as the other ships
-    sailed on\r while we surrendered to the waves. \n(Theodoridas)"
+    sailed on\r while we surrendered to the waves.\n(Theodoridas)"
   - "Thymodes also, weeping over sorrows he could not have expected, Built this\r
     empty tomb for his son Lykos, who did not get a grave, even a foreign one, but
     is\r held by some Thynian headland or Pontic island. There, without funeral rites,
-    lie\r his shining bones, naked on a hostile shore (Damagetus)"
+    lie\r his shining bones, naked on a hostile shore\n(Damagetus)"
   - "A blasting squall, rushing sharp upon us from the east, And dark night, and the\r
     waves of the dark setting of Orion \u2013 these were my end! I, Callaeschus, lost
     my\r grip on life as I sped along the mid-Libyan sea: Now I roll, drifting, in
-    the ocean,\r Food for fish, and this stone lies, declaring it stands above me.
-    \n(Leonidas of\r Tarentum)"
+    the ocean,\r Food for fish, and this stone lies, declaring it stands above me.\n(Leonidas
+    of\r Tarentum)"
   - "The sea is the sea is the sea \u2013 everywhere you go. Why do we blame in vain
     the\r Cyclades for this, the Hellespont for that, the \u2018eye of the needle\u2019
     for its\r challenges? They are famously hard, but with no good reason. If not,
     why is it\r that once I escaped their clutches, I met my fate in the harbor of
     Scarphe? Go\r ahead, Pray for a safe passage. Aristagoras, who is buried here,
-    knows that the\r sea is the sea is the sea. \n(Antipater of Sidon)"
+    knows that the\r sea is the sea is the sea.\n(Antipater of Sidon)"
   - "O mariners, o sailors! Ariston of Cyrene begs you all, In the name of Zeus the\r
     Protector, to tell his father Meno that his body lies on the Icarian rocks, That
-    he\r gave up the ghost in the Aegean Sea \n(Theaetetus)"
+    he\r gave up the ghost in the Aegean Sea\n(Theaetetus)"
   - "Stranger passing by! I mourn for Polyanthus. His wife, soon after their nuptials,\r
     placed his dust and bones into a grave. The foul-flowing wave of the Aegean did\r
     him in off Sciathus; It was fishermen, stranger, who at first light drew his sorry\r
-    corpse into the harbor of Torone. \n(Phaedimus)"
+    corpse into the harbor of Torone.\n(Phaedimus)"
 --- !u!114 &3696558123618646738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1147,7 +1169,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
