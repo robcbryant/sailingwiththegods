@@ -31,7 +31,7 @@
 
 Only show things in the inspector that should actually be set in the inspector. Otherwise it's unclear how things are expected to be hooked up.
 
-* Use `internal` (default for no qualifier) for things not referenced in any other scripts
+* Use `private` (default for no qualifier) for things not referenced in any other scripts
 * Use properties or `[HideInInspector]` for things that are accessed in other scripts but aren't meant to be set in the inspector. Prefer properties when possible.
 * Use `[ReadOnly]` for things that are shown in the inspector but are just there for debug and aren't accessed in other scripts
 * Use `[SerializeField]` if not accessed publicly, exception for legacy code already using public. Convert when convenient.

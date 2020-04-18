@@ -413,7 +413,7 @@ public class PlayerJourneyLog
 		this.otherAttributes = new List<string>();
 		this.CSVheader = "Unique_Machine_ID,timestamp,originE,originN,originZ,endE,endN,endZ," +
 			"Water_kg,Provisions_kg,Grain_kg,Wine_kg,Timber_kg,Gold_kg,Silver_kg," +
-			"Copper_kg,Tin_kg,Obsidian_kg,Lead_kg,Slaves_kg,Iron_kg,Bronze_kg,Luxury_kg,Is_Leaving_Port,PortID,PortName," +
+			"Copper_kg,Tin_kg,Obsidian_kg,Lead_kg,Livestock_kg,Iron_kg,Bronze_kg,Luxury_kg,Is_Leaving_Port,PortID,PortName," +
 			"CrewMemberIDs,UnityXYZ,Current_Questleg,ShipHP,Clout,PlayerNetwork,DaysStarving,DaysThirsty,Currency,LoanAmount,LoanOriginID,CurrentNavigatorTarget,KnownSettlements,CaptainsLog,upgradeLevel,crewCap,cargoCap\n";
 	}
 
@@ -607,7 +607,7 @@ public class Resource : Model
 	public const string Tin = "Tin";
 	public const string Obsidian = "Obsidian";
 	public const string Lead = "Lead";
-	public const string Slaves = "Slaves";
+	public const string Livestock = "Livestock";
 	public const string Iron = "Iron";
 	public const string Bronze = "Bronze";
 	public const string PrestigeGoods = "Prestige Goods";
@@ -667,7 +667,7 @@ public class Settlement
 			new Resource ("Tin", 0f),
 			new Resource ("Obsidian", 0f),
 			new Resource ("Lead", 0f),
-			new Resource ("Slaves", 0f),
+			new Resource ("Livestock", 0f),
 			new Resource ("Iron", 0f),
 			new Resource ("Bronze", 0f),
 			new Resource ("Prestige Goods", 0f),
@@ -780,7 +780,7 @@ public class Ship : Model
 			new Resource ("Tin", 0f),
 			new Resource ("Obsidian", 0f),
 			new Resource ("Lead", 0f),
-			new Resource ("Slaves", 0f),
+			new Resource ("Livestock", 0f),
 			new Resource ("Iron", 0f),
 			new Resource ("Bronze", 0f),
 			new Resource ("Prestige Goods", 0f),
