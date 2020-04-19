@@ -28,16 +28,23 @@ public class RandomizerForStorms : MonoBehaviour
 	public Transform cloudHolder;
 	public Vector2 cloudScaleBounds = new Vector2(3, 5);
 	public GameObject[] stormClouds;
+	public Transform edgeHolder;
+	public float edgeRockSpacing;
+	public int gapsPerSide = 2;
+	public int standardGapWidth = 4;
+	public int distBtwnGaps = 2;
 
 	[Header("Difficulty Adjustment")]
 	public GameObject hintArrow;
 	public float[] difficultyModifiers = new float[3];
 	public int[] cloutRanges;
 	public float[] cloutModifiers;
+	public Transform arrowTarget;
 
 	private Vector3 randomMGwaterSize;
 	private GameObject ship;
 	private Color baseLighting;
+	private List<Vector3> gaps = new List<Vector3>();
 
 	private void Start() 
 	{
@@ -53,6 +60,7 @@ public class RandomizerForStorms : MonoBehaviour
 
 		DestroyAllChildren(rockHolder);
 		DestroyAllChildren(cloudHolder);
+		DestroyAllChildren(edgeHolder);
 
 		RenderSettings.ambientLight = stormLighting;
 
@@ -81,8 +89,13 @@ public class RandomizerForStorms : MonoBehaviour
 	{
 		int rockNum, cloudNum;
 
+		miniGameWater.transform.localScale = (new Vector3(1, 0, 1) * Random.Range(waterSizeBounds.x, waterSizeBounds.y)) + Vector3.up;
+
 		rockNum = 100;
 		cloudNum = 450;
+
+		LineEdges();
+		arrowTarget.transform.position = gaps[Random.Range(0, gaps.Count)];
 
 		PopulateWithObstacles(rockNum, stormRocks, rockHolder, rockScaleBounds);
 		PopulateWithObstacles(cloudNum, stormClouds, cloudHolder, cloudScaleBounds);
@@ -122,8 +135,45 @@ public class RandomizerForStorms : MonoBehaviour
 				zPos = Random.Range(-range, range);
 				spawn.transform.localPosition = new Vector3(xPos, 0, zPos);
 			}
-
 			
+		}
+	}
+
+	private void LineEdges() 
+	{
+		FillOneSide(new Vector3(0, 0, 1), new Vector3(-range, 0, 0));
+		FillOneSide(new Vector3(0, 0, 1), new Vector3(range, 0, 0));
+		FillOneSide(new Vector3(1, 0, 0), new Vector3(0, 0, -range));
+		FillOneSide(new Vector3(1, 0, 0), new Vector3(0, 0, range));
+	}
+
+	private void FillOneSide(Vector3 side, Vector3 bound) {
+		int rocksPerLine = Mathf.FloorToInt((range * 2) / edgeRockSpacing);
+
+		bool counting = false;
+		int gapCount = 0;
+		int rockCount = 0;
+		Vector2Int gapPos = ChooseTwoWithGap(rocksPerLine, standardGapWidth + distBtwnGaps);
+		for (float i = -range; i <= range; i += edgeRockSpacing) {
+
+			if (rockCount == gapPos.x || rockCount == gapPos.y) {
+				counting = true;
+				gaps.Add((i * side) + bound);
+			}
+
+			if (counting) {
+				gapCount++;
+				if (gapCount > standardGapWidth) {
+					counting = false;
+					gapCount = 0;
+				}
+			}
+			else {
+				GameObject rock = Instantiate(stormRocks[Random.Range(0, stormRocks.Length)]);
+				rock.transform.SetParent(edgeHolder);
+				rock.transform.localPosition = (i * side) + bound;
+			}
+			rockCount++;
 		}
 	}
 
@@ -135,8 +185,20 @@ public class RandomizerForStorms : MonoBehaviour
 			if (children[i] != parent) {
 				Destroy(children[i].gameObject);
 			}
-			
 		}
+	}
+
+	private Vector2Int ChooseTwoWithGap(int choiceRange, int gapWidth) 
+	{
+		int i, j;
+		
+		do {
+			i = Random.Range(0, choiceRange);
+			j = Random.Range(0, choiceRange);
+		} while (Mathf.Abs(i - j) < gapWidth);
+
+		Debug.Log($"{i} and {j} are between 0 and {choiceRange} and at least {gapWidth} apart");
+		return new Vector2Int(i, j);
 	}
 
 	

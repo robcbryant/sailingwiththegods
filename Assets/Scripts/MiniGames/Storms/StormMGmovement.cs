@@ -8,9 +8,16 @@ public class StormMGmovement : MonoBehaviour
 	[HideInInspector]
 	public GameObject playerBoat;
 	public float speed;
-	
-	void Update() {
-		MoveBoat();
+
+	private bool move;
+
+	void Update() 
+	{
+		if (move) 
+		{
+			MoveBoat();
+		}
+		
 	}
 
 	//simple movement
@@ -29,5 +36,10 @@ public class StormMGmovement : MonoBehaviour
 		if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
 			playerBoat.transform.Rotate(0, speed*2, 0);
 		}
+	}
+
+	public void ToggleMovement(bool toggle) 
+	{
+		move = toggle;
 	}
 }

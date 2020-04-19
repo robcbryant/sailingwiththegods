@@ -38703,6 +38703,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1577346563}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1578096276 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7040359253992156814, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1418535441}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1585686377
 GameObject:
   m_ObjectHideFlags: 0
@@ -39984,6 +39996,14 @@ MonoBehaviour:
   showNonPortDockingNotification: 0
   updatePlayerCloutMeter: 0
   activeSettlementInfluenceSphereList: 
+  stormTitles: []
+  stormSubtitles: []
+  stormStartText: []
+  stormSeerText: []
+  stormNoSeerText: []
+  stormRitualResultsText: []
+  stormSuccessText: []
+  stormFailureText: []
   DEBUG_currentQuestLeg: 0
   DEBUG_MODE_ON: 0
 --- !u!4 &1660663146
@@ -40832,6 +40852,11 @@ PrefabInstance:
       propertyPath: finishButton
       value: 
       objectReference: {fileID: 814568177}
+    - target: {fileID: 3696558123618646740, guid: bc47b168c93bf6e4a9fc99a4fd026577,
+        type: 3}
+      propertyPath: startButton
+      value: 
+      objectReference: {fileID: 1578096276}
     - target: {fileID: 3696558123807021843, guid: bc47b168c93bf6e4a9fc99a4fd026577,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -40840,24 +40865,40 @@ PrefabInstance:
     - target: {fileID: 3696558123580685749, guid: bc47b168c93bf6e4a9fc99a4fd026577,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3696558123580685749, guid: bc47b168c93bf6e4a9fc99a4fd026577,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3696558124280618753, guid: bc47b168c93bf6e4a9fc99a4fd026577,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3696558124280618753, guid: bc47b168c93bf6e4a9fc99a4fd026577,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3696558123618646741, guid: bc47b168c93bf6e4a9fc99a4fd026577,
+        type: 3}
+      propertyPath: edgeDensity
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 3696558123618646741, guid: bc47b168c93bf6e4a9fc99a4fd026577,
+        type: 3}
+      propertyPath: edgeGap
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3696558123618646741, guid: bc47b168c93bf6e4a9fc99a4fd026577,
+        type: 3}
+      propertyPath: edgeRockSpacing
+      value: 0.1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6606249680645088500, guid: bc47b168c93bf6e4a9fc99a4fd026577, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: bc47b168c93bf6e4a9fc99a4fd026577, type: 3}
 --- !u!1 &1683481948 stripped
 GameObject:

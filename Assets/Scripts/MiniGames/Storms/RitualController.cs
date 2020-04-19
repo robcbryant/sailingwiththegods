@@ -19,6 +19,7 @@ public class RitualController : MonoBehaviour
 
 	public ButtonExplanation performButton;
 	public ButtonExplanation rejectButton;
+	public Button startButton;
 	public Button finishButton;
 	public string winFinishText = "You escaped!";
 	public string loseFinishText = "Game over!";
@@ -30,6 +31,7 @@ public class RitualController : MonoBehaviour
 	{
 		currentRitual = null;
 		currentCrew = null;
+		GetComponent<StormMGmovement>().ToggleMovement(false);
 		DisplayStartingText();
 	}
 
@@ -138,6 +140,10 @@ public class RitualController : MonoBehaviour
 			stormIcon, 
 			MiniGameInfoScreen.MiniGame.Start);
 
+		startButton.onClick.RemoveAllListeners();
+		startButton.onClick.AddListener(mgInfo.CloseDialog);
+		startButton.onClick.AddListener(() => GetComponent<StormMGmovement>().ToggleMovement(true));
+
 		//Send the result to the difficulty calculator for the storm
 		GetComponent<RandomizerForStorms>().SetDifficulty(result);
 	}
@@ -208,6 +214,7 @@ public class RitualController : MonoBehaviour
 			stormIcon, 
 			MiniGameInfoScreen.MiniGame.Finish);
 		finishButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = winFinishText;
+		GetComponent<StormMGmovement>().ToggleMovement(false);
 	}
 
 	public void LoseGame() 
@@ -220,7 +227,10 @@ public class RitualController : MonoBehaviour
 			stormIcon, 
 			MiniGameInfoScreen.MiniGame.Finish);
 		finishButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = loseFinishText;
+		finishButton.onClick.RemoveAllListeners();
+		finishButton.onClick.AddListener(mgInfo.CloseDialog);
 		finishButton.onClick.AddListener(EndGame);
+		GetComponent<StormMGmovement>().ToggleMovement(false);
 	}
 
 	public void EndGame() 
