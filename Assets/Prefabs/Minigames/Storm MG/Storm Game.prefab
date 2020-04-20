@@ -690,17 +690,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stormLighting: {r: 0.038223643, g: 0.054150164, b: 0.07604913, a: 1}
   miniGameWater: {fileID: 3696558123293114796}
-  waterSizeBounds: {x: 20, y: 60}
+  waterSizeBounds: {x: 25, y: 33}
   shipModels:
   - {fileID: 1794280630024534100, guid: f19be55d3dd3d814780089a25569c4ca, type: 3}
   - {fileID: 8508497137051089795, guid: 782997a7b5468464183f7a8842b9d3b7, type: 3}
   shipStartPoint: {fileID: 3696558124224406675}
   cam: {fileID: 3696558122851317210}
   camOffset: {x: 0, y: 65, z: 0}
-  shipClearanceRange: 0.15
+  shipClearanceRange: 30
   range: 5
   rockHolder: {fileID: 3696558123735522971}
   rockScaleBounds: {x: 1, y: 4}
+  rockNumbers: {x: 100, y: 150}
   stormRocks:
   - {fileID: 3217353607499389584, guid: 0da2e1bd4485aad48b2650399da06437, type: 3}
   - {fileID: 105575357220499537, guid: 8f300d1b7d1a2d84c9f13ace77a62d51, type: 3}
@@ -709,13 +710,15 @@ MonoBehaviour:
   - {fileID: 192518213476457187, guid: 2fd409d2a2e777044b228812aeba8686, type: 3}
   cloudHolder: {fileID: 3696558124314093979}
   cloudScaleBounds: {x: 1, y: 3}
+  cloudNumbers: {x: 400, y: 500}
   stormClouds:
   - {fileID: 5498604549913085531, guid: 34083cf702e9d494eb95c7bda707a679, type: 3}
   - {fileID: 7653758620165034016, guid: 23548d77aefce4943b7ed5dc6c094ee1, type: 3}
   - {fileID: 7837580452261017821, guid: 6ce58c1b99ccdf24bae4c9069fe75a58, type: 3}
   - {fileID: 2540205547307448384, guid: b9b78f96e7f756848a06854367c5e6ba, type: 3}
   edgeHolder: {fileID: 4818749839153947937}
-  edgeRockSpacing: 0
+  edgeRockSpacing: 0.1
+  spacingBase: 40
   gapsPerSide: 2
   standardGapWidth: 4
   distBtwnGaps: 2
@@ -724,8 +727,11 @@ MonoBehaviour:
   - 0.8
   - 1
   - 1.5
-  cloutRanges: 
-  cloutModifiers: []
+  cloutRanges: 00000000dc050000a00f0000
+  cloutModifiers:
+  - 0.8
+  - 1
+  - 1.6
   arrowTarget: {fileID: 3696558123291366912}
 --- !u!114 &3696558123618646740
 MonoBehaviour:
