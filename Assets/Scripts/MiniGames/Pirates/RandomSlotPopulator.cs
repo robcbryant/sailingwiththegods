@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class RandomSlotPopulator : MonoBehaviour
 {
+	public MiniGameInfoScreen mgInfo;
 	//Arrays of the drops zones (names respectively to their roles) are public so they may be edited in the future
 	[Header("Drop Zones")]
 	public GameObject[] enemySlotsEven;

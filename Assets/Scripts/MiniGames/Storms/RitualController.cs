@@ -120,23 +120,33 @@ public class RitualController : MonoBehaviour
 	{
 		RandomizerForStorms.StormDifficulty result = RandomizerForStorms.StormDifficulty.Error;
 		string extraText = "";
+		string cloutText = "";
 
 		if (action >= 0) {
 			//Ritual is being performed
 			float mod = CheckResources() ? 1 : noResourcesMod;
 			float check = Random.Range(0.0f, 1.0f);
 			result = check < (currentRitual.SuccessChance * mod) ? RandomizerForStorms.StormDifficulty.Easy : RandomizerForStorms.StormDifficulty.Medium;
+			if (result == RandomizerForStorms.StormDifficulty.Easy) {
+				cloutText = $"\n\nYour successful ritual has raised your clout by {currentRitual.CloutGain}.";
+				Globals.GameVars.playerShipVariables.ship.playerClout += currentRitual.CloutGain;
+			}
+			else {
+				cloutText = $"\n\nYour failed ritual has lowered your clout by {currentRitual.CloutLoss}.";
+				Globals.GameVars.playerShipVariables.ship.playerClout -= currentRitual.CloutLoss;
+			}
 			SubtractCosts();
 		}
 		else {
 			//Ritual was rejected
 			result = RandomizerForStorms.StormDifficulty.Hard;
+			cloutText = $"\n\nYou decision to not perform a ritual at all has done something to your clout by something.";
 		}
 
 		mgInfo.DisplayText(
 			Globals.GameVars.stormTitles[2], 
 			Globals.GameVars.stormSubtitles[2], 
-			result != RandomizerForStorms.StormDifficulty.Error ? extraText + Globals.GameVars.stormRitualResultsText[(int)result] : "something went wrong", 
+			result != RandomizerForStorms.StormDifficulty.Error ? extraText + Globals.GameVars.stormRitualResultsText[(int)result] + cloutText : "something went wrong", 
 			stormIcon, 
 			MiniGameInfoScreen.MiniGame.Start);
 
