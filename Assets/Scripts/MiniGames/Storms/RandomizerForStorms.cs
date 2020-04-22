@@ -24,20 +24,33 @@ public class RandomizerForStorms : MonoBehaviour
 	public float range = 5;
 	public Transform rockHolder;
 	public Vector2 rockScaleBounds = new Vector2(1, 4);
+	public Vector2Int rockNumbers;
 	public GameObject[] stormRocks;
 	public Transform cloudHolder;
 	public Vector2 cloudScaleBounds = new Vector2(3, 5);
+	public Vector2Int cloudNumbers;
 	public GameObject[] stormClouds;
+	public Transform edgeHolder;
+	[Min(0.01f)]
+	public float edgeRockSpacing;
+	[Tooltip("Because the spacing is based on local position, the same number won't always work. This is your 'base' that you got the spacing on.")]
+	public float spacingBase = 40;
+	public int gapsPerSide = 2;
+	public int standardGapWidth = 4;
+	public int distBtwnGaps = 2;
 
 	[Header("Difficulty Adjustment")]
 	public GameObject hintArrow;
 	public float[] difficultyModifiers = new float[3];
 	public int[] cloutRanges;
 	public float[] cloutModifiers;
+	public Transform arrowTarget;
 
 	private Vector3 randomMGwaterSize;
 	private GameObject ship;
 	private Color baseLighting;
+	private List<Vector3> gaps = new List<Vector3>();
+	private int cloutBracket;
 
 	private void Start() 
 	{
@@ -53,8 +66,11 @@ public class RandomizerForStorms : MonoBehaviour
 
 		DestroyAllChildren(rockHolder);
 		DestroyAllChildren(cloudHolder);
+		DestroyAllChildren(edgeHolder);
 
 		RenderSettings.ambientLight = stormLighting;
+
+		cloutBracket = GetCloutBracket();
 
 		InitializeView();
 	}
@@ -79,51 +95,95 @@ public class RandomizerForStorms : MonoBehaviour
 
 	public void SetDifficulty(StormDifficulty difficulty) 
 	{
-		int rockNum, cloudNum;
+		//Get random numbers for stuff
+		float waterSize = Random.Range(waterSizeBounds.x, waterSizeBounds.y);
+		int rockNum = Random.Range(rockNumbers.x, rockNumbers.y);
+		int cloudNum = Random.Range(cloudNumbers.x, cloudNumbers.y);
 
-		rockNum = 100;
-		cloudNum = 450;
+		//Modify those random numbers via clout and difficulty
+		float mod = cloutModifiers[cloutBracket] * difficultyModifiers[(int)difficulty];
 
+		waterSize *= mod;
+		rockNum = Mathf.FloorToInt(rockNum * mod);
+		cloudNum = Mathf.FloorToInt(cloudNum * mod);
+
+		Debug.Log($"SqM: {waterSize * waterSize}, rocks {rockNum}, clouds {cloudNum}");
+
+		//Populate the area with rocks and clouds
+		miniGameWater.transform.localScale = new Vector3(waterSize, 1, waterSize);
 		PopulateWithObstacles(rockNum, stormRocks, rockHolder, rockScaleBounds);
 		PopulateWithObstacles(cloudNum, stormClouds, cloudHolder, cloudScaleBounds);
 
-		//Get random numbers for the size of the water
+		float currentSpacing = (spacingBase / waterSize) * edgeRockSpacing;
 
-		//Modify the size according to clout and difficulty
-
-		//Get random numbers for rocks and clouds
-
-		//Modify those random numbers via clout and difficulty
-
-		//Populate the area with rocks and clouds
+		LineEdges(currentSpacing);
 
 		//Turn on/off the hint arrow
+		if (difficulty == StormDifficulty.Easy) {
+			hintArrow.SetActive(true);
+			arrowTarget.transform.position = gaps[Random.Range(0, gaps.Count)];
+		}
+		else {
+			hintArrow.SetActive(false);
+		}
 	}
 
 	private void PopulateWithObstacles(int num, GameObject[] obstacle, Transform parent, Vector2 scaleRange) 
 	{
 		for (int i = 0; i < num; i++) 
 		{
-			float xPos = Random.Range(-range, range);
-			float zPos = Random.Range(-range, range);
-			Vector3 spawnPoint = new Vector3(xPos, 0, zPos);
-
 			int spawnIndex = Random.Range(0, obstacle.Length);
 			GameObject spawn = Instantiate(obstacle[spawnIndex]);
-			float scaleFactor = Random.Range(scaleRange.x, scaleRange.y);
-			spawn.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
+			RandomizeScaleAndRotation(spawn.transform, scaleRange);
 			spawn.transform.SetParent(parent);
-			spawn.transform.localPosition = spawnPoint;
-			spawn.transform.localEulerAngles = new Vector3(0f, Random.Range(0f, 360f), 0f);
-
-			while (Vector3.Distance(shipStartPoint.position, spawn.transform.position) < shipClearanceRange) 
-			{
-				xPos = Random.Range(-range, range);
-				zPos = Random.Range(-range, range);
+			
+			float dist = 0;
+			do {
+				float xPos = Random.Range(-range, range);
+				float zPos = Random.Range(-range, range);
 				spawn.transform.localPosition = new Vector3(xPos, 0, zPos);
+				dist = Vector2.Distance(new Vector2(shipStartPoint.position.x, shipStartPoint.position.y), new Vector2(spawn.transform.position.x, spawn.transform.position.z));
+			} while (dist < shipClearanceRange);
+			
+		}
+	}
+
+	private void LineEdges(float spacing) 
+	{
+		FillOneSide(new Vector3(0, 0, 1), new Vector3(-range, 0, 0), spacing);
+		FillOneSide(new Vector3(0, 0, 1), new Vector3(range, 0, 0), spacing);
+		FillOneSide(new Vector3(1, 0, 0), new Vector3(0, 0, -range), spacing);
+		FillOneSide(new Vector3(1, 0, 0), new Vector3(0, 0, range), spacing);
+	}
+
+	private void FillOneSide(Vector3 side, Vector3 bound, float spacing) {
+		int rocksPerLine = Mathf.FloorToInt((range * 2) / spacing);
+		
+		bool counting = false;
+		int gapCount = 0;
+		int rockCount = 0;
+		Vector2Int gapPos = ChooseTwoWithGap(rocksPerLine, standardGapWidth + distBtwnGaps);
+		for (float i = -range; i <= range; i += spacing) {
+
+			if (rockCount == gapPos.x || rockCount == gapPos.y) {
+				counting = true;
+				gaps.Add((i * side) + bound);
 			}
 
-			
+			if (counting) {
+				gapCount++;
+				if (gapCount > standardGapWidth) {
+					counting = false;
+					gapCount = 0;
+				}
+			}
+			else {
+				GameObject rock = Instantiate(stormRocks[Random.Range(0, stormRocks.Length)]);
+				RandomizeScaleAndRotation(rock.transform, rockScaleBounds);
+				rock.transform.SetParent(edgeHolder);
+				rock.transform.localPosition = (i * side) + bound;
+			}
+			rockCount++;
 		}
 	}
 
@@ -135,8 +195,37 @@ public class RandomizerForStorms : MonoBehaviour
 			if (children[i] != parent) {
 				Destroy(children[i].gameObject);
 			}
-			
 		}
+	}
+
+	private Vector2Int ChooseTwoWithGap(int choiceRange, int gapWidth) 
+	{
+		int i, j;
+		
+		do {
+			i = Random.Range(0, choiceRange);
+			j = Random.Range(0, choiceRange);
+		} while (Mathf.Abs(i - j) < gapWidth);
+		return new Vector2Int(i, j);
+	}
+
+	private int GetCloutBracket() 
+	{
+		for (int i = cloutRanges.Length - 1; i >= 0; i--) {
+			if (Globals.GameVars.playerShipVariables.ship.playerClout > cloutRanges[i]) {
+				string s = i + 1 < cloutRanges.Length ? cloutRanges[i+1].ToString() : "maximum";
+				Debug.Log($"Player clout {Globals.GameVars.playerShipVariables.ship.playerClout} is larger than {cloutRanges[i]} but smaller than {s}");
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+	private void RandomizeScaleAndRotation(Transform t, Vector2 scaleRange) {
+		float scaleFactor = Random.Range(scaleRange.x, scaleRange.y);
+		t.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
+		t.transform.localEulerAngles = new Vector3(0f, Random.Range(0f, 360f), 0f);
 	}
 
 	

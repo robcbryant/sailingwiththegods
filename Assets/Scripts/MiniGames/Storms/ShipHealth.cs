@@ -35,18 +35,13 @@ public class ShipHealth : MonoBehaviour
 	public void TakeDamage(float damage) 
 	{
 		currentShipHealth -= damage;
-		if (damage <= 0) 
+		if (currentShipHealth <= 0) 
 		{
-			damage = 0;
-			LoseGame();
+			currentShipHealth = 0;
+			GetComponent<RitualController>().LoseGame();
 		}
 		SetHealth(currentShipHealth);
 		UpdateHealthBar();
-	}
-
-	private void LoseGame() 
-	{
-
 	}
 
 	private void UpdateHealthBar() 

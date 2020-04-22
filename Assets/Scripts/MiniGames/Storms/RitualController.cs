@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RitualController : MonoBehaviour
 {
+
 	public enum RitualResult
 	{
 		Success, Failure, Refusal
@@ -17,66 +19,31 @@ public class RitualController : MonoBehaviour
 
 	public ButtonExplanation performButton;
 	public ButtonExplanation rejectButton;
-	
-	[Header("Titles and Subtitles")]
-	[Tooltip("Ordered: start, ritual, ritual results, storm results")]
-	[TextArea(1, 3)]
-	public string[] titles;
-
-	[Tooltip("Ordered: start, ritual, ritual results, storm results")]
-	[TextArea(1, 3)]
-	public string[] subtitles;
-
-	[Header("Starting Text")]
-	[TextArea(2, 10)]
-	public string starter;
-	[Tooltip("Unordered, will be chosen at random")]
-	[TextArea(2, 15)]
-	public string[] startingText;
-
-	[Header("Ritual Text - Seer")]
-	[TextArea(2, 10)]
-	public string seerIntro;
-	[TextArea(2, 15)]
-	public string[] seerRitualFlavor;
-
-	[Header("Ritual Text - No Seer")]
-	[TextArea(2, 10)]
-	public string noSeerIntro;
-	[TextArea(2, 15)]
-	public string[] noSeerRitualFlavor;
-
-	[Header("Ritual Results")]
-	[Tooltip("Ordered: success, failure, refusal")]
-	[TextArea(2, 15)]
-	public string[] ritualResultsText;
-
-	[Header("Game Results - Success")]
-	[TextArea(2, 10)]
-	public string gameSuccessIntro;
-	[TextArea(2, 15)]
-	public string[] gameSuccessFlavor;
-
-	[Header("Game Results - Failure")]
-	[TextArea(2, 10)]
-	public string gameFailureIntro;
-	[TextArea(2, 15)]
-	public string[] stormFailureFlavor;
+	public Button startButton;
+	public Button finishButton;
+	public string winFinishText = "You escaped!";
+	public string loseFinishText = "Game over!";
 
 	private Ritual currentRitual;
-	private CrewMember chosenCrew;
+	private CrewMember currentCrew;
 
 	private void OnEnable() 
 	{
 		currentRitual = null;
-		chosenCrew = null;
+		currentCrew = null;
+		GetComponent<StormMGmovement>().ToggleMovement(false);
 		DisplayStartingText();
 	}
 
 	public void DisplayStartingText() 
 	{
 		mgInfo.gameObject.SetActive(true);
-		mgInfo.DisplayText(titles[0], subtitles[0], starter + "\n\n" + startingText[RandomIndex(startingText)], stormIcon, MiniGameInfoScreen.MiniGame.StormStart);
+		mgInfo.DisplayText(
+			Globals.GameVars.stormTitles[0], 
+			Globals.GameVars.stormSubtitles[0], 
+			Globals.GameVars.stormStartText[0] + "\n\n" + Globals.GameVars.stormStartText[Random.Range(1, Globals.GameVars.stormStartText.Count)], 
+			stormIcon, 
+			MiniGameInfoScreen.MiniGame.StormStart);
 	}
 
 	public void ChooseRitual() 
@@ -96,7 +63,7 @@ public class RitualController : MonoBehaviour
 
 		//Select an appropriate ritual
 		currentRitual = possibleRituals[RandomIndex(possibleRituals)];
-		chosenCrew = Globals.GameVars.playerShipVariables.ship.crewRoster[RandomIndex(Globals.GameVars.playerShipVariables.ship.crewRoster)];
+		currentCrew = Globals.GameVars.playerShipVariables.ship.crewRoster[RandomIndex(Globals.GameVars.playerShipVariables.ship.crewRoster)];
 
 		DisplayRitualText();
 	}
@@ -104,11 +71,12 @@ public class RitualController : MonoBehaviour
 	public void DisplayRitualText() 
 	{
 		string ritualText = currentRitual.RitualText;
-		string introText = currentRitual.HasSeer ? seerIntro : noSeerIntro;
-		string closeText = currentRitual.HasSeer ? seerRitualFlavor[RandomIndex(seerRitualFlavor)] : noSeerRitualFlavor[RandomIndex(noSeerRitualFlavor)];
-		string finalRitualText = introText + "\n\n" + ritualText.Replace("{0}", chosenCrew.name) + "\n\n" + closeText;
+		string introText = currentRitual.HasSeer ? Globals.GameVars.stormSeerText[0] : Globals.GameVars.stormNoSeerText[0];
+		string closeText = currentRitual.HasSeer ? Globals.GameVars.stormSeerText[Random.Range(1, Globals.GameVars.stormSeerText.Count)] : 
+			Globals.GameVars.stormNoSeerText[Random.Range(1, Globals.GameVars.stormNoSeerText.Count)];
+		string finalRitualText = introText + "\n\n" + ritualText.Replace("{0}", currentCrew.name) + "\n\n" + closeText;
 
-		mgInfo.DisplayText(titles[1], subtitles[1], finalRitualText, stormIcon, MiniGameInfoScreen.MiniGame.Storm);
+		mgInfo.DisplayText(Globals.GameVars.stormTitles[1], Globals.GameVars.stormSubtitles[1], finalRitualText, stormIcon, MiniGameInfoScreen.MiniGame.Storm);
 
 		bool hasResources = CheckResources();
 		string performText = "";
@@ -128,7 +96,7 @@ public class RitualController : MonoBehaviour
 			switch (currentRitual.ResourceTypes[i]) 
 			{
 				case (-1):
-					performText += $"\n{chosenCrew.name} will die as a sacrifice";
+					performText += $"\n{currentCrew.name} will die as a sacrifice";
 					break;
 				case (-2):
 					performText += $"\n-{currentRitual.ResourceAmounts[i]} Drachma";
@@ -165,8 +133,16 @@ public class RitualController : MonoBehaviour
 			result = RandomizerForStorms.StormDifficulty.Hard;
 		}
 
-		mgInfo.DisplayText(titles[2], subtitles[2], result != RandomizerForStorms.StormDifficulty.Error ? extraText + ritualResultsText[(int)result] : "something went wrong", 
-			stormIcon, MiniGameInfoScreen.MiniGame.Start);
+		mgInfo.DisplayText(
+			Globals.GameVars.stormTitles[2], 
+			Globals.GameVars.stormSubtitles[2], 
+			result != RandomizerForStorms.StormDifficulty.Error ? extraText + Globals.GameVars.stormRitualResultsText[(int)result] : "something went wrong", 
+			stormIcon, 
+			MiniGameInfoScreen.MiniGame.Start);
+
+		startButton.onClick.RemoveAllListeners();
+		startButton.onClick.AddListener(mgInfo.CloseDialog);
+		startButton.onClick.AddListener(() => GetComponent<StormMGmovement>().ToggleMovement(true));
 
 		//Send the result to the difficulty calculator for the storm
 		GetComponent<RandomizerForStorms>().SetDifficulty(result);
@@ -201,7 +177,7 @@ public class RitualController : MonoBehaviour
 					Globals.GameVars.playerShipVariables.ship.currency = Mathf.Max(0, Globals.GameVars.playerShipVariables.ship.currency - currentRitual.ResourceAmounts[i]);
 					break;
 				case (-1):
-					Globals.GameVars.playerShipVariables.ship.crewRoster.Remove(chosenCrew);
+					Globals.GameVars.playerShipVariables.ship.crewRoster.Remove(currentCrew);
 					break;
 				default:
 					int j = currentRitual.ResourceTypes[i];
@@ -226,5 +202,39 @@ public class RitualController : MonoBehaviour
 		}
 
 		return hasSeer;
+	}
+
+	public void WinGame()
+	{
+		mgInfo.gameObject.SetActive(true);
+		mgInfo.DisplayText(
+			Globals.GameVars.stormTitles[3], 
+			Globals.GameVars.stormSubtitles[3], 
+			Globals.GameVars.stormSuccessText[0] + "\n\n" + Globals.GameVars.stormSuccessText[Random.Range(1, Globals.GameVars.stormSuccessText.Count)], 
+			stormIcon, 
+			MiniGameInfoScreen.MiniGame.Finish);
+		finishButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = winFinishText;
+		GetComponent<StormMGmovement>().ToggleMovement(false);
+	}
+
+	public void LoseGame() 
+	{
+		mgInfo.gameObject.SetActive(true);
+		mgInfo.DisplayText(
+			Globals.GameVars.stormTitles[3], 
+			Globals.GameVars.stormSubtitles[3], 
+			Globals.GameVars.stormFailureText[0] + "\n\n" + Globals.GameVars.stormFailureText[Random.Range(1, Globals.GameVars.stormFailureText.Count)], 
+			stormIcon, 
+			MiniGameInfoScreen.MiniGame.Finish);
+		finishButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = loseFinishText;
+		finishButton.onClick.RemoveAllListeners();
+		finishButton.onClick.AddListener(mgInfo.CloseDialog);
+		finishButton.onClick.AddListener(EndGame);
+		GetComponent<StormMGmovement>().ToggleMovement(false);
+	}
+
+	public void EndGame() 
+	{
+		Globals.GameVars.isGameOver = true;
 	}
 }
