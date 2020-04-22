@@ -24,11 +24,11 @@ public class RandomizerForStorms : MonoBehaviour
 	public float range = 5;
 	public Transform rockHolder;
 	public Vector2 rockScaleBounds = new Vector2(1, 4);
-	public Vector2Int rockNumbers;
+	public Vector2 rockPerSqM = new Vector2(0.125f, 0.14f);
 	public GameObject[] stormRocks;
 	public Transform cloudHolder;
 	public Vector2 cloudScaleBounds = new Vector2(3, 5);
-	public Vector2Int cloudNumbers;
+	public Vector2 cloudPerSqM = new Vector2(0.185f, 0.215f);
 	public GameObject[] stormClouds;
 	public Transform edgeHolder;
 	[Min(0.01f)]
@@ -97,24 +97,23 @@ public class RandomizerForStorms : MonoBehaviour
 	{
 		//Get random numbers for stuff
 		float waterSize = Random.Range(waterSizeBounds.x, waterSizeBounds.y);
-		int rockNum = Random.Range(rockNumbers.x, rockNumbers.y);
-		int cloudNum = Random.Range(cloudNumbers.x, cloudNumbers.y);
 
 		//Modify those random numbers via clout and difficulty
 		float mod = cloutModifiers[cloutBracket] * difficultyModifiers[(int)difficulty];
 
 		waterSize *= mod;
-		rockNum = Mathf.FloorToInt(rockNum * mod);
-		cloudNum = Mathf.FloorToInt(cloudNum * mod);
+		float sqWater = waterSize * waterSize;
+		int rockNum = Mathf.FloorToInt(Random.Range(rockPerSqM.x, rockPerSqM.y) * sqWater * mod);
+		int cloudNum = Mathf.FloorToInt(Random.Range(cloudPerSqM.x, cloudPerSqM.y) * sqWater * mod);
 
-		Debug.Log($"SqM: {waterSize * waterSize}, rocks {rockNum}, clouds {cloudNum}");
+		Debug.Log($"SqM: {sqWater}, rocks {rockNum}, clouds {cloudNum}");
 
 		//Populate the area with rocks and clouds
 		miniGameWater.transform.localScale = new Vector3(waterSize, 1, waterSize);
-		PopulateWithObstacles(rockNum, stormRocks, rockHolder, rockScaleBounds);
-		PopulateWithObstacles(cloudNum, stormClouds, cloudHolder, cloudScaleBounds);
-
 		float currentSpacing = (spacingBase / waterSize) * edgeRockSpacing;
+
+		PopulateWithObstacles(rockNum, stormRocks, rockHolder, rockScaleBounds, currentSpacing);
+		PopulateWithObstacles(cloudNum, stormClouds, cloudHolder, cloudScaleBounds, currentSpacing);
 
 		LineEdges(currentSpacing);
 
@@ -128,7 +127,7 @@ public class RandomizerForStorms : MonoBehaviour
 		}
 	}
 
-	private void PopulateWithObstacles(int num, GameObject[] obstacle, Transform parent, Vector2 scaleRange) 
+	private void PopulateWithObstacles(int num, GameObject[] obstacle, Transform parent, Vector2 scaleRange, float edging) 
 	{
 		for (int i = 0; i < num; i++) 
 		{
@@ -139,10 +138,10 @@ public class RandomizerForStorms : MonoBehaviour
 			
 			float dist = 0;
 			do {
-				float xPos = Random.Range(-range, range);
-				float zPos = Random.Range(-range, range);
+				float xPos = Random.Range(-(range + edging), range + edging);
+				float zPos = Random.Range(-(range + edging), range + edging);
 				spawn.transform.localPosition = new Vector3(xPos, 0, zPos);
-				dist = Vector2.Distance(new Vector2(shipStartPoint.position.x, shipStartPoint.position.y), new Vector2(spawn.transform.position.x, spawn.transform.position.z));
+				dist = Vector2.Distance(new Vector2(shipStartPoint.position.x, shipStartPoint.position.z), new Vector2(spawn.transform.position.x, spawn.transform.position.z));
 			} while (dist < shipClearanceRange);
 			
 		}
