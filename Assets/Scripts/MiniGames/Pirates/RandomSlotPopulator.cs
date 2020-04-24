@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class RandomSlotPopulator : MonoBehaviour
 {
-	public MiniGameInfoScreen mgInfo;
 	//Arrays of the drops zones (names respectively to their roles) are public so they may be edited in the future
 	[Header("Drop Zones")]
 	public GameObject[] enemySlotsEven;
@@ -35,17 +34,18 @@ public class RandomSlotPopulator : MonoBehaviour
 	private CardDropZone[,] spawnedCrewSlots;
 
 	private int crewNum;
-
-	// Start is called before the first frame update
-	void Start()
+	
+	void OnEnable()
     {
 		SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
 		crewNum = Globals.GameVars.playerShipVariables.ship.crew;
-		//call currently being used for testing purposes 
+	}
+
+	public void StartMinigame() 
+	{
 		PopulateScreen();
 		ActivateCrewRow(0);
 	}
-
 
 	public void SetPirateType(PirateType t) 
 	{

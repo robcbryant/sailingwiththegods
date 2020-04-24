@@ -35527,6 +35527,36 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 52318790949339823, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 52318790949339823, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 52318790949339823, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 52318790949339823, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1607239039}
+    - target: {fileID: 52318790949339823, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: StartMinigame
+      objectReference: {fileID: 0}
+    - target: {fileID: 52318790949339823, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c1c0ae557afe6d4bb6833198718f9d4, type: 3}
 --- !u!114 &1418535442 stripped
@@ -39155,6 +39185,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1870797929942794655}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1607239039 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1870797931121624094, guid: d92975bc822f9a244a0220609a4d7cfd,
+    type: 3}
+  m_PrefabInstance: {fileID: 1870797929942794655}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607239034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6d7a0b6e6ec7cf4cb5843ebd6cae149, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1614366357
 GameObject:
   m_ObjectHideFlags: 0
@@ -41170,6 +41212,17 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 2941274827254874168}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
@@ -50753,6 +50806,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1870797931121624092, guid: d92975bc822f9a244a0220609a4d7cfd,
+        type: 3}
+      propertyPath: mgInfo
+      value: 
+      objectReference: {fileID: 1418535444}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d92975bc822f9a244a0220609a4d7cfd, type: 3}
 --- !u!1001 &1914736136427828235
