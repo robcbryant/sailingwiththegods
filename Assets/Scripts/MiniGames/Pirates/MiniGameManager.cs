@@ -7,9 +7,13 @@ using System.Linq;
 
 public class MiniGameManager : MonoBehaviour
 {
+	[Header("UI")]
 	public MiniGameInfoScreen mgInfo;
 	public Sprite pirateIcon;
+	[TextArea(2, 15)]
+	public string pirateInstructions;
 
+	[Header("Gameplay")]
 	public GameObject piratesParent, crewParent;
 	public List<GameObject> pirates, crew;
 	public Transform[] pirateSpaces, crewSpaces;
@@ -17,7 +21,12 @@ public class MiniGameManager : MonoBehaviour
 	private void OnEnable() 
 	{
 		mgInfo.gameObject.SetActive(true);
-		mgInfo.DisplayText("Pirates!", "Time to fight!", "This is pirate content", pirateIcon, MiniGameInfoScreen.MiniGame.Pirates);
+		mgInfo.DisplayText(
+			Globals.GameVars.pirateTitles[0], 
+			Globals.GameVars.pirateSubtitles[0], 
+			Globals.GameVars.pirateStartText[0] + "\n\n" + pirateInstructions + "\n\n" + Globals.GameVars.pirateStartText[Random.Range(1, Globals.GameVars.pirateStartText.Count)], 
+			pirateIcon, 
+			MiniGameInfoScreen.MiniGame.Pirates);
 	}
 
 	public void Fight() {
