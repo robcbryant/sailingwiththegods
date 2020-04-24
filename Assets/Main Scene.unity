@@ -35557,6 +35557,36 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 743456498786866521, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 743456498786866521, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 743456498786866521, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 743456498786866521, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1607239037}
+    - target: {fileID: 743456498786866521, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenNegotiations
+      objectReference: {fileID: 0}
+    - target: {fileID: 743456498786866521, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c1c0ae557afe6d4bb6833198718f9d4, type: 3}
 --- !u!114 &1418535442 stripped
@@ -39185,6 +39215,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1870797929942794655}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1607239037 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1870797931121624092, guid: d92975bc822f9a244a0220609a4d7cfd,
+    type: 3}
+  m_PrefabInstance: {fileID: 1870797929942794655}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607239034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0858d27e31572de4983831af5ee2a5c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1607239039 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1870797931121624094, guid: d92975bc822f9a244a0220609a4d7cfd,
@@ -40046,6 +40088,15 @@ MonoBehaviour:
   stormRitualResultsText: []
   stormSuccessText: []
   stormFailureText: []
+  pirateTitles: []
+  pirateSubtitles: []
+  pirateStartText: []
+  pirateTypeIntroText: []
+  pirateNegotiateText: []
+  pirateRunSuccessText: []
+  pirateRunFailText: []
+  pirateSuccessText: []
+  pirateFailureText: []
   DEBUG_currentQuestLeg: 0
   DEBUG_MODE_ON: 0
 --- !u!4 &1660663146

@@ -29,6 +29,17 @@ public class MiniGameManager : MonoBehaviour
 			MiniGameInfoScreen.MiniGame.Pirates);
 	}
 
+	public void OpenNegotiations() {
+		string deal = "This is what the pirates are offering";
+
+		mgInfo.DisplayText(
+			Globals.GameVars.pirateTitles[1],
+			Globals.GameVars.pirateSubtitles[1],
+			Globals.GameVars.pirateNegotiateText[0] + "\n\n" + deal + "\n\n" + Globals.GameVars.pirateNegotiateText[Random.Range(1, Globals.GameVars.pirateNegotiateText.Count)],
+			pirateIcon,
+			MiniGameInfoScreen.MiniGame.Negotiation);
+	}
+
 	public void Fight() {
 		CrewCard crewMember, pirate;
 		foreach(Transform p in piratesParent.transform) {
