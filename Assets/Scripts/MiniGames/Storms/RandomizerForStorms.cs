@@ -42,7 +42,7 @@ public class RandomizerForStorms : MonoBehaviour
 	[Header("Difficulty Adjustment")]
 	public GameObject hintArrow;
 	public float[] difficultyModifiers = new float[3];
-	public int[] cloutRanges;
+	public float[] cloutRanges;
 	public float[] cloutModifiers;
 	public Transform arrowTarget;
 
@@ -63,14 +63,9 @@ public class RandomizerForStorms : MonoBehaviour
 		{
 			Destroy(ship);
 		}
-
-		DestroyAllChildren(rockHolder);
-		DestroyAllChildren(cloudHolder);
-		DestroyAllChildren(edgeHolder);
-
 		RenderSettings.ambientLight = stormLighting;
 
-		cloutBracket = GetCloutBracket();
+		cloutBracket = GetBracket(cloutRanges, Globals.GameVars.playerShipVariables.ship.playerClout);
 
 		InitializeView();
 	}
@@ -78,6 +73,9 @@ public class RandomizerForStorms : MonoBehaviour
 	private void OnDisable() 
 	{
 		RenderSettings.ambientLight = baseLighting;
+		DestroyAllChildren(rockHolder);
+		DestroyAllChildren(cloudHolder);
+		DestroyAllChildren(edgeHolder);
 	}
 
 	private void InitializeView() 
@@ -208,16 +206,28 @@ public class RandomizerForStorms : MonoBehaviour
 		return new Vector2Int(i, j);
 	}
 
-	private int GetCloutBracket() 
+	//private int GetCloutBracket() 
+	//{
+	//	for (int i = cloutRanges.Length - 1; i >= 0; i--) {
+	//		if (Globals.GameVars.playerShipVariables.ship.playerClout > cloutRanges[i]) {
+	//			string s = i + 1 < cloutRanges.Length ? cloutRanges[i+1].ToString() : "maximum";
+	//			Debug.Log($"Player clout {Globals.GameVars.playerShipVariables.ship.playerClout} is larger than {cloutRanges[i]} but smaller than {s}");
+	//			return i;
+	//		}
+	//	}
+
+	//	return -1;
+	//}
+
+	public static int GetBracket<T>(T[] brackets, T find) where T : System.IComparable
 	{
-		for (int i = cloutRanges.Length - 1; i >= 0; i--) {
-			if (Globals.GameVars.playerShipVariables.ship.playerClout > cloutRanges[i]) {
-				string s = i + 1 < cloutRanges.Length ? cloutRanges[i+1].ToString() : "maximum";
-				Debug.Log($"Player clout {Globals.GameVars.playerShipVariables.ship.playerClout} is larger than {cloutRanges[i]} but smaller than {s}");
+		for (int i = brackets.Length - 1; i >= 0; i--) {
+			if (find.CompareTo(brackets[i]) >= 0) {
+				string s = i + 1 < brackets.Length ? brackets[i + 1].ToString() : "maximum";
+				Debug.Log($"{find} is larger than or equal to {brackets[i]} but smaller than {s}");
 				return i;
 			}
 		}
-
 		return -1;
 	}
 
@@ -226,70 +236,4 @@ public class RandomizerForStorms : MonoBehaviour
 		t.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
 		t.transform.localEulerAngles = new Vector3(0f, Random.Range(0f, 360f), 0f);
 	}
-
-	
-	//private void SetDifficulty() {
-	//	//Difficulty changes:
-
-	//	//EASY
-	//	//clout range between 1 and 1499 (first three clout titles)
-	//	//randomMGwaterSize = new Vector3(Random.Range(20, 40), 1, Random.Range(20, 40));
-	//	//int rndNumForRocks = Random.Range(20,50);
-	//	//int rndNumForClouds = Random.Range(200,400);
-
-	//	//MEDIUM
-	//	//clout range between 1500 and 3999 (next five clout titles)
-	//	//randomMGwaterSize = new Vector3(Random.Range(20, 60), 1, Random.Range(20, 60));
-	//	//int rndNumForRocks = Random.Range(50, 100);
-	//	//int rndNumForClouds = Random.Range(400, 500);
-
-	//	//HARD
-	//	//clout range between 4000 and infinity (last three clout titles)
-	//	//randomMGwaterSize = new Vector3(Random.Range(60, 100), 1, Random.Range(60, 100));
-	//	//int rndNumForRocks = Random.Range(100, 200);
-	//	//int rndNumForClouds = Random.Range(500, 1000);
-
-	//  //NOTE: the below call for clout information on the player might need to be changed (04/06/2020)
-	//	float testPlayerClout = Globals.GameVars.playerShipVariables.ship.playerClout;
-	//	print(testPlayerClout);
-
-	//	Vector3 randomMGwaterSize;
-	//	int rndNumForRocks, rndNumForClouds;
-
-	//	print("Current difficulty value is: " + testPlayerClout);
-		
-	//	if (testPlayerClout < 1500) {
-	//		print("Difficulty setting is: EASY");
-
-	//		randomMGwaterSize = new Vector3(Random.Range(20, 40), 1, Random.Range(20, 40));
-	//		rndNumForRocks = Random.Range(20,50);
-	//		rndNumForClouds = Random.Range(200,400);
-	//	}
-	//	else if (testPlayerClout > 3999) {
-	//		print("Difficulty setting is: HARD");
-
-	//		randomMGwaterSize = new Vector3(Random.Range(60, 100), 1, Random.Range(60, 100));
-	//		rndNumForRocks = Random.Range(100, 200);
-	//		rndNumForClouds = Random.Range(500, 1000);
-	//	}
-	//	else {
-	//		print("Difficulty setting is: MEDIUM");
-
-	//		randomMGwaterSize = new Vector3(Random.Range(20, 60), 1, Random.Range(20, 60));
-	//		rndNumForRocks = Random.Range(50, 100);
-	//		rndNumForClouds = Random.Range(400, 500);
-	//	}
-
-	//	//creates a randomly sized rectangle of water 
-	//	miniGameWater.transform.localScale = randomMGwaterSize;
-
-	//	//creates a random spawning sequence for rocks and clouds
-	//	for (int x = 0; x <= rndNumForRocks; x++) {
-	//		PopulateNearbyAreaWithRocks();
-	//	}
-
-	//	for (int x = 0; x <= rndNumForClouds; x++) {
-	//		PopulateNearbyAreaWithClouds();
-	//	}
-	//}
 }

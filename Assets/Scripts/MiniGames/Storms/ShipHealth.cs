@@ -49,4 +49,14 @@ public class ShipHealth : MonoBehaviour
 		leftSlider.value = currentShipHealth / 2f;
 		rightSlider.value = currentShipHealth / 2f;
 	}
+
+	public float Health 
+	{
+		get { return currentShipHealth; }
+	}
+
+	public float MaxHealth 
+	{
+		get { return maxShipHealth; }
+	}
 }

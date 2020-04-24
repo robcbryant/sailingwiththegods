@@ -701,7 +701,7 @@ MonoBehaviour:
   range: 5
   rockHolder: {fileID: 3696558123735522971}
   rockScaleBounds: {x: 1, y: 4}
-  rockPerSqM: {x: 0.13, y: 0.14}
+  rockPerSqM: {x: 0.13, y: 0.155}
   stormRocks:
   - {fileID: 3217353607499389584, guid: 0da2e1bd4485aad48b2650399da06437, type: 3}
   - {fileID: 105575357220499537, guid: 8f300d1b7d1a2d84c9f13ace77a62d51, type: 3}
@@ -710,7 +710,7 @@ MonoBehaviour:
   - {fileID: 192518213476457187, guid: 2fd409d2a2e777044b228812aeba8686, type: 3}
   cloudHolder: {fileID: 3696558124314093979}
   cloudScaleBounds: {x: 1, y: 3}
-  cloudPerSqM: {x: 0.185, y: 0.215}
+  cloudPerSqM: {x: 0.195, y: 0.225}
   stormClouds:
   - {fileID: 5498604549913085531, guid: 34083cf702e9d494eb95c7bda707a679, type: 3}
   - {fileID: 7653758620165034016, guid: 23548d77aefce4943b7ed5dc6c094ee1, type: 3}
@@ -727,7 +727,10 @@ MonoBehaviour:
   - 0.8
   - 1
   - 1.7
-  cloutRanges: 00000000dc050000a00f0000
+  cloutRanges:
+  - 0
+  - 1500
+  - 4000
   cloutModifiers:
   - 0.8
   - 1
@@ -747,7 +750,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noResourcesMod: 0.5
   mgInfo: {fileID: 0}
+  instructionsText: 'You will need to navigate your ship through the treacherous waves
+    to find your way out of the stormclouds. Avoid rocks - if you hit too many, your
+    ship will be destroyed! You also will have to be fast, as the waves and wind will
+    damage your ship the longer you take to escape.
+
+    W/S - move forward/backwards
+
+    A/D - turn left/right'
   stormIcon: {fileID: 21300000, guid: 14603015bfab36247acc85b8765d06ae, type: 3}
+  refusalLoss: 15
+  survivalGain: {x: 5, y: 25}
+  damageLevelPercents:
+  - 0
+  - 0.3
+  - 0.6
+  - 0.8
+  - 0.95
+  damageLevelText:
+  - You survived with 0-29 health remaining
+  - You survived with 30-59 health remaining
+  - You survived with 60-79 health remaining
+  - You survived with 80-94 health remaining
+  - You survived with 95 or more health remaining
   performButton: {fileID: 0}
   rejectButton: {fileID: 0}
   startButton: {fileID: 0}

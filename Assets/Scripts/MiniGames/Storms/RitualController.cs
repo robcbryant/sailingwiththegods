@@ -14,9 +14,20 @@ public class RitualController : MonoBehaviour
 	[Header("General")]
 	public float noResourcesMod = 0.5f;
 	public MiniGameInfoScreen mgInfo;
-
+	[TextArea(2, 15)]
+	public string instructionsText;
 	public Sprite stormIcon;
 
+	[Header("Clout")]
+	public int refusalLoss = 15;
+	public Vector2Int survivalGain = new Vector2Int(5, 25);
+
+	[Header("End-Game Health")]
+	public float[] damageLevelPercents;
+	[TextArea(2, 10)]
+	public string[] damageLevelText;
+
+	[Header("Buttons")]
 	public ButtonExplanation performButton;
 	public ButtonExplanation rejectButton;
 	public Button startButton;
@@ -26,13 +37,17 @@ public class RitualController : MonoBehaviour
 
 	private Ritual currentRitual;
 	private CrewMember currentCrew;
+	private float initialHealth;
+	private int cloutChange;
 
 	private void OnEnable() 
 	{
 		currentRitual = null;
 		currentCrew = null;
 		GetComponent<StormMGmovement>().ToggleMovement(false);
+		initialHealth = GetComponent<ShipHealth>().Health;
 		DisplayStartingText();
+		cloutChange = 0;
 	}
 
 	public void DisplayStartingText() 
@@ -41,7 +56,7 @@ public class RitualController : MonoBehaviour
 		mgInfo.DisplayText(
 			Globals.GameVars.stormTitles[0], 
 			Globals.GameVars.stormSubtitles[0], 
-			Globals.GameVars.stormStartText[0] + "\n\n" + Globals.GameVars.stormStartText[Random.Range(1, Globals.GameVars.stormStartText.Count)], 
+			Globals.GameVars.stormStartText[0] + "\n\n" + instructionsText + "\n\n" + Globals.GameVars.stormStartText[Random.Range(1, Globals.GameVars.stormStartText.Count)], 
 			stormIcon, 
 			MiniGameInfoScreen.MiniGame.StormStart);
 	}
@@ -130,17 +145,21 @@ public class RitualController : MonoBehaviour
 			if (result == RandomizerForStorms.StormDifficulty.Easy) {
 				cloutText = $"\n\nYour successful ritual has raised your clout by {currentRitual.CloutGain}.";
 				Globals.GameVars.playerShipVariables.ship.playerClout += currentRitual.CloutGain;
+				cloutChange = currentRitual.CloutGain;
 			}
 			else {
 				cloutText = $"\n\nYour failed ritual has lowered your clout by {currentRitual.CloutLoss}.";
 				Globals.GameVars.playerShipVariables.ship.playerClout -= currentRitual.CloutLoss;
+				cloutChange = -currentRitual.CloutLoss;
 			}
 			SubtractCosts();
 		}
 		else {
 			//Ritual was rejected
 			result = RandomizerForStorms.StormDifficulty.Hard;
-			cloutText = $"\n\nYou decision to not perform a ritual at all has done something to your clout by something.";
+			cloutText = $"\n\nYou decision to reject the gods and refuse to perform a ritual has made some of your crew nervous, and your clout has decreased by {refusalLoss}";
+			Globals.GameVars.playerShipVariables.ship.playerClout -= refusalLoss;
+			cloutChange = -refusalLoss;
 		}
 
 		mgInfo.DisplayText(
@@ -216,11 +235,18 @@ public class RitualController : MonoBehaviour
 
 	public void WinGame()
 	{
+		ShipHealth h = GetComponent<ShipHealth>();
+		float percentDamage = h.Health / h.MaxHealth;
+		int damageBracket = RandomizerForStorms.GetBracket(damageLevelPercents, percentDamage);
+		float cloutGained = (survivalGain.y - survivalGain.x) * percentDamage + survivalGain.x;
+		string cloutText = damageLevelText[damageBracket] + "\n\n" + $"For making your way out of the storm with your ship intact, your clout has risen {Mathf.RoundToInt(cloutGained)}." + 
+			$" Combined with the {cloutChange} from the ritual, your clout has changed a total of {Mathf.RoundToInt(cloutGained + cloutChange)}";
+
 		mgInfo.gameObject.SetActive(true);
 		mgInfo.DisplayText(
 			Globals.GameVars.stormTitles[3], 
 			Globals.GameVars.stormSubtitles[3], 
-			Globals.GameVars.stormSuccessText[0] + "\n\n" + Globals.GameVars.stormSuccessText[Random.Range(1, Globals.GameVars.stormSuccessText.Count)], 
+			Globals.GameVars.stormSuccessText[0] + "\n\n" + cloutText + "\n\n" + Globals.GameVars.stormSuccessText[Random.Range(1, Globals.GameVars.stormSuccessText.Count)], 
 			stormIcon, 
 			MiniGameInfoScreen.MiniGame.Finish);
 		finishButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = winFinishText;
