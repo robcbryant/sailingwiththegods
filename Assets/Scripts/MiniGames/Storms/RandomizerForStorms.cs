@@ -184,7 +184,7 @@ public class RandomizerForStorms : MonoBehaviour
 		}
 	}
 
-	private void DestroyAllChildren(Transform parent) 
+	public static void DestroyAllChildren(Transform parent) 
 	{
 		Transform[] children = parent.GetComponentsInChildren<Transform>();
 		for (int i = 0; i < children.Length; i++) 
@@ -205,19 +205,6 @@ public class RandomizerForStorms : MonoBehaviour
 		} while (Mathf.Abs(i - j) < gapWidth);
 		return new Vector2Int(i, j);
 	}
-
-	//private int GetCloutBracket() 
-	//{
-	//	for (int i = cloutRanges.Length - 1; i >= 0; i--) {
-	//		if (Globals.GameVars.playerShipVariables.ship.playerClout > cloutRanges[i]) {
-	//			string s = i + 1 < cloutRanges.Length ? cloutRanges[i+1].ToString() : "maximum";
-	//			Debug.Log($"Player clout {Globals.GameVars.playerShipVariables.ship.playerClout} is larger than {cloutRanges[i]} but smaller than {s}");
-	//			return i;
-	//		}
-	//	}
-
-	//	return -1;
-	//}
 
 	public static int GetBracket<T>(T[] brackets, T find) where T : System.IComparable
 	{

@@ -32,6 +32,11 @@ public class ButtonExplanation : MonoBehaviour
 	{
 		text.text = toDisplay;
 
+		if (explanationRect == null) {
+			explanationRect = explanation.GetComponent<RectTransform>();
+		}
+
+
 		SetSize();
 	}
 
