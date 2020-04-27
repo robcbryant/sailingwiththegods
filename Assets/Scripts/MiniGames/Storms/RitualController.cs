@@ -251,6 +251,8 @@ public class RitualController : MonoBehaviour
 			stormIcon, 
 			MiniGameInfoScreen.MiniGame.Finish);
 		finishButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = winFinishText;
+		finishButton.onClick.RemoveAllListeners();
+		finishButton.onClick.AddListener(UnloadMinigame);
 		GetComponent<StormMGmovement>().ToggleMovement(false);
 	}
 
@@ -265,7 +267,7 @@ public class RitualController : MonoBehaviour
 			MiniGameInfoScreen.MiniGame.Finish);
 		finishButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = loseFinishText;
 		finishButton.onClick.RemoveAllListeners();
-		finishButton.onClick.AddListener(mgInfo.CloseDialog);
+		finishButton.onClick.AddListener(UnloadMinigame);
 		finishButton.onClick.AddListener(EndGame);
 		GetComponent<StormMGmovement>().ToggleMovement(false);
 	}
@@ -273,5 +275,11 @@ public class RitualController : MonoBehaviour
 	public void EndGame() 
 	{
 		Globals.GameVars.isGameOver = true;
+	}
+
+	public void UnloadMinigame() 
+	{
+		mgInfo.CloseDialog();
+		gameObject.SetActive(false);
 	}
 }

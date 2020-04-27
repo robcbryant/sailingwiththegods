@@ -20,7 +20,8 @@ public class ButtonExplanation : MonoBehaviour
 
 	public void DisplayText() 
 	{
-		explanation.SetActive(true);		
+		explanation.SetActive(true);
+		StartCoroutine(SetSize());
 	}
 
 	public void HideText() 
@@ -35,13 +36,12 @@ public class ButtonExplanation : MonoBehaviour
 		if (explanationRect == null) {
 			explanationRect = explanation.GetComponent<RectTransform>();
 		}
-
-
-		SetSize();
 	}
 
-	private void SetSize() 
+	private IEnumerator SetSize() 
 	{
+		yield return null;
+
 		float boxWidth = Mathf.Min(text.preferredWidth, maxWidth) + (2 * edging);
 		explanationRect.sizeDelta = new Vector2(boxWidth, text.fontSize);
 

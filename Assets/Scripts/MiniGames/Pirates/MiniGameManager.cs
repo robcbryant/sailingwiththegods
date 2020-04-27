@@ -16,9 +16,10 @@ public class MiniGameManager : MonoBehaviour
 	[Header("Buttons")]
 	public ButtonExplanation[] runButtons;
 	public ButtonExplanation[] negotiateButtons;
+	public ButtonExplanation acceptNegotiationButton;
 	public Button rejectNegotiationButton;
 	public Button closeButton;
-	public string acceptedNegotiatioNClose;
+	public string acceptedNegotiationClose;
 	public string rejectedNegotiationClose;
 	public string failedRunClose;
 	public string successRunClose;
@@ -80,6 +81,7 @@ public class MiniGameManager : MonoBehaviour
 		{
 
 			//NEGOTIATION ALGORITHM GOES HERE
+			acceptNegotiationButton.SetExplanationText("Cost\nCost\nCost");
 
 			string deal = "This is what the pirates are offering";
 
@@ -158,7 +160,7 @@ public class MiniGameManager : MonoBehaviour
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[3],
 			Globals.GameVars.pirateSubtitles[3],
-			Globals.GameVars.pirateSuccessText[0] + "\n\n" + Globals.GameVars.pirateSuccessText[Random.Range(1, Globals.GameVars.pirateSuccessText.Count)],
+			Globals.GameVars.pirateSuccessText[0] + "\n\n" + NetCloutText() + "\n\n" + Globals.GameVars.pirateSuccessText[Random.Range(1, Globals.GameVars.pirateSuccessText.Count)],
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
 	}
@@ -186,6 +188,33 @@ public class MiniGameManager : MonoBehaviour
 
 	public void GameOver() {
 		Globals.GameVars.isGameOver = true;
+	}
+
+	public void AcceptDeal() {
+		//Subtract out resources
+
+		closeButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = acceptedNegotiationClose;
+		closeButton.onClick.RemoveAllListeners();
+		closeButton.onClick.AddListener(UnloadMinigame);
+
+		mgInfo.DisplayText(
+			Globals.GameVars.pirateTitles[1],
+			Globals.GameVars.pirateSubtitles[1],
+			"You accepted the trade deal. You hand over what the pirates asked for and sail away.\n\n" + NetCloutText(),
+			pirateIcon,
+			MiniGameInfoScreen.MiniGame.Finish);
+	}
+
+	private string NetCloutText() {
+		int cloutIncrease = 1;
+		int previousCloutChange = 2;
+		string previousChange = "";
+
+		if (previousCloutChange > 0) {
+			previousChange = $"Combined with the earlier {previousCloutChange}, that is a net clout change of {cloutIncrease + previousCloutChange}.";
+		}
+
+		return $"For sailing away with your lives, your clout has increased by {cloutIncrease}. {previousChange}";
 	}
 
 	public void Fight() {
