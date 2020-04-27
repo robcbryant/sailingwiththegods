@@ -10,8 +10,22 @@ public class ShipHealth : MonoBehaviour
 
 	private float maxShipHealth;
 	private float currentShipHealth;
+	private bool initialized = false;
 
 	private void Start() 
+	{
+		if (!initialized) {
+			InitializeValues();
+		}
+	}
+
+	private void OnEnable() {
+		if (!initialized) {
+			InitializeValues();
+		}
+	}
+
+	private void InitializeValues() 
 	{
 		//for now, we set this to a constant because it's constant everywhere else
 		//eventually ship will have its own max health variable and we'll pull from that
@@ -24,6 +38,7 @@ public class ShipHealth : MonoBehaviour
 		currentShipHealth = Globals.GameVars.playerShipVariables.ship.health;
 
 		UpdateHealthBar();
+		initialized = true;
 	}
 
 	//using this to avoid typing the whole long this every time

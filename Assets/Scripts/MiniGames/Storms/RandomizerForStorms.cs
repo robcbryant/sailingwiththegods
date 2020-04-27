@@ -40,6 +40,7 @@ public class RandomizerForStorms : MonoBehaviour
 	public int distBtwnGaps = 2;
 
 	[Header("Difficulty Adjustment")]
+	public float timeLimit = 5f;
 	public GameObject hintArrow;
 	public float[] difficultyModifiers = new float[3];
 	public float[] cloutRanges;
@@ -51,10 +52,16 @@ public class RandomizerForStorms : MonoBehaviour
 	private Color baseLighting;
 	private List<Vector3> gaps = new List<Vector3>();
 	private int cloutBracket;
+	private float damagePerSecond;
+	private ShipHealth h;
+	private bool countingDown;
 
 	private void Start() 
 	{
 		baseLighting = RenderSettings.ambientLight;
+		h = GetComponent<ShipHealth>();
+
+		damagePerSecond = h.MaxHealth / (timeLimit * 60);
 	}
 
 	private void OnEnable() 
@@ -68,6 +75,7 @@ public class RandomizerForStorms : MonoBehaviour
 		cloutBracket = GetBracket(cloutRanges, Globals.GameVars.playerShipVariables.ship.playerClout);
 
 		InitializeView();
+		countingDown = false;
 	}
 
 	private void OnDisable() 
@@ -76,6 +84,7 @@ public class RandomizerForStorms : MonoBehaviour
 		DestroyAllChildren(rockHolder);
 		DestroyAllChildren(cloudHolder);
 		DestroyAllChildren(edgeHolder);
+		countingDown = false;
 	}
 
 	private void InitializeView() 
@@ -104,8 +113,6 @@ public class RandomizerForStorms : MonoBehaviour
 		int rockNum = Mathf.FloorToInt(Random.Range(rockPerSqM.x, rockPerSqM.y) * sqWater * mod);
 		int cloudNum = Mathf.FloorToInt(Random.Range(cloudPerSqM.x, cloudPerSqM.y) * sqWater * mod);
 
-		Debug.Log($"SqM: {sqWater}, rocks {rockNum}, clouds {cloudNum}");
-
 		//Populate the area with rocks and clouds
 		miniGameWater.transform.localScale = new Vector3(waterSize, 1, waterSize);
 		float currentSpacing = (spacingBase / waterSize) * edgeRockSpacing;
@@ -123,6 +130,28 @@ public class RandomizerForStorms : MonoBehaviour
 		else {
 			hintArrow.SetActive(false);
 		}
+	}
+
+	public void StartDamageTimer() 
+	{
+		countingDown = true;
+		StartCoroutine(DamageOverTime());
+	}
+
+	public void StopDamageTimer() 
+	{
+		countingDown = false;
+		StopCoroutine(DamageOverTime());
+	}
+
+	private IEnumerator DamageOverTime() 
+	{
+		while (countingDown) 
+		{
+			yield return new WaitForSeconds(1f);
+			h.TakeDamage(damagePerSecond);
+		}
+
 	}
 
 	private void PopulateWithObstacles(int num, GameObject[] obstacle, Transform parent, Vector2 scaleRange, float edging) 

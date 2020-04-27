@@ -12,6 +12,7 @@ public class RitualController : MonoBehaviour
 	}
 
 	[Header("General")]
+	public float timeLimit = 5f;
 	[Range(0f, 1f)]
 	public float noResourcesMod = 0.5f;
 	public MiniGameInfoScreen mgInfo;
@@ -38,15 +39,20 @@ public class RitualController : MonoBehaviour
 
 	private Ritual currentRitual;
 	private CrewMember currentCrew;
-	private float initialHealth;
 	private int cloutChange;
+	private RandomizerForStorms rfs;
+
+	private void Start() 
+	{
+		rfs = GetComponent<RandomizerForStorms>();
+	}
+
 
 	private void OnEnable() 
 	{
 		currentRitual = null;
 		currentCrew = null;
 		GetComponent<StormMGmovement>().ToggleMovement(false);
-		initialHealth = GetComponent<ShipHealth>().Health;
 		DisplayStartingText();
 		cloutChange = 0;
 	}
@@ -169,6 +175,7 @@ public class RitualController : MonoBehaviour
 
 		startButton.onClick.RemoveAllListeners();
 		startButton.onClick.AddListener(mgInfo.CloseDialog);
+		startButton.onClick.AddListener(rfs.StartDamageTimer);
 		startButton.onClick.AddListener(() => GetComponent<StormMGmovement>().ToggleMovement(true));
 
 		//Send the result to the difficulty calculator for the storm
@@ -233,6 +240,7 @@ public class RitualController : MonoBehaviour
 
 	public void WinGame()
 	{
+		rfs.StopDamageTimer();
 		ShipHealth h = GetComponent<ShipHealth>();
 		float percentDamage = h.Health / h.MaxHealth;
 		int damageBracket = RandomizerForStorms.GetBracket(damageLevelPercents, percentDamage);
@@ -256,6 +264,7 @@ public class RitualController : MonoBehaviour
 
 	public void LoseGame() 
 	{
+		rfs.StopDamageTimer();
 		mgInfo.gameObject.SetActive(true);
 		mgInfo.DisplayText(
 			Globals.GameVars.stormTitles[3], 
