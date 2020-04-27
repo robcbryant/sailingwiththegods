@@ -12,6 +12,7 @@ public class RitualController : MonoBehaviour
 	}
 
 	[Header("General")]
+	[Range(0f, 1f)]
 	public float noResourcesMod = 0.5f;
 	public MiniGameInfoScreen mgInfo;
 	[TextArea(2, 15)]
@@ -144,12 +145,10 @@ public class RitualController : MonoBehaviour
 			result = check < (currentRitual.SuccessChance * mod) ? RandomizerForStorms.StormDifficulty.Easy : RandomizerForStorms.StormDifficulty.Medium;
 			if (result == RandomizerForStorms.StormDifficulty.Easy) {
 				cloutText = $"\n\nYour successful ritual has raised your clout by {currentRitual.CloutGain}.";
-				Globals.GameVars.AdjustPlayerClout(currentRitual.CloutGain);
 				cloutChange = currentRitual.CloutGain;
 			}
 			else {
 				cloutText = $"\n\nYour failed ritual has lowered your clout by {currentRitual.CloutLoss}.";
-				Globals.GameVars.AdjustPlayerClout(-currentRitual.CloutLoss);
 				cloutChange = -currentRitual.CloutLoss;
 			}
 			SubtractCosts();
@@ -158,7 +157,6 @@ public class RitualController : MonoBehaviour
 			//Ritual was rejected
 			result = RandomizerForStorms.StormDifficulty.Hard;
 			cloutText = $"\n\nYou decision to reject the gods and refuse to perform a ritual has made some of your crew nervous, and your clout has decreased by {refusalLoss}";
-			Globals.GameVars.AdjustPlayerClout(-refusalLoss);
 			cloutChange = -refusalLoss;
 		}
 
@@ -241,7 +239,7 @@ public class RitualController : MonoBehaviour
 		int cloutGained = Mathf.CeilToInt((survivalGain.y - survivalGain.x) * percentDamage + survivalGain.x);
 		string cloutText = damageLevelText[damageBracket] + "\n\n" + $"For making your way out of the storm with your ship intact, your clout has risen {Mathf.RoundToInt(cloutGained)}." + 
 			$" Combined with the {cloutChange} from the ritual, your clout has changed a total of {Mathf.RoundToInt(cloutGained + cloutChange)}.";
-		Globals.GameVars.AdjustPlayerClout(cloutGained);
+		Globals.GameVars.AdjustPlayerClout(cloutGained + cloutChange, false);
 
 		mgInfo.gameObject.SetActive(true);
 		mgInfo.DisplayText(

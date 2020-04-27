@@ -31,16 +31,25 @@ public class MiniGameManager : MonoBehaviour
 	public List<GameObject> pirates, crew;
 	public Transform[] pirateSpaces, crewSpaces;
 
+	[Header("Clout")]
+	public int wonFightClout;
+	public int tookNegotiationClout;
+	public int rejectedNegotiationClout;
+	public int succeedRunClout;
+	public int failedRunClout;
+
 	private float runChance;
 	private bool alreadyTriedRunning;
 	private bool alreadyTriedNegotiating;
 	private RandomSlotPopulator rsp;
+	private int cloutChange;
 
 	private void OnEnable() 
 	{
 		if (rsp == null) {
 			rsp = GetComponent<RandomSlotPopulator>();
 		}
+		cloutChange = 0;
 
 		//CALCULATE RUN CHANCE HERE
 		runChance = 0.5f;
@@ -65,21 +74,10 @@ public class MiniGameManager : MonoBehaviour
 			MiniGameInfoScreen.MiniGame.Pirates);
 	}
 
-	private void Update() {
-		//TESTING
-		if (Input.GetKeyDown(KeyCode.F)) {
-			WinGame();
-		}
-		else if (Input.GetKeyDown(KeyCode.R)) {
-			LoseGame();
-		}
-	}
-
 	public void OpenNegotiations() 
 	{
 		if (!alreadyTriedNegotiating) 
 		{
-
 			//NEGOTIATION ALGORITHM GOES HERE
 			acceptNegotiationButton.SetExplanationText("Cost\nCost\nCost");
 
@@ -99,12 +97,12 @@ public class MiniGameManager : MonoBehaviour
 				pirateIcon,
 				MiniGameInfoScreen.MiniGame.Negotiation);
 
-				foreach (ButtonExplanation button in negotiateButtons) {
+			foreach (ButtonExplanation button in negotiateButtons) 
+			{
 				button.SetExplanationText("You already rejected the pirates' deal!");
 				button.GetComponentInChildren<Button>().interactable = false;
 			}
 		}
-
 	}
 
 	public void TryRunning() 
@@ -113,18 +111,21 @@ public class MiniGameManager : MonoBehaviour
 			//RUNNING CALCULATION GOES HERE
 			bool check = runChance < Random.Range(0.0f, 1.0f);
 			List<string> flavorText;
+			string cloutText = "";
 			string buttonText;
 			closeButton.onClick.RemoveAllListeners();
 
 			if (check) {
 				flavorText = Globals.GameVars.pirateRunSuccessText;
 				buttonText = successRunClose;
-				closeButton.onClick.AddListener(WinGame);
+				closeButton.onClick.AddListener(() => WinGame(succeedRunClout));
 			}
 			else {
 				flavorText = Globals.GameVars.pirateRunFailText;
 				buttonText = failedRunClose;
 				alreadyTriedRunning = true;
+				cloutText = $"\n\nYour failed attempt at fleeing decreased your clout by {Mathf.Abs(failedRunClout)}";
+				cloutChange += failedRunClout;
 				foreach (ButtonExplanation button in runButtons) {
 					button.SetExplanationText($"There's no escape!");
 					button.GetComponentInChildren<Button>().interactable = false;
@@ -141,26 +142,26 @@ public class MiniGameManager : MonoBehaviour
 			mgInfo.DisplayText(
 				Globals.GameVars.pirateTitles[2],
 				Globals.GameVars.pirateSubtitles[2],
-				flavorText[0] + "\n\n" + flavorText[Random.Range(1, flavorText.Count)],
+				flavorText[0] + cloutText + "\n\n" + flavorText[Random.Range(1, flavorText.Count)],
 				pirateIcon,
 				MiniGameInfoScreen.MiniGame.Finish);
 		}
 	}
 
-	public void WinGame() {
+	public void WinGame(int clout) {
 		Debug.Log("Successfully escaped the pirates alive");
-
-		//FIGURE OUT YOUR CLOUT CHANGES
-
+		
 		closeButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = wonGameClose;
 		closeButton.onClick.RemoveAllListeners();
 		closeButton.onClick.AddListener(UnloadMinigame);
+
+		Globals.GameVars.AdjustPlayerClout(clout + cloutChange, false);
 
 		mgInfo.gameObject.SetActive(true);
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[3],
 			Globals.GameVars.pirateSubtitles[3],
-			Globals.GameVars.pirateSuccessText[0] + "\n\n" + NetCloutText() + "\n\n" + Globals.GameVars.pirateSuccessText[Random.Range(1, Globals.GameVars.pirateSuccessText.Count)],
+			Globals.GameVars.pirateSuccessText[0] + "\n\n" + NetCloutText(clout) + "\n\n" + Globals.GameVars.pirateSuccessText[Random.Range(1, Globals.GameVars.pirateSuccessText.Count)],
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
 	}
@@ -195,26 +196,39 @@ public class MiniGameManager : MonoBehaviour
 
 		closeButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = acceptedNegotiationClose;
 		closeButton.onClick.RemoveAllListeners();
-		closeButton.onClick.AddListener(UnloadMinigame);
+		closeButton.onClick.AddListener(() => WinGame(tookNegotiationClout));
 
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[1],
 			Globals.GameVars.pirateSubtitles[1],
-			"You accepted the trade deal. You hand over what the pirates asked for and sail away.\n\n" + NetCloutText(),
+			"You accepted the trade deal. You hand over what the pirates asked for and sail away.",
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
 	}
 
-	private string NetCloutText() {
-		int cloutIncrease = 1;
-		int previousCloutChange = 2;
+	public void RejectDeal() {
+		closeButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = rejectedNegotiationClose;
+		closeButton.onClick.RemoveAllListeners();
+		closeButton.onClick.AddListener(mgInfo.CloseDialog);
+		
+		cloutChange += rejectedNegotiationClout;
+
+		mgInfo.DisplayText(
+			Globals.GameVars.pirateTitles[1],
+			Globals.GameVars.pirateSubtitles[1],
+			$"You rejected the pirate's deal and prepare to fight. Your clout has decreased by {rejectedNegotiationClout}.",
+			pirateIcon,
+			MiniGameInfoScreen.MiniGame.Finish);
+	}
+
+	private string NetCloutText(int clout) {
 		string previousChange = "";
 
-		if (previousCloutChange > 0) {
-			previousChange = $"Combined with the earlier {previousCloutChange}, that is a net clout change of {cloutIncrease + previousCloutChange}.";
+		if (cloutChange != 0) {
+			previousChange = $"Combined with the earlier {cloutChange}, that is a net clout change of {clout + cloutChange}.";
 		}
 
-		return $"For sailing away with your lives, your clout has increased by {cloutIncrease}. {previousChange}";
+		return $"For sailing away with your lives, your clout has increased by {clout}. {previousChange}";
 	}
 
 	public void Fight() {
