@@ -765,16 +765,22 @@ MonoBehaviour:
   survivalGain: {x: 5, y: 25}
   damageLevelPercents:
   - 0
-  - 0.3
+  - 0.2
+  - 0.4
   - 0.6
   - 0.8
-  - 0.95
   damageLevelText:
-  - You survived with 0-29 health remaining
-  - You survived with 30-59 health remaining
-  - You survived with 60-79 health remaining
-  - You survived with 80-94 health remaining
-  - You survived with 95 or more health remaining
+  - Your rudder has snapped and there is a gash in your hull. Your clout goes up due
+    to your survival, but you must find a port before you sink.
+  - The railing of the ship has been smashed in five places, but the hull remains
+    intact. Your clout goes up slightly, but you'd best head to a port for repairs.
+  - The force of the gales have twisted the planks of the hull and damaged the seals.
+    Your crew respects your leadership. You can bail out the water and keep going!
+  - Your sail is torn, and five oars are broken, but you remain afloat and mobile!
+    Your clout has gone u to reflect your success.
+  - 'You survived with almost no damage: only the cabin of the captain and some corners
+    of the ship''s shrine are worse for wear. Your clout went up due to everyone''s
+    respect for your excellent sailing!'
   performButton: {fileID: 0}
   rejectButton: {fileID: 0}
   startButton: {fileID: 0}
