@@ -286,6 +286,7 @@ public class RitualController : MonoBehaviour
 
 	public void UnloadMinigame() 
 	{
+		//UNLOAD MINIGAME CODE GOES HERE
 		mgInfo.CloseDialog();
 		gameObject.SetActive(false);
 	}
