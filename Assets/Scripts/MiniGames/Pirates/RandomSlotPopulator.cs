@@ -39,7 +39,6 @@ public class RandomSlotPopulator : MonoBehaviour
 	void OnEnable()
     {
 		loaded = false;
-		SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
 		crewNum = Globals.GameVars.playerShipVariables.ship.crew;
 	}
 
@@ -160,5 +159,10 @@ public class RandomSlotPopulator : MonoBehaviour
 	public bool Loaded 
 	{
 		get { return loaded; }
+	}
+
+	public PirateType CurrentPirates 
+	{
+		get { return typeToSpawn; }
 	}
 }

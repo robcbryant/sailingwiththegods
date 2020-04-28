@@ -57,7 +57,7 @@ public class MiniGameManager : MonoBehaviour
 		alreadyTriedNegotiating = false;
 		foreach (ButtonExplanation button in runButtons) 
 		{
-			button.SetExplanationText($"{runChance * 100}% success chance");
+			button.SetExplanationText($"{runChance * 100}% success chance\nYou will be known as a coward");
 			button.GetComponentInChildren<Button>().interactable = true;
 		}
 		foreach (ButtonExplanation button in negotiateButtons) {
@@ -65,11 +65,25 @@ public class MiniGameManager : MonoBehaviour
 			button.GetComponentInChildren<Button>().interactable = true;
 		}
 
+		rsp.SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
+		string pirateTypeText = "";
+		//figure out if you have someone from the same city
+		CrewMember pirateKnower = CrewFromPirateHometown(rsp.CurrentPirates);
+		
+		if (pirateKnower != null) 
+		{
+			string typeInfo = Globals.GameVars.pirateTypeIntroText[0];
+			typeInfo = typeInfo.Replace("{0}", pirateKnower.name);
+			typeInfo = typeInfo.Replace("{1}", rsp.CurrentPirates.name);
+
+			pirateTypeText = typeInfo + " " + Globals.GameVars.pirateTypeIntroText[1 + rsp.CurrentPirates.ID];
+		}
+
 		mgInfo.gameObject.SetActive(true);
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[0], 
 			Globals.GameVars.pirateSubtitles[0], 
-			Globals.GameVars.pirateStartText[0] + "\n\n" + pirateInstructions + "\n\n" + Globals.GameVars.pirateStartText[Random.Range(1, Globals.GameVars.pirateStartText.Count)], 
+			Globals.GameVars.pirateStartText[0] + pirateTypeText + "\n\n" + pirateInstructions + "\n\n" + Globals.GameVars.pirateStartText[Random.Range(1, Globals.GameVars.pirateStartText.Count)], 
 			pirateIcon, 
 			MiniGameInfoScreen.MiniGame.Pirates);
 	}
@@ -110,42 +124,63 @@ public class MiniGameManager : MonoBehaviour
 		if (!alreadyTriedRunning) {
 			//RUNNING CALCULATION GOES HERE
 			bool check = runChance < Random.Range(0.0f, 1.0f);
-			List<string> flavorText;
-			string cloutText = "";
-			string buttonText;
+
 			closeButton.onClick.RemoveAllListeners();
 
-			if (check) {
-				flavorText = Globals.GameVars.pirateRunSuccessText;
-				buttonText = successRunClose;
-				closeButton.onClick.AddListener(() => WinGame(succeedRunClout));
+			if (check) 
+			{
+				RanAway();
 			}
-			else {
-				flavorText = Globals.GameVars.pirateRunFailText;
-				buttonText = failedRunClose;
-				alreadyTriedRunning = true;
-				cloutText = $"\n\nYour failed attempt at fleeing decreased your clout by {Mathf.Abs(failedRunClout)}";
-				cloutChange += failedRunClout;
-				foreach (ButtonExplanation button in runButtons) {
-					button.SetExplanationText($"There's no escape!");
-					button.GetComponentInChildren<Button>().interactable = false;
-				}
-				closeButton.onClick.AddListener(mgInfo.CloseDialog);
-				if (!rsp.Loaded) {
-					closeButton.onClick.AddListener(rsp.StartMinigame);
-				}
+			else 
+			{
+				FailedRunning();
 			}
-
-			closeButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = buttonText;
-
-			mgInfo.gameObject.SetActive(true);
-			mgInfo.DisplayText(
-				Globals.GameVars.pirateTitles[2],
-				Globals.GameVars.pirateSubtitles[2],
-				flavorText[0] + cloutText + "\n\n" + flavorText[Random.Range(1, flavorText.Count)],
-				pirateIcon,
-				MiniGameInfoScreen.MiniGame.Finish);
 		}
+	}
+
+	public void RanAway() 
+	{
+		Globals.GameVars.AdjustPlayerClout(succeedRunClout + cloutChange, false);
+		string cloutText = $"Your cowardice has tarnished your reputation and your clout has gone down by {succeedRunClout}.";
+		if (cloutChange != 0) {
+			cloutText += $" Combined with the earlier {cloutChange}, that is a net clout change of {succeedRunClout + cloutChange}.";
+		}
+
+		closeButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = successRunClose;
+		closeButton.onClick.AddListener(UnloadMinigame);
+
+		mgInfo.gameObject.SetActive(true);
+		mgInfo.DisplayText(
+			Globals.GameVars.pirateTitles[2],
+			Globals.GameVars.pirateSubtitles[2],
+			Globals.GameVars.pirateRunSuccessText + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunSuccessText[Random.Range(1, Globals.GameVars.pirateRunSuccessText.Count)],
+			pirateIcon,
+			MiniGameInfoScreen.MiniGame.Finish);
+	}
+
+	public void FailedRunning() 
+	{
+		string cloutText = $"Your failure to run has decreased your clout by {failedRunClout}.";
+
+		cloutChange += failedRunClout;
+		foreach (ButtonExplanation button in runButtons) {
+			button.SetExplanationText($"There's no escape!");
+			button.GetComponentInChildren<Button>().interactable = false;
+		}
+
+		closeButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = failedRunClose;
+		closeButton.onClick.AddListener(mgInfo.CloseDialog);
+		if (!rsp.Loaded) {
+			closeButton.onClick.AddListener(rsp.StartMinigame);
+		}
+
+		mgInfo.gameObject.SetActive(true);
+		mgInfo.DisplayText(
+			Globals.GameVars.pirateTitles[2],
+			Globals.GameVars.pirateSubtitles[2],
+			Globals.GameVars.pirateRunFailText[0] + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunFailText[Random.Range(1, Globals.GameVars.pirateRunFailText.Count)],
+			pirateIcon,
+			MiniGameInfoScreen.MiniGame.Finish);
 	}
 
 	public void WinGame(int clout) {
@@ -196,7 +231,9 @@ public class MiniGameManager : MonoBehaviour
 
 		closeButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = acceptedNegotiationClose;
 		closeButton.onClick.RemoveAllListeners();
-		closeButton.onClick.AddListener(() => WinGame(tookNegotiationClout));
+		closeButton.onClick.AddListener(UnloadMinigame);
+
+		Globals.GameVars.AdjustPlayerClout(tookNegotiationClout + cloutChange, false);
 
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[1],
@@ -231,7 +268,8 @@ public class MiniGameManager : MonoBehaviour
 		return $"For sailing away with your lives, your clout has increased by {clout}. {previousChange}";
 	}
 
-	public void Fight() {
+	public void Fight() 
+	{
 		CrewCard crewMember, pirate;
 		foreach(Transform p in piratesParent.transform) {
 			pirates.Add(p.gameObject);
@@ -260,7 +298,15 @@ public class MiniGameManager : MonoBehaviour
 				}
 			}
 		}
-		
 	}
-	
+
+	private CrewMember CrewFromPirateHometown(PirateType pirate) 
+	{
+		//Replace this with actual code later
+		
+
+
+		return null;
+	}
+
 }
