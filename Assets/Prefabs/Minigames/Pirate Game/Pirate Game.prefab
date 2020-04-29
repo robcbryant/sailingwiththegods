@@ -954,10 +954,10 @@ MonoBehaviour:
   pirateSpaces: []
   crewSpaces: []
   wonFightClout: 20
-  tookNegotiationClout: 10
-  rejectedNegotiationClout: -5
-  succeedRunClout: 10
-  failedRunClout: -5
+  tookNegotiationClout: -10
+  rejectedNegotiationClout: 0
+  succeedRunClout: -10
+  failedRunClout: -15
 --- !u!114 &1870797931121624091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5886,11 +5886,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1276131391014657433}
     m_Modifications:
-    - target: {fileID: 5132281543776492558, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_Name
-      value: Run Button
-      objectReference: {fileID: 0}
     - target: {fileID: 1161866315602400530, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5996,10 +5991,10 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2863010403364619526, guid: 86057615b9ddc264ab7144556552f3f4,
+    - target: {fileID: 5132281543776492558, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
-      propertyPath: maxWidth
-      value: 260
+      propertyPath: m_Name
+      value: Run Button
       objectReference: {fileID: 0}
     - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
@@ -6031,12 +6026,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701325, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 1b904c6aa10aa0f4bb2bfbe3fb4cc630,
-        type: 3}
     - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -6102,6 +6091,17 @@ PrefabInstance:
       propertyPath: m_textInfo.wordCount
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2863010403364619526, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: maxWidth
+      value: 260
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701325, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1b904c6aa10aa0f4bb2bfbe3fb4cc630,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86057615b9ddc264ab7144556552f3f4, type: 3}
 --- !u!114 &1083315390531968329 stripped
@@ -6141,11 +6141,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1276131391014657433}
     m_Modifications:
-    - target: {fileID: 5132281543776492558, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_Name
-      value: Negotiate Button
-      objectReference: {fileID: 0}
     - target: {fileID: 1161866315602400530, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6251,10 +6246,10 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2863010403364619526, guid: 86057615b9ddc264ab7144556552f3f4,
+    - target: {fileID: 5132281543776492558, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
-      propertyPath: maxWidth
-      value: 260
+      propertyPath: m_Name
+      value: Negotiate Button
       objectReference: {fileID: 0}
     - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
@@ -6286,12 +6281,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701325, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 1b904c6aa10aa0f4bb2bfbe3fb4cc630,
-        type: 3}
     - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -6329,6 +6318,17 @@ PrefabInstance:
       propertyPath: m_textInfo.spaceCount
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2863010403364619526, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: maxWidth
+      value: 260
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701325, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1b904c6aa10aa0f4bb2bfbe3fb4cc630,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86057615b9ddc264ab7144556552f3f4, type: 3}
 --- !u!224 &8871852889301127293 stripped
