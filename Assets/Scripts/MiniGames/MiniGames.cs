@@ -64,7 +64,7 @@ public class MiniGames : MonoBehaviour
 		IsMiniGameActive = true;
 
 		Globals.GameVars.camera_Mapview.SetActive(false);
-		Globals.GameVars.FPVCamera.SetActive(false);
+		//Globals.GameVars.FPVCamera.SetActive(false);
 	}
 
 	IEnumerator ExitInternal() {

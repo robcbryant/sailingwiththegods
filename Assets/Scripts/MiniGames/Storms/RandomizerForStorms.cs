@@ -58,7 +58,6 @@ public class RandomizerForStorms : MonoBehaviour
 
 	private void Start() 
 	{
-		baseLighting = RenderSettings.ambientLight;
 		h = GetComponent<ShipHealth>();
 
 		damagePerSecond = h.MaxHealth / (timeLimit * 60);
@@ -70,6 +69,7 @@ public class RandomizerForStorms : MonoBehaviour
 		{
 			Destroy(ship);
 		}
+		baseLighting = RenderSettings.ambientLight;
 		RenderSettings.ambientLight = stormLighting;
 
 		cloutBracket = GetBracket(cloutRanges, Globals.GameVars.playerShipVariables.ship.playerClout);
@@ -80,6 +80,7 @@ public class RandomizerForStorms : MonoBehaviour
 
 	private void OnDisable() 
 	{
+		Debug.Log("Test123");
 		RenderSettings.ambientLight = baseLighting;
 		DestroyAllChildren(rockHolder);
 		DestroyAllChildren(cloudHolder);

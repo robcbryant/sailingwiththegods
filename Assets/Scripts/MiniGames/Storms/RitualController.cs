@@ -55,6 +55,8 @@ public class RitualController : MonoBehaviour
 		GetComponent<StormMGmovement>().ToggleMovement(false);
 		DisplayStartingText();
 		cloutChange = 0;
+		Globals.GameVars.playerShip.GetComponent<script_player_controls>().cursorRing.SetActive(false);
+
 	}
 
 	public void DisplayStartingText() 
@@ -260,6 +262,8 @@ public class RitualController : MonoBehaviour
 		finishButton.onClick.RemoveAllListeners();
 		finishButton.onClick.AddListener(UnloadMinigame);
 		GetComponent<StormMGmovement>().ToggleMovement(false);
+		Globals.GameVars.playerShip.GetComponent<script_player_controls>().cursorRing.SetActive(true);
+		Globals.MiniGames.Exit();
 	}
 
 	public void LoseGame() 
@@ -277,6 +281,8 @@ public class RitualController : MonoBehaviour
 		finishButton.onClick.AddListener(UnloadMinigame);
 		finishButton.onClick.AddListener(EndGame);
 		GetComponent<StormMGmovement>().ToggleMovement(false);
+		Globals.GameVars.playerShip.GetComponent<script_player_controls>().cursorRing.SetActive(true);
+		Globals.MiniGames.Exit();
 	}
 
 	public void EndGame() 
