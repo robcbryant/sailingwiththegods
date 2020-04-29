@@ -125,17 +125,13 @@ public class script_player_controls : MonoBehaviour
 
 		// TODO: Remove - this is just here as an initial test of minigames
 		if(Input.GetKeyUp(KeyCode.B)) {
-			Globals.MiniGames.Enter<RandomSlotPopulator>();
+			Globals.MiniGames.Enter("Pirate Game/Pirate Game");
 		}
 		if(Input.GetKeyUp(KeyCode.N)) {
-			Globals.MiniGames.Enter<RandomizerForStorms>();
+			Globals.MiniGames.Enter("Storm MG/Storm Game");
 		}
 		if(Input.GetKeyUp(KeyCode.M)) {
 			Globals.MiniGames.Exit();
-		}
-		if (Input.GetKeyUp(KeyCode.L)) {
-			Globals.MiniGames.Enter<TestChildMiniGame>();
-
 		}
 
 		// debug tool to see where you are in lat long

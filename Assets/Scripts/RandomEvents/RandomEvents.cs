@@ -26,9 +26,9 @@ public static class RandomEvents
 		//Debug.Log (tenthPlaceTemp + "  " + hundredthPlaceTemp);
 
 		//If we are at a half day's travel, then see if a random event occurs
-		if ((Mathf.FloorToInt(tenthPlaceTemp) == 5 || Mathf.FloorToInt(tenthPlaceTemp) == 9) && !gameVars.isPerformingRandomEvent) {
+		if ((Mathf.FloorToInt(tenthPlaceTemp) == 1 || Mathf.FloorToInt(tenthPlaceTemp) == 9) && !gameVars.isPerformingRandomEvent) {
 			gameVars.isPerformingRandomEvent = true;
-			float chanceOfEvent = .95f; //0 - 1 value representing chance of a random event occuring
+			float chanceOfEvent = 1;//.95f; //0 - 1 value representing chance of a random event occuring
 										//We determine if the 
 			if (Random.Range(0f, 1f) <= chanceOfEvent) {
 				//Debug.Log ("Triggering Random Event");
@@ -133,9 +133,10 @@ public static class RandomEvents
 	}
 
 	static IEnumerable<System.Type> GetSubclassesOfType<T>() {
-		return System.Reflection.Assembly.GetAssembly(typeof(T))
-			.GetTypes()
-			.Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(T)));
+		//return System.Reflection.Assembly.GetAssembly(typeof(T))
+		//	.GetTypes()
+		//	.Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(T)));
+		return new[] { typeof(StormAtSea) };
 	}
 
 	static Event CreateEvent(System.Type eventType, GameVars gameVars, Ship ship, ShipSpeedModifiers shipSpeedModifiers, Transform shipTransform, float aggregateCloutScore) {
