@@ -209,6 +209,28 @@ public class GameVars : MonoBehaviour
 	//###################################
 	[HideInInspector] public List<int> activeSettlementInfluenceSphereList = new List<int>();
 
+	//STORMS
+	[HideInInspector] public List<Ritual> stormRituals = new List<Ritual>();
+	[HideInInspector] public List<string> stormTitles;
+	[HideInInspector] public List<string> stormSubtitles;
+	[HideInInspector] public List<string> stormStartText;
+	[HideInInspector] public List<string> stormSeerText;
+	[HideInInspector] public List<string> stormNoSeerText;
+	[HideInInspector] public List<string> stormRitualResultsText;
+	[HideInInspector] public List<string> stormSuccessText;
+	[HideInInspector] public List<string> stormFailureText;
+
+	//PIRATES
+	[HideInInspector] public List<string> pirateTitles;
+	[HideInInspector] public List<string> pirateSubtitles;
+	[HideInInspector] public List<string> pirateStartText;
+	[HideInInspector] public List<string> pirateTypeIntroText;
+	[HideInInspector] public List<string> pirateNegotiateText;
+	[HideInInspector] public List<string> pirateRunSuccessText;
+	[HideInInspector] public List<string> pirateRunFailText;
+	[HideInInspector] public List<string> pirateSuccessText;
+	[HideInInspector] public List<string> pirateFailureText;
+
 	//###################################
 	//	DEBUG VARIABLES
 	//###################################
@@ -250,6 +272,12 @@ public class GameVars : MonoBehaviour
 		masterCrewList = CSVLoader.LoadMasterCrewRoster(masterPirateTypeList);
 		captainsLogEntries = CSVLoader.LoadCaptainsLogEntries();
 		masterResourceList = CSVLoader.LoadResourceList();
+		stormRituals = CSVLoader.LoadRituals();
+		CSVLoader.LoadStormText(out stormTitles, out stormSubtitles, out stormStartText, out stormSeerText, out stormNoSeerText, 
+			out stormRitualResultsText, out stormSuccessText, out stormFailureText);
+		CSVLoader.LoadPirateText(out pirateTitles, out pirateSubtitles, out pirateStartText, out pirateTypeIntroText, out pirateNegotiateText,
+			out pirateRunSuccessText, out pirateRunFailText, out pirateSuccessText, out pirateFailureText);
+
 		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list and crew list
 
 		CreateSettlementsFromList();
@@ -1143,8 +1171,8 @@ public class GameVars : MonoBehaviour
 	//    PLAYER MODIFICATION FUNCTIONS
 	//====================================================================================================   
 
-	public void AdjustPlayerClout(int cloutAdjustment) {
-		int cloutModifier = 100; //We have a modifier to help link the new system in with the old functions.
+	public void AdjustPlayerClout(int cloutAdjustment, bool useMod = true) {
+		int cloutModifier = useMod? 100 : 1; //We have a modifier to help link the new system in with the old functions.
 		int clout = (int)playerShipVariables.ship.playerClout;
 		//adjust the players clout by the given amount
 		playerShipVariables.ship.playerClout += (cloutAdjustment * cloutModifier);

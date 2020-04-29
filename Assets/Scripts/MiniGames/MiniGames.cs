@@ -26,12 +26,12 @@ public class MiniGames : MonoBehaviour
 	/// Remember to add the scene to BuildSettings
 	/// Calling Exit will unload the additive scene.
 	/// </summary>
-	public void Enter(string additiveSceneName) {
-		EnterInternal();
+	//public void Enter(string additiveSceneName) {
+	//	EnterInternal();
 
-		SceneManager.LoadScene(additiveSceneName, LoadSceneMode.Additive);
-		Scene = SceneManager.GetSceneByName(additiveSceneName);
-	}
+	//	SceneManager.LoadScene(additiveSceneName, LoadSceneMode.Additive);
+	//	Scene = SceneManager.GetSceneByName(additiveSceneName);
+	//}
 
 	/// <summary>
 	/// Start a minigame that is a component on a game object that's a child of this MiniGames parent object.
@@ -39,11 +39,9 @@ public class MiniGames : MonoBehaviour
 	/// The scene should have its own Camera since the main camera will be disabled.
 	/// Calling Exit will disable the child game object.
 	/// </summary>
-	public void Enter<T>() where T : MonoBehaviour {
+	public void Enter(String miniGame){
 		EnterInternal();
-
-		// turn on the mini game child root that cooresponds to this minigame
-		GetComponentInChildren<T>(true).gameObject.SetActive(true);
+		Instantiate<GameObject>(Resources.Load<GameObject>(miniGame)).transform.SetParent(transform);
 	}
 
 	/// <summary>
@@ -53,7 +51,7 @@ public class MiniGames : MonoBehaviour
 
 		// shut off all minigames
 		for (var i = 0; i < transform.childCount; i++) {
-			transform.GetChild(i).gameObject.SetActive(false);
+			Destroy(transform.GetChild(i).gameObject, .1f);
 		}
 
 		StartCoroutine(ExitInternal());
@@ -64,7 +62,7 @@ public class MiniGames : MonoBehaviour
 		IsMiniGameActive = true;
 
 		Globals.GameVars.camera_Mapview.SetActive(false);
-		Globals.GameVars.FPVCamera.SetActive(false);
+		//Globals.GameVars.FPVCamera.SetActive(false);
 	}
 
 	IEnumerator ExitInternal() {

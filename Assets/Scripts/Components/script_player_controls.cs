@@ -125,10 +125,10 @@ public class script_player_controls : MonoBehaviour
 
 		// TODO: Remove - this is just here as an initial test of minigames
 		if(Input.GetKeyUp(KeyCode.B)) {
-			Globals.MiniGames.Enter<TestChildMiniGame>();
+			Globals.MiniGames.Enter("Pirate Game/Pirate Game");
 		}
 		if(Input.GetKeyUp(KeyCode.N)) {
-			Globals.MiniGames.Enter("TestSceneMiniGame");
+			Globals.MiniGames.Enter("Storm MG/Storm Game");
 		}
 		if(Input.GetKeyUp(KeyCode.M)) {
 			Globals.MiniGames.Exit();
@@ -1481,7 +1481,7 @@ public class script_player_controls : MonoBehaviour
 		foreach (string zoneName in windZoneNamesToTurnOn) {
 			//TODO:This is a quick and dirty way to make sure we don't get errors when on game world edge trying to turn zones on/off that don't exist
 			try {
-				Debug.Log("WIND" + zoneName);
+				//Debug.Log("WIND" + zoneName);
 				GameVars.windZoneParent.transform.Find(zoneName).transform.GetChild(0).gameObject.SetActive(true);
 			}
 			catch { }
