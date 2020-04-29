@@ -247,7 +247,7 @@ public class RitualController : MonoBehaviour
 		int cloutGained = Mathf.CeilToInt((survivalGain.y - survivalGain.x) * percentDamage + survivalGain.x);
 		string cloutText = damageLevelText[damageBracket] + "\n\n" + $"For making your way out of the storm with your ship intact, your clout has risen {Mathf.RoundToInt(cloutGained)}." + 
 			$" Combined with the {cloutChange} from the ritual, your clout has changed a total of {Mathf.RoundToInt(cloutGained + cloutChange)}.";
-		Globals.GameVars.AdjustPlayerClout(cloutGained + cloutChange, false);
+		Globals.GameVars.AdjustPlayerClout(cloutGained + cloutChange);
 
 		mgInfo.gameObject.SetActive(true);
 		mgInfo.DisplayText(

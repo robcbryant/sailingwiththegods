@@ -173,7 +173,7 @@ public class MiniGameManager : MonoBehaviour
 		closeButton.onClick.RemoveAllListeners();
 		closeButton.onClick.AddListener(UnloadMinigame);
 
-		Globals.GameVars.AdjustPlayerClout(tookNegotiationClout + cloutChange, false);
+		Globals.GameVars.AdjustPlayerClout(tookNegotiationClout + cloutChange);
 
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[1],
@@ -222,7 +222,7 @@ public class MiniGameManager : MonoBehaviour
 
 	public void RanAway() 
 	{
-		Globals.GameVars.AdjustPlayerClout(succeedRunClout + cloutChange, false);
+		Globals.GameVars.AdjustPlayerClout(succeedRunClout + cloutChange);
 		string cloutText = $"Your cowardice has tarnished your reputation and your clout has gone down by {succeedRunClout}.";
 		if (cloutChange != 0) {
 			cloutText += $" Combined with the earlier {cloutChange}, that is a net clout change of {succeedRunClout + cloutChange}.";
@@ -306,7 +306,7 @@ public class MiniGameManager : MonoBehaviour
 		closeButton.onClick.RemoveAllListeners();
 		closeButton.onClick.AddListener(UnloadMinigame);
 
-		Globals.GameVars.AdjustPlayerClout(clout + cloutChange, false);
+		Globals.GameVars.AdjustPlayerClout(clout + cloutChange);
 
 		mgInfo.gameObject.SetActive(true);
 		mgInfo.DisplayText(
