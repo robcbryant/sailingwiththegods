@@ -421,6 +421,7 @@ public static class CSVLoader
 		};
 
 		char[] lineDelimiter = new char[] { '@' };
+		char newline = '%';
 		string filename = "storm_flavor";
 
 		string[] fileByLine = TryLoadListFromGameFolder(filename);
@@ -437,17 +438,52 @@ public static class CSVLoader
 			{
 				if (texts[j] != "") 
 				{
-					string addText = texts[j].Replace('%', '\n');
-					if (addText[0] == '\"') {
-						addText = addText.Substring(1, addText.Length - 2);
-					}
+					string addText = StripAndAddNewlines(texts[j], newline);
 					textList[i].Add(addText);
 				}
-				
 			}
 		}
-
 	}
+
+	public static void LoadPirateText(out List<string> titles, out List<string> subtitles, out List<string> startText, out List<string> pirateIntros, out List<string> negotiateText,
+		out List<string> runSuccessText, out List<string> runFailureText, out List<string> successText, out List<string> failText) 
+	{
+		List<List<string>> textList = new List<List<string>> {
+			(titles = new List<string>()),
+			(subtitles = new List<string>()),
+			(pirateIntros = new List<string>()),
+			(startText = new List<string>()),
+			(negotiateText = new List<string>()),
+			(runSuccessText = new List<string>()),
+			(runFailureText = new List<string>()),
+			(successText = new List<string>()),
+			(failText = new List<string>())
+		};
+
+		char[] lineDelimiter = new char[] { '@' };
+		char newline = '%';
+		string filename = "pirate_flavor";
+
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		if (textList.Count != fileByLine.Length) {
+			Debug.Log($"ERROR: wrong number of lines in the Pirate Flavor file!\nShould have {textList.Count} but actually has {fileByLine.Length}");
+		}
+
+		for (int i = 0; i < fileByLine.Length; i++) 
+		{
+			string[] texts = fileByLine[i].Split(lineDelimiter);
+			for (int j = 0; j < texts.Length; j++) 
+			{
+				if (texts[j] != "") {
+					string addText = StripAndAddNewlines(texts[j], newline);
+					textList[i].Add(addText);
+				}
+			}
+		}
+	}
+
+
 
 	static string TryLoadFromGameFolder(string filename) {
 		try {
@@ -484,5 +520,13 @@ public static class CSVLoader
 		return fileByLine
 			.Where(line => !string.IsNullOrEmpty(line))
 			.ToArray();
+	}
+
+	static string StripAndAddNewlines(string modify, char newline) {
+		string s = modify.Replace(newline, '\n');
+		if (s[0] == '\"') {
+			s = s.Substring(1, s.Length - 2);
+		}
+		return s;
 	}
 }

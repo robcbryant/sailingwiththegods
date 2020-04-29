@@ -120,7 +120,6 @@ public class CrewCard : MonoBehaviour
 
 	public void Bind() 
 	{
-		Debug.Log($"{name} binding infobutton");
 		infoButton?.Bind(ValueModel.New(new ButtonViewModel {
 			OnClick = () => Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
 				Icon = crewImage.sprite,

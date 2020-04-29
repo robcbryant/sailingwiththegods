@@ -34,17 +34,27 @@ public class RandomSlotPopulator : MonoBehaviour
 	private CardDropZone[,] spawnedCrewSlots;
 
 	private int crewNum;
-
-	// Start is called before the first frame update
-	void Start()
+	private bool loaded = false;
+	
+	void OnEnable()
     {
-		SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
+		loaded = false;
 		crewNum = Globals.GameVars.playerShipVariables.ship.crew;
-		//call currently being used for testing purposes 
-		PopulateScreen();
-		ActivateCrewRow(0);
 	}
 
+	private void OnDisable() {
+		RandomizerForStorms.DestroyAllChildren(pirateParent);
+		RandomizerForStorms.DestroyAllChildren(crewParent);
+		RandomizerForStorms.DestroyAllChildren(crewParentInOrigin);
+		RandomizerForStorms.DestroyAllChildren(crewSlotParent);
+	}
+
+	public void StartMinigame() 
+	{
+		PopulateScreen();
+		ActivateCrewRow(0);
+		loaded = true;
+	}
 
 	public void SetPirateType(PirateType t) 
 	{
@@ -147,5 +157,15 @@ public class RandomSlotPopulator : MonoBehaviour
 				index++;
 			}
 		}
+	}
+
+	public bool Loaded 
+	{
+		get { return loaded; }
+	}
+
+	public PirateType CurrentPirates 
+	{
+		get { return typeToSpawn; }
 	}
 }

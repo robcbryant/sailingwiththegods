@@ -12,11 +12,24 @@ public class RitualController : MonoBehaviour
 	}
 
 	[Header("General")]
+	public float timeLimit = 5f;
+	[Range(0f, 1f)]
 	public float noResourcesMod = 0.5f;
 	public MiniGameInfoScreen mgInfo;
-
+	[TextArea(2, 15)]
+	public string instructionsText;
 	public Sprite stormIcon;
 
+	[Header("Clout")]
+	public int refusalLoss = 15;
+	public Vector2Int survivalGain = new Vector2Int(5, 25);
+
+	[Header("End-Game Health")]
+	public float[] damageLevelPercents;
+	[TextArea(2, 10)]
+	public string[] damageLevelText;
+
+	[Header("Buttons")]
 	public ButtonExplanation performButton;
 	public ButtonExplanation rejectButton;
 	public Button startButton;
@@ -26,6 +39,14 @@ public class RitualController : MonoBehaviour
 
 	private Ritual currentRitual;
 	private CrewMember currentCrew;
+	private int cloutChange;
+	private RandomizerForStorms rfs;
+
+	private void Start() 
+	{
+		rfs = GetComponent<RandomizerForStorms>();
+	}
+
 
 	private void OnEnable() 
 	{
@@ -33,6 +54,7 @@ public class RitualController : MonoBehaviour
 		currentCrew = null;
 		GetComponent<StormMGmovement>().ToggleMovement(false);
 		DisplayStartingText();
+		cloutChange = 0;
 	}
 
 	public void DisplayStartingText() 
@@ -41,7 +63,7 @@ public class RitualController : MonoBehaviour
 		mgInfo.DisplayText(
 			Globals.GameVars.stormTitles[0], 
 			Globals.GameVars.stormSubtitles[0], 
-			Globals.GameVars.stormStartText[0] + "\n\n" + Globals.GameVars.stormStartText[Random.Range(1, Globals.GameVars.stormStartText.Count)], 
+			Globals.GameVars.stormStartText[0] + "\n\n" + instructionsText + "\n\n" + Globals.GameVars.stormStartText[Random.Range(1, Globals.GameVars.stormStartText.Count)], 
 			stormIcon, 
 			MiniGameInfoScreen.MiniGame.StormStart);
 	}
@@ -120,28 +142,40 @@ public class RitualController : MonoBehaviour
 	{
 		RandomizerForStorms.StormDifficulty result = RandomizerForStorms.StormDifficulty.Error;
 		string extraText = "";
+		string cloutText = "";
 
 		if (action >= 0) {
 			//Ritual is being performed
 			float mod = CheckResources() ? 1 : noResourcesMod;
 			float check = Random.Range(0.0f, 1.0f);
 			result = check < (currentRitual.SuccessChance * mod) ? RandomizerForStorms.StormDifficulty.Easy : RandomizerForStorms.StormDifficulty.Medium;
+			if (result == RandomizerForStorms.StormDifficulty.Easy) {
+				cloutText = $"\n\nYour successful ritual has raised your clout by {currentRitual.CloutGain}.";
+				cloutChange = currentRitual.CloutGain;
+			}
+			else {
+				cloutText = $"\n\nYour failed ritual has lowered your clout by {currentRitual.CloutLoss}.";
+				cloutChange = -currentRitual.CloutLoss;
+			}
 			SubtractCosts();
 		}
 		else {
 			//Ritual was rejected
 			result = RandomizerForStorms.StormDifficulty.Hard;
+			cloutText = $"\n\nYou decision to reject the gods and refuse to perform a ritual has made some of your crew nervous, and your clout has decreased by {refusalLoss}";
+			cloutChange = -refusalLoss;
 		}
 
 		mgInfo.DisplayText(
 			Globals.GameVars.stormTitles[2], 
 			Globals.GameVars.stormSubtitles[2], 
-			result != RandomizerForStorms.StormDifficulty.Error ? extraText + Globals.GameVars.stormRitualResultsText[(int)result] : "something went wrong", 
+			result != RandomizerForStorms.StormDifficulty.Error ? extraText + Globals.GameVars.stormRitualResultsText[(int)result] + cloutText : "something went wrong", 
 			stormIcon, 
 			MiniGameInfoScreen.MiniGame.Start);
 
 		startButton.onClick.RemoveAllListeners();
 		startButton.onClick.AddListener(mgInfo.CloseDialog);
+		startButton.onClick.AddListener(rfs.StartDamageTimer);
 		startButton.onClick.AddListener(() => GetComponent<StormMGmovement>().ToggleMovement(true));
 
 		//Send the result to the difficulty calculator for the storm
@@ -206,19 +240,31 @@ public class RitualController : MonoBehaviour
 
 	public void WinGame()
 	{
+		rfs.StopDamageTimer();
+		ShipHealth h = GetComponent<ShipHealth>();
+		float percentDamage = h.Health / h.MaxHealth;
+		int damageBracket = RandomizerForStorms.GetBracket(damageLevelPercents, percentDamage);
+		int cloutGained = Mathf.CeilToInt((survivalGain.y - survivalGain.x) * percentDamage + survivalGain.x);
+		string cloutText = damageLevelText[damageBracket] + "\n\n" + $"For making your way out of the storm with your ship intact, your clout has risen {Mathf.RoundToInt(cloutGained)}." + 
+			$" Combined with the {cloutChange} from the ritual, your clout has changed a total of {Mathf.RoundToInt(cloutGained + cloutChange)}.";
+		Globals.GameVars.AdjustPlayerClout(cloutGained + cloutChange);
+
 		mgInfo.gameObject.SetActive(true);
 		mgInfo.DisplayText(
 			Globals.GameVars.stormTitles[3], 
 			Globals.GameVars.stormSubtitles[3], 
-			Globals.GameVars.stormSuccessText[0] + "\n\n" + Globals.GameVars.stormSuccessText[Random.Range(1, Globals.GameVars.stormSuccessText.Count)], 
+			Globals.GameVars.stormSuccessText[0] + "\n\n" + cloutText + "\n\n" + Globals.GameVars.stormSuccessText[Random.Range(1, Globals.GameVars.stormSuccessText.Count)], 
 			stormIcon, 
 			MiniGameInfoScreen.MiniGame.Finish);
 		finishButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = winFinishText;
+		finishButton.onClick.RemoveAllListeners();
+		finishButton.onClick.AddListener(UnloadMinigame);
 		GetComponent<StormMGmovement>().ToggleMovement(false);
 	}
 
 	public void LoseGame() 
 	{
+		rfs.StopDamageTimer();
 		mgInfo.gameObject.SetActive(true);
 		mgInfo.DisplayText(
 			Globals.GameVars.stormTitles[3], 
@@ -228,7 +274,7 @@ public class RitualController : MonoBehaviour
 			MiniGameInfoScreen.MiniGame.Finish);
 		finishButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = loseFinishText;
 		finishButton.onClick.RemoveAllListeners();
-		finishButton.onClick.AddListener(mgInfo.CloseDialog);
+		finishButton.onClick.AddListener(UnloadMinigame);
 		finishButton.onClick.AddListener(EndGame);
 		GetComponent<StormMGmovement>().ToggleMovement(false);
 	}
@@ -236,5 +282,12 @@ public class RitualController : MonoBehaviour
 	public void EndGame() 
 	{
 		Globals.GameVars.isGameOver = true;
+	}
+
+	public void UnloadMinigame() 
+	{
+		//UNLOAD MINIGAME CODE GOES HERE
+		mgInfo.CloseDialog();
+		gameObject.SetActive(false);
 	}
 }
