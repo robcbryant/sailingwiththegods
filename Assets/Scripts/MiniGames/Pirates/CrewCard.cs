@@ -25,6 +25,7 @@ public class CrewCard : MonoBehaviour
 	public int power;
 	private bool overStart = true;
 	private RandomSlotPopulator rsp;
+	public int cardIndex;
 
 	private void Start() 
 	{
@@ -77,6 +78,10 @@ public class CrewCard : MonoBehaviour
 		overSpot = true;
 		dropPos = pos;
 		overStart = isStart;
+	}
+
+	public void setIndex(int index) {
+		cardIndex = index;
 	}
 
 	public void LeaveDropSpot(Vector2 pos) 

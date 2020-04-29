@@ -6,6 +6,7 @@ public class CardDropZone : MonoBehaviour
 {
 	public bool startingPoint;
 	private bool occupied;
+	public int dropIndex;
 
 	private bool allowDropping = true;
 
@@ -15,6 +16,7 @@ public class CardDropZone : MonoBehaviour
 		{
 			CrewCard cc = collision.GetComponent<CrewCard>();
 			SetOccupied(true);
+			cc.cardIndex = this.dropIndex;
 			cc.OverDropSpot(GetComponent<RectTransform>().position, startingPoint);
 		}
 	}

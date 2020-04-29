@@ -137,11 +137,14 @@ public class RandomSlotPopulator : MonoBehaviour
 
 	public void ActivateCrewRow(int rowNum) 
 	{
+		int index = 0;
 		for (int r = 0; r < spawnedCrewSlots.GetLength(0); r++) 
 		{
 			for (int c = 0; c < spawnedCrewSlots.GetLength(1); c++) 
 			{
 				spawnedCrewSlots[r, c].ToggleDropping(r == rowNum);
+				spawnedCrewSlots[r, c].dropIndex = index;
+				index++;
 			}
 		}
 	}
