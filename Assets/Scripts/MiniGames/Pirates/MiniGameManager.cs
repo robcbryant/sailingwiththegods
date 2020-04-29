@@ -27,6 +27,7 @@ public class MiniGameManager : MonoBehaviour
 	public string lostGameClose;
 
 	[Header("Gameplay")]
+	public Vector2 runningBounds = new Vector2(0.1f, 0.9f);
 	public GameObject piratesParent, crewParent;
 	public List<GameObject> pirates, crew;
 	public Transform[] pirateSpaces, crewSpaces;
@@ -50,24 +51,23 @@ public class MiniGameManager : MonoBehaviour
 		}
 		cloutChange = 0;
 
-		//CALCULATE RUN CHANCE HERE
-		runChance = 0.5f;
-
 		alreadyTriedRunning = false;
 		alreadyTriedNegotiating = false;
-		foreach (ButtonExplanation button in runButtons) 
-		{
-			button.SetExplanationText($"{runChance * 100}% success chance\nYou will be known as a coward");
-			button.GetComponentInChildren<Button>().interactable = true;
-		}
+
 		foreach (ButtonExplanation button in negotiateButtons) 
 		{
 			button.SetExplanationText("The pirates may let you go\nYou will be known as a coward");
 			button.GetComponentInChildren<Button>().interactable = true;
 		}
 
-
 		rsp.SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
+		runChance = CalculateRunChance();
+		foreach (ButtonExplanation button in runButtons) 
+		{
+			button.SetExplanationText($"{runChance * 100}% success chance\nYou will be known as a coward");
+			button.GetComponentInChildren<Button>().interactable = true;
+		}
+
 		string pirateTypeText = "";
 		CrewMember pirateKnower = CrewFromPirateHometown(rsp.CurrentPirates);
 
@@ -262,6 +262,21 @@ public class MiniGameManager : MonoBehaviour
 			Globals.GameVars.pirateRunFailText[0] + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunFailText[Random.Range(1, Globals.GameVars.pirateRunFailText.Count)],
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
+	}
+
+	public float CalculateRunChance() 
+	{
+		int difficulty = rsp.CurrentPirates.difficulty;
+
+		float baseShipSpeed = 7.408f;
+		float crewMod = Globals.GameVars.playerShipVariables.shipSpeed_Actual / baseShipSpeed / 1.5f;
+		float run = (1.0f / difficulty) * crewMod;
+		run = Mathf.Max(runningBounds.x, run);
+		run = Mathf.Min(runningBounds.y, run);
+
+		Debug.Log($"{1.0f / difficulty} * {crewMod} = {run}");
+		
+		return run;
 	}
 
 	#endregion
