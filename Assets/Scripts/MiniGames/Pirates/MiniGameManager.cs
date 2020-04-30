@@ -298,7 +298,27 @@ public class MiniGameManager : MonoBehaviour
 				}
 			}
 		}
+		int pirateCounter = 0;
+		foreach(GameObject p in pirates) {
+			if (p.activeInHierarchy) {
+				pirateCounter++;
+			}
+		}
+		int crewCounter = 0;
+		foreach (GameObject c in crew) {
+			if (c.activeInHierarchy) {
+				crewCounter++;
+			}
+		}
+		if (pirateCounter <= 0) {
+			WinGame(crewCounter * 5);
+		}
+		if (crewCounter <= 0) {
+			LoseGame();
+		}
 	}
+
+
 
 	public void WinGame(int clout) 
 	{

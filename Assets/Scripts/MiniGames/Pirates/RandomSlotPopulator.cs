@@ -77,25 +77,24 @@ public class RandomSlotPopulator : MonoBehaviour
 		GameObject[] playerSlots = enAndPlayCnt % 2 == 0 ? playableSlotsEven : playableSlotsOdd;
 
 		List<CrewMember> possiblePirates = Globals.GameVars.Pirates.Where(x => x.pirateType.Equals(typeToSpawn)).ToList();
-		if(typeToSpawn.difficulty == 1) {
-			foreach(CrewMember p in possiblePirates) {
-				p.clout = (int)(p.clout / 5);
-			}
-		}
-		else if (typeToSpawn.difficulty == 2) {
-			foreach (CrewMember p in possiblePirates) {
-				p.clout = (int)(p.clout / 3);
-			}
-		}
-		else if (typeToSpawn.difficulty == 4) {
-			foreach (CrewMember p in possiblePirates) {
-				p.clout = (int)(p.clout * 1.5);
-			}
-		}
 		for (int x = 0; x < enAndPlayCnt; x++) 
 		{
 			pirateSlots[x].SetActive(true);
 			Pirate g = Instantiate(pirate);
+			if (typeToSpawn.difficulty == 1) {
+				g.GetComponent<CrewCard>().power = (g.GetComponent<CrewCard>().power / 5);
+				g.GetComponent<CrewCard>().powerText.text = g.GetComponent<CrewCard>().power.ToString();
+			}
+			else if (typeToSpawn.difficulty == 2) {
+				g.GetComponent<CrewCard>().power = (g.GetComponent<CrewCard>().power / 3);
+				g.GetComponent<CrewCard>().powerText.text = g.GetComponent<CrewCard>().power.ToString();
+			}
+			else if (typeToSpawn.difficulty == 4) {
+				g.GetComponent<CrewCard>().power = (int)(g.GetComponent<CrewCard>().power * 1.5f);
+				g.GetComponent<CrewCard>().powerText.text = g.GetComponent<CrewCard>().power.ToString();
+
+			}
+
 			//CrewMember randomPirate = Globals.GameVars.Pirates.RandomElement();
 			CrewMember randomPirate = possiblePirates.RandomElement();
 			g.SetCrew(randomPirate);
