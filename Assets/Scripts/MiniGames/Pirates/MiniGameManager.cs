@@ -83,7 +83,7 @@ public class MiniGameManager : MonoBehaviour
 		else 
 		{
 			pirateTypeText = "You are not sure where these pirates are from. You ask around your crew, but it doesn't seem like any of them are from the same region as the pirates. " +
-				"Perhaps if you had more cities in your network you would have some advance warning of what kind of pirates you are about to face.";
+				"Perhaps if you had more cities in your network, you would have some advance warning of what kind of pirates you are about to face.";
 		}
 
 		mgInfo.gameObject.SetActive(true);
@@ -133,16 +133,60 @@ public class MiniGameManager : MonoBehaviour
 	}
 
 	#region Negotiation
+	int currentPlayerMoney = Globals.GameVars.playerShipVariables.ship.currency;
+	int moneyPiratesWant = 0;
+
 	public void OpenNegotiations() 
 	{
+
+		print(Globals.GameVars.playerShipVariables.ship.currency);
+
 		if (!alreadyTriedNegotiating) 
 		{
 			//NEGOTIATION ALGORITHM GOES HERE
-			//Figure out what they're offering
-			//And put that into the button text
-			acceptNegotiationButton.SetExplanationText("Cost\nCost\nCost");
 
-			string deal = "This is what the pirates are offering: ";
+			//check for similar towns 
+			//make easy/med/hard % demands
+
+			//Figure out what they're offering
+
+			//right now -- completely random---------------------------------------------------
+
+			//Resource[] currentShipCargo = Globals.GameVars.playerShipVariables.ship.cargo;
+			//int randNumberOfCargoItemsToTake = Random.Range(1, Globals.GameVars.playerShipVariables.ship.cargo.Length);
+
+			//Resource[] cargoItemsPiratesWant = new Resource[randNumberOfCargoItemsToTake];
+			//int[] cargoItemAmountPiratesWant = new int[randNumberOfCargoItemsToTake];
+
+			//if (randNumberOfCargoItemsToTake > 0) {
+
+			//	for (int x = 0; x < randNumberOfCargoItemsToTake; x++) {
+			//		cargoItemsPiratesWant[x] = currentShipCargo[Random.Range(0, Globals.GameVars.playerShipVariables.ship.cargo.Length)];
+			//		cargoItemAmountPiratesWant[x] = (int)Random.Range(0, Globals.GameVars.playerShipVariables.ship.cargo[Random.Range(0, Globals.GameVars.playerShipVariables.ship.cargo.Length)].amount_kg);
+			//	}
+
+			//}
+
+			//TEMPORARY NEGOTIATION METHOD -- MONEY------------------------------------------
+			//1/ 3/ 5 (e/ m/ h)
+
+			//hard -- 75% money
+			if (rsp.CurrentPirates.difficulty > 3) {
+				moneyPiratesWant = (int)(currentPlayerMoney * .75);
+			}
+			//easy -- 25% money
+			else if (rsp.CurrentPirates.difficulty < 3) {
+				moneyPiratesWant = (int)(currentPlayerMoney * .25);
+			}
+			//med -- 50%
+			else {
+				moneyPiratesWant = (int)(currentPlayerMoney * .50);
+			}
+
+			//And put that into the button text
+			acceptNegotiationButton.SetExplanationText("Cost: "+ moneyPiratesWant + " drachma");
+
+			string deal = "This is what the pirates are offering: \n'We only want " + moneyPiratesWant + " drachma, and you may go freely.'";
 
 			rejectNegotiationButton.onClick.RemoveAllListeners();
 			rejectNegotiationButton.onClick.AddListener(mgInfo.CloseDialog);
@@ -168,6 +212,9 @@ public class MiniGameManager : MonoBehaviour
 
 	public void AcceptDeal() {
 		//Subtract out resources
+
+		Globals.GameVars.playerShipVariables.ship.currency -= moneyPiratesWant;
+		print(Globals.GameVars.playerShipVariables.ship.currency);
 
 		closeButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = acceptedNegotiationClose;
 		closeButton.onClick.RemoveAllListeners();
