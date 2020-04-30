@@ -27,6 +27,7 @@ public class MiniGameManager : MonoBehaviour
 	public string lostGameClose;
 
 	[Header("Gameplay")]
+	public Vector2 runningBounds = new Vector2(0.1f, 0.9f);
 	public GameObject piratesParent, crewParent;
 	public List<GameObject> pirates, crew;
 	public Transform[] pirateSpaces, crewSpaces;
@@ -34,7 +35,6 @@ public class MiniGameManager : MonoBehaviour
 	[Header("Clout")]
 	public int wonFightClout;
 	public int tookNegotiationClout;
-	public int rejectedNegotiationClout;
 	public int succeedRunClout;
 	public int failedRunClout;
 
@@ -51,24 +51,23 @@ public class MiniGameManager : MonoBehaviour
 		}
 		cloutChange = 0;
 
-		//CALCULATE RUN CHANCE HERE
-		runChance = 0.5f;
-
 		alreadyTriedRunning = false;
 		alreadyTriedNegotiating = false;
+
+		foreach (ButtonExplanation button in negotiateButtons) 
+		{
+			button.SetExplanationText("The pirates may let you go\nYou will be known as a coward");
+			button.GetComponentInChildren<Button>().interactable = true;
+		}
+
+		rsp.SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
+		runChance = CalculateRunChance();
 		foreach (ButtonExplanation button in runButtons) 
 		{
 			button.SetExplanationText($"{runChance * 100}% success chance\nYou will be known as a coward");
 			button.GetComponentInChildren<Button>().interactable = true;
 		}
-		foreach (ButtonExplanation button in negotiateButtons) 
-		{
-			button.SetExplanationText("The pirates may let you go if you give them what they want");
-			button.GetComponentInChildren<Button>().interactable = true;
-		}
 
-
-		rsp.SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
 		string pirateTypeText = "";
 		CrewMember pirateKnower = CrewFromPirateHometown(rsp.CurrentPirates);
 
@@ -82,8 +81,8 @@ public class MiniGameManager : MonoBehaviour
 		}
 		else 
 		{
-			pirateTypeText = "You are not sure where these pirates are from. You ask around your crew, but it doesn't seem like any of them are from the same region as the pirates. " +
-				"Perhaps if you had more cities in your network, you would have some advance warning of what kind of pirates you are about to face.";
+			pirateTypeText = $"You ask around your crew, but it doesn't seem like any of them are from the same region as the pirates. You think they may be {rsp.CurrentPirates.name}. " +
+				"Perhaps if you had more cities in your network you would have some advance warning of how they fight.";
 		}
 
 		mgInfo.gameObject.SetActive(true);
@@ -198,7 +197,8 @@ public class MiniGameManager : MonoBehaviour
 			mgInfo.DisplayText(
 				Globals.GameVars.pirateTitles[1],
 				Globals.GameVars.pirateSubtitles[1],
-				Globals.GameVars.pirateNegotiateText[0] + "\n\n" + deal + "\n\n" + Globals.GameVars.pirateNegotiateText[Random.Range(1, Globals.GameVars.pirateNegotiateText.Count)],
+				Globals.GameVars.pirateNegotiateText[0] + "\n\n" + deal + "\n\nIf you take this deal, you will escape with your lives, but you will be thought a coward for avoiding a fight - your clout will go down!\n\n" +
+					Globals.GameVars.pirateNegotiateText[Random.Range(1, Globals.GameVars.pirateNegotiateText.Count)],
 				pirateIcon,
 				MiniGameInfoScreen.MiniGame.Negotiation);
 
@@ -220,12 +220,13 @@ public class MiniGameManager : MonoBehaviour
 		closeButton.onClick.RemoveAllListeners();
 		closeButton.onClick.AddListener(UnloadMinigame);
 
-		Globals.GameVars.AdjustPlayerClout(tookNegotiationClout + cloutChange);
+		Globals.GameVars.AdjustPlayerClout(tookNegotiationClout + cloutChange, false);
 
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[1],
 			Globals.GameVars.pirateSubtitles[1],
-			"You accepted the trade deal. You hand over what the pirates asked for and sail away.",
+			"You accepted the trade deal. You hand over what the pirates asked for and sail away. Though you have survived, your cowardly avoidance of a fight will stick with you. Your clout has gone down by" +
+				$"{Mathf.Abs(tookNegotiationClout)}. Combined with the earlier {cloutChange}, that is a net clout change of {tookNegotiationClout + cloutChange}.",
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
 	}
@@ -235,12 +236,10 @@ public class MiniGameManager : MonoBehaviour
 		closeButton.onClick.RemoveAllListeners();
 		closeButton.onClick.AddListener(mgInfo.CloseDialog);
 
-		cloutChange += rejectedNegotiationClout;
-
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[1],
 			Globals.GameVars.pirateSubtitles[1],
-			$"You rejected the pirate's deal and prepare to fight. Your clout has decreased by {rejectedNegotiationClout}.",
+			$"You reject the pirate's deal and prepare to fight. Even if it was not your first choice, you will have to prove your heroism now.",
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
 	}
@@ -269,7 +268,7 @@ public class MiniGameManager : MonoBehaviour
 
 	public void RanAway() 
 	{
-		Globals.GameVars.AdjustPlayerClout(succeedRunClout + cloutChange);
+		Globals.GameVars.AdjustPlayerClout(succeedRunClout + cloutChange, false);
 		string cloutText = $"Your cowardice has tarnished your reputation and your clout has gone down by {succeedRunClout}.";
 		if (cloutChange != 0) {
 			cloutText += $" Combined with the earlier {cloutChange}, that is a net clout change of {succeedRunClout + cloutChange}.";
@@ -282,7 +281,7 @@ public class MiniGameManager : MonoBehaviour
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[2],
 			Globals.GameVars.pirateSubtitles[2],
-			Globals.GameVars.pirateRunSuccessText + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunSuccessText[Random.Range(1, Globals.GameVars.pirateRunSuccessText.Count)],
+			Globals.GameVars.pirateRunSuccessText[0] + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunSuccessText[Random.Range(1, Globals.GameVars.pirateRunSuccessText.Count)],
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
 	}
@@ -310,6 +309,21 @@ public class MiniGameManager : MonoBehaviour
 			Globals.GameVars.pirateRunFailText[0] + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunFailText[Random.Range(1, Globals.GameVars.pirateRunFailText.Count)],
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
+	}
+
+	public float CalculateRunChance() 
+	{
+		int difficulty = rsp.CurrentPirates.difficulty;
+
+		float baseShipSpeed = 7.408f;
+		float crewMod = Globals.GameVars.playerShipVariables.shipSpeed_Actual / baseShipSpeed / 1.5f;
+		float run = (1.0f / difficulty) * crewMod;
+		run = Mathf.Max(runningBounds.x, run);
+		run = Mathf.Min(runningBounds.y, run);
+
+		Debug.Log($"{1.0f / difficulty} * {crewMod} = {run}");
+		
+		return run;
 	}
 
 	#endregion
@@ -373,7 +387,7 @@ public class MiniGameManager : MonoBehaviour
 		closeButton.onClick.RemoveAllListeners();
 		closeButton.onClick.AddListener(UnloadMinigame);
 
-		Globals.GameVars.AdjustPlayerClout(clout + cloutChange);
+		Globals.GameVars.AdjustPlayerClout(clout + cloutChange, false);
 
 		mgInfo.gameObject.SetActive(true);
 		mgInfo.DisplayText(

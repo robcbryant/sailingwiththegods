@@ -770,7 +770,7 @@ public class script_player_controls : MonoBehaviour
 	/// <summary>
 	/// the current actual speed of the ship
 	/// </summary>
-	float shipSpeed_Actual {
+	public float shipSpeed_Actual {
 		get {
 			var result = ship.speed - shipSpeedModifiers.Crew - shipSpeedModifiers.Hunger - shipSpeedModifiers.Thirst - shipSpeedModifiers.ShipHP + shipSpeedModifiers.Event;
 
