@@ -76,7 +76,7 @@ public static class CSVLoader
 			}
 			//Add model/prefab name to settlement
 			settlement.prefabName = records[records.Length - 2];
-			Debug.Log("********PREFAB NAME:     " + settlement.prefabName);
+			//Debug.Log("********PREFAB NAME:     " + settlement.prefabName);
 			//Add description to settlement
 			settlement.description = records[records.Length - 1];
 
@@ -249,12 +249,31 @@ public static class CSVLoader
 		return mainQuest;
 	}
 
-	public static List<CrewMember> LoadMasterCrewRoster() {
-		
+	public static List<PirateType> LoadMasterPirateTypes() {
 		char[] lineDelimiter = new char[] { '@' };
+		string filename = "pirate_types";
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
+		var masterPirateTypeList = new List<PirateType>();
+
+		//start at index 1 to skip the record headers
+		//For each line of the main quest file (the row)
+		for (int row = 1; row < fileByLine.Length; row++) {
+			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
+
+			masterPirateTypeList.Add(new PirateType {
+				ID = row,
+				name = records[1],
+				difficulty = int.Parse(records[2])
+			});
+		}
+
+		return masterPirateTypeList;
+	}
+
+	public static List<CrewMember> LoadMasterCrewRoster(List<PirateType> pirateTypes) {
+		char[] lineDelimiter = new char[] { '@' };
 		string filename = "crewmembers_database";
-
 		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
 		var masterCrewList = new List<CrewMember>();
@@ -270,9 +289,23 @@ public static class CSVLoader
 				isKillable = true;
 			if (int.Parse(records[7]) == 1)
 				isPartOfMainQuest = true;
+
+			bool isPirate = records[8] == "1";              // TODO: change to TRUE/FALSE in spreadsheet so bool.Parse will work
+
 			//Let's add a crewmember to the master roster
-			// TODO: Change CrewType in CSV to a string so it's more readable and use Enum.Parse
-			masterCrewList.Add(new CrewMember(int.Parse(records[0]), records[1], int.Parse(records[2]), int.Parse(records[3]), (CrewType)int.Parse(records[4]), records[5], isKillable, isPartOfMainQuest));
+			// TODO: Change CrewType+PirateType in CSV to a string so it's more readable and use Enum.Parse
+			masterCrewList.Add(new CrewMember(
+				ID: int.Parse(records[0]), 
+				name: records[1], 
+				originCity: int.Parse(records[2]), 
+				clout: int.Parse(records[3]), 
+				typeOfCrew: (CrewType)int.Parse(records[4]), 
+				backgroundInfo: records[5], 
+				isKillable: isKillable, 
+				isPartOfMainQuest: isPartOfMainQuest, 
+				isPirate: isPirate,
+				pirateType: isPirate ? pirateTypes[int.Parse(records[9]) - 1] : null
+			));
 		}
 
 		return masterCrewList;
@@ -317,6 +350,141 @@ public static class CSVLoader
 		return masterResourceList;
 	}
 
+	public static List<Ritual> LoadRituals() 
+	{
+		List<Ritual> rituals = new List<Ritual>();
+
+		char[] lineDelimiter = new char[] { '@' };
+		char[] resourcesDelimiter = new char[] { ';' };
+		string filename = "ritual_types";
+
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		//Ignore top header row
+		for (int lineCount = 1; lineCount < fileByLine.Length; lineCount++) 
+		{
+			//0: has seer or not (int to be cast into a bool)
+			//1: flavor text (string)
+			//2: success chance (float)
+			//3: clout gain (int)
+			//4: lost resource ID (blank for none, int otherwise, separated by ; if more than one)
+			//5: lost resource quantity (0 for none, int otherwise, separated by ; if more than one)
+
+			string[] ritualInfo = fileByLine[lineCount].Split(lineDelimiter, StringSplitOptions.None);
+			bool hasSeer = int.Parse(ritualInfo[0]) != 0;
+			float successChance = float.Parse(ritualInfo[2]);
+			int cloutGain = int.Parse(ritualInfo[3]);
+			int cloutLoss = 10;
+			int[] resourceID;
+			if (ritualInfo[4] == "") {
+				resourceID = new int[0];
+			}
+			else {
+				string[] resources = ritualInfo[4].Split(resourcesDelimiter, StringSplitOptions.None);
+				resourceID = new int[resources.Length];
+				for (int i = 0; i < resources.Length; i++) {
+					resourceID[i] = int.Parse(resources[i]);
+				}
+			}
+
+			int[] resourceAmounts = new int[resourceID.Length];
+			if (resourceAmounts.Length > 0) {
+				string[] amts = ritualInfo[5].Split(resourcesDelimiter, StringSplitOptions.None);
+				if (resourceAmounts.Length != amts.Length) {
+					Debug.Log("Wrong quantities for resources");
+				}
+				for (int i = 0; i < resourceAmounts.Length; i++) {
+					resourceAmounts[i] = int.Parse(amts[i]);
+				}
+			}
+
+			Ritual r = new Ritual(hasSeer, ritualInfo[1], successChance, cloutGain, cloutLoss, resourceID, resourceAmounts);
+
+			rituals.Add(r);
+		}
+
+		return rituals;
+	}
+
+	public static void LoadStormText(out List<string> titles, out List<string> subtitles, out List<string> startText, out List<string> ritualTextSeer, 
+		out List<string> ritualTextNoSeer, out List<string> resultsText, out List<string> successText, out List<string> failText) 
+	{
+		List<List<string>> textList = new List<List<string>> {
+			(titles = new List<string>()),
+			(subtitles = new List<string>()),
+			(resultsText = new List<string>()),
+			(startText = new List<string>()),
+			(ritualTextSeer = new List<string>()),
+			(ritualTextNoSeer = new List<string>()),
+			(successText = new List<string>()),
+			(failText = new List<string>())
+		};
+
+		char[] lineDelimiter = new char[] { '@' };
+		char newline = '%';
+		string filename = "storm_flavor";
+
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		if (textList.Count != fileByLine.Length) 
+		{
+			Debug.Log($"ERROR: wrong number of lines in the Storm Flavor file!\nShould have {textList.Count} but actually has {fileByLine.Length}");
+		}
+
+		for (int i = 0; i < fileByLine.Length; i++) 
+		{
+			string[] texts = fileByLine[i].Split(lineDelimiter);
+			for (int j = 0; j < texts.Length; j++) 
+			{
+				if (texts[j] != "") 
+				{
+					string addText = StripAndAddNewlines(texts[j], newline);
+					textList[i].Add(addText);
+				}
+			}
+		}
+	}
+
+	public static void LoadPirateText(out List<string> titles, out List<string> subtitles, out List<string> startText, out List<string> pirateIntros, out List<string> negotiateText,
+		out List<string> runSuccessText, out List<string> runFailureText, out List<string> successText, out List<string> failText) 
+	{
+		List<List<string>> textList = new List<List<string>> {
+			(titles = new List<string>()),
+			(subtitles = new List<string>()),
+			(pirateIntros = new List<string>()),
+			(startText = new List<string>()),
+			(negotiateText = new List<string>()),
+			(runSuccessText = new List<string>()),
+			(runFailureText = new List<string>()),
+			(successText = new List<string>()),
+			(failText = new List<string>())
+		};
+
+		char[] lineDelimiter = new char[] { '@' };
+		char newline = '%';
+		string filename = "pirate_flavor";
+
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		if (textList.Count != fileByLine.Length) {
+			Debug.Log($"ERROR: wrong number of lines in the Pirate Flavor file!\nShould have {textList.Count} but actually has {fileByLine.Length}");
+		}
+
+		for (int i = 0; i < fileByLine.Length; i++) 
+		{
+			string[] texts = fileByLine[i].Split(lineDelimiter);
+			for (int j = 0; j < texts.Length; j++) 
+			{
+				if (texts[j] != "") {
+					string addText = StripAndAddNewlines(texts[j], newline);
+					textList[i].Add(addText);
+				}
+			}
+		}
+	}
+
+
+
 	static string TryLoadFromGameFolder(string filename) {
 		try {
 			var localFile = "";
@@ -325,8 +493,8 @@ public static class CSVLoader
 				localFile = File.ReadAllText(filePath);
 			}
 
-			Debug.Log(Application.dataPath + "/" + filename + ".txt");
-			Debug.Log(localFile);
+			//Debug.Log(Application.dataPath + "/" + filename + ".txt");
+			//Debug.Log(localFile);
 			if (localFile == "") {
 				TextAsset file = (TextAsset)Resources.Load(filename, typeof(TextAsset));
 				return file.text;
@@ -352,5 +520,13 @@ public static class CSVLoader
 		return fileByLine
 			.Where(line => !string.IsNullOrEmpty(line))
 			.ToArray();
+	}
+
+	static string StripAndAddNewlines(string modify, char newline) {
+		string s = modify.Replace(newline, '\n');
+		if (s[0] == '\"') {
+			s = s.Substring(1, s.Length - 2);
+		}
+		return s;
 	}
 }

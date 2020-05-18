@@ -70,7 +70,10 @@ public class GameVars : MonoBehaviour
 	public const string TD_minute = "0";
 	public const string TD_second = "0";
 
-	public CrewMember Jason => Globals.GameVars.masterCrewList.FirstOrDefault(c => c.isJason);
+	public CrewMember Jason => masterCrewList.FirstOrDefault(c => c.isJason);
+	public IEnumerable<CrewMember> StandardCrew => masterCrewList.Where(c => !c.isPirate);
+	public IEnumerable<CrewMember> Pirates => masterCrewList.Where(c => c.isPirate);
+	public IEnumerable<PirateType> PirateTypes => masterPirateTypeList;
 
 	[Header("World Scene Refs")]
 	public GameObject FPVCamera;
@@ -179,7 +182,8 @@ public class GameVars : MonoBehaviour
 	//###################################
 	//	Crew Member Variables
 	//###################################
-	[HideInInspector] public List<CrewMember> masterCrewList = new List<CrewMember>();
+	List<PirateType> masterPirateTypeList = new List<PirateType>();
+	List<CrewMember> masterCrewList = new List<CrewMember>();
 
 	//###################################
 	//	GUI VARIABLES
@@ -204,6 +208,28 @@ public class GameVars : MonoBehaviour
 	//	RANDOM EVENT VARIABLES
 	//###################################
 	[HideInInspector] public List<int> activeSettlementInfluenceSphereList = new List<int>();
+
+	//STORMS
+	[HideInInspector] public List<Ritual> stormRituals = new List<Ritual>();
+	[HideInInspector] public List<string> stormTitles;
+	[HideInInspector] public List<string> stormSubtitles;
+	[HideInInspector] public List<string> stormStartText;
+	[HideInInspector] public List<string> stormSeerText;
+	[HideInInspector] public List<string> stormNoSeerText;
+	[HideInInspector] public List<string> stormRitualResultsText;
+	[HideInInspector] public List<string> stormSuccessText;
+	[HideInInspector] public List<string> stormFailureText;
+
+	//PIRATES
+	[HideInInspector] public List<string> pirateTitles;
+	[HideInInspector] public List<string> pirateSubtitles;
+	[HideInInspector] public List<string> pirateStartText;
+	[HideInInspector] public List<string> pirateTypeIntroText;
+	[HideInInspector] public List<string> pirateNegotiateText;
+	[HideInInspector] public List<string> pirateRunSuccessText;
+	[HideInInspector] public List<string> pirateRunFailText;
+	[HideInInspector] public List<string> pirateSuccessText;
+	[HideInInspector] public List<string> pirateFailureText;
 
 	//###################################
 	//	DEBUG VARIABLES
@@ -242,9 +268,16 @@ public class GameVars : MonoBehaviour
 		Trade = new Trade(this);
 
 		//Load all txt database files
-		masterCrewList = CSVLoader.LoadMasterCrewRoster();
+		masterPirateTypeList = CSVLoader.LoadMasterPirateTypes();
+		masterCrewList = CSVLoader.LoadMasterCrewRoster(masterPirateTypeList);
 		captainsLogEntries = CSVLoader.LoadCaptainsLogEntries();
 		masterResourceList = CSVLoader.LoadResourceList();
+		stormRituals = CSVLoader.LoadRituals();
+		CSVLoader.LoadStormText(out stormTitles, out stormSubtitles, out stormStartText, out stormSeerText, out stormNoSeerText, 
+			out stormRitualResultsText, out stormSuccessText, out stormFailureText);
+		CSVLoader.LoadPirateText(out pirateTitles, out pirateSubtitles, out pirateStartText, out pirateTypeIntroText, out pirateNegotiateText,
+			out pirateRunSuccessText, out pirateRunFailText, out pirateSuccessText, out pirateFailureText);
+
 		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list and crew list
 
 		CreateSettlementsFromList();
@@ -980,7 +1013,7 @@ public class GameVars : MonoBehaviour
 		}
 
 		//Now let's add all the possible non-quest historical people for hire
-		foreach (CrewMember thisMember in masterCrewList) {
+		foreach (CrewMember thisMember in StandardCrew) {
 			//make sure we don't go over 40 listings
 			if (newGameAvailableCrew.Count == 40)
 				break;
@@ -1026,8 +1059,9 @@ public class GameVars : MonoBehaviour
 		//	--the most it has available
 		List<CrewMember> availableCrew = new List<CrewMember>();
 		int numOfIterations = 0;
+		int numStandardCrew = StandardCrew.Count();
 		while (numberOfCrewmanNeeded != availableCrew.Count) {
-			CrewMember thisMember = masterCrewList[UnityEngine.Random.Range(0, masterCrewList.Count)];
+			CrewMember thisMember = StandardCrew.RandomElement();
 			if (!thisMember.isPartOfMainQuest) {
 				//Now make sure this crewmember isn't already in the current crew
 				if(!playerShipVariables.ship.crewRoster.Contains(thisMember)) {
@@ -1035,7 +1069,7 @@ public class GameVars : MonoBehaviour
 				}
 			}
 			//Break from the main loop if we've tried enough crewman
-			if (masterCrewList.Count == numOfIterations)
+			if (numStandardCrew == numOfIterations)
 				break;
 			numOfIterations++;
 		}
@@ -1137,8 +1171,8 @@ public class GameVars : MonoBehaviour
 	//    PLAYER MODIFICATION FUNCTIONS
 	//====================================================================================================   
 
-	public void AdjustPlayerClout(int cloutAdjustment) {
-		int cloutModifier = 100; //We have a modifier to help link the new system in with the old functions.
+	public void AdjustPlayerClout(int cloutAdjustment, bool useMod = true) {
+		int cloutModifier = useMod? 100 : 1; //We have a modifier to help link the new system in with the old functions.
 		int clout = (int)playerShipVariables.ship.playerClout;
 		//adjust the players clout by the given amount
 		playerShipVariables.ship.playerClout += (cloutAdjustment * cloutModifier);

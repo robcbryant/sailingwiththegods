@@ -229,6 +229,13 @@ public enum CrewType
 	Lawyer = 9
 }
 
+public class PirateType
+{
+	public int ID;
+	public string name;
+	public int difficulty;
+}
+
 public class CrewMember
 {
 	public int ID;
@@ -239,6 +246,8 @@ public class CrewMember
 	public bool isKillable;
 	public bool isPartOfMainQuest;
 	public CrewType typeOfCrew;
+	public bool isPirate;
+	public PirateType pirateType;
 
 	public bool isJason => name == "Jason";
 
@@ -256,7 +265,7 @@ public class CrewMember
 	//	--navigators provide maps to different settlements and decrease negative random events
 	//	--warriors make sure encounters with pirates or other raiding activities go better in your favor
 	//	--slaves have zero clout--few benefits--but they never leave the ship unless they die
-	public CrewMember(int ID, string name, int originCity, int clout, CrewType typeOfCrew, string backgroundInfo, bool isKillable, bool isPartOfMainQuest) {
+	public CrewMember(int ID, string name, int originCity, int clout, CrewType typeOfCrew, string backgroundInfo, bool isKillable, bool isPartOfMainQuest, bool isPirate, PirateType pirateType) {
 		this.ID = ID;
 		this.name = name;
 		this.originCity = originCity;
@@ -265,6 +274,8 @@ public class CrewMember
 		this.backgroundInfo = backgroundInfo;
 		this.isKillable = isKillable;
 		this.isPartOfMainQuest = isPartOfMainQuest;
+		this.isPirate = isPirate;
+		this.pirateType = pirateType;
 	}
 
 	//This is a helper class to create a void crewman
@@ -402,7 +413,7 @@ public class PlayerJourneyLog
 		this.otherAttributes = new List<string>();
 		this.CSVheader = "Unique_Machine_ID,timestamp,originE,originN,originZ,endE,endN,endZ," +
 			"Water_kg,Provisions_kg,Grain_kg,Wine_kg,Timber_kg,Gold_kg,Silver_kg," +
-			"Copper_kg,Tin_kg,Obsidian_kg,Lead_kg,Slaves_kg,Iron_kg,Bronze_kg,Luxury_kg,Is_Leaving_Port,PortID,PortName," +
+			"Copper_kg,Tin_kg,Obsidian_kg,Lead_kg,Livestock_kg,Iron_kg,Bronze_kg,Luxury_kg,Is_Leaving_Port,PortID,PortName," +
 			"CrewMemberIDs,UnityXYZ,Current_Questleg,ShipHP,Clout,PlayerNetwork,DaysStarving,DaysThirsty,Currency,LoanAmount,LoanOriginID,CurrentNavigatorTarget,KnownSettlements,CaptainsLog,upgradeLevel,crewCap,cargoCap\n";
 	}
 
@@ -596,7 +607,7 @@ public class Resource : Model
 	public const string Tin = "Tin";
 	public const string Obsidian = "Obsidian";
 	public const string Lead = "Lead";
-	public const string Slaves = "Slaves";
+	public const string Livestock = "Livestock";
 	public const string Iron = "Iron";
 	public const string Bronze = "Bronze";
 	public const string PrestigeGoods = "Prestige Goods";
@@ -656,7 +667,7 @@ public class Settlement
 			new Resource ("Tin", 0f),
 			new Resource ("Obsidian", 0f),
 			new Resource ("Lead", 0f),
-			new Resource ("Slaves", 0f),
+			new Resource ("Livestock", 0f),
 			new Resource ("Iron", 0f),
 			new Resource ("Bronze", 0f),
 			new Resource ("Prestige Goods", 0f),
@@ -769,7 +780,7 @@ public class Ship : Model
 			new Resource ("Tin", 0f),
 			new Resource ("Obsidian", 0f),
 			new Resource ("Lead", 0f),
-			new Resource ("Slaves", 0f),
+			new Resource ("Livestock", 0f),
 			new Resource ("Iron", 0f),
 			new Resource ("Bronze", 0f),
 			new Resource ("Prestige Goods", 0f),
