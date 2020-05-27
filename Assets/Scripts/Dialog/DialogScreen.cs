@@ -6,55 +6,111 @@ using TMPro;
 
 public class DialogScreen : MonoBehaviour
 {
-	public Image icon;
+	public Image jasonIcon;
+	public Image otherIcon;
 	public TextMeshProUGUI conversationTitle;
-	public TextMeshProUGUI partnerName;
-	public TextMeshProUGUI conversationText;
+	public Scrollbar conversationScroll;
+	public Transform conversationHolder;
 	public Transform choiceHolder;
 	public DialogChoice choiceObject;
+	public DialogPiece dialogObject;
 
-	public void SetDialogUI(Sprite img, string title, string name, string text) 
+	private void Start() 
 	{
-		icon.sprite = img;
+		SetDialogUI(RandomCrewPortrait(), "Test Conversation");
+		Testing();
+	}
+
+	public void SetDialogUI(Sprite other, string title) 
+	{
+		Clear();
+		otherIcon.sprite = other;
 		conversationTitle.text = title;
-		partnerName.text = name;
-		conversationText.text = text;
 	}
 
-	public void SetDialogIcon(Sprite img) 
+	public void SetOtherSprite(Sprite img) 
 	{
-		icon.sprite = img;
+		otherIcon.sprite = img;
 	}
 
-	public void SetDialogText(string text) 
+	public void SetJasonSprite(Sprite img) 
 	{
-		conversationText.text = text;
+		jasonIcon.sprite = img;
 	}
 
-	public void AddToDialogText(string text) 
+	public IEnumerator AddToDialogText(string speaker, string text, TextAlignmentOptions align) 
 	{
-		conversationText.text += text;
+		DialogPiece p = Instantiate(dialogObject);
+		p.SetAlignment(align);
+		p.SetText(speaker, text);
+		yield return null;
+		p.transform.SetParent(conversationHolder);
+		yield return null;
+		conversationScroll.value = 0;
+		yield return null;
+		conversationScroll.value = 0;
+	}
+
+	public void Testing() 
+	{
+		int choices = Random.Range(1, 6);
+		for (int i = 0; i < choices; i++) 
+		{
+			AddChoice($"This is choice {i}!");
+		}
+	}
+
+	public void AddRandomDialog() 
+	{
+		int speaker = Random.Range(1, 3);
+		string name = speaker % 2 == 0 ? "Jason" : "Tax Collector Bob the III";
+		string conversation = $"This is being spoken by {name}. This is some dialog! Blah blah blah. Dialog dialog dialog.";
+		TextAlignmentOptions align = TextAlignmentOptions.Left;
+
+		if (speaker % 2 != 0) 
+		{
+			align = TextAlignmentOptions.Right;
+			Sprite newFace = RandomCrewPortrait();
+			if (newFace != otherIcon.sprite) 
+			{
+				SetOtherSprite(RandomCrewPortrait());
+				conversation += " My mood has changed based on what you said. My face changed to match. Now I look like a completely different person!";
+			}
+
+		}
+		
+		StartCoroutine(AddToDialogText(name, conversation, align));
 	}
 
 	public void AddChoice(string text) 
 	{
 		DialogChoice c = Instantiate(choiceObject);
+		c.ds = this;
 		c.SetText(text);
 		c.transform.SetParent(choiceHolder);
 	}
 
 	public void Clear() 
 	{
-		conversationText.text = "";
-		ClearChoices();
+		ClearChildren(conversationHolder);
+		ClearChildren(choiceHolder);
 	}
 
-	private void ClearChoices() 
+	private Sprite RandomCrewPortrait() 
 	{
-		Transform[] objs = choiceHolder.GetComponentsInChildren<Transform>();
+		return Resources.Load<Sprite>("crew_portraits/" + Random.Range(1, 80)) ?? Resources.Load<Sprite>("crew_portraits/phoenician_sailor");
+	}
+
+	private void ClearChildren(Transform parent) 
+	{
+		Transform[] objs = parent.GetComponentsInChildren<Transform>();
 		foreach (Transform t in objs) 
 		{
-			Destroy(t.gameObject);
+			if (t != parent) 
+			{
+				Destroy(t.gameObject);
+			}
+
 		}
 	}
 

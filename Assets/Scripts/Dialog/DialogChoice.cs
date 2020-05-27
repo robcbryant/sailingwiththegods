@@ -8,6 +8,7 @@ public class DialogChoice : MonoBehaviour
 {
 	private TextMeshProUGUI text;
 	private Button b;
+	public DialogScreen ds;
 
 	private void Start() 
 	{
@@ -17,11 +18,16 @@ public class DialogChoice : MonoBehaviour
 
 	public void SetText(string s) 
 	{
+		if (text == null) 
+		{
+			text = GetComponent<TextMeshProUGUI>();
+			b = GetComponentInChildren<Button>();
+		}
 		text.text = s;
 	}
 
 	public void AdvanceConversation() 
 	{
-		//whatever we do goes in here
+		ds.AddRandomDialog();
 	}
 }
