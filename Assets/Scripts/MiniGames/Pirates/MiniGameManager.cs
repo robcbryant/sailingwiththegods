@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-
+using System;
+using JetBrains.Annotations;
 
 public class MiniGameManager : MonoBehaviour
 {
@@ -90,7 +91,7 @@ public class MiniGameManager : MonoBehaviour
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[0], 
 			Globals.GameVars.pirateSubtitles[0], 
-			Globals.GameVars.pirateStartText[0] + "\n\n" + pirateTypeText + "\n\n" + pirateInstructions + "\n\n" + Globals.GameVars.pirateStartText[Random.Range(1, Globals.GameVars.pirateStartText.Count)], 
+			Globals.GameVars.pirateStartText[0] + "\n\n" + pirateTypeText + "\n\n" + pirateInstructions + "\n\n" + Globals.GameVars.pirateStartText[UnityEngine.Random.Range(1, Globals.GameVars.pirateStartText.Count)], 
 			pirateIcon, 
 			MiniGameInfoScreen.MiniGame.Pirates);
 	}
@@ -133,6 +134,10 @@ public class MiniGameManager : MonoBehaviour
 	}
 
 	#region Negotiation
+	int currentPlayerMoney = Globals.GameVars.playerShipVariables.ship.currency;
+	int moneyPiratesWant = 0;
+
+	Resource[] currentPlayerInventory = Globals.GameVars.playerShipVariables.ship.cargo;
 	public void OpenNegotiations() 
 	{
 		if (!alreadyTriedNegotiating) 
@@ -143,6 +148,127 @@ public class MiniGameManager : MonoBehaviour
 			acceptNegotiationButton.SetExplanationText("Cost\nCost\nCost");
 
 			string deal = "This is what the pirates are offering: ";
+
+			//check for similar towns -- still needed -- as common cities increases, difficulty decreases 
+
+			//right now: completely random and uses random of % weight of an item for taking ---------------------------------------------------
+
+			int amountOfCargoToTake = UnityEngine.Random.Range(1, Globals.GameVars.playerShipVariables.ship.cargo.Length);
+
+			Resource[] inventoryPiratesWant = new Resource[amountOfCargoToTake];
+
+			//hard --  50 - 75% current drachma and current cargo amount from randomly selected positions 
+			if (rsp.CurrentPirates.difficulty > 3) {
+				moneyPiratesWant = UnityEngine.Random.Range((int)(currentPlayerMoney * .50), (int)(currentPlayerMoney * .75));
+
+				for (int x = 0; x < amountOfCargoToTake; x++) {
+					int randomCargoPositon = UnityEngine.Random.Range(0, Globals.GameVars.playerShipVariables.ship.cargo.Length);
+
+					int tempAmountKG = Convert.ToInt32(Globals.GameVars.playerShipVariables.ship.cargo[randomCargoPositon].amount_kg);
+					int amountToTake = UnityEngine.Random.Range((int)(tempAmountKG * .50), (int)(tempAmountKG * .75));
+
+					//uses the temporary array of player invenotry to allow for the player to still choose if they want to accept or deny the offer
+					currentPlayerInventory[randomCargoPositon].amount_kg -= amountToTake;
+
+					//for describing to the player what the pirates want and how much of those items they want
+					if (amountToTake > 0) {
+						for (int y = 0; y < inventoryPiratesWant.Length; y++)
+							if (inventoryPiratesWant[y] == null) {
+								inventoryPiratesWant[y] = Globals.GameVars.playerShipVariables.ship.cargo[randomCargoPositon];
+
+								inventoryPiratesWant[y].amount_kg = amountToTake;
+								break;
+							}
+					}
+				}
+			}
+			//easy -- 10 - 25% current drachma and current cargo amount from randomly selected positions 
+			else if (rsp.CurrentPirates.difficulty < 3) {
+				moneyPiratesWant = UnityEngine.Random.Range((int)(currentPlayerMoney * .10), (int)(currentPlayerMoney * .25));
+
+				for (int x = 0; x < amountOfCargoToTake; x++) {
+					int randomCargoPositon = UnityEngine.Random.Range(0, Globals.GameVars.playerShipVariables.ship.cargo.Length);
+
+					int tempAmountKG = Convert.ToInt32(Globals.GameVars.playerShipVariables.ship.cargo[randomCargoPositon].amount_kg);
+					int amountToTake = UnityEngine.Random.Range((int)(tempAmountKG * .10), (int)(tempAmountKG * .25));
+
+					//uses the temporary array of player invenotry to allow for the player to still choose if they want to accept or deny the offer
+					currentPlayerInventory[randomCargoPositon].amount_kg -= amountToTake;
+
+					//for describing to the player what the pirates want and how much of those items they want
+					if (amountToTake > 0) {
+						for (int y = 0; y < inventoryPiratesWant.Length; y++)
+							if (inventoryPiratesWant[y] == null) {
+								inventoryPiratesWant[y] = Globals.GameVars.playerShipVariables.ship.cargo[randomCargoPositon];
+
+								inventoryPiratesWant[y].amount_kg = amountToTake;
+								break;
+							}
+					}
+				}
+			}
+			//med -- 25 - 50% current drachma and current cargo amount from randomly selected positions 
+			else {
+				moneyPiratesWant = UnityEngine.Random.Range((int)(currentPlayerMoney * .25), (int)(currentPlayerMoney * .50));
+
+				for (int x = 0; x < amountOfCargoToTake; x++) {
+					int randomCargoPositon = UnityEngine.Random.Range(0, Globals.GameVars.playerShipVariables.ship.cargo.Length);
+
+					int tempAmountKG = Convert.ToInt32(Globals.GameVars.playerShipVariables.ship.cargo[randomCargoPositon].amount_kg);
+					int amountToTake = UnityEngine.Random.Range((int)(tempAmountKG * .25), (int)(tempAmountKG * .50));
+
+					//uses the temporary array of player invenotry to allow for the player to still choose if they want to accept or deny the offer
+					currentPlayerInventory[randomCargoPositon].amount_kg -= amountToTake;
+
+					//for describing to the player what the pirates want and how much of those items they want
+					if (amountToTake > 0) {
+						for (int y = 0; y < inventoryPiratesWant.Length; y++)
+							if (inventoryPiratesWant[y] == null) {
+								inventoryPiratesWant[y] = Globals.GameVars.playerShipVariables.ship.cargo[randomCargoPositon];
+
+								inventoryPiratesWant[y].amount_kg = amountToTake;
+								break;
+							}
+					}
+				}
+			}
+
+			string inventoryPiratesWantText = "";
+			int amountItemsBeingTakenInText = 0;
+			
+			void PrintingOutCargoItemsForPirateNegotiations(Resource[] cargoArray) {
+				if (cargoArray.Length > 0) {
+					for (int x = 0; x < cargoArray.Length; x++) {
+						if (cargoArray[x] != null) {
+							inventoryPiratesWantText += (cargoArray[x].amount_kg + " kg of " + cargoArray[x].name + "\n").ToString();
+							amountItemsBeingTakenInText++; 
+						}
+					}
+				}
+				else {
+					inventoryPiratesWantText = "THIS TEXT SHOULD NEVER SHOW."; 
+				}
+			}
+
+			PrintingOutCargoItemsForPirateNegotiations(inventoryPiratesWant);
+			
+			//And put that into the button text
+			acceptNegotiationButton.SetExplanationText("Cost: "+ moneyPiratesWant + " drachma, as well as the above " + 
+														amountItemsBeingTakenInText + " listed items from your ship's cargo.");
+
+			string deal = "";
+			if (inventoryPiratesWant[0] != null) {
+				deal = "This is what the pirates are offering: \n'We only want " + moneyPiratesWant + " drachma, and a percentage of " +
+								amountItemsBeingTakenInText + " items from your ship's cargo. What we want is:\n\n" +
+
+								inventoryPiratesWantText +
+
+								"\nYou may go freely after accepting our deal.'";
+			}
+			else {
+				deal = "This is what the pirates are offering: \n'We only want " + moneyPiratesWant + " drachma, as you are not carrying " +
+								"anything that we value at this time. \nYou may go freely after accepting our deal.'";
+			}
 
 			rejectNegotiationButton.onClick.RemoveAllListeners();
 			rejectNegotiationButton.onClick.AddListener(mgInfo.CloseDialog);
@@ -155,6 +281,8 @@ public class MiniGameManager : MonoBehaviour
 				Globals.GameVars.pirateTitles[1],
 				Globals.GameVars.pirateSubtitles[1],
 				Globals.GameVars.pirateNegotiateText[0] + "\n\n" + deal + "\n\n" + Globals.GameVars.pirateNegotiateText[Random.Range(1, Globals.GameVars.pirateNegotiateText.Count)],
+				Globals.GameVars.pirateNegotiateText[0] + "\n\n" + deal + "\n\nIf you take this deal, you will escape with your lives, but you will be thought a coward for avoiding a fight - your clout will go down!\n\n" +
+					Globals.GameVars.pirateNegotiateText[UnityEngine.Random.Range(1, Globals.GameVars.pirateNegotiateText.Count)],
 				pirateIcon,
 				MiniGameInfoScreen.MiniGame.Negotiation);
 
@@ -168,6 +296,10 @@ public class MiniGameManager : MonoBehaviour
 
 	public void AcceptDeal() {
 		//Subtract out resources
+
+		Globals.GameVars.playerShipVariables.ship.currency -= moneyPiratesWant;
+
+		Globals.GameVars.playerShipVariables.ship.cargo = currentPlayerInventory;
 
 		closeButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = acceptedNegotiationClose;
 		closeButton.onClick.RemoveAllListeners();
@@ -205,7 +337,7 @@ public class MiniGameManager : MonoBehaviour
 	{
 		if (!alreadyTriedRunning) {
 			//RUNNING CALCULATION GOES HERE
-			bool check = runChance < Random.Range(0.0f, 1.0f);
+			bool check = runChance < UnityEngine.Random.Range(0.0f, 1.0f);
 
 			closeButton.onClick.RemoveAllListeners();
 
@@ -236,6 +368,7 @@ public class MiniGameManager : MonoBehaviour
 			Globals.GameVars.pirateTitles[2],
 			Globals.GameVars.pirateSubtitles[2],
 			Globals.GameVars.pirateRunSuccessText + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunSuccessText[Random.Range(1, Globals.GameVars.pirateRunSuccessText.Count)],
+			Globals.GameVars.pirateRunSuccessText[0] + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunSuccessText[UnityEngine.Random.Range(1, Globals.GameVars.pirateRunSuccessText.Count)],
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
 	}
@@ -260,7 +393,7 @@ public class MiniGameManager : MonoBehaviour
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[2],
 			Globals.GameVars.pirateSubtitles[2],
-			Globals.GameVars.pirateRunFailText[0] + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunFailText[Random.Range(1, Globals.GameVars.pirateRunFailText.Count)],
+			Globals.GameVars.pirateRunFailText[0] + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunFailText[UnityEngine.Random.Range(1, Globals.GameVars.pirateRunFailText.Count)],
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
 	}
@@ -312,7 +445,7 @@ public class MiniGameManager : MonoBehaviour
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[3],
 			Globals.GameVars.pirateSubtitles[3],
-			Globals.GameVars.pirateSuccessText[0] + "\n\n" + NetCloutText(clout) + "\n\n" + Globals.GameVars.pirateSuccessText[Random.Range(1, Globals.GameVars.pirateSuccessText.Count)],
+			Globals.GameVars.pirateSuccessText[0] + "\n\n" + NetCloutText(clout) + "\n\n" + Globals.GameVars.pirateSuccessText[UnityEngine.Random.Range(1, Globals.GameVars.pirateSuccessText.Count)],
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
 	}
@@ -328,7 +461,7 @@ public class MiniGameManager : MonoBehaviour
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[3],
 			Globals.GameVars.pirateSubtitles[3],
-			Globals.GameVars.pirateFailureText[0] + "\n\n" + Globals.GameVars.pirateFailureText[Random.Range(1, Globals.GameVars.pirateFailureText.Count)],
+			Globals.GameVars.pirateFailureText[0] + "\n\n" + Globals.GameVars.pirateFailureText[UnityEngine.Random.Range(1, Globals.GameVars.pirateFailureText.Count)],
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
 	}
