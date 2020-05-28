@@ -143,11 +143,6 @@ public class MiniGameManager : MonoBehaviour
 		if (!alreadyTriedNegotiating) 
 		{
 			//NEGOTIATION ALGORITHM GOES HERE
-			//Figure out what they're offering
-			//And put that into the button text
-			acceptNegotiationButton.SetExplanationText("Cost\nCost\nCost");
-
-			string deal = "This is what the pirates are offering: ";
 
 			//check for similar towns -- still needed -- as common cities increases, difficulty decreases 
 
@@ -258,7 +253,7 @@ public class MiniGameManager : MonoBehaviour
 
 			string deal = "";
 			if (inventoryPiratesWant[0] != null) {
-				deal = "This is what the pirates are offering: \n'We only want " + moneyPiratesWant + " drachma, and a percentage of " +
+				deal = "This is what the pirates are offering: \n\n'We only want " + moneyPiratesWant + " drachma, and a percentage of " +
 								amountItemsBeingTakenInText + " items from your ship's cargo. What we want is:\n\n" +
 
 								inventoryPiratesWantText +
@@ -280,7 +275,7 @@ public class MiniGameManager : MonoBehaviour
 			mgInfo.DisplayText(
 				Globals.GameVars.pirateTitles[1],
 				Globals.GameVars.pirateSubtitles[1],
-				Globals.GameVars.pirateNegotiateText[0] + "\n\n" + deal + "\n\n" + Globals.GameVars.pirateNegotiateText[Random.Range(1, Globals.GameVars.pirateNegotiateText.Count)],
+				//Globals.GameVars.pirateNegotiateText[0] + "\n\n" + deal + "\n\n" + Globals.GameVars.pirateNegotiateText[UnityEngine.Random.Range(1, Globals.GameVars.pirateNegotiateText.Count)],
 				Globals.GameVars.pirateNegotiateText[0] + "\n\n" + deal + "\n\nIf you take this deal, you will escape with your lives, but you will be thought a coward for avoiding a fight - your clout will go down!\n\n" +
 					Globals.GameVars.pirateNegotiateText[UnityEngine.Random.Range(1, Globals.GameVars.pirateNegotiateText.Count)],
 				pirateIcon,
@@ -305,7 +300,7 @@ public class MiniGameManager : MonoBehaviour
 		closeButton.onClick.RemoveAllListeners();
 		closeButton.onClick.AddListener(UnloadMinigame);
 
-		Globals.GameVars.AdjustPlayerClout(tookNegotiationClout + cloutChange);
+		Globals.GameVars.AdjustPlayerClout(tookNegotiationClout + cloutChange, false);
 
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[1],
@@ -354,7 +349,7 @@ public class MiniGameManager : MonoBehaviour
 
 	public void RanAway() 
 	{
-		Globals.GameVars.AdjustPlayerClout(succeedRunClout + cloutChange);
+		Globals.GameVars.AdjustPlayerClout(succeedRunClout + cloutChange, false);
 		string cloutText = $"Your cowardice has tarnished your reputation and your clout has gone down by {succeedRunClout}.";
 		if (cloutChange != 0) {
 			cloutText += $" Combined with the earlier {cloutChange}, that is a net clout change of {succeedRunClout + cloutChange}.";
@@ -367,7 +362,7 @@ public class MiniGameManager : MonoBehaviour
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[2],
 			Globals.GameVars.pirateSubtitles[2],
-			Globals.GameVars.pirateRunSuccessText + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunSuccessText[Random.Range(1, Globals.GameVars.pirateRunSuccessText.Count)],
+			//Globals.GameVars.pirateRunSuccessText + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunSuccessText[Random.Range(1, Globals.GameVars.pirateRunSuccessText.Count)],
 			Globals.GameVars.pirateRunSuccessText[0] + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunSuccessText[UnityEngine.Random.Range(1, Globals.GameVars.pirateRunSuccessText.Count)],
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
@@ -439,7 +434,7 @@ public class MiniGameManager : MonoBehaviour
 		closeButton.onClick.RemoveAllListeners();
 		closeButton.onClick.AddListener(UnloadMinigame);
 
-		Globals.GameVars.AdjustPlayerClout(clout + cloutChange);
+		Globals.GameVars.AdjustPlayerClout(clout + cloutChange, false);
 
 		mgInfo.gameObject.SetActive(true);
 		mgInfo.DisplayText(
