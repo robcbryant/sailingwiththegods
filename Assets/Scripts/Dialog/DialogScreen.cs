@@ -6,8 +6,13 @@ using TMPro;
 
 public class DialogScreen : MonoBehaviour
 {
+	public enum Emotion
+	{
+		Neutral, Welcoming, Superstitious, Grumpy, Angry, Happy, Pirate, Foreigner, WellBred, HatesSea, Patriotic, Swindler
+	}
 	public Image jasonIcon;
 	public Image otherIcon;
+	public Sprite[] emotionFaces = new Sprite[12];
 	public TextMeshProUGUI conversationTitle;
 	public Scrollbar conversationScroll;
 	public Transform conversationHolder;
@@ -17,7 +22,7 @@ public class DialogScreen : MonoBehaviour
 
 	private void Start() 
 	{
-		SetDialogUI(RandomCrewPortrait(), "Test Conversation");
+		SetDialogUI(emotionFaces[0], "Test Conversation");
 		Testing();
 	}
 
@@ -28,9 +33,15 @@ public class DialogScreen : MonoBehaviour
 		conversationTitle.text = title;
 	}
 
-	public void SetOtherSprite(Sprite img) 
+	public void ChangeOtherEmotion(Emotion mood) 
 	{
-		otherIcon.sprite = img;
+		otherIcon.sprite = emotionFaces[(int)mood];
+	}
+
+	public void ChangeOtherEmotion(string mood) 
+	{
+		System.Enum.TryParse(mood, out Emotion e);
+		ChangeOtherEmotion(e);
 	}
 
 	public void SetJasonSprite(Sprite img) 
@@ -70,13 +81,12 @@ public class DialogScreen : MonoBehaviour
 		if (speaker % 2 != 0) 
 		{
 			align = TextAlignmentOptions.Right;
-			Sprite newFace = RandomCrewPortrait();
-			if (newFace != otherIcon.sprite) 
+			int moodIndex = Random.Range(0, System.Enum.GetNames(typeof(Emotion)).Length);
+			if (otherIcon.sprite != emotionFaces[moodIndex]) 
 			{
-				SetOtherSprite(RandomCrewPortrait());
-				conversation += " My mood has changed based on what you said. My face changed to match. Now I look like a completely different person!";
+				conversation += $"\n\nSomething you said changed my mood, and now I'm {(Emotion)moodIndex}";
+				ChangeOtherEmotion((Emotion)moodIndex);
 			}
-
 		}
 		
 		StartCoroutine(AddToDialogText(name, conversation, align));
@@ -94,11 +104,6 @@ public class DialogScreen : MonoBehaviour
 	{
 		ClearChildren(conversationHolder);
 		ClearChildren(choiceHolder);
-	}
-
-	private Sprite RandomCrewPortrait() 
-	{
-		return Resources.Load<Sprite>("crew_portraits/" + Random.Range(1, 80)) ?? Resources.Load<Sprite>("crew_portraits/phoenician_sailor");
 	}
 
 	private void ClearChildren(Transform parent) 
