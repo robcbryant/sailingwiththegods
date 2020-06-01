@@ -123,10 +123,10 @@ public class RitualController : MonoBehaviour
 					performText += $"\n{currentCrew.name} will die as a sacrifice";
 					break;
 				case (-2):
-					performText += $"\n-{currentRitual.ResourceAmounts[i]} Drachma";
+					performText += $"\n-{currentRitual.ResourceAmounts[i]} Drachma (You have {Globals.GameVars.playerShipVariables.ship.currency} Drachma)";
 					break;
 				default:
-					performText += $"\n-{currentRitual.ResourceAmounts[i]} {Globals.GameVars.masterResourceList[currentRitual.ResourceTypes[i]].name}";
+					performText += $"\n-{currentRitual.ResourceAmounts[i]}kg {Globals.GameVars.masterResourceList[currentRitual.ResourceTypes[i]].name} (You have {Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]]}kg)";
 					break;
 			}
 		}

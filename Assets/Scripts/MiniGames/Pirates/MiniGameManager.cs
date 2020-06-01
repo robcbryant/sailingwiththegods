@@ -134,10 +134,10 @@ public class MiniGameManager : MonoBehaviour
 	}
 
 	#region Negotiation
-	int currentPlayerMoney = Globals.GameVars.playerShipVariables.ship.currency;
-	int moneyPiratesWant = 0;
+	private int moneyDemand = 0;
+	private Resource[] playerInvo = Globals.GameVars.playerShipVariables.ship.cargo;
+	private int[] demandedAmounts = new int[Globals.GameVars.playerShipVariables.ship.cargo.Length];
 
-	Resource[] currentPlayerInventory = Globals.GameVars.playerShipVariables.ship.cargo;
 	public void OpenNegotiations() 
 	{
 		if (!alreadyTriedNegotiating) 
@@ -148,121 +148,64 @@ public class MiniGameManager : MonoBehaviour
 
 			//right now: completely random and uses random of % weight of an item for taking ---------------------------------------------------
 
-			int amountOfCargoToTake = UnityEngine.Random.Range(1, Globals.GameVars.playerShipVariables.ship.cargo.Length);
+			int currentPlayerMoney = Globals.GameVars.playerShipVariables.ship.currency;
 
-			Resource[] inventoryPiratesWant = new Resource[amountOfCargoToTake];
+			//Only consider stuff you have any actual quantity of
+			List<Resource> availableInvo = new List<Resource>();
+			foreach (Resource r in playerInvo) {
+				if (r.amount_kg > 0) {
+					availableInvo.Add(r);
+				}
+			}
 
-			//hard --  50 - 75% current drachma and current cargo amount from randomly selected positions 
+			int typesOfCargo = UnityEngine.Random.Range(1, playerInvo.Length);
+			typesOfCargo = Mathf.Min(availableInvo.Count, typesOfCargo);
+
+			Resource[] demandedItems = new Resource[typesOfCargo];
+
+			Vector2 amountMod = new Vector2(1, 1);
 			if (rsp.CurrentPirates.difficulty > 3) {
-				moneyPiratesWant = UnityEngine.Random.Range((int)(currentPlayerMoney * .50), (int)(currentPlayerMoney * .75));
-
-				for (int x = 0; x < amountOfCargoToTake; x++) {
-					int randomCargoPositon = UnityEngine.Random.Range(0, Globals.GameVars.playerShipVariables.ship.cargo.Length);
-
-					int tempAmountKG = Convert.ToInt32(Globals.GameVars.playerShipVariables.ship.cargo[randomCargoPositon].amount_kg);
-					int amountToTake = UnityEngine.Random.Range((int)(tempAmountKG * .50), (int)(tempAmountKG * .75));
-
-					//uses the temporary array of player invenotry to allow for the player to still choose if they want to accept or deny the offer
-					currentPlayerInventory[randomCargoPositon].amount_kg -= amountToTake;
-
-					//for describing to the player what the pirates want and how much of those items they want
-					if (amountToTake > 0) {
-						for (int y = 0; y < inventoryPiratesWant.Length; y++)
-							if (inventoryPiratesWant[y] == null) {
-								inventoryPiratesWant[y] = Globals.GameVars.playerShipVariables.ship.cargo[randomCargoPositon];
-
-								inventoryPiratesWant[y].amount_kg = amountToTake;
-								break;
-							}
-					}
-				}
+				amountMod = new Vector2(.5f, .75f);
+				Debug.Log("Hard pirates");
 			}
-			//easy -- 10 - 25% current drachma and current cargo amount from randomly selected positions 
 			else if (rsp.CurrentPirates.difficulty < 3) {
-				moneyPiratesWant = UnityEngine.Random.Range((int)(currentPlayerMoney * .10), (int)(currentPlayerMoney * .25));
-
-				for (int x = 0; x < amountOfCargoToTake; x++) {
-					int randomCargoPositon = UnityEngine.Random.Range(0, Globals.GameVars.playerShipVariables.ship.cargo.Length);
-
-					int tempAmountKG = Convert.ToInt32(Globals.GameVars.playerShipVariables.ship.cargo[randomCargoPositon].amount_kg);
-					int amountToTake = UnityEngine.Random.Range((int)(tempAmountKG * .10), (int)(tempAmountKG * .25));
-
-					//uses the temporary array of player invenotry to allow for the player to still choose if they want to accept or deny the offer
-					currentPlayerInventory[randomCargoPositon].amount_kg -= amountToTake;
-
-					//for describing to the player what the pirates want and how much of those items they want
-					if (amountToTake > 0) {
-						for (int y = 0; y < inventoryPiratesWant.Length; y++)
-							if (inventoryPiratesWant[y] == null) {
-								inventoryPiratesWant[y] = Globals.GameVars.playerShipVariables.ship.cargo[randomCargoPositon];
-
-								inventoryPiratesWant[y].amount_kg = amountToTake;
-								break;
-							}
-					}
-				}
+				amountMod = new Vector2(.1f, .25f);
+				Debug.Log("Easy pirates");
 			}
-			//med -- 25 - 50% current drachma and current cargo amount from randomly selected positions 
 			else {
-				moneyPiratesWant = UnityEngine.Random.Range((int)(currentPlayerMoney * .25), (int)(currentPlayerMoney * .50));
-
-				for (int x = 0; x < amountOfCargoToTake; x++) {
-					int randomCargoPositon = UnityEngine.Random.Range(0, Globals.GameVars.playerShipVariables.ship.cargo.Length);
-
-					int tempAmountKG = Convert.ToInt32(Globals.GameVars.playerShipVariables.ship.cargo[randomCargoPositon].amount_kg);
-					int amountToTake = UnityEngine.Random.Range((int)(tempAmountKG * .25), (int)(tempAmountKG * .50));
-
-					//uses the temporary array of player invenotry to allow for the player to still choose if they want to accept or deny the offer
-					currentPlayerInventory[randomCargoPositon].amount_kg -= amountToTake;
-
-					//for describing to the player what the pirates want and how much of those items they want
-					if (amountToTake > 0) {
-						for (int y = 0; y < inventoryPiratesWant.Length; y++)
-							if (inventoryPiratesWant[y] == null) {
-								inventoryPiratesWant[y] = Globals.GameVars.playerShipVariables.ship.cargo[randomCargoPositon];
-
-								inventoryPiratesWant[y].amount_kg = amountToTake;
-								break;
-							}
-					}
-				}
+				amountMod = new Vector2(.25f, .5f);
+				Debug.Log("Medium pirates");
 			}
 
-			string inventoryPiratesWantText = "";
-			int amountItemsBeingTakenInText = 0;
-			
-			void PrintingOutCargoItemsForPirateNegotiations(Resource[] cargoArray) {
-				if (cargoArray.Length > 0) {
-					for (int x = 0; x < cargoArray.Length; x++) {
-						if (cargoArray[x] != null) {
-							inventoryPiratesWantText += (cargoArray[x].amount_kg + " kg of " + cargoArray[x].name + "\n").ToString();
-							amountItemsBeingTakenInText++; 
-						}
-					}
-				}
-				else {
-					inventoryPiratesWantText = "THIS TEXT SHOULD NEVER SHOW."; 
-				}
-			}
+			moneyDemand = UnityEngine.Random.Range((int)(currentPlayerMoney * amountMod.x), (int)(currentPlayerMoney * amountMod.y));
+			string demandsText = "";
 
-			PrintingOutCargoItemsForPirateNegotiations(inventoryPiratesWant);
+			for (int i = 0; i < typesOfCargo; i++) {
+				Resource randomResource = availableInvo[UnityEngine.Random.Range(0, availableInvo.Count)];
+				int randomResourceIndex = Globals.GameVars.masterResourceList.FindIndex(x => x.name == randomResource.name);
+
+				float cargoMod = UnityEngine.Random.Range(amountMod.x, amountMod.y);
+				int amountToTake = (int)(playerInvo[randomResourceIndex].amount_kg * cargoMod);
+
+				demandedAmounts[randomResourceIndex] = amountToTake;
+				demandedItems[i] = new Resource(playerInvo[randomResourceIndex].name, amountToTake);
+
+				demandsText += $"\n{amountToTake}kg {randomResource.name} (You have {playerInvo[randomResourceIndex].amount_kg}kg)";
+
+				availableInvo.Remove(randomResource);
+			}
 			
+
 			//And put that into the button text
-			acceptNegotiationButton.SetExplanationText("Cost: "+ moneyPiratesWant + " drachma, as well as the above " + 
-														amountItemsBeingTakenInText + " listed items from your ship's cargo.");
+			acceptNegotiationButton.SetExplanationText($"{moneyDemand} Drachma (You have {currentPlayerMoney}){demandsText}");
 
 			string deal = "";
-			if (inventoryPiratesWant[0] != null) {
-				deal = "This is what the pirates are offering: \n\n'We only want " + moneyPiratesWant + " drachma, and a percentage of " +
-								amountItemsBeingTakenInText + " items from your ship's cargo. What we want is:\n\n" +
-
-								inventoryPiratesWantText +
-
-								"\nYou may go freely after accepting our deal.'";
+			if (typesOfCargo > 0) {
+				deal = $"The pirates make their offer: \n'We only want {moneyDemand} Drachma, and a percentage of {typesOfCargo} items from your ship's cargo. What we want is:\n{demandsText}" +
+					$"\n\nYou may go freely after accepting our deal.'";
 			}
 			else {
-				deal = "This is what the pirates are offering: \n'We only want " + moneyPiratesWant + " drachma, as you are not carrying " +
-								"anything that we value at this time. \nYou may go freely after accepting our deal.'";
+				deal = $"The pirates make their offer: \n'We only want {moneyDemand} Drachma, as you are not carrying anything that we value at this time. \n\nYou may go freely after accepting our deal.'";
 			}
 
 			rejectNegotiationButton.onClick.RemoveAllListeners();
@@ -292,9 +235,11 @@ public class MiniGameManager : MonoBehaviour
 	public void AcceptDeal() {
 		//Subtract out resources
 
-		Globals.GameVars.playerShipVariables.ship.currency -= moneyPiratesWant;
+		Globals.GameVars.playerShipVariables.ship.currency -= moneyDemand;
 
-		Globals.GameVars.playerShipVariables.ship.cargo = currentPlayerInventory;
+		for (int i = 0; i < demandedAmounts.Length; i++) {
+			Globals.GameVars.playerShipVariables.ship.cargo[i].amount_kg -= demandedAmounts[i];
+		}
 
 		closeButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = acceptedNegotiationClose;
 		closeButton.onClick.RemoveAllListeners();
