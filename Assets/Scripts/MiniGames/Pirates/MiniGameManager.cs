@@ -144,8 +144,6 @@ public class MiniGameManager : MonoBehaviour
 		{
 			//NEGOTIATION ALGORITHM GOES HERE
 
-			//check for similar towns -- still needed -- as common cities increases, difficulty decreases 
-
 			//right now: completely random and uses random of % weight of an item for taking ---------------------------------------------------
 
 			int currentPlayerMoney = Globals.GameVars.playerShipVariables.ship.currency;
