@@ -64,21 +64,21 @@ namespace Yarn.Unity {
         [Tooltip("How quickly to show the text, in seconds per character")]
         public float textSpeed = 0.025f;
 
-        /// <summary>
-        /// The buttons that let the user choose an option.
-        /// </summary>
-        /// <remarks>
-        /// The <see cref="Button"/> objects in this list will be enabled
-        /// and disabled by the <see cref="DialogueUI"/>. Each button
-        /// should have as a child object a <see cref="Text"/> or a <see
-        /// cref="TMPro.TextMeshProUGUI"/> as a label; the text of this
-        /// child object will be updated by the DialogueUI as necessary.
-        ///
-        /// You do not need to configure the On Click action of any of
-        /// these buttons. The <see cref="DialogueUI"/> will configure them
-        /// for you.
-        /// </remarks>
-        public List<Button> optionButtons;
+		/// <summary>
+		/// The buttons that let the user choose an option.
+		/// </summary>
+		/// <remarks>
+		/// The <see cref="Button"/> objects in this list will be enabled
+		/// and disabled by the <see cref="DialogueUI"/>. Each button
+		/// should have as a child object a <see cref="Text"/> or a <see
+		/// cref="TMPro.TextMeshProUGUI"/> as a label; the text of this
+		/// child object will be updated by the DialogueUI as necessary.
+		///
+		/// You do not need to configure the On Click action of any of
+		/// these buttons. The <see cref="DialogueUI"/> will configure them
+		/// for you.
+		/// </remarks>
+		public List<Button> optionButtons;
 
         // When true, the user has indicated that they want to proceed to
         // the next line.

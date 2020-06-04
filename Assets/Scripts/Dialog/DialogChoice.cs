@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Yarn.Unity;
 
 public class DialogChoice : MonoBehaviour
 {
 	private TextMeshProUGUI text;
 	private Button b;
-	public DialogScreen ds;
 
 	private void Start() 
 	{
@@ -26,8 +26,7 @@ public class DialogChoice : MonoBehaviour
 		text.text = s;
 	}
 
-	public void AdvanceConversation() 
-	{
-		ds.AddRandomDialog();
+	public void SetOnClick(UnityEngine.Events.UnityAction call) {
+		b.onClick.AddListener(() => call());
 	}
 }
