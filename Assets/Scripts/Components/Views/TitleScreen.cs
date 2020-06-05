@@ -63,18 +63,13 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 		Subscribe(lowest_windowed_resolution_button.onClick, () => GUI_LowestGameResolution_Windowed());
 
 		information_texts = new Text[5] { default_text, higher_text, highest_text, lower_text, lowest_text };
-		//Starting_Text_Colors();
-		//information_texts[green_text_pos].color = green_text_color;
 	}
 
 	private void FixedUpdate() {
 		if (resolutions_settings_screen) {
 			Changing_Text_Colors();
 		}
-		//Changing_Text_Colors();
 	}
-
-	//void Changing_Text_Colors() {}
 
 	void Changing_Text_Colors() {
 		if (Screen.currentResolution.width == 2048) {
@@ -92,8 +87,6 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 		else if(Screen.currentResolution.width == 1024) {
 			green_text_pos = 4;
 		}
-
-		//information_texts[green_text_pos].color = green_text_color;
 
 		for (int x = 0; 0 < information_texts.Length; x++) {
 			if (x != green_text_pos && x < 5) {
