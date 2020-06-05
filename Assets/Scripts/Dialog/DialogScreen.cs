@@ -3,16 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Yarn.Unity;
 
 public class DialogScreen : MonoBehaviour
 {
-	public enum Emotion
-	{
-		Neutral, Welcoming, Superstitious, Grumpy, Angry, Happy, Pirate, Foreigner, WellBred, HatesSea, Patriotic, Swindler
-	}
-	public Image jasonIcon;
-	public Image otherIcon;
-	public Sprite[] emotionFaces = new Sprite[12];
+	public string partnerName = "Tax Collector Bob III";
 	public TextMeshProUGUI conversationTitle;
 	public Scrollbar conversationScroll;
 	public Transform conversationHolder;
@@ -20,36 +15,24 @@ public class DialogScreen : MonoBehaviour
 	public DialogChoice choiceObject;
 	public DialogPiece dialogObject;
 
-	private void Start() 
+	private CustomDialogUI yarnUI;
+
+	private void OnValidate() 
 	{
-		SetDialogUI(emotionFaces[0], "Test Conversation");
-		Testing();
+		yarnUI = GetComponent<CustomDialogUI>();
 	}
 
-	public void SetDialogUI(Sprite other, string title) 
+	public void SetDialogUI(string title) 
 	{
 		Clear();
-		otherIcon.sprite = other;
 		conversationTitle.text = title;
 	}
 
-	public void ChangeOtherEmotion(Emotion mood) 
-	{
-		otherIcon.sprite = emotionFaces[(int)mood];
+	public void AddToDialogText(string speaker, string text, TextAlignmentOptions align) {
+		StartCoroutine(DoAddToDialogText(speaker, text, align));
 	}
-
-	public void ChangeOtherEmotion(string mood) 
-	{
-		System.Enum.TryParse(mood, out Emotion e);
-		ChangeOtherEmotion(e);
-	}
-
-	public void SetJasonSprite(Sprite img) 
-	{
-		jasonIcon.sprite = img;
-	}
-
-	public IEnumerator AddToDialogText(string speaker, string text, TextAlignmentOptions align) 
+	
+	private IEnumerator DoAddToDialogText(string speaker, string text, TextAlignmentOptions align) 
 	{
 		DialogPiece p = Instantiate(dialogObject);
 		p.SetAlignment(align);
@@ -67,42 +50,57 @@ public class DialogScreen : MonoBehaviour
 		int choices = Random.Range(1, 6);
 		for (int i = 0; i < choices; i++) 
 		{
-			AddChoice($"This is choice {i}!");
+			AddChoice($"This is choice {i}!", AddRandomDialog);
 		}
+	}
+
+	public void AddContinueOption() 
+	{
+		ClearOptions();
+		if (!yarnUI.EndOfBlock) {
+			AddChoice("Continue", yarnUI.MarkLineComplete);
+		}
+		else {
+			StartCoroutine(WaitAndComplete());
+		}
+	}
+
+	private IEnumerator WaitAndComplete() {
+		yield return null;
+		yarnUI.MarkLineComplete();
 	}
 
 	public void AddRandomDialog() 
 	{
 		int speaker = Random.Range(1, 3);
-		string name = speaker % 2 == 0 ? "Jason" : "Tax Collector Bob the III";
+		string name = speaker % 2 == 0 ? "Jason" : partnerName;
 		string conversation = $"This is being spoken by {name}. This is some dialog! Blah blah blah. Dialog dialog dialog.";
 		TextAlignmentOptions align = TextAlignmentOptions.Left;
 
 		if (speaker % 2 != 0) 
 		{
 			align = TextAlignmentOptions.Right;
-			int moodIndex = Random.Range(0, System.Enum.GetNames(typeof(Emotion)).Length);
-			if (otherIcon.sprite != emotionFaces[moodIndex]) 
-			{
-				conversation += $"\n\nSomething you said changed my mood, and now I'm {(Emotion)moodIndex}";
-				ChangeOtherEmotion((Emotion)moodIndex);
-			}
 		}
 		
-		StartCoroutine(AddToDialogText(name, conversation, align));
+		StartCoroutine(DoAddToDialogText(name, conversation, align));
 	}
 
-	public void AddChoice(string text) 
+	public void AddChoice(string text, UnityEngine.Events.UnityAction click) 
 	{
 		DialogChoice c = Instantiate(choiceObject);
-		c.ds = this;
 		c.SetText(text);
 		c.transform.SetParent(choiceHolder);
+		c.SetOnClick(click);
 	}
 
 	public void Clear() 
 	{
 		ClearChildren(conversationHolder);
+		ClearChildren(choiceHolder);
+	}
+
+	public void ClearOptions() 
+	{
 		ClearChildren(choiceHolder);
 	}
 
