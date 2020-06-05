@@ -72,19 +72,19 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 	}
 
 	void Changing_Text_Colors() {
-		if (Screen.currentResolution.width == 2048) {
+		if (Screen.currentResolution.height == 1200) {
 			green_text_pos = 0;
 		}
-		else if (Screen.currentResolution.width == 2560) {
+		else if (Screen.currentResolution.height == 1440) {
 			green_text_pos = 1;
 		}
-		else if(Screen.currentResolution.width == 3072) {
+		else if(Screen.currentResolution.height == 1600) {
 			green_text_pos = 2;
 		}
-		else if(Screen.currentResolution.width == 1536) {
+		else if(Screen.currentResolution.height == 1080) {
 			green_text_pos = 3;
 		}
-		else if(Screen.currentResolution.width == 1024) {
+		else if(Screen.currentResolution.height == 720) {
 			green_text_pos = 4;
 		}
 
@@ -128,63 +128,54 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 
 	//what the game build generally starts off in
 	public void GUI_DefaultGameResolution_FullScreen() {
-		Screen.SetResolution(2048, 1536, true);
+		Screen.SetResolution(1920, 1200, true);
 		green_text_pos = 0;
 	}
 
-	//25% increase from the default resolution
 	public void GUI_HigherGameResolution_FullScreen() {
-		Screen.SetResolution(2560, 1920, true);
+		Screen.SetResolution(2560, 1440, true);
 		green_text_pos = 1;
 	}
 
-	//50% increase from the default resolution
 	public void GUI_HighestGameResolution_Fullscreen() {
-		Screen.SetResolution(3072, 2304, true);
+		Screen.SetResolution(2560, 1600, true);
 		green_text_pos = 2;
 	}
 
-	//75% of the original default resolution 
 	public void GUI_LowerGameResolution_FullScreen() {
-		Screen.SetResolution(1536, 1152, true);
+		Screen.SetResolution(1920, 1080, true);
 		green_text_pos = 3;
 	}
 
-	//50% of the original default resolution
 	public void GUI_LowestGameResolution_Fullscreen() {
-		Screen.SetResolution(1024, 768, true);
+		Screen.SetResolution(1280, 720, true);
 		green_text_pos = 4;
 	}
 	#endregion
 
 	#region Resolution Button Options (Windowed) Methods
-	//resolution the game build generally starts off in -- windowed
 	public void GUI_DefaultGameResolution_Windowed() {
-		Screen.SetResolution(2048, 1536, false);
+		Screen.SetResolution(1920, 1200, false);
 		green_text_pos = 0;
 	}
 
-	//25% increase from the default resolution          -- windowed
 	public void GUI_HigherGameResolution_Windowed() {
-		Screen.SetResolution(2560, 1920, false);
+		Screen.SetResolution(2560, 1440, false);
 		green_text_pos = 1;
 	}
 
-	//50% increase from the default resolution          -- windowed
 	public void GUI_HighestGameResolution_Windowed() {
-		Screen.SetResolution(3072, 2304, false);
+		Screen.SetResolution(2560, 1600, false);
 		green_text_pos = 2;
 	}
 
-	//75% of the original default resolution            -- windowed
 	public void GUI_LowerGameResolution_Windowed() {
-		Screen.SetResolution(1536, 1152, false);
+		Screen.SetResolution(1920, 1080, false);
 		green_text_pos = 3;
 	}
 
-	//50% of the original default resolution            -- windowed
 	public void GUI_LowestGameResolution_Windowed() {
-		Screen.SetResolution(1024, 768, false);
+		Screen.SetResolution(1280, 720, false);
 		green_text_pos = 4;
 	}
 	#endregion
