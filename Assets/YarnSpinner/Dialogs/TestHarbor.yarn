@@ -3,7 +3,9 @@ tags:
 colorID: 0
 position: 1269,-143
 ---
+<< reset DialogScreen >>
 << setpartnername DialogScreen Tax_Collector_Bob_III>>
+<< setsprite Partner neutral >>
 << setspeaker DialogScreen other>> 
 Welcome to port! This is a city with a port! The city is called City! Here you can find goods like Goods and Luxuries. We worship a Greek god.
 << setend DialogScreen >>
@@ -29,7 +31,10 @@ Hey, that's not very nice! Taxes are good! I'm just doing my job!
 You're very mean and because of that I'm going to charge you double, so there.
 
 << setspeaker DialogScreen Jason>>
+<< setend DialogScreen >>
 Well darn.
+
+[[ Let's try this over again. | Start]]
 ===
 title: swindler
 tags: 
@@ -44,7 +49,10 @@ I'm very rich but also very stupid! I don't get how taxes work! You can easily t
 I like wealthy people! For you, I'll give you a special tax rate of double the usual taxes!
 
 << setspeaker DialogScreen Jason>>
+<< setend DialogScreen >>
 Sounds like a good deal to me, the local wealthy idiot!
+
+[[ Let's try this over again. | Start]]
 ===
 title: foreigner
 tags: 
@@ -59,7 +67,10 @@ I can't help but notice that weird hat. I've never seen one like that in Ancient
 You're right! It's called a cowboy hat! It's from Texas! I'm a time traveler! Time traveling cowboy!
 
 << setspeaker DialogScreen Jason>>
+<< setend DialogScreen >>
 That's very very strange, but I'm sure that's a thing the gods can just do if they feel like it or something.
+
+[[ Let's try this over again. | Start]]
 ===
 title: leave
 tags: 
@@ -74,5 +85,8 @@ I'm bored with this conversation. I don't feel like paying taxes, so I'm going t
 Fine then, don't pay. Come back when you're feeling more generous or are more desperate for supplies.
 
 << setspeaker DialogScreen Jason>>
+<< setend DialogScreen >>
 Bye.
+
+[[ Let's try this over again. | Start]]
 ===

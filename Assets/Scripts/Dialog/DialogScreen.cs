@@ -14,6 +14,7 @@ public class DialogScreen : MonoBehaviour
 	public Transform choiceHolder;
 	public DialogChoice choiceObject;
 	public DialogPiece dialogObject;
+	public GameObject dialogSpacer;
 
 	private CustomDialogUI yarnUI;
 
@@ -39,6 +40,8 @@ public class DialogScreen : MonoBehaviour
 		p.SetText(speaker, text);
 		yield return null;
 		p.transform.SetParent(conversationHolder);
+		p.transform.SetSiblingIndex(conversationHolder.childCount - 2);
+		Debug.Log("Sibling index: " + p.transform.GetSiblingIndex());
 		yield return null;
 		conversationScroll.value = 0;
 		yield return null;
@@ -96,6 +99,7 @@ public class DialogScreen : MonoBehaviour
 	public void Clear() 
 	{
 		ClearChildren(conversationHolder);
+		Instantiate(dialogSpacer).transform.SetParent(conversationHolder);
 		ClearChildren(choiceHolder);
 	}
 
@@ -117,6 +121,10 @@ public class DialogScreen : MonoBehaviour
 		}
 	}
 
+	[YarnCommand("reset")]
+	public void ResetConversation() {
+		Clear();
+	}
 
 }
 
