@@ -11,16 +11,25 @@ public class MiniGameInfoScreen : MonoBehaviour
 	public TextMeshProUGUI titleText;
 	public TextMeshProUGUI subtitleText;
 	public TextMeshProUGUI contentText;
+	public Scrollbar vertScroll;
 	public Image iconIMG;
 	public GameObject[] buttons;
 
 	public void DisplayText(string title, string subtitle, string content, Sprite icon, MiniGame type) 
+	{
+		StartCoroutine(TextDisplay(title, subtitle, content, icon, type));
+	}
+
+	private IEnumerator TextDisplay(string title, string subtitle, string content, Sprite icon, MiniGame type) 
 	{
 		titleText.text = title;
 		subtitleText.text = subtitle;
 		contentText.text = content;
 		iconIMG.sprite = icon;
 		ChangeButtons(type);
+		yield return null;
+		yield return null;
+		vertScroll.value = 1;
 	}
 
 	private void ChangeButtons(MiniGame type) 

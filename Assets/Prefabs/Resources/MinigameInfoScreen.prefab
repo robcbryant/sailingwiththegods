@@ -428,7 +428,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 520448668227443940}
   m_HandleRect: {fileID: 8056988449676164516}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -908,6 +908,7 @@ MonoBehaviour:
   titleText: {fileID: 3876131486646285693}
   subtitleText: {fileID: 969209033157663820}
   contentText: {fileID: 6443619455719613351}
+  vertScroll: {fileID: 8825623562879388511}
   iconIMG: {fileID: 3539417612892299759}
   buttons:
   - {fileID: 1949200682907931215}
@@ -1383,7 +1384,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000034332275, y: 0.0009765625}
+  m_AnchoredPosition: {x: 0.00008773804, y: 0.0009765625}
   m_SizeDelta: {x: -67, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &5700668998236943289
@@ -2297,6 +2298,75 @@ PrefabInstance:
       propertyPath: m_Name
       value: Accept Deal Button
       objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CalculateRitualResults
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_text
+      value: 'Cost
+
+        Cost
+
+        Cost'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1161866315602400530, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2402,75 +2472,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.49999988
       objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CalculateRitualResults
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_text
-      value: 'Cost
-
-        Cost
-
-        Cost'
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_firstOverflowCharacterIndex
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 1945058304684391639, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
       propertyPath: m_text
@@ -2479,7 +2480,7 @@ PrefabInstance:
     - target: {fileID: 1945058304684391639, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
       propertyPath: m_havePropertiesChanged
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1945058304684391639, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
@@ -2510,6 +2511,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Reject Ritual Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CalculateRitualResults
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1161866315602400530, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
@@ -2615,41 +2651,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.49999988
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CalculateRitualResults
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1945058304684391639, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
@@ -2876,6 +2877,71 @@ PrefabInstance:
       propertyPath: m_Name
       value: Reject Deal Button
       objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CalculateRitualResults
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_text
+      value: If you refuse the deal, you will have to resume the fight!
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 58
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1161866315602400530, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2981,71 +3047,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.49999988
       objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CalculateRitualResults
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_text
-      value: If you refuse the deal, you will have to resume the fight!
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 58
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 1945058304684391639, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
       propertyPath: m_text
@@ -3059,7 +3060,7 @@ PrefabInstance:
     - target: {fileID: 1945058304684391639, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
       propertyPath: m_havePropertiesChanged
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1945058304684391639, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
@@ -3085,6 +3086,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Run Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_text
+      value: --% chance of escape
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1161866315602400530, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
@@ -3196,41 +3232,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -0.0025024414
       objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_text
-      value: --% chance of escape
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1945058304684391639, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
       propertyPath: m_text
@@ -3270,6 +3271,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ritual Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CalculateRitualResults
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1161866315602400530, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
@@ -3376,36 +3407,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.49999988
       objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CalculateRitualResults
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 2488279891913701324, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1945058304684391639, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
       propertyPath: m_text
@@ -3440,6 +3441,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Negotiate Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1161866315602400530, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}
@@ -3545,16 +3556,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2271455057551298776, guid: 86057615b9ddc264ab7144556552f3f4,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1945058304684391639, guid: 86057615b9ddc264ab7144556552f3f4,
         type: 3}

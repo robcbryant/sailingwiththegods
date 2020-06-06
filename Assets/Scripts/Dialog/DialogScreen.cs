@@ -3,48 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Yarn.Unity;
 
 public class DialogScreen : MonoBehaviour
 {
-	public Image jasonIcon;
-	public Image otherIcon;
+	public string partnerName = "Tax Collector Bob III";
 	public TextMeshProUGUI conversationTitle;
 	public Scrollbar conversationScroll;
 	public Transform conversationHolder;
 	public Transform choiceHolder;
 	public DialogChoice choiceObject;
 	public DialogPiece dialogObject;
+	public GameObject dialogSpacer;
 
-	private void Start() 
+	private CustomDialogUI yarnUI;
+
+	private void OnValidate() 
 	{
-		SetDialogUI(RandomCrewPortrait(), "Test Conversation");
-		Testing();
+		yarnUI = GetComponent<CustomDialogUI>();
 	}
 
-	public void SetDialogUI(Sprite other, string title) 
+	public void SetDialogUI(string title) 
 	{
 		Clear();
-		otherIcon.sprite = other;
 		conversationTitle.text = title;
 	}
 
-	public void SetOtherSprite(Sprite img) 
-	{
-		otherIcon.sprite = img;
+	public void AddToDialogText(string speaker, string text, TextAlignmentOptions align) {
+		StartCoroutine(DoAddToDialogText(speaker, text, align));
 	}
-
-	public void SetJasonSprite(Sprite img) 
-	{
-		jasonIcon.sprite = img;
-	}
-
-	public IEnumerator AddToDialogText(string speaker, string text, TextAlignmentOptions align) 
+	
+	private IEnumerator DoAddToDialogText(string speaker, string text, TextAlignmentOptions align) 
 	{
 		DialogPiece p = Instantiate(dialogObject);
 		p.SetAlignment(align);
 		p.SetText(speaker, text);
 		yield return null;
 		p.transform.SetParent(conversationHolder);
+		p.transform.SetSiblingIndex(conversationHolder.childCount - 2);
+		Debug.Log("Sibling index: " + p.transform.GetSiblingIndex());
 		yield return null;
 		conversationScroll.value = 0;
 		yield return null;
@@ -56,49 +53,59 @@ public class DialogScreen : MonoBehaviour
 		int choices = Random.Range(1, 6);
 		for (int i = 0; i < choices; i++) 
 		{
-			AddChoice($"This is choice {i}!");
+			AddChoice($"This is choice {i}!", AddRandomDialog);
 		}
+	}
+
+	public void AddContinueOption() 
+	{
+		ClearOptions();
+		if (!yarnUI.EndOfBlock) {
+			AddChoice("Continue", yarnUI.MarkLineComplete);
+		}
+		else {
+			StartCoroutine(WaitAndComplete());
+		}
+	}
+
+	private IEnumerator WaitAndComplete() {
+		yield return null;
+		yarnUI.MarkLineComplete();
 	}
 
 	public void AddRandomDialog() 
 	{
 		int speaker = Random.Range(1, 3);
-		string name = speaker % 2 == 0 ? "Jason" : "Tax Collector Bob the III";
+		string name = speaker % 2 == 0 ? "Jason" : partnerName;
 		string conversation = $"This is being spoken by {name}. This is some dialog! Blah blah blah. Dialog dialog dialog.";
 		TextAlignmentOptions align = TextAlignmentOptions.Left;
 
 		if (speaker % 2 != 0) 
 		{
 			align = TextAlignmentOptions.Right;
-			Sprite newFace = RandomCrewPortrait();
-			if (newFace != otherIcon.sprite) 
-			{
-				SetOtherSprite(RandomCrewPortrait());
-				conversation += " My mood has changed based on what you said. My face changed to match. Now I look like a completely different person!";
-			}
-
 		}
 		
-		StartCoroutine(AddToDialogText(name, conversation, align));
+		StartCoroutine(DoAddToDialogText(name, conversation, align));
 	}
 
-	public void AddChoice(string text) 
+	public void AddChoice(string text, UnityEngine.Events.UnityAction click) 
 	{
 		DialogChoice c = Instantiate(choiceObject);
-		c.ds = this;
 		c.SetText(text);
 		c.transform.SetParent(choiceHolder);
+		c.SetOnClick(click);
 	}
 
 	public void Clear() 
 	{
 		ClearChildren(conversationHolder);
+		Instantiate(dialogSpacer).transform.SetParent(conversationHolder);
 		ClearChildren(choiceHolder);
 	}
 
-	private Sprite RandomCrewPortrait() 
+	public void ClearOptions() 
 	{
-		return Resources.Load<Sprite>("crew_portraits/" + Random.Range(1, 80)) ?? Resources.Load<Sprite>("crew_portraits/phoenician_sailor");
+		ClearChildren(choiceHolder);
 	}
 
 	private void ClearChildren(Transform parent) 
@@ -114,6 +121,10 @@ public class DialogScreen : MonoBehaviour
 		}
 	}
 
+	[YarnCommand("reset")]
+	public void ResetConversation() {
+		Clear();
+	}
 
 }
 
