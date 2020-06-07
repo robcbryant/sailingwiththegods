@@ -23,19 +23,13 @@ public class StormMGmovement : MonoBehaviour
 	//simple movement
 	//up and down moves the boat 
 	//left and right turns the boat 
-	private void MoveBoat() {
-		if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
-			playerBoat.transform.Translate(speed, 0, 0);
-		}
-		if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
-			playerBoat.transform.Translate(-speed, 0, 0);
-		}
-		if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
-			playerBoat.transform.Rotate(0, -speed*2, 0);
-		}
-		if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
-			playerBoat.transform.Rotate(0, speed*2, 0);
-		}
+	private void MoveBoat() 
+	{
+		float movement = Input.GetAxisRaw("Vertical");
+		float rotation = Input.GetAxisRaw("Horizontal");
+
+		playerBoat.transform.Translate(speed * movement, 0, 0);
+		playerBoat.transform.Rotate(0, speed * 2 * rotation, 0);
 	}
 
 	public void ToggleMovement(bool toggle) 
