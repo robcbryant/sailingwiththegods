@@ -17,16 +17,35 @@ public class DialogScreen : MonoBehaviour
 	public GameObject dialogSpacer;
 
 	private CustomDialogUI yarnUI;
+	private List<string[]> possibleDialogs;
+	private InMemoryVariableStorage storage;
+
+	private void Start() {
+		possibleDialogs = new List<string[]> {
+			DialogInitializer("This is randomized greeting #", 5),
+			DialogInitializer("This is randomized angry text #", 4),
+			DialogInitializer("This is randomized greedy text #", 6),
+			DialogInitializer("This is randomized foreign text #", 4),
+			DialogInitializer("This is randomized farewell #", 5)
+		};
+	}
+
+	private string[] DialogInitializer(string prefix, int length) 
+	{
+		string[] dialog = new string[length];
+
+		for (int i = 0; i < length; i++) 
+		{
+			dialog[i] = prefix + i;
+		}
+
+		return dialog;
+	}
 
 	private void OnValidate() 
 	{
 		yarnUI = GetComponent<CustomDialogUI>();
-	}
-
-	public void SetDialogUI(string title) 
-	{
-		Clear();
-		conversationTitle.text = title;
+		storage = GetComponent<InMemoryVariableStorage>();
 	}
 
 	public void AddToDialogText(string speaker, string text, TextAlignmentOptions align) {
@@ -41,7 +60,6 @@ public class DialogScreen : MonoBehaviour
 		yield return null;
 		p.transform.SetParent(conversationHolder);
 		p.transform.SetSiblingIndex(conversationHolder.childCount - 2);
-		Debug.Log("Sibling index: " + p.transform.GetSiblingIndex());
 		yield return null;
 		conversationScroll.value = 0;
 		yield return null;
@@ -124,6 +142,23 @@ public class DialogScreen : MonoBehaviour
 	[YarnCommand("reset")]
 	public void ResetConversation() {
 		Clear();
+	}
+
+	[YarnCommand("setconvotitle")]
+	public void SetConversationTitle(string title) {
+		string text = title.Replace('_', ' ');
+		conversationTitle.text = text;
+	}
+
+	[YarnCommand("randomtext")]
+	public void GenerateRandomText(string i) {
+		int index = int.Parse(i);
+		string[] potentials = possibleDialogs[index];
+		int rand = Random.Range(0, potentials.Length);
+
+		Yarn.Value randText = new Yarn.Value(potentials[rand]);
+		storage.SetValue("$random_text", randText);
+
 	}
 
 }
