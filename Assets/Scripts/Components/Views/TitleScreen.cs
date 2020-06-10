@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class TitleScreen : ViewBehaviour<GameViewModel>
 {
+	[Header("Title Screen Buttons")]
 	[SerializeField] Button title_newgame_button = null;
 	[SerializeField] Button title_loadgame_button = null;
 	[SerializeField] Button title_quitgame_button = null;
@@ -14,6 +15,7 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 	[SerializeField] Text title_credits_text = null;
 	[SerializeField] GameObject title_credits_screen = null;
 
+	[Header("Resolutions Settings Buttons")]
 	[SerializeField] Button resolutions_settings_button = null;
 	[SerializeField] Button resolutions_settings_exit = null;
 	[SerializeField] GameObject resolutions_settings_screen = null;
@@ -30,6 +32,7 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 	[SerializeField] Button lower_windowed_resolution_button = null;
 	[SerializeField] Button lowest_windowed_resolution_button = null;
 
+	[Header("Resolutions Settings Texts")]
 	[SerializeField] Text default_text = null;
 	[SerializeField] Text higher_text = null;
 	[SerializeField] Text highest_text = null;
@@ -39,6 +42,18 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 	Text[] information_texts;
 	int green_text_pos;
 	Color green_text_color = new Color32(00, 150, 00, 255);
+
+	[Header("Regional Zones")]
+	//any time a new regional zone is added to this list or to the IDE, 
+	//the regional_zones array will need to be hard-code edited in this script's start method
+	//AND the game object within the IDE needs to be inactive to start off with 
+	[SerializeField] GameObject Aetolian_Region_Zone = null;
+	[SerializeField] GameObject Cretan_Region_Zone = null;
+	[SerializeField] GameObject Etruscan_Pirate_Region_Zone = null;
+	[SerializeField] GameObject Illyrian_Region_Zone = null;
+
+	GameObject[] regional_zones;
+
 	private void Start() {
 		Subscribe(title_newgame_button.onClick, () => Model.GUI_startNewGame(GameViewModel.Difficulty.Normal));
 		Subscribe(title_loadgame_button.onClick, () => Model.GUI_loadGame(GameViewModel.Difficulty.Normal));
@@ -63,8 +78,12 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 		Subscribe(lowest_windowed_resolution_button.onClick, () => GUI_LowestGameResolution_Windowed());
 
 		information_texts = new Text[5] { default_text, higher_text, highest_text, lower_text, lowest_text };
+		regional_zones = new GameObject[] { Aetolian_Region_Zone, Cretan_Region_Zone, Etruscan_Pirate_Region_Zone, Illyrian_Region_Zone };
+
+		Make_Zones_Invisible_On_Play_Start();
 	}
 
+	#region Changing Text Colors for Current Resolution
 	private void FixedUpdate() {
 		if (resolutions_settings_screen) {
 			Changing_Text_Colors();
@@ -100,6 +119,7 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 			}
 		}
 	}
+	#endregion
 
 	#region GUI Show and Hide
 	override protected void OnEnable() {
@@ -177,6 +197,16 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 	public void GUI_LowestGameResolution_Windowed() {
 		Screen.SetResolution(1280, 720, false);
 		green_text_pos = 4;
+	}
+	#endregion
+
+	#region Making Regional Zones Invisible in Game
+
+	public void Make_Zones_Invisible_On_Play_Start() {
+		foreach( GameObject zone in regional_zones) {
+			zone.SetActive(true);
+			zone.GetComponentInChildren<MeshRenderer>().enabled = false;
+		}
 	}
 	#endregion
 }
