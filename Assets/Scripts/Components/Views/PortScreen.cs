@@ -46,7 +46,6 @@ public class PortScreen : ViewBehaviour<PortViewModel>
 		Info?.Bind(ValueModel.New(new ButtonViewModel {
 			OnClick = () => Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
 				Icon = model.PortCoin,
-				IconScale = 2,                      // coin icons have a bunch of padding in their sprite, so scale it up
 				Title = model.PortName,
 				Subtitle = model.PortPopulationRank,
 				Message = model.PortDescription
