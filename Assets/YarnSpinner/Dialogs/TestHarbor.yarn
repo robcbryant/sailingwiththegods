@@ -9,14 +9,13 @@ position: 1269,-143
 << setspeaker DialogScreen other>> 
 << randomtext DialogScreen 0 >>	
 Welcome to port! This is a city with a port! The city is called City! Here you can find goods like Goods and Luxuries. We worship a Greek god.
-Randomized lines need some set text as well. {$random_text}
+/{$random_text}
 << setend DialogScreen >>
 Anyway, enough formalities. I'm going to tax you as much as I possibly can, because that's my job and I like tax money.
 
 
 [[ I hate taxes and I hate you! |angry]] 
-[[ Sounds reasonable, how much do I owe you? I am very wealthy. |swindler]] 
-[[ You don't look like you're from here. |foreigner]] 
+[[ Sounds reasonable, how much do I owe you? I am very wealthy. |swindler]]
 [[ Whatever, goodbye. |leave]]
 ===
 title: angry
@@ -28,7 +27,7 @@ position: 980,147
 I'm a big cool hero and that means I shouldn't have to pay taxes. You're dumb and I hate you. A pox upon your house or whatever.
 
 << setspeaker DialogScreen other>> 
-<< setsprite Partner angry>>
+<< setsprite Partner unhappy>>
 << randomtext DialogScreen 1 >>
 Hey, that's not very nice! Taxes are good! I'm just doing my job!
 Set text to make the random text work. {$random_text}
@@ -49,7 +48,7 @@ position: 1199,146
 I'm very rich but also very stupid! I don't get how taxes work! You can easily take advantage of me and I'd have no idea!
 
 << setspeaker DialogScreen other>> 
-<< setsprite Partner swindler>>
+<< setsprite Partner flattering>>
 << randomtext DialogScreen 2 >>
 I like wealthy people! For you, I'll give you a special tax rate of double the usual taxes!
 The random text can't start the line {$random_text}
@@ -57,26 +56,6 @@ The random text can't start the line {$random_text}
 << setspeaker DialogScreen Jason>>
 << setend DialogScreen >>
 Sounds like a good deal to me, the local wealthy idiot!
-
-[[ Let's try this over again. | Start]]
-===
-title: foreigner
-tags: 
-colorID: 0
-position: 1420,147
----
-<<setspeaker DialogScreen Jason>>
-I can't help but notice that weird hat. I've never seen one like that in Ancient Greece. Are you foreign?
-
-<< setspeaker DialogScreen other>> 
-<< setsprite Partner foreigner>> 
-<< randomtext DialogScreen 3 >>
-You're right! It's called a cowboy hat! It's from Texas! I'm a time traveler! Time traveling cowboy!
-Random text, like "{$random_text}", can be in the middle of a line.
-
-<< setspeaker DialogScreen Jason>>
-<< setend DialogScreen >>
-That's very very strange, but I'm sure that's a thing the gods can just do if they feel like it or something.
 
 [[ Let's try this over again. | Start]]
 ===
@@ -89,7 +68,7 @@ position: 1641,147
 I'm bored with this conversation. I don't feel like paying taxes, so I'm going to sail away now without entering port.
 
 << setspeaker DialogScreen other>>
-<< setsprite Partner grumpy>> 
+<< setsprite Partner distrustful>> 
 << randomtext DialogScreen 4 >>
 Fine then, don't pay. Come back when you're feeling more generous or are more desperate for supplies.
 Final bit of variable text: {$random_text}

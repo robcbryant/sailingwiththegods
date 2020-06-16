@@ -541,7 +541,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00000047683716}
+  m_AnchoredPosition: {x: -0.000030517578, y: -0.00000047683716}
   m_SizeDelta: {x: -8.375, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &952958456
@@ -1003,7 +1003,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: -0.00000047683716}
+  m_AnchoredPosition: {x: -0.000030517578, y: -0.00000047683716}
   m_SizeDelta: {x: -8.375, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6610649176773636623
@@ -1166,7 +1166,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8652707029577904005}
   m_HandleRect: {fileID: 8713915857908024432}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1674,28 +1674,20 @@ MonoBehaviour:
   sprites:
   - name: neutral
     sprite: {fileID: 21300000, guid: 9195498727e61104dacd0db384d3f819, type: 3}
-  - name: welcoming
-    sprite: {fileID: 21300000, guid: 114f7e2c3b665614090627a0be659ec3, type: 3}
-  - name: superstitious
-    sprite: {fileID: 21300000, guid: 1c7cc7e7914e37c448032e0558f51801, type: 3}
-  - name: grumpy
-    sprite: {fileID: 21300000, guid: 491b55e9c32aff3468018b8d31c4da14, type: 3}
-  - name: angry
-    sprite: {fileID: 21300000, guid: 34bb8e36c2aee6b48b92f901bbc5eb55, type: 3}
   - name: happy
     sprite: {fileID: 21300000, guid: 67ef9a9f0b69f9c4488b8888cf9d9d28, type: 3}
-  - name: pirate
-    sprite: {fileID: 21300000, guid: 0c7f752906f7b4947885f60203d589b2, type: 3}
-  - name: foreigner
-    sprite: {fileID: 21300000, guid: 24bd27604e1e1104c993614c81238450, type: 3}
-  - name: wellbred
-    sprite: {fileID: 21300000, guid: b966b5a8de1231b4fa3cf287dac638c8, type: 3}
-  - name: seasick
-    sprite: {fileID: 21300000, guid: 1071865a7cb8b5d4b8976d9cbfd781b3, type: 3}
-  - name: patriotic
-    sprite: {fileID: 21300000, guid: fa790af7f8e76ef48a84a2a4baf33fb6, type: 3}
-  - name: swindler
-    sprite: {fileID: 21300000, guid: f9bdda4a3a960eb408fca7daa53d8eb7, type: 3}
+  - name: nervous
+    sprite: {fileID: 21300000, guid: d15dbf8245651fa4c8504bd1312c7a49, type: 3}
+  - name: distrustful
+    sprite: {fileID: 21300000, guid: 1c7cc7e7914e37c448032e0558f51801, type: 3}
+  - name: shocked
+    sprite: {fileID: 21300000, guid: 4e9479e4594beaa4590fa20ea9d6b383, type: 3}
+  - name: bragging
+    sprite: {fileID: 21300000, guid: 114f7e2c3b665614090627a0be659ec3, type: 3}
+  - name: flattering
+    sprite: {fileID: 21300000, guid: 2bdb9ac2d3ee08d47b3f227ff2dc3698, type: 3}
+  - name: unhappy
+    sprite: {fileID: 21300000, guid: 491b55e9c32aff3468018b8d31c4da14, type: 3}
 --- !u!212 &2429866478432377754
 SpriteRenderer:
   m_ObjectHideFlags: 0

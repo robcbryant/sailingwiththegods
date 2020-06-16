@@ -11,6 +11,9 @@ public class DialogPiece : MonoBehaviour
 	public void SetText(string speakerName, string content) 
 	{
 		speaker.text = speakerName;
+		if (content[0] == '/') {
+			content = content.Remove(0, 1);
+		}
 		text.text = content;
 	}
 
