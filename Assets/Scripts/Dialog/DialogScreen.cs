@@ -17,18 +17,8 @@ public class DialogScreen : MonoBehaviour
 	public GameObject dialogSpacer;
 
 	private CustomDialogUI yarnUI;
-	private List<string[]> possibleDialogs;
 	private InMemoryVariableStorage storage;
 
-	private void Start() {
-		possibleDialogs = new List<string[]> {
-			DialogInitializer("This is randomized greeting #", 5),
-			DialogInitializer("This is randomized angry text #", 4),
-			DialogInitializer("This is randomized greedy text #", 6),
-			DialogInitializer("This is randomized foreign text #", 4),
-			DialogInitializer("This is randomized farewell #", 5)
-		};
-	}
 
 	private string[] DialogInitializer(string prefix, int length) 
 	{
@@ -151,14 +141,18 @@ public class DialogScreen : MonoBehaviour
 	}
 
 	[YarnCommand("randomtext")]
-	public void GenerateRandomText(string i) {
-		int index = int.Parse(i);
-		string[] potentials = possibleDialogs[index];
-		int rand = Random.Range(0, potentials.Length);
+	public void GenerateRandomText(string[] inputs) 
+	{
+		System.Enum.TryParse(inputs[0], out DialogText.Type t);
+		System.Enum.TryParse(inputs[1], out DialogText.Emotion e);
 
-		Yarn.Value randText = new Yarn.Value(potentials[rand]);
+		List<DialogText> matchingType = Globals.GameVars.portDialogText.FindAll(x => x.TextType == t);
+		List<DialogText> matchingBoth = matchingType.FindAll(x => x.TextEmotion == e);
+
+		int i = Random.Range(0, matchingBoth.Count);
+		
+		Yarn.Value randText = new Yarn.Value(matchingBoth[i].Text);
 		storage.SetValue("$random_text", randText);
-
 	}
 
 }

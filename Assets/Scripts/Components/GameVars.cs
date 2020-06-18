@@ -199,6 +199,8 @@ public class GameVars : MonoBehaviour
 	[HideInInspector] public bool showNonPortDockingNotification = false;
 	[HideInInspector] public bool updatePlayerCloutMeter = false;
 
+	[HideInInspector] public List<DialogText> portDialogText = new List<DialogText>();
+
 	// high level game systems
 	public Trade Trade { get; private set; }
 	public Network Network { get; private set; }
@@ -277,6 +279,7 @@ public class GameVars : MonoBehaviour
 			out stormRitualResultsText, out stormSuccessText, out stormFailureText);
 		CSVLoader.LoadPirateText(out pirateTitles, out pirateSubtitles, out pirateStartText, out pirateTypeIntroText, out pirateNegotiateText,
 			out pirateRunSuccessText, out pirateRunFailText, out pirateSuccessText, out pirateFailureText);
+		portDialogText = CSVLoader.LoadPortDialog();
 
 		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list and crew list
 
