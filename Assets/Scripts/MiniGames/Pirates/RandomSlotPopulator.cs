@@ -65,7 +65,7 @@ public class RandomSlotPopulator : MonoBehaviour
 	public void PopulateScreen() 
 	{
 		//random number of enemy priates created (1-12) 
-		//different ranging numbers of prirates will be added later
+		//different ranging numbers of pirates will be added later
 		pirateRange.y = Mathf.Min(pirateRange.y, crewNum);
 		int enAndPlayCnt = Random.Range(pirateRange.x, pirateRange.y+1);
 
@@ -101,7 +101,7 @@ public class RandomSlotPopulator : MonoBehaviour
 			g.SetCrew(randomPirate);
 			g.Bind();
 			possiblePirates.Remove(randomPirate);
-			g.GetComponent<RectTransform>().anchoredPosition = pirateSlots[x].GetComponent<RectTransform>().anchoredPosition;
+			g.GetComponent<RectTransform>().position = pirateSlots[x].GetComponent<RectTransform>().position;
 			g.transform.SetParent(pirateParent);
 			playerSlots[x].SetActive(true);
 		}

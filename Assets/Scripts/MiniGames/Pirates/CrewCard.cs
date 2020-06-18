@@ -105,7 +105,7 @@ public class CrewCard : MonoBehaviour
 		power = crew.clout;
 	}
 
-	public void updatePower(int tempPower) {
+	public void UpdatePower(int tempPower) {
 		power = tempPower;
 		powerText.text = power.ToString();
 		powerText.color = Color.red;
