@@ -74,6 +74,12 @@ public class script_player_controls : MonoBehaviour
 	List<string> windZoneNamesToTurnOn = new List<string>();
 	List<string> currentZoneNamesToTurnOn = new List<string>();
 
+	[Header("Pirate Zones Bools")]
+	public bool isAetolianRegionZone = false;
+	public bool isCretanRegionZone = false;
+	public bool isEtruscanPirateRegionZone = false;
+	public bool isIllyrianRegionZone = false;
+
 	public void Reset() {
 		ship = new Ship("Argo", 7.408f, 100, 500);
 		ship.networkID = 246;
@@ -630,6 +636,18 @@ public class script_player_controls : MonoBehaviour
 				CheckIfPlayerFoundKnownSettlementAndTurnGhostTrailBackOn(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
 			}
 		}
+		if (trigger.transform.tag == "AetolianRegionZone") {
+			isAetolianRegionZone = true;
+		}
+		if (trigger.transform.tag == "CretanRegionZone") {
+			isCretanRegionZone = true;
+		}
+		if (trigger.transform.tag == "EtruscanPirateRegionZone") {
+			isEtruscanPirateRegionZone = true;
+		}
+		if (trigger.transform.tag == "IllyrianRegionZone") {
+			isIllyrianRegionZone = true;
+		}
 	}
 
 	void OnTriggerExit(Collider trigger) {
@@ -647,6 +665,19 @@ public class script_player_controls : MonoBehaviour
 			GameVars.RemoveEntriesFromCurrentLogPool(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
 			//We add the triggered settlement ID to the list of settlements to look for narrative bits from. In the OnTriggerExit() function, we remove them
 			GameVars.activeSettlementInfluenceSphereList.Remove(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
+		}
+
+		if (trigger.transform.tag == "AetolianRegionZone") {
+			isAetolianRegionZone = false;
+		}
+		if (trigger.transform.tag == "CretanRegionZone") {
+			isCretanRegionZone = false;
+		}
+		if (trigger.transform.tag == "EtruscanPirateRegionZone") {
+			isEtruscanPirateRegionZone = false;
+		}
+		if (trigger.transform.tag == "IllyrianRegionZone") {
+			isIllyrianRegionZone = false;
 		}
 	}
 
