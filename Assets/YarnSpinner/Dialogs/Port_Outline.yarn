@@ -1,0 +1,149 @@
+title: Start
+tags: 
+colorID: 0
+position: 661,-321
+---
+<< reset DialogScreen >>
+<< setpartnername DialogScreen Telones >>
+<< setconvotitle DialogScreen Test_Outline >>
+<< setsprite Partner neutral >>
+
+<< setspeaker DialogScreen other >>
+<< setend DialogScreen >> 
+Telones: Greetings!
+
+[[ So where is this, anyway? |where]]
+[[ What are this city's networks?|networks]]
+[[ Can I just come in?|tax_start]]
+===
+title: tax_start
+tags: 
+colorID: 0
+position: 660,180
+---
+<< setspeaker DialogScreen other >>
+<< setend DialogScreen >> 
+I'm going to charge you some taxes now.
+
+[[ Why you? |tax_why]] 
+[[ You suck. |tax_insult]]
+[[ Fine, I'll pay. |tax_explain]]
+===
+title: tax_explain
+tags: 
+colorID: 0
+position: 671,691
+---
+<< setspeaker DialogScreen other>> 
+You owe taxes for this, this, and this. There's a ton of them!
+There's one tax for coming in and the one for docking your boat,
+Oh, can't forget the tax to pay for our cool temple!
+And obviously you look wealthy, so gotta charge you extra for that.
+<< setend DialogScreen >>
+So all together, you owe $1000000 Drachma or else you can't come in.
+
+[[ I get a discount because I'm in network.|tax_network]]
+===
+title: tax_network
+tags: 
+colorID: 0
+position: 1105,691
+---
+<< setspeaker DialogScreen Jason >> 
+I'm in-network, so I don't have to pay as much.
+
+<< setspeaker DialogScreen other >> 
+Nuh-uh! I don't believe you!
+
+<< setspeaker DialogScreen Jason >> 
+I'll prove it!
+
+->Call crewmember
+    I'll call one of my crewmembers! He's from the city, and he has his ID.
+->Call proxenos from city
+    Call up the proxenos in the city, he knows us!
+->Check stele
+    There's a stele in the agora, my name is on it!
+
+<< setspeaker DialogScreen other >> 
+<< setend DialogScreen >> 
+Fine, that's proof. You get a discount.
+===
+title: where
+tags: 
+colorID: 0
+position: 402,-61
+---
+<< set $asked_where to true >> 
+<< setspeaker DialogScreen Jason >> 
+Is this a certain place?
+
+<< setspeaker DialogScreen other >>
+<< setend DialogScreen >> 
+No, it's City. Here's the Description.
+
+<< if $asked_networks is false >>
+    [[What are this city's networks? |networks]]
+<< endif >> 
+[[Can I just come in? |tax_start]]
+===
+title: networks
+tags: 
+colorID: 0
+position: 929,-62
+---
+<< set $asked_networks to true >>
+
+<< setspeaker DialogScreen Jason >> 
+What network are you in?
+
+<< setspeaker DialogScreen other >> 
+We are in this network.
+
+<< setspeaker DialogScreen Jason >> 
+<< setend DialogScreen >> 
+Here's how that compares to us.
+
+<< if $asked_where is false >>
+    [[Where is this, anyway? |where]]
+<< endif >> 
+[[Can I just come in? |tax_start]]
+===
+title: tax_why
+tags: 
+colorID: 0
+position: 423,399
+---
+<< set $asked_who to true >> 
+
+<< setspeaker DialogScreen Jason >> 
+Why do I have to pay you? What makes you special?
+
+<< setspeaker DialogScreen other >> 
+<< setend DialogScreen >> 
+It's my job.
+
+<< if $insulted is false >>
+    [[ You suck. |tax_insult]]
+<< endif >>
+[[ Fine, I'll pay. |tax_explain]]
+===
+title: tax_insult
+tags: 
+colorID: 0
+position: 908,391
+---
+<< set $insulted to true >> 
+
+<< setspeaker DialogScreen Jason >> 
+I hate you, you suck.
+
+<< setspeaker DialogScreen other >> 
+<< setend DialogScreen >> 
+That's very rude, but I don't really care.
+
+<< if $asked_who is false >>
+    [[ Why you? |tax_why]]
+<< endif >>
+[[ Fine, I'll pay. |tax_explain]]
+===
