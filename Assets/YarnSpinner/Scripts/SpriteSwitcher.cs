@@ -34,6 +34,8 @@ namespace Yarn.Unity.Example {
     /// Attach SpriteSwitcher to game object
     public class SpriteSwitcher : MonoBehaviour {
 
+		public InMemoryVariableStorage storage;
+
         [System.Serializable]
         public struct SpriteInfo {
             public string name;
@@ -45,6 +47,10 @@ namespace Yarn.Unity.Example {
         /// Create a command to use on a sprite
         [YarnCommand("setsprite")]
         public void UseSprite(string spriteName) {
+
+			if (spriteName[0] == '$') {
+				spriteName = storage.GetValue(spriteName).AsString;
+			}
 
             Sprite s = null;
             foreach(var info in sprites) {

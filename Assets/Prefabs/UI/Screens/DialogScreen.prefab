@@ -541,7 +541,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00000047683716}
+  m_AnchoredPosition: {x: -0.000030517578, y: -0.00000047683716}
   m_SizeDelta: {x: -8.375, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &952958456
@@ -1003,7 +1003,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00000047683716}
+  m_AnchoredPosition: {x: -0.000030517578, y: -0.00000047683716}
   m_SizeDelta: {x: -8.375, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6610649176773636623
@@ -1671,6 +1671,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38c717a794b9f4e66802ee51e19eaf8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  storage: {fileID: 2637946714061866597}
   sprites:
   - name: neutral
     sprite: {fileID: 21300000, guid: 9195498727e61104dacd0db384d3f819, type: 3}
@@ -2129,7 +2130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   yarnScripts:
-  - {fileID: 11400000, guid: 1e490740c1e065c4d99ee8fbf0c92a6e, type: 3}
+  - {fileID: 11400000, guid: 54c13cbf91d24c04fb4983b76d3ff5d8, type: 3}
   textLanguage: 
   variableStorage: {fileID: 2637946714061866597}
   dialogueUI: {fileID: 8580856020355196408}

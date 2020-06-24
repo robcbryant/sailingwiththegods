@@ -144,15 +144,45 @@ public class DialogScreen : MonoBehaviour
 	public void GenerateRandomText(string[] inputs) 
 	{
 		System.Enum.TryParse(inputs[0], out DialogText.Type t);
-		System.Enum.TryParse(inputs[1], out DialogText.Emotion e);
+		DialogText.Emotion e = DialogText.Emotion.neutral;
+		if (inputs[1] == "any") {
+			e = DialogText.RandomEmotion();
+		}
+		else {
+			System.Enum.TryParse(inputs[1], out e);
+		}
 
 		List<DialogText> matchingType = Globals.GameVars.portDialogText.FindAll(x => x.TextType == t);
 		List<DialogText> matchingBoth = matchingType.FindAll(x => x.TextEmotion == e);
+
+		if (matchingBoth.Count == 0) {
+			Debug.Log($"Nothing found with both type {t.ToString()} and emotion {e.ToString()} ({matchingType.Count} matching just type)");
+		}
 
 		int i = Random.Range(0, matchingBoth.Count);
 		
 		Yarn.Value randText = new Yarn.Value(matchingBoth[i].Text);
 		storage.SetValue("$random_text", randText);
+
+		storage.SetValue("$emotion", new Yarn.Value(e.ToString()));
+	}
+
+	[YarnCommand("randombool")]
+	public void TrueOrFalse(string threshold) {
+		float limit = float.Parse(threshold);
+		bool b = Random.Range(0f, 1f) > limit;
+		Yarn.Value randBool = new Yarn.Value(b);
+		storage.SetValue("$random_bool", randBool);
+	}
+
+	[YarnCommand("citynetworks")]
+	public void NumberOfCityNetworks() {
+		storage.SetValue("$city_networks", 0);
+	}
+
+	[YarnCommand("networkconnections")]
+	public void NumberOfConnections() {
+		storage.SetValue("$connections_number", 0);
 	}
 
 }

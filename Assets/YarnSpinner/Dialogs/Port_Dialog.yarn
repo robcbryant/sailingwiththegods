@@ -1,0 +1,231 @@
+title: Start
+tags: 
+colorID: 0
+position: 660,-322
+---
+<< reset DialogScreen >>
+<< setpartnername DialogScreen Telones >>
+<< setconvotitle DialogScreen Test_Outline >>
+<< setsprite Partner neutral >>
+
+<< setspeaker DialogScreen other >>
+<< randomtext DialogScreen greeting any >> 
+I am the first and the last face you'll see here: no ordinary citizen I! You may call me Telones, 'tax man' - I have paid the state for the right to collect its taxes from you. Get set to dig deep into your pockets!
+<< setend DialogScreen >>
+<< setsprite Partner $emotion >>
+/{$random_text}
+
+
+[[ So where is this, anyway? |where]]
+[[ What are this city's networks?|networks]]
+[[ Can I just come in?|tax_start]]
+===
+title: tax_start
+tags: 
+colorID: 0
+position: 660,180
+---
+<< setspeaker DialogScreen Jason >>
+I would like to enter your city. May I come in?
+
+<< setspeaker DialogScreen other >>
+Not before you pay your entrance taxes.
+
+<< setspeaker DialogScreen Jason >> 
+Taxes? What do you mean, taxes?
+
+<< setspeaker DialogScreen other >>
+<< randombool DialogScreen .15 >> 
+
+<< if $random_bool is true >>
+    This is a civilized place, and in no civilized place does the state not play a role in trade. Not at our docks will you trade like the barbarians Herodotus described: 
+    'There is a place in Libya, they say, where men live beyond the Pillars of Heracles; they come here and unload their cargo; then, having laid it in order along the beach, they go aboard their ships and light a smoking fire. The people of the country see the smoke, and, coming to the sea, they lay down gold to pay for the cargo, and withdraw from the wares. Then the Carthaginians disembark and examine the gold; if it seems to them a fair price for their cargo, they take it and go away; but if not, they go back aboard and wait, and the people come back and add more gold until the sailors are satisfied. In this transaction, it is said, neither party defrauds the other: the Carthaginians do not touch the gold until it equals the value of their cargo, nor do the people touch the cargo until the sailors have taken the gold.' (4.196)
+<< else >>
+    Paying taxes in an honor! To do so defines our best citizens, who know that running a city is not free.
+    << randomtext DialogScreen taxesintro neutral >> 
+    /{$random_text}
+<< endif >> 
+
+<< setspeaker DialogScreen Jason >> 
+By the gods, this sounds serious. What kind of money are we talking about?
+
+<< setspeaker DialogScreen other >>
+<< randomtext DialogScreen taxesflavor neutral >>
+<< setend DialogScreen >> 
+/{$random_text}
+
+[[ Why you? |tax_why]] 
+[[ What a risky way to make a living. |tax_insult]]
+[[ Fine, I'll pay. |tax_explain]]
+===
+title: tax_explain
+tags: 
+colorID: 0
+position: 671,691
+---
+<< setspeaker DialogScreen other>> 
+You owe taxes for this, this, and this. There's a ton of them!
+There's one tax for coming in and the one for docking your boat,
+Oh, can't forget the tax to pay for our cool temple!
+And obviously you look wealthy, so gotta charge you extra for that.
+<< setend DialogScreen >>
+So all together, you owe $1000000 Drachma or else you can't come in.
+
+[[ I get a discount because I'm in network.|tax_network]]
+===
+title: tax_network
+tags: 
+colorID: 0
+position: 1105,691
+---
+<< setspeaker DialogScreen Jason >> 
+I'm in-network, so I don't have to pay as much.
+
+<< setspeaker DialogScreen other >> 
+Nuh-uh! I don't believe you!
+
+<< setspeaker DialogScreen Jason >> 
+I'll prove it!
+
+->Call crewmember
+    I'll call one of my crewmembers! He's from the city, and he has his ID.
+->Call proxenos from city
+    Call up the proxenos in the city, he knows us!
+->Check stele
+    There's a stele in the agora, my name is on it!
+
+<< setspeaker DialogScreen other >> 
+<< setend DialogScreen >> 
+Fine, that's proof. You get a discount.
+
+[[Restart | Start]]
+===
+title: where
+tags: 
+colorID: 0
+position: 401,-63
+---
+<< set $asked_where to true >> 
+
+<< setspeaker DialogScreen Jason >> 
+<< randomtext DialogScreen jasonwhere neutral >> 
+/{$random_text}
+
+<< setspeaker DialogScreen other >>
+<< setend DialogScreen >> 
+No, it's City. Here's the Description.
+
+<< if $asked_networks is false >>
+    [[What are this city's networks? |networks]]
+<< endif >> 
+[[Can I just come in? |tax_start]]
+===
+title: networks
+tags: 
+colorID: 0
+position: 928,-64
+---
+<< set $asked_networks to true >>
+
+<< setspeaker DialogScreen Jason >> 
+<< randomtext DialogScreen jasonnetworkquestion neutral >> 
+/{$random_text}
+
+<< setspeaker DialogScreen other >> 
+<< citynetworks DialogScreen >> 
+Our city has {$city_networks} networks.
+
+<< if $city_networks gt 1 >>
+    << randomtext DialogScreen networkhigh neutral >> 
+	We have a high amount of networks.
+    /{$random_text}
+
+<< else >>
+
+    << if $city_networks eq 1>>
+        << randomtext DialogScreen networkmid neutral >>
+		We have a medium amount of networks.
+        /{$random_text}
+
+    << else >>
+        << randomtext DialogScreen networklow neutral >>
+		We have a low amount of networks.
+        /{$random_text}
+    << endif >> 
+
+<< endif >> 
+
+<< setspeaker DialogScreen Jason >> 
+<< networkconnections DialogScreen >>
+Our crew shares {$connections_number} networks with your city.
+
+<< if $connections_number gt 1 >> 
+    << randomtext DialogScreen jasonnetworkhigh neutral >>
+	That's a high number of matches.
+	<< setend DialogScreen >>
+    /{$random_text}
+
+<< else >>
+
+    << if $connections_number eq 1 >>
+        << randomtext DialogScreen jasonnetworkmid neutral >>
+		That's a medium number of matches.
+		<< setend DialogScreen >>
+        /{$random_text}
+
+    << else >>
+        << randomtext DialogScreen jasonnetworklow neutral >>
+		That's a low number of matches.
+		<< setend DialogScreen >>
+        /{$random_text}
+    << endif >> 
+
+<< endif >> 
+
+<< if $asked_where is false >>
+    [[Where is this, anyway? |where]]
+<< endif >>
+[[Can I just come in? |tax_start]]
+===
+title: tax_why
+tags: 
+colorID: 0
+position: 423,399
+---
+<< set $asked_who to true >> 
+
+<< setspeaker DialogScreen Jason >> 
+Why do I have to pay you? What makes you special?
+
+<< setspeaker DialogScreen other >>
+<< randomtext DialogScreen employment neutral >> 
+<< setend DialogScreen >> 
+/{$random_text}
+
+<< if $insulted is false >>
+    [[ What a risky way to make a living. |tax_insult]]
+<< endif >>
+[[ Fine, I'll pay. |tax_explain]]
+===
+title: tax_insult
+tags: 
+colorID: 0
+position: 908,391
+---
+<< set $insulted to true >> 
+
+<< setspeaker DialogScreen Jason >> 
+What a risky way to make a living - and what an unpleasant kind of fellow you must be!
+<< randomtext DialogScreen jasoninsults neutral >>
+/{$random_text}
+
+<< setspeaker DialogScreen other >> 
+Say what you will, it's down to business. Quick quick then, let's get this done with, so I can get on to the next customer! If I'm going to make a profit, I need to be speedy and process as many ships as I can - because I can't charge more than the law allows, or charge you twice - if I did, I'd be taken to court, face the board of apodektai ('receivers') - a man did that once, for no more than 10 drachma! 
+<< setend DialogScreen >>
+The poorest man in the smallest boat can haul me before the magistrates! They could put me in prison, dishonor me as a public debtor, confiscate my property. That's why the city has made it easy for me to extract your taxes: all commercial transactions happen here or in the agora, and I'm not alone in keeping my eye on you: we have agoranomoi to back me up.
+
+<< if $asked_who is false >>
+    [[ Why you? |tax_why]]
+<< endif >>
+[[ Fine, I'll pay. |tax_explain]]
+===

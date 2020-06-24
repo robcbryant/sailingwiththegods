@@ -534,9 +534,9 @@ namespace Yarn.Unity
             var dialogue = new Yarn.Dialogue(variableStorage) {
 
                 // Set up the logging system.
-                LogDebugMessage = delegate (string message) {
-                    Debug.Log(message);
-                },
+                //LogDebugMessage = delegate (string message) {
+                //    Debug.Log(message);
+                //},
                 LogErrorMessage = delegate (string message) {
                     Debug.LogError(message);
                 },

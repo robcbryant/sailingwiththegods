@@ -489,16 +489,15 @@ public static class CSVLoader
 
 		char[] lineDelimiter = new char[] { '@' };
 		char newline = '%';
-		string filename = "dialog_text";
+		string filename = "port_dialog";
 
 		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
 		for (int i = 1; i < fileByLine.Length; i++) 
 		{
-			Debug.Log(fileByLine[i]);
 			string[] texts = fileByLine[i].Split(lineDelimiter);
 			string content = StripAndAddNewlines(texts[0], newline);
-			DialogText t = new DialogText(texts[1], texts[2], texts[0]);
+			DialogText t = new DialogText(texts[1], texts[2], content);
 			textList.Add(t);
 		}
 

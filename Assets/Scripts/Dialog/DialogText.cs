@@ -7,15 +7,30 @@ public class DialogText
 	public enum Type
 	{
 		greeting,
-		response,
-		farewell
+		networklow,
+		networkmid,
+		networkhigh,
+		taxesintro,
+		taxesflavor,
+		employment,
+		jasonwhere,
+		jasonnetworkquestion,
+		jasonnetworklow,
+		jasonnetworkmid,
+		jasonnetworkhigh,
+		jasoninsults
 	}
 
 	public enum Emotion
 	{
 		neutral,
 		happy,
-		angry
+		nervous,
+		distrustful,
+		shocked,
+		bragging,
+		flattering,
+		unhappy
 	}
 
 	private Type textType;
@@ -49,5 +64,10 @@ public class DialogText
 	public string Text 
 	{
 		get { return text; }
+	}
+
+	public static Emotion RandomEmotion() {
+		int rand = Random.Range(1, System.Enum.GetNames(typeof(Emotion)).Length);
+		return (Emotion)rand;
 	}
 }
