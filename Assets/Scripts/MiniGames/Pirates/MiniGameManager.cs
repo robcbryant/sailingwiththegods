@@ -70,14 +70,20 @@ public class MiniGameManager : MonoBehaviour
 		//setting pirate type -- possibly ***************************************************************************
 
 		//check true zones, out of those, have a pirate type spawn from one of the truw areas
-		if (Globals.GameVars.playerShipVariables.isAetolianRegionZone) {
-			PirateType theType = Globals.GameVars.PirateTypes.FirstOrDefault(t => t.name == "Aetolian");
+		if (Globals.GameVars.playerShipVariables.zonesList.Count > 0) {
+			int randomPirateTypeFromActiveZones = UnityEngine.Random.Range(1, Globals.GameVars.playerShipVariables.zonesList.Count);
+
+			string randomPirateTypeName = Globals.GameVars.playerShipVariables.zonesList[randomPirateTypeFromActiveZones];
+			Debug.Log(randomPirateTypeName + " = randomPirateTypeName");
+
+			PirateType theType = Globals.GameVars.PirateTypes.FirstOrDefault(t => t.name == randomPirateTypeName);
+			Debug.Log("Pirate Type of: " + theType.name);
+		}
+		else {
+			//temp writing -- rand priates for when outside of all current zones 
+			rsp.SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
 		}
 
-		//temp writing -- rand priates for when outside of all current zones 
-		rsp.SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
-
-		//note: other junk 
 		string pirateTypeText = "";
 		CrewMember pirateKnower = CrewFromPirateHometown(rsp.CurrentPirates);
 
@@ -132,7 +138,7 @@ public class MiniGameManager : MonoBehaviour
 			{
 				if (crewNetwork.Contains(Globals.GameVars.GetSettlementFromID(p.originCity))) 
 				{
-					Debug.Log($"{c.name} knows the home city of Pirate {p.name}: {Globals.GameVars.GetSettlementFromID(c.originCity).name}");
+					//Debug.Log($"{c.name} knows the home city of Pirate {p.name}: {Globals.GameVars.GetSettlementFromID(c.originCity).name}");
 					return c;
 				}
 			}
@@ -226,7 +232,7 @@ public class MiniGameManager : MonoBehaviour
 				Globals.GameVars.pirateTitles[1],
 				Globals.GameVars.pirateSubtitles[1],
 				Globals.GameVars.pirateNegotiateText[0] + "\n\n" + deal + "\n\nIf you take this deal, you will escape with your lives, but you will be thought a coward for avoiding a fight - your clout will go down!\n\n" +
-					Globals.GameVars.pirateNegotiateText[Random.Range(1, Globals.GameVars.pirateNegotiateText.Count)],
+					Globals.GameVars.pirateNegotiateText[UnityEngine.Random.Range(1, Globals.GameVars.pirateNegotiateText.Count)],
 				pirateIcon,
 				MiniGameInfoScreen.MiniGame.Negotiation);
 
@@ -312,7 +318,7 @@ public class MiniGameManager : MonoBehaviour
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[2],
 			Globals.GameVars.pirateSubtitles[2],
-			Globals.GameVars.pirateRunSuccessText[0] + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunSuccessText[Random.Range(1, Globals.GameVars.pirateRunSuccessText.Count)],
+			Globals.GameVars.pirateRunSuccessText[0] + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunSuccessText[UnityEngine.Random.Range(1, Globals.GameVars.pirateRunSuccessText.Count)],
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
 
@@ -453,5 +459,6 @@ public class MiniGameManager : MonoBehaviour
 	private void UnloadMinigame() {
 		//UNLOAD MINIGAME CODE GOES HERE
 		gameObject.SetActive(false);
+		Globals.MiniGames.Exit();
 	}
 }
