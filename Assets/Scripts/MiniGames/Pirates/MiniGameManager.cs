@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using System;
-using JetBrains.Annotations;
 
 public class MiniGameManager : MonoBehaviour
 {
@@ -69,7 +68,17 @@ public class MiniGameManager : MonoBehaviour
 		}
 
 
+		//setting pirate type -- possibly ***************************************************************************
+
+		//check true zones, out of those, have a pirate type spawn from one of the truw areas
+		if (Globals.GameVars.playerShipVariables.isAetolianRegionZone) {
+			PirateType theType = Globals.GameVars.PirateTypes.FirstOrDefault(t => t.name == "Aetolian");
+		}
+
+		//temp writing -- rand priates for when outside of all current zones 
 		rsp.SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
+
+		//note: other junk 
 		string pirateTypeText = "";
 		CrewMember pirateKnower = CrewFromPirateHometown(rsp.CurrentPirates);
 
@@ -135,11 +144,13 @@ public class MiniGameManager : MonoBehaviour
 
 	#region Negotiation
 	private int moneyDemand = 0;
-	private Resource[] playerInvo = Globals.GameVars.playerShipVariables.ship.cargo;
-	private int[] demandedAmounts = new int[Globals.GameVars.playerShipVariables.ship.cargo.Length];
+	private Resource[] playerInvo => Globals.GameVars.playerShipVariables.ship.cargo;
+	int[] demandedAmounts;
 
 	public void OpenNegotiations() 
 	{
+		demandedAmounts = new int[Globals.GameVars.playerShipVariables.ship.cargo.Length];
+
 		if (!alreadyTriedNegotiating) 
 		{
 			//NEGOTIATION ALGORITHM GOES HERE
@@ -309,6 +320,8 @@ public class MiniGameManager : MonoBehaviour
 			Globals.GameVars.pirateRunSuccessText[0] + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunSuccessText[UnityEngine.Random.Range(1, Globals.GameVars.pirateRunSuccessText.Count)],
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
+
+		//Globals.MiniGames.Exit();
 	}
 
 	public void FailedRunning() 
@@ -341,6 +354,7 @@ public class MiniGameManager : MonoBehaviour
 	#region Fighting
 	public void Fight() 
 	{
+		Debug.Log("Fight break point.");
 		CrewCard crewMember, pirate;
 		foreach(Transform p in piratesParent.transform) {
 			pirates.Add(p.gameObject);

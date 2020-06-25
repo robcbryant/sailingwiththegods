@@ -69,9 +69,6 @@ public class RandomSlotPopulator : MonoBehaviour
 		pirateRange.y = Mathf.Min(pirateRange.y, crewNum);
 		int enAndPlayCnt = Random.Range(pirateRange.x, pirateRange.y+1);
 
-		//print to the console for development team to check and make sure the call is going correctly
-		print(enAndPlayCnt);
-
 		//if the number is even, the even array objects will be called
 		GameObject[] pirateSlots = enAndPlayCnt % 2 == 0 ? enemySlotsEven : enemySlotsOdd;
 		GameObject[] playerSlots = enAndPlayCnt % 2 == 0 ? playableSlotsEven : playableSlotsOdd;
