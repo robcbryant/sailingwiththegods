@@ -47,6 +47,19 @@ jobs:
         # Relative path to the project to be built.
         projectPath: ./
         buildName: SailingWithTheGods 
+
+    - name: Unity - Builder
+      uses: webbertakken/unity-builder@v0.12
+      env:
+        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+      with:
+        # Version of unity to use for building the project.
+        unityVersion: 2018.3.8f1
+        # Platform that the build should target.
+        targetPlatform: StandaloneOSX
+        # Relative path to the project to be built.
+        projectPath: ./
+        buildName: SailingWithTheGods
     
     - name: Artifact Upload
       uses: actions/upload-artifact@v1
