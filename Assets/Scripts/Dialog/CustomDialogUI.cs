@@ -208,39 +208,29 @@ public class CustomDialogUI : Yarn.Unity.DialogueUIBehaviour
 			text = line.ID;
 		}
 
-		ds.AddToDialogText(currentSpeakerName, text, textAlign);
+		string[] split = text.Split('^');
 
-		//if (textSpeed > 0.0f) {
-		//	// Display the line one character at a time
-		//	var stringBuilder = new StringBuilder();
+		bool eventualEnd = end;
+		end = false;
 
-		//	foreach (char c in text) {
-		//		stringBuilder.Append(c);
-		//		onLineUpdate?.Invoke(stringBuilder.ToString());
-		//		if (userRequestedNextLine) {
-		//			// We've requested a skip of the entire line.
-		//			// Display all of the text immediately.
-		//			onLineUpdate?.Invoke(text);
-		//			break;
-		//		}
-		//		yield return new WaitForSeconds(textSpeed);
-		//	}
-		//}
-		//else {
-		//	// Display the entire line immediately if textSpeed <= 0
-		//	onLineUpdate?.Invoke(text);
-		//}
+		for (int i = 0; i < split.Length; i++) {
+			ds.AddToDialogText(currentSpeakerName, split[i], textAlign);
 
-		// We're now waiting for the player to move on to the next line
-		userRequestedNextLine = false;
+			if (i == split.Length - 1) {
+				end = eventualEnd;
+			}
 
-		// Indicate to the rest of the game that the line has finished being delivered
-		onLineFinishDisplaying?.Invoke();
+			// We're now waiting for the player to move on to the next line
+			userRequestedNextLine = false;
 
-		while (userRequestedNextLine == false) {
-			yield return null;
+			// Indicate to the rest of the game that the line has finished being delivered
+			onLineFinishDisplaying?.Invoke();
+
+			while (userRequestedNextLine == false) {
+				yield return null;
+			}
 		}
-
+		
 		// Hide the text and prompt
 		onLineEnd?.Invoke();
 
