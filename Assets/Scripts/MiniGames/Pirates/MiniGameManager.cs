@@ -67,21 +67,15 @@ public class MiniGameManager : MonoBehaviour
 			button.SetExplanationText($"{runChance * 100}% success chance\nYou will be known as a coward");
 			button.GetComponentInChildren<Button>().interactable = true;
 		}
-		//setting pirate type -- possibly ***************************************************************************
 
-		//check true zones, out of those, have a pirate type spawn from one of the truw areas
+		//check true zones, out of those, have a pirate type spawn from one of the "true" areas
+		//no pirates should appear if there aren't any actve zones
 		if (Globals.GameVars.playerShipVariables.zonesList.Count > 0) {
 			int randomPirateTypeFromActiveZones = UnityEngine.Random.Range(1, Globals.GameVars.playerShipVariables.zonesList.Count);
 
 			string randomPirateTypeName = Globals.GameVars.playerShipVariables.zonesList[randomPirateTypeFromActiveZones];
-			Debug.Log(randomPirateTypeName + " = randomPirateTypeName");
 
 			PirateType theType = Globals.GameVars.PirateTypes.FirstOrDefault(t => t.name == randomPirateTypeName);
-			Debug.Log("Pirate Type of: " + theType.name);
-		}
-		else {
-			//temp writing -- rand priates for when outside of all current zones 
-			rsp.SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
 		}
 
 		string pirateTypeText = "";

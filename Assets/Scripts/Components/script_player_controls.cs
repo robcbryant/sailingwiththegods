@@ -79,8 +79,6 @@ public class script_player_controls : MonoBehaviour
 	public bool isCretanRegionZone = false;
 	public bool isEtruscanPirateRegionZone = false;
 	public bool isIllyrianRegionZone = false;
-
-	[HideInInspector] int zoneCounter = 0;
 	[HideInInspector] public List<string> zonesList = new List<string>();
 
 	public void Reset() {
@@ -453,8 +451,6 @@ public class script_player_controls : MonoBehaviour
 
 	}
 
-
-
 	public void TravelToSelectedTarget(Vector3 destination) {
 		//Let's slowly rotate the ship towards the direction it's traveling and then allow the ship to move
 		if (!shipTravelStartRotationFinished) {
@@ -642,26 +638,18 @@ public class script_player_controls : MonoBehaviour
 
 		if (trigger.transform.tag == "AetolianRegionZone") {
 			isAetolianRegionZone = true;
-
-			zoneCounter += 1;
 			zonesList.Add("Aetolian");
 		}
 		if (trigger.transform.tag == "CretanRegionZone") {
 			isCretanRegionZone = true;
-
-			zoneCounter += 1;
 			zonesList.Add("Cretan");
 		}
 		if (trigger.transform.tag == "EtruscanPirateRegionZone") {
 			isEtruscanPirateRegionZone = true;
-
-			zoneCounter += 1;
 			zonesList.Add("Etruscan");
 		}
 		if (trigger.transform.tag == "IllyrianRegionZone") {
 			isIllyrianRegionZone = true;
-
-			zoneCounter += 1;
 			zonesList.Add("Illyrian");
 		}
 	}
@@ -685,26 +673,18 @@ public class script_player_controls : MonoBehaviour
 
 		if (trigger.transform.tag == "AetolianRegionZone") {
 			isAetolianRegionZone = false;
-
-			zoneCounter -= 1;
 			zonesList.Remove("Aetolian");
 		}
 		if (trigger.transform.tag == "CretanRegionZone") {
 			isCretanRegionZone = false;
-
-			zoneCounter -= 1;
 			zonesList.Remove("Cretan");
 		}
 		if (trigger.transform.tag == "EtruscanPirateRegionZone") {
 			isEtruscanPirateRegionZone = false;
-
-			zoneCounter -= 1;
 			zonesList.Remove("Etruscan");
 		}
 		if (trigger.transform.tag == "IllyrianRegionZone") {
 			isIllyrianRegionZone = false;
-
-			zoneCounter -= 1;
 			zonesList.Remove("Illyrian");
 		}
 	}
