@@ -8,12 +8,9 @@ position: 657,-242
 << setconvotitle DialogScreen Example_Port_Conversation>> 
 << setsprite Partner neutral >>
 << setspeaker DialogScreen other>> 
-<< randomtext DialogScreen greeting neutral >>	
 Welcome to port! This is a city with a port! The city is called City! Here you can find goods like Goods and Luxuries. We worship a Greek god.
-/{$random_text}
 << setend DialogScreen >>
-Anyway, enough formalities. I'm going to tax you as much as I possibly can, because that's my job and I like tax money.
-
+Stenochoria is the little goddess of our docks: her name means 'financial strain' and embodies our state. We are feeling a bit poorly, which is to say, poor: our roads need repair, our temple roofs are sagging, the columns in our stoa need some fresh touching up with bright colored paint: a good city needs a good budget. These are the reasons our citizens dig deep into their pockets: you should dig just as deep into yours, if you seek to build clout as well as profit!
 
 [[ I hate taxes and I hate you! |angry]] 
 [[ Sounds reasonable, how much do I owe you? I am very wealthy. |happy]]
