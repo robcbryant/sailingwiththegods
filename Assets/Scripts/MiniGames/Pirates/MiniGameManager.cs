@@ -60,14 +60,6 @@ public class MiniGameManager : MonoBehaviour
 			button.GetComponentInChildren<Button>().interactable = true;
 		}
 
-		rsp.SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
-		runChance = CalculateRunChance();
-		foreach (ButtonExplanation button in runButtons) 
-		{
-			button.SetExplanationText($"{runChance * 100}% success chance\nYou will be known as a coward");
-			button.GetComponentInChildren<Button>().interactable = true;
-		}
-
 		//check true zones, out of those, have a pirate type spawn from one of the "true" areas
 		//no pirates should appear if there aren't any actve zones
 		if (Globals.GameVars.playerShipVariables.zonesList.Count > 0) {
@@ -76,7 +68,23 @@ public class MiniGameManager : MonoBehaviour
 			string randomPirateTypeName = Globals.GameVars.playerShipVariables.zonesList[randomPirateTypeFromActiveZones];
 
 			PirateType theType = Globals.GameVars.PirateTypes.FirstOrDefault(t => t.name == randomPirateTypeName);
+			//Debug.Log("theType = " + theType);
+			rsp.SetPirateType(theType);
+			//Debug.Log("Pirate type in game is: " + rsp.GetType());
 		}
+		else {
+			//temporary code 
+			rsp.SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
+		}
+
+		runChance = CalculateRunChance();
+		foreach (ButtonExplanation button in runButtons) 
+		{
+			button.SetExplanationText($"{runChance * 100}% success chance\nYou will be known as a coward");
+			button.GetComponentInChildren<Button>().interactable = true;
+		}
+
+		
 
 		string pirateTypeText = "";
 		CrewMember pirateKnower = CrewFromPirateHometown(rsp.CurrentPirates);
@@ -354,7 +362,7 @@ public class MiniGameManager : MonoBehaviour
 		run = Mathf.Max(runningBounds.x, run);
 		run = Mathf.Min(runningBounds.y, run);
 
-		Debug.Log($"{1.0f / difficulty} * {crewMod} = {run}");
+		//Debug.Log($"{1.0f / difficulty} * {crewMod} = {run}");
 		
 		return run;
 	}
@@ -364,15 +372,17 @@ public class MiniGameManager : MonoBehaviour
 	#region Fighting
 	public void Fight() 
 	{
-		Debug.Log("Fight break point.");
+		Debug.Log("FIGHT BUTTON");
 		CrewCard crewMember, pirate;
 		foreach(Transform p in piratesParent.transform) {
 			pirates.Add(p.gameObject);
 		}
+
 		pirates = pirates.OrderBy(GameObject => GameObject.transform.position.x).ToList<GameObject>();
 		foreach (Transform c in crewParent.transform) {
 			crew.Add(c.gameObject);
 		}
+
 		crew = crew.OrderBy(GameObject => GameObject.transform.position.x).ToList<GameObject>();
 		for (int index = 0; index <= crewParent.transform.childCount - 1; index++) {
 			crewMember = crew[index].transform.GetComponent<CrewCard>();
@@ -382,14 +392,17 @@ public class MiniGameManager : MonoBehaviour
 				if (crewMember.power < pirate.power) {
 					pirate.UpdatePower(pirate.power -= crewMember.power);
 					crewMember.gameObject.SetActive(false);
+					Debug.Log("CREW MEMBER DIED");
 				}
 				else if (crewMember.power > pirate.power) {
 					crewMember.UpdatePower(crewMember.power -= pirate.power);
 					pirate.gameObject.SetActive(false);
+					Debug.Log("PIRATE DIED");
 				}
 				else {
 					crewMember.gameObject.SetActive(false);
 					pirate.gameObject.SetActive(false);
+					Debug.Log("CREW MEMBER AND PIRATE DIED");
 				}
 			}
 		}

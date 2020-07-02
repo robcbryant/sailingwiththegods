@@ -59,7 +59,7 @@ public class RandomSlotPopulator : MonoBehaviour
 	public void SetPirateType(PirateType t) 
 	{
 		typeToSpawn = t;
-		Debug.Log($"Spawning only pirates of type {typeToSpawn.name}");
+		//Debug.Log($"Spawning only pirates of type {typeToSpawn.name}"); //<-- that type gets changed again later when the actual pirate cardds are loaded in (based on the zone(s) the player is currently in
 	}
 
 	public void PopulateScreen() 
