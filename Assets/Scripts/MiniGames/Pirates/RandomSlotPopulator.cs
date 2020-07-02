@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class RandomSlotPopulator : MonoBehaviour
 {
@@ -78,6 +79,8 @@ public class RandomSlotPopulator : MonoBehaviour
 		{
 			pirateSlots[x].SetActive(true);
 			Pirate g = Instantiate(pirate);
+			//Debug.Log("pirate local scale = " + pirate.transform.localScale);
+			//Debug.Log("pirate lossy scale = " + pirate.transform.lossyScale);
 			if (typeToSpawn.difficulty == 1) {
 				g.GetComponent<CrewCard>().power = (g.GetComponent<CrewCard>().power / 5);
 				g.GetComponent<CrewCard>().powerText.text = g.GetComponent<CrewCard>().power.ToString();
@@ -130,6 +133,8 @@ public class RandomSlotPopulator : MonoBehaviour
 					newCrew.transform.SetParent(crewParentInOrigin);
 					newCrew.SetCrew(Globals.GameVars.playerShipVariables.ship.crewRoster[spawnedSlots]);
 					cdz.SetOccupied(true);
+					//Debug.Log("crewmember scale = " + crew.transform.localScale);
+					//Debug.Log("crewmember lossy scale = " + crew.transform.lossyScale);
 				}
 				
 				//Moves to the next point
