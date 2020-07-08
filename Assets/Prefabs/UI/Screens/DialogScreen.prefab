@@ -705,7 +705,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 805202603}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.9957491
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1167,7 +1167,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 8713915857908024432}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.99576205
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2135,7 +2135,7 @@ MonoBehaviour:
   variableStorage: {fileID: 2637946714061866597}
   dialogueUI: {fileID: 8580856020355196408}
   startNode: Start
-  startAutomatically: 1
+  startAutomatically: 0
   onNodeComplete:
     m_PersistentCalls:
       m_Calls: []
@@ -2170,7 +2170,18 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   onDialogueEnd:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8955345233917517422}
+        m_MethodName: ExitConversation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onLineStart:

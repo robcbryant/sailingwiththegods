@@ -7,7 +7,8 @@ using Yarn.Unity;
 
 public class DialogScreen : MonoBehaviour
 {
-	public string partnerName = "Tax Collector Bob III";
+	public script_GUI gui;
+
 	public TextMeshProUGUI conversationTitle;
 	public Scrollbar conversationScroll;
 	public Transform conversationHolder;
@@ -18,6 +19,7 @@ public class DialogScreen : MonoBehaviour
 
 	private CustomDialogUI yarnUI;
 	private InMemoryVariableStorage storage;
+	private DialogueRunner runner;
 
 
 	private string[] DialogInitializer(string prefix, int length) 
@@ -36,12 +38,22 @@ public class DialogScreen : MonoBehaviour
 	{
 		yarnUI = GetComponent<CustomDialogUI>();
 		storage = GetComponent<InMemoryVariableStorage>();
+		runner = GetComponent<DialogueRunner>();
 	}
 
 	public void AddToDialogText(string speaker, string text, TextAlignmentOptions align) {
 		StartCoroutine(DoAddToDialogText(speaker, text, align));
 	}
-	
+
+	private void OnEnable() {
+		StartCoroutine(StartDialog());
+	}
+
+	private IEnumerator StartDialog() {
+		yield return null;
+		runner.StartDialogue();
+	}
+
 	private IEnumerator DoAddToDialogText(string speaker, string text, TextAlignmentOptions align) 
 	{
 		DialogPiece p = Instantiate(dialogObject);
@@ -54,15 +66,6 @@ public class DialogScreen : MonoBehaviour
 		conversationScroll.value = 0;
 		yield return null;
 		conversationScroll.value = 0;
-	}
-
-	public void Testing() 
-	{
-		int choices = Random.Range(1, 6);
-		for (int i = 0; i < choices; i++) 
-		{
-			AddChoice($"This is choice {i}!", AddRandomDialog);
-		}
 	}
 
 	public void AddContinueOption() 
@@ -79,21 +82,6 @@ public class DialogScreen : MonoBehaviour
 	private IEnumerator WaitAndComplete() {
 		yield return null;
 		yarnUI.MarkLineComplete();
-	}
-
-	public void AddRandomDialog() 
-	{
-		int speaker = Random.Range(1, 3);
-		string name = speaker % 2 == 0 ? "Jason" : partnerName;
-		string conversation = $"This is being spoken by {name}. This is some dialog! Blah blah blah. Dialog dialog dialog.";
-		TextAlignmentOptions align = TextAlignmentOptions.Left;
-
-		if (speaker % 2 != 0) 
-		{
-			align = TextAlignmentOptions.Right;
-		}
-		
-		StartCoroutine(DoAddToDialogText(name, conversation, align));
 	}
 
 	public void AddChoice(string text, UnityEngine.Events.UnityAction click) 
@@ -127,6 +115,25 @@ public class DialogScreen : MonoBehaviour
 			}
 
 		}
+	}
+
+	private IEnumerator DeactivateSelf() {
+		yield return null;
+		gameObject.SetActive(false);
+	}
+
+	public void ExitConversation() {
+		bool city = storage.GetValue("$entering_city").AsBool;
+		Debug.Log($"Exiting the conversation. Entering the city {city}");
+
+		if (city) {
+			gui.GUI_EnterPort();
+		}
+		else {
+			gui.GUI_ExitPortNotification();
+		}
+
+		StartCoroutine(DeactivateSelf());
 	}
 
 	[YarnCommand("reset")]
