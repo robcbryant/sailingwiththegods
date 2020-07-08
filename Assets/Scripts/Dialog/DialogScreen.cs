@@ -131,6 +131,10 @@ public class DialogScreen : MonoBehaviour
 
 	[YarnCommand("reset")]
 	public void ResetConversation() {
+		storage.SetValue("$random_text", new Yarn.Value("Random text"));
+		storage.SetValue("$random_bool", new Yarn.Value(false));
+		storage.SetValue("$convo_title", new Yarn.Value("Convertation Title"));
+		storage.SetValue("$emotion", new Yarn.Value("neutral"));
 		Clear();
 	}
 

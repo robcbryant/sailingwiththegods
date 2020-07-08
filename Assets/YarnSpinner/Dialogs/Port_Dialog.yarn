@@ -7,6 +7,10 @@ position: 660,-322
 << setpartnername DialogScreen Telones >>
 << setconvotitle DialogScreen Test_Outline >>
 << setsprite Partner neutral >>
+<< set $asked_where to false >>
+<< set $asked_networks to false >>
+<< set $asked_who to false >>
+<< set $insulted to false >>
 
 << setspeaker DialogScreen other >>
 << randomtext DialogScreen greeting any >> 
