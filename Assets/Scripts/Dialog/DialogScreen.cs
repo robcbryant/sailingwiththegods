@@ -20,7 +20,7 @@ public class DialogScreen : MonoBehaviour
 	private CustomDialogUI yarnUI;
 	private InMemoryVariableStorage storage;
 	private DialogueRunner runner;
-
+	private Settlement city;
 
 	private string[] DialogInitializer(string prefix, int length) 
 	{
@@ -44,12 +44,22 @@ public class DialogScreen : MonoBehaviour
 	public void AddToDialogText(string speaker, string text, TextAlignmentOptions align) {
 		StartCoroutine(DoAddToDialogText(speaker, text, align));
 	}
+	
+	private void SetCity(Settlement s) 
+	{
+		city = s;
+		Debug.Log("Current settlement: " + city.name);
+		storage.SetValue("$city_name", new Yarn.Value(city.name));
+		storage.SetValue("$city_description", new Yarn.Value(city.description));
+	}
 
-	private void OnEnable() {
+	public void StartDialog(Settlement s) {
+		SetCity(s);
 		StartCoroutine(StartDialog());
 	}
 
 	private IEnumerator StartDialog() {
+		yield return null;
 		yield return null;
 		runner.StartDialogue();
 	}
@@ -194,6 +204,12 @@ public class DialogScreen : MonoBehaviour
 	[YarnCommand("networkconnections")]
 	public void NumberOfConnections() {
 		storage.SetValue("$connections_number", 0);
+	}
+
+	[YarnCommand("cityinfo")]
+	public void SetCityInfo() {
+		storage.SetValue("$city_name", new Yarn.Value(city.name));
+		storage.SetValue("$city_description", new Yarn.Value(city.description));
 	}
 
 }
