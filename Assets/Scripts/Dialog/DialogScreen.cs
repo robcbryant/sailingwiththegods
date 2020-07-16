@@ -7,6 +7,8 @@ using Yarn.Unity;
 
 public class DialogScreen : MonoBehaviour
 {
+	private const string ResourcePath = "dialog_images";
+
 	public script_GUI gui;
 
 	public TextMeshProUGUI conversationTitle;
@@ -15,6 +17,7 @@ public class DialogScreen : MonoBehaviour
 	public Transform choiceHolder;
 	public DialogChoice choiceObject;
 	public DialogPiece dialogObject;
+	public Image dialogImage;
 	public GameObject dialogSpacer;
 
 	private CustomDialogUI yarnUI;
@@ -44,6 +47,10 @@ public class DialogScreen : MonoBehaviour
 	public void AddToDialogText(string speaker, string text, TextAlignmentOptions align) {
 		StartCoroutine(DoAddToDialogText(speaker, text, align));
 	}
+
+	public void AddImage(string imgName) {
+		StartCoroutine(DoAddImage(imgName));
+	}
 	
 	private void SetCity(Settlement s) 
 	{
@@ -55,6 +62,7 @@ public class DialogScreen : MonoBehaviour
 
 	public void StartDialog(Settlement s) {
 		SetCity(s);
+		Clear();
 		StartCoroutine(StartDialog());
 	}
 
@@ -76,6 +84,23 @@ public class DialogScreen : MonoBehaviour
 		conversationScroll.value = 0;
 		yield return null;
 		conversationScroll.value = 0;
+	}
+
+	public IEnumerator DoAddImage(string imgName) 
+	{
+		Sprite s = Resources.Load<Sprite>(ResourcePath + "/" + imgName);
+
+		if (s != null) {
+			Image i = Instantiate(dialogImage);
+			i.sprite = s;
+			yield return null;
+			i.transform.SetParent(conversationHolder);
+			i.transform.SetSiblingIndex(conversationHolder.childCount - 2);
+			yield return null;
+			conversationScroll.value = 0;
+			yield return null;
+			conversationScroll.value = 0;
+		}
 	}
 
 	public void AddContinueOption() 
@@ -128,6 +153,7 @@ public class DialogScreen : MonoBehaviour
 	}
 
 	private IEnumerator DeactivateSelf() {
+		Clear();
 		yield return null;
 		gameObject.SetActive(false);
 	}
@@ -198,12 +224,14 @@ public class DialogScreen : MonoBehaviour
 
 	[YarnCommand("citynetworks")]
 	public void NumberOfCityNetworks() {
-		storage.SetValue("$city_networks", 0);
+		storage.SetValue("$city_networks", city.networks.Count);
 	}
 
 	[YarnCommand("networkconnections")]
 	public void NumberOfConnections() {
-		storage.SetValue("$connections_number", 0);
+		IEnumerable<CrewMember> connected = Globals.GameVars.Network.CrewMembersWithNetwork(city, true);
+		int connectedNum = System.Linq.Enumerable.Count(connected);
+		storage.SetValue("$connections_number", connectedNum);
 	}
 
 	[YarnCommand("cityinfo")]
@@ -211,6 +239,7 @@ public class DialogScreen : MonoBehaviour
 		storage.SetValue("$city_name", new Yarn.Value(city.name));
 		storage.SetValue("$city_description", new Yarn.Value(city.description));
 	}
+
 
 }
 

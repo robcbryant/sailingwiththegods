@@ -541,7 +541,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: -0.00000047683716}
+  m_AnchoredPosition: {x: 0, y: -0.00000047683716}
   m_SizeDelta: {x: -8.375, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &952958456
@@ -705,7 +705,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 805202603}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -923,7 +923,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 0259e4da958263e41a914b936280ec00, type: 3}
+  m_Sprite: {fileID: 21300000, guid: edbc4e7924a026b4c8907399eaf6a3a5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1003,7 +1003,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: -0.00000047683716}
+  m_AnchoredPosition: {x: 0, y: -0.00000047683716}
   m_SizeDelta: {x: -8.375, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6610649176773636623
@@ -1167,7 +1167,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 8713915857908024432}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1650,7 +1650,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 9195498727e61104dacd0db384d3f819, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ece372b4348ccbc4699d6de4fe85292c, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1674,17 +1674,17 @@ MonoBehaviour:
   storage: {fileID: 2637946714061866597}
   sprites:
   - name: neutral
-    sprite: {fileID: 21300000, guid: 9195498727e61104dacd0db384d3f819, type: 3}
+    sprite: {fileID: 21300000, guid: ece372b4348ccbc4699d6de4fe85292c, type: 3}
   - name: happy
-    sprite: {fileID: 21300000, guid: 67ef9a9f0b69f9c4488b8888cf9d9d28, type: 3}
+    sprite: {fileID: 21300000, guid: 0b66cba8f2098814a8981d4716f4a8aa, type: 3}
   - name: nervous
     sprite: {fileID: 21300000, guid: d15dbf8245651fa4c8504bd1312c7a49, type: 3}
   - name: distrustful
-    sprite: {fileID: 21300000, guid: 1c7cc7e7914e37c448032e0558f51801, type: 3}
+    sprite: {fileID: 21300000, guid: eee16554c2cc9864188879d19a8ab3d5, type: 3}
   - name: shocked
-    sprite: {fileID: 21300000, guid: 4e9479e4594beaa4590fa20ea9d6b383, type: 3}
+    sprite: {fileID: 21300000, guid: 27231ec654fc63f4e81e899084a8b11e, type: 3}
   - name: bragging
-    sprite: {fileID: 21300000, guid: 114f7e2c3b665614090627a0be659ec3, type: 3}
+    sprite: {fileID: 21300000, guid: f0c309df2aa78a74981d67bd5aa776b1, type: 3}
   - name: flattering
     sprite: {fileID: 21300000, guid: 2bdb9ac2d3ee08d47b3f227ff2dc3698, type: 3}
   - name: unhappy
@@ -2237,7 +2237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02ae4d7eab35f2143b4e749a3b6a0e02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partnerName: Tax Collector Bob III
+  gui: {fileID: 0}
   conversationTitle: {fileID: 8410397483969540388}
   conversationScroll: {fileID: 7822396569581837966}
   conversationHolder: {fileID: 338038171900115336}
@@ -2245,6 +2245,8 @@ MonoBehaviour:
   choiceObject: {fileID: 4055828137140001869, guid: f2ab35dc9c2a17244ab0928c7431d492,
     type: 3}
   dialogObject: {fileID: 7822509578391944616, guid: 03ea98c41adbf5a4ea545da9c73b281d,
+    type: 3}
+  dialogImage: {fileID: 7458043766258263901, guid: 408389c63e73d154ca619b17852d4d45,
     type: 3}
   dialogSpacer: {fileID: 4918756981578934647, guid: 8b57f5ffb8ef065459b8dcac7477a92c,
     type: 3}
