@@ -129,7 +129,8 @@ position: 401,-63
 
 << setspeaker DialogScreen other >>
 << setend DialogScreen >> 
-No, it's City. Here's the Description.
+<< cityinfo DialogScreen >>
+No, it's {$city_name}. {$city_description}
 
 << if $asked_networks is false >>
     [[What are this city's networks? |networks]]

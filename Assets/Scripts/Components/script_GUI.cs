@@ -350,6 +350,7 @@ public class script_GUI : MonoBehaviour
 		GameVars.controlsLocked = true;
 
 		port_dialog.SetActive(true);
+		port_dialog.GetComponent<DialogScreen>().StartDialog(GameVars.currentSettlement);
 
 		////Show the port notification pop up
 		//port_info_main.SetActive(true);

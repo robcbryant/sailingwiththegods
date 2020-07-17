@@ -208,13 +208,20 @@ public class CustomDialogUI : Yarn.Unity.DialogueUIBehaviour
 			text = line.ID;
 		}
 
+
 		string[] split = text.Split('^');
 
 		bool eventualEnd = end;
 		end = false;
 
 		for (int i = 0; i < split.Length; i++) {
-			ds.AddToDialogText(currentSpeakerName, split[i], textAlign);
+			if (split[i][0] == '&') {
+				ds.AddImage(split[i].Remove(0, 1));
+			}
+			else {
+				ds.AddToDialogText(currentSpeakerName, split[i], textAlign);
+			}
+
 
 			if (i == split.Length - 1) {
 				end = eventualEnd;
