@@ -36,6 +36,8 @@ public class RandomSlotPopulator : MonoBehaviour
 
 	private int crewNum;
 	private bool loaded = false;
+
+	GameObject[] pirateSlots, playerSlots;
 	
 	void OnEnable()
     {
@@ -55,6 +57,8 @@ public class RandomSlotPopulator : MonoBehaviour
 		PopulateScreen();
 		ActivateCrewRow(0);
 		loaded = true;
+		GameObject.FindObjectOfType<MiniGameManager>().InitilizePirates(playerSlots);
+		//MiniGameManager.InitilizePirates();
 	}
 
 	public void SetPirateType(PirateType t) 
@@ -71,8 +75,8 @@ public class RandomSlotPopulator : MonoBehaviour
 		int enAndPlayCnt = Random.Range(pirateRange.x, pirateRange.y+1);
 
 		//if the number is even, the even array objects will be called
-		GameObject[] pirateSlots = enAndPlayCnt % 2 == 0 ? enemySlotsEven : enemySlotsOdd;
-		GameObject[] playerSlots = enAndPlayCnt % 2 == 0 ? playableSlotsEven : playableSlotsOdd;
+		pirateSlots = enAndPlayCnt % 2 == 0 ? enemySlotsEven : enemySlotsOdd;
+		playerSlots = enAndPlayCnt % 2 == 0 ? playableSlotsEven : playableSlotsOdd;
 
 		List<CrewMember> possiblePirates = Globals.GameVars.Pirates.Where(x => x.pirateType.Equals(typeToSpawn)).ToList();
 		for (int x = 0; x < enAndPlayCnt; x++) 
@@ -103,6 +107,8 @@ public class RandomSlotPopulator : MonoBehaviour
 			g.GetComponent<RectTransform>().position = pirateSlots[x].GetComponent<RectTransform>().position;
 			g.transform.SetParent(pirateParent);
 			playerSlots[x].SetActive(true);
+
+			g.GetComponent<CrewCard>().cardIndex = pirateSlots[x].GetComponent<CardDropZone>().dropIndex;
 		}
 
 		int totalCrewRows = Mathf.CeilToInt((crewNum * 1.0f) / crewPerRow);

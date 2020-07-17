@@ -80,6 +80,7 @@ public class CrewCard : MonoBehaviour
 		overStart = isStart;
 	}
 
+	//this is unused in any other script; might be what we need <--?
 	public void setIndex(int index) {
 		cardIndex = index;
 	}
@@ -128,5 +129,9 @@ public class CrewCard : MonoBehaviour
 				Message = crew.backgroundInfo
 			})
 		}));
+	}
+
+	public void OnDrawGizmos() {
+		Utils.drawString(cardIndex.ToString(), transform.position, Color.red);
 	}
 }

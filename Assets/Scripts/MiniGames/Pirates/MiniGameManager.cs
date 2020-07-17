@@ -29,7 +29,7 @@ public class MiniGameManager : MonoBehaviour
 	[Header("Gameplay")]
 	public Vector2 runningBounds = new Vector2(0.1f, 0.9f);
 	public GameObject piratesParent, crewParent;
-	public List<GameObject> pirates, crew;
+	public List<GameObject> crewSlots;
 	public Transform[] pirateSpaces, crewSpaces;
 
 	[Header("Clout")]
@@ -147,6 +147,27 @@ public class MiniGameManager : MonoBehaviour
 		}
 
 		return null;
+	}
+
+	public void InitilizePirates(GameObject[] playableSlots) {
+		
+		//foreach (Transform p in piratesParent.transform) {
+		//	pirates.Add(p.gameObject);
+		//}
+		//Debug.Log("Pirate cout: " + pirates.Count);
+		//pirates = pirates.OrderBy(GameObject => GameObject.transform.GetComponent<CrewCard>().cardIndex).ToList<GameObject>();
+
+		//foreach (Transform c in crewParent.transform) {
+		//	//crew.Add(c.gameObject);
+		//	//Debug.Log(c.transform.GetComponent<CrewCard>().cardIndex + "\t" + c.transform.GetComponent<CrewCard>().nameText.name + "\t" + c);
+		//}
+
+		//crew = playableSlots.ToList();
+
+		crewSlots = playableSlots.Where(slot => slot.active).ToList();
+		
+
+		//crewSlots = crewSlots.OrderBy(GameObject => GameObject.transform.GetComponent<CardDropZone>().dropIndex).ToList<GameObject>();
 	}
 
 	#region Negotiation
@@ -370,57 +391,76 @@ public class MiniGameManager : MonoBehaviour
 	#endregion
 
 	#region Fighting
+	
+
 	public void Fight() 
 	{
 		Debug.Log("FIGHT BUTTON");
 		CrewCard crewMember, pirate;
-		foreach(Transform p in piratesParent.transform) {
-			pirates.Add(p.gameObject);
-		}
 
-		pirates = pirates.OrderBy(GameObject => GameObject.transform.position.x).ToList<GameObject>();
-		foreach (Transform c in crewParent.transform) {
-			crew.Add(c.gameObject);
-		}
+		//adding the crewmembers in the play area to the list of playable crew
+		var minIndex = crewSlots.Min(c => c.GetComponent<CardDropZone>().dropIndex);
+		var maxIndex = crewSlots.Max(c => c.GetComponent<CardDropZone>().dropIndex);
 
-		crew = crew.OrderBy(GameObject => GameObject.transform.position.x).ToList<GameObject>();
-		for (int index = 0; index <= crewParent.transform.childCount - 1; index++) {
-			crewMember = crew[index].transform.GetComponent<CrewCard>();
-			pirate = pirates[index].transform.GetComponent<CrewCard>();
+			for (var index = minIndex; index <= maxIndex; index++) {
+			//int zeroBasedIndex = index - minIndex;
 
-			if (crewMember.gameObject.activeSelf && pirate.gameObject.activeSelf) {
+			//crewMember = crew[index].transform.GetComponentInChildren<CrewCard>();
+			crewMember = crewParent.transform.GetComponentsInChildren<CrewCard>().FirstOrDefault(crewCard => crewCard.cardIndex == index);
+			pirate = piratesParent.transform.GetComponentsInChildren<CrewCard>().FirstOrDefault(crewCard => crewCard.cardIndex == index);
+			//pirates[index].transform.GetComponent<CrewCard>();
+
+			//if there is an active game object for the crew list and for the pirates list that correspond, then they will fight
+			if (crewMember != null && pirate != null && crewMember.gameObject.activeSelf && pirate.gameObject.activeSelf) {
+				//if the pirate's power is greater than the crewmem's, the crewmem will "die"
+				//pirate's power goes down by the amount of power the crewmem had
+				//the crewmem MUST be removed from the crew list to keep the count updated
 				if (crewMember.power < pirate.power) {
-					pirate.UpdatePower(pirate.power -= crewMember.power);
+					pirate.UpdatePower(pirate.power -= crewMember.power); 
 					crewMember.gameObject.SetActive(false);
-					Debug.Log("CREW MEMBER DIED");
+					//crew.Remove(crewMember.gameObject);
+					//crew[zeroBasedIndex] = null;
+					Debug.Log("CREW MEMBER " + crewMember.nameText.text + " DIED with index = " + index + " and POWER = " + crewMember.power + "\n\n");
 				}
+				//if the crewmem's power is greater than the pirate's, the pirate will "die" 
+				//crewmem's power goes down by the amount of power the pirate had
+				//the pirate MUST be removed from the pirates list to keep the count updated
 				else if (crewMember.power > pirate.power) {
 					crewMember.UpdatePower(crewMember.power -= pirate.power);
 					pirate.gameObject.SetActive(false);
-					Debug.Log("PIRATE DIED");
+					//pirates.Remove(pirate.gameObject);
+					//pirates[zeroBasedIndex] = null;
+					Debug.Log("PIRATE " + pirate.nameText.text + " DIED with index = " + index + " and POWER = " + crewMember.power + "\n\n");
 				}
+				//if the crewmem and the pirate have powers of equal value, they cancel out
+				//the crewmem MUST be removed from the crew list to keep the count updated
+				//the pirate MUST be removed from the pirates list to keep the count updated
 				else {
+					//this has not happened yet as of 07/02/2020
 					crewMember.gameObject.SetActive(false);
 					pirate.gameObject.SetActive(false);
-					Debug.Log("CREW MEMBER AND PIRATE DIED");
+
+					//crew[zeroBasedIndex] = null;
+					//pirates[zeroBasedIndex] = null;
+
+					Debug.Log("CREW MEMBER AND PIRATE DIED\n\n");
 				}
 			}
-		}
-		int pirateCounter = 0;
-		foreach(GameObject p in pirates) {
-			if (p.activeInHierarchy) {
-				pirateCounter++;
+			else {
+				Debug.Log("One of the above gameobject was not active or null.");
 			}
+			Debug.Log("\n\n");
+			//no need for an else statement because of the updates within the above if/else if/else statements 
 		}
-		int crewCounter = 0;
-		foreach (GameObject c in crew) {
-			if (c.activeInHierarchy) {
-				crewCounter++;
-			}
-		}
+
+		int pirateCounter = piratesParent.transform.GetComponentsInChildren<CrewCard>().Count();
+
+		int crewCounter = crewParent.transform.GetComponentsInChildren<CrewCard>().Count();
+		
 		if (pirateCounter <= 0) {
 			WinGame(crewCounter * 5);
 		}
+
 		if (crewCounter <= 0) {
 			LoseGame();
 		}
