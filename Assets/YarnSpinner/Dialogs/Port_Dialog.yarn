@@ -1,7 +1,7 @@
 title: Start
 tags: 
 colorID: 0
-position: 660,-322
+position: 662,-899
 ---
 << reset DialogScreen >>
 << setpartnername DialogScreen Telones >>
@@ -11,6 +11,7 @@ position: 660,-322
 << set $asked_networks to false >>
 << set $asked_who to false >>
 << set $insulted to false >>
+<< set $asked_types to false >>
 
 << citynetworks DialogScreen >>
 << networkconnections DialogScreen >> 
@@ -23,28 +24,22 @@ I am the first and the last face you'll see here: no ordinary citizen I! You may
 /{$random_text}
 
 
-[[ So where is this, anyway? |where]]
-[[ What are this city's networks?|networks]]
-[[ Can I just come in?|tax_start]]
+[[ What kind of place have I come to? |where]]
+[[ What are the networks in this city? |networks]]
+[[ Can I enter the city? |tax_start]]
 [[ ENTER CITY SHORTCUT |enter]]
 [[ LEAVE WITHOUT PAYING SHORTCUT |exit]]
 ===
 title: tax_start
 tags: 
 colorID: 0
-position: 660,180
+position: 667,104
 ---
 << setspeaker DialogScreen Jason >>
-I would like to enter your city. May I come in?
+Can I come into the city? What are my fees?
 
 << setspeaker DialogScreen other >>
-Not before you pay your entrance taxes.
-
-<< setspeaker DialogScreen Jason >> 
-Taxes? What do you mean, taxes?
-
-<< setspeaker DialogScreen other >>
-<< randombool DialogScreen .85 >> 
+<< randombool DialogScreen .15 >> 
 
 << if $random_bool is true >>
     This is a civilized place, and in no civilized place does the state not play a role in trade. Not at our docks will you trade like the barbarians Herodotus described: 
@@ -55,6 +50,15 @@ Taxes? What do you mean, taxes?
     /{$random_text}
 << endif >> 
 
+[[ Why do I pay you? |tax_why]] 
+[[ What a risky way to make a living. |tax_insult]]
+[[ This sounds serious! How much do I owe? |tax_explain]]
+===
+title: tax_explain
+tags: 
+colorID: 0
+position: 670,609
+---
 << setspeaker DialogScreen Jason >> 
 By the gods, this sounds serious. What kind of money are we talking about?
 
@@ -63,63 +67,72 @@ By the gods, this sounds serious. What kind of money are we talking about?
 << setend DialogScreen >> 
 /{$random_text}
 
-[[ Why you? |tax_why]] 
-[[ What a risky way to make a living. |tax_insult]]
-[[ How much do I owe? |tax_explain]]
-===
-title: tax_explain
-tags: 
-colorID: 0
-position: 671,691
----
-<< setspeaker DialogScreen other>> 
-You owe taxes for this, this, and this. There's a ton of them!
-There's one tax for coming in and the one for docking your boat,
-Oh, can't forget the tax to pay for our cool temple!
-And obviously you look wealthy, so gotta charge you extra for that.
-<< setend DialogScreen >>
-So all together, you owe $1000000 Drachma or else you can't come in.
-
-<< if $connections_number >= 1 >>
-    [[ I get a discount because I'm in network. |tax_network]]
-<< else >>
-    [[ OK, I'll pay. |enter]] 
-<< endif >> 
-
-[[ That's too much. I'm leaving. |exit]]
+[[What types of taxes do you charge here? |tax_types]]
+[[How much will I have to pay? |tax_breakdown]]
+[[I already know what I want to do. |tax_short]]
 ===
 title: tax_network
 tags: 
 colorID: 0
-position: 1105,691
+position: 1007,-272
 ---
 << setspeaker DialogScreen Jason >> 
-I'm in-network, so I don't have to pay as much.
+We share connections. Does this not mean we get discounted taxes? 
 
 << setspeaker DialogScreen other >> 
-Nuh-uh! I don't believe you!
+<< setsprite DialogScreen distrustful >> 
+Harumph! Why should I believe you? You could just be making this up in order to reap the benefits of the network affiliation!
 
 << setspeaker DialogScreen Jason >> 
-I'll prove it!
+<< connectedcrew DialogScreen >> 
+Ah, but you should meet [select {$jason_connected} true="me" false=$crew_name ]! {$crew_description}. [select {$jason_connected} true="I" false=$crew_name ] [select {$jason_connected} true=" hail" false=" hails"] from {$crew_home}, which shares in your network.
 
-->Call crewmember
-    I'll call one of my crewmembers! He's from the city, and he has his ID.
-->Call proxenos from city
-    Call up the proxenos in the city, he knows us!
-->Check stele
-    There's a stele in the agora, my name is on it!
+<< setspeaker DialogScreen other >>
+I don't believe you. [select {$jason_connected} true="You" false=$crew_name] must produce the documentation!
 
-<< setspeaker DialogScreen other >> 
-<< setend DialogScreen >> 
-Fine, that's proof. You get a discount.
+<< setspeaker DialogScreen Jason>> 
+->I offer you the desired documentation.
+    << randomtext DialogScreen jasondocumentation neutral >> 
+    I offer you the desired documentation. Here is {$random_text}
+->I'll produce a witness!
+    << randombool DialogScreen .8>> 
+    << if $random_bool is true >> 
+        << randomtext DialogScreen jasonwitness neutral >> 
+        Producing a witness will be an easy task: in this town resides a proxenos from my country, who lives here as an honored and well-connected businessman! {$random_text}
+    << else >>
+        What a simple task you set me! The people of my country know the wine of Dionysos, the honey of Hyblaean bees, and the songs the Muses sing - and all of them can be found in the great associations of this town! Come, we will find the club of traders, where men from many lands but one occupation - sailing for the sake of gain - meet face to face.
+    << endif >> 
+->I'll take you to court!
+    << randomtext DialogScreen jasoncourt neutral >> 
+    These are the risks you face if you fail to honor the freedom from taxes that comes from our network: {$random_text}
 
-[[That's still too much. I'm leaving. |exit]]
-[[OK (pay) |enter]]
+<< setspeaker DialogScreen other>> 
+<< if $connections_number gt 1 >> 
+    << setsprite Partner happy >>
+    Alright, you share in our social network!
+
+<< else >>
+
+    << if $connections_number eq 1 >>
+        << setsprite Partner happy >> 
+		It seems you are not a stranger to our social network!
+
+    << else >>
+        << setsprite Partner bragging >> 
+        I do not know you or your people, stranger. You will pay full port taxes here!
+    << endif >> 
+
+<< endif >>
+
+<< if $asked_where is false>>
+    [[ Where is this? |where]]
+<< endif >> 
+[[ Can I come into the city? |tax_start]]
 ===
 title: where
 tags: 
 colorID: 0
-position: 401,-63
+position: 409,-589
 ---
 << set $asked_where to true >> 
 
@@ -133,14 +146,15 @@ position: 401,-63
 No, it's {$city_name}. {$city_description}
 
 << if $asked_networks is false >>
-    [[What are this city's networks? |networks]]
+    [[What are this city's networks? |networks]]    
 << endif >> 
-[[Can I just come in? |tax_start]]
+
+[[ Can I come into your city? |tax_start]]
 ===
 title: networks
 tags: 
 colorID: 0
-position: 928,-64
+position: 885,-594
 ---
 << set $asked_networks to true >>
 
@@ -197,15 +211,20 @@ Our crew shares {$connections_number} networks with your city.
 
 << endif >> 
 
-<< if $asked_where is false >>
-    [[Where is this, anyway? |where]]
-<< endif >>
+<<  if $connections_number >= 1 >>
+    [[ We share a connection Do I not therefore get a discount? .|tax_network]]
+<< else >>
+    << if $asked_where is false >>
+        [[ Where is this? |where]]
+    << endif >> 
+    [[ Can I come into the city? |tax_start]]
+<< endif >> 
 [[Can I just come in? |tax_start]]
 ===
 title: tax_why
 tags: 
 colorID: 0
-position: 423,399
+position: 395,377
 ---
 << set $asked_who to true >> 
 
@@ -225,7 +244,7 @@ Why do I have to pay you? What makes you special?
 title: tax_insult
 tags: 
 colorID: 0
-position: 908,391
+position: 944,382
 ---
 << set $insulted to true >> 
 
@@ -247,7 +266,7 @@ The poorest man in the smallest boat can haul me before the magistrates! They co
 title: exit
 tags: 
 colorID: 0
-position: 672,1184
+position: -193,1639
 ---
 << setspeaker DialogScreen Jason >>
 I'm not interested in paying taxes right now. Goodbye.
@@ -259,7 +278,7 @@ Fine. If you ever want to come in, bring your drachma.
 title: enter
 tags: 
 colorID: 0
-position: 1087,1185
+position: 1602,1857
 ---
 << setspeaker DialogScreen Jason >>
 Here's your drachma. I'm coming in now.
@@ -268,4 +287,145 @@ Here's your drachma. I'm coming in now.
 << setsprite Other happy >>
 << set $entering_city to true >> 
 Pleasure doing business with you!
+===
+title: tax_types
+tags: 
+colorID: 0
+position: 345,1031
+---
+<< set $asked_types to true >>
+
+<< setspeaker DialogScreen Jason >>
+What types of taxes do you charge here? I must decide if it is worth it to enter your city!
+
+<< setspeaker DialogScreen other >>
+We charge Tax 1 for this one thing.
+There's also Tax 2 for this other thing.
+<< setend DialogScreen >> 
+Etc Etc Etc
+
+[[Alright, I understand. I know what I want to do. |tax_short]]
+[[That's far too many taxes! (leave without paying) |exit]]
+===
+title: tax_breakdown
+tags: 
+colorID: 0
+position: 676,880
+---
+<< setspeaker DialogScreen Jason >>
+Okay then, what would I have to pay? I must decide if it is worth it to enter your city.
+
+<< setspeaker DialogScreen other>>
+<< setend DialogScreen >> 
+Your total is $3000 for the first tax and $4000 for the next tax etc etc so altogether you owe $100000 plus your intent fee.
+
+[[I would like to rest and buy water. (1%) |enter_water]]
+[[I would like to trade my cargo. (2%)|enter_trading]]
+[[I would like a long rest and to manage my crew. (3%) |enter_shelter]]
+[[I would like to take full advantage of this port. (5%) |enter_full]]
+[[That's far too much! (exit without paying) |exit]]
+===
+title: tax_short
+tags: 
+colorID: 0
+position: 987,1029
+---
+<< setspeaker DialogScreen Jason >>
+I already know what I want to do.
+
+<< setspeaker DialogScreen other >>
+<< setend DialogScreen >> 
+Very well then. Your total is $10000 plus the intent fee.
+
+[[I would like to rest and buy water. (1%) |enter_water]]
+[[I would like to trade my cargo. (2%)|enter_trading]]
+[[I would like a long rest and to manage my crew. (3%) |enter_shelter]]
+[[I would like to take full advantage of this port. (5%) |enter_full]]
+[[That's far too much! (exit without paying) |exit]]
+===
+title: herald_fee
+tags: 
+colorID: 0
+position: 788,1601
+---
+<< setspeaker DialogScreen other >>
+<< setsprite DialogScreen happy >>
+<< setend DialogScreen >> 
+Thank you for your business! Do you also want to pay for a herald to help with your sales?
+
+[[I will pay for a herald. ($500)|herald_pay]]
+[[I do not need a herald. |herald_no]]
+===
+title: enter_water
+tags: 
+colorID: 0
+position: 472,1312
+---
+<< setspeaker DialogScreen other >>
+<< setend DialogScreen >> 
+Thank you for your business! Your total comes to $1001000.
+
+[[Continue. |enter]]
+===
+title: enter_trading
+tags: 
+colorID: 0
+position: 695,1311
+---
+<< setspeaker DialogScreen other >>
+<< setend DialogScreen >> 
+Thank you for your business! Your total comes to $1002000.
+
+[[Continue. |herald_fee]]
+===
+title: enter_shelter
+tags: 
+colorID: 0
+position: 915,1311
+---
+<< setspeaker DialogScreen other >>
+<< setend DialogScreen >> 
+Thank you for your business! Your total comes to $1003000.
+
+[[Continue. |enter]]
+===
+title: enter_full
+tags: 
+colorID: 0
+position: 1135,1311
+---
+<< setspeaker DialogScreen other >>
+<< setend DialogScreen >> 
+Thank you for your business! Your total comes to $1005000.
+
+[[Continue. |herald_fee]]
+===
+title: herald_pay
+tags: 
+colorID: 0
+position: 763,2050
+---
+<< setspeaker DialogScreen Jason >>
+I will pay for a herald to help me sell my cargo.
+
+<< setspeaker DialogScreen other >>
+<< setend DialogScreen >> 
+Excellent decision!
+
+[[Continue. |enter]]
+===
+title: herald_no
+tags: 
+colorID: 0
+position: 1020,1874
+---
+<< setspeaker DialogScreen Jason >>
+I have no need for a herald.
+
+<< setspeaker DialogScreen other >>
+<< setend DialogScreen >> 
+<< setsprite Partner unhappy >> 
+A poor decision. You will surely lose out on much higher profits!
+
+[[Continue. |enter]]
 ===

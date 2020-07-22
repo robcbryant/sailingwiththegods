@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -178,6 +179,8 @@ public class DialogScreen : MonoBehaviour
 		storage.SetValue("$random_bool", new Yarn.Value(false));
 		storage.SetValue("$convo_title", new Yarn.Value("Convertation Title"));
 		storage.SetValue("$emotion", new Yarn.Value("neutral"));
+		storage.SetValue("$jason_connected", false);
+		storage.SetValue("$crew_name", new Yarn.Value("Bob IV"));
 		Clear();
 	}
 
@@ -217,7 +220,7 @@ public class DialogScreen : MonoBehaviour
 	[YarnCommand("randombool")]
 	public void TrueOrFalse(string threshold) {
 		float limit = float.Parse(threshold);
-		bool b = Random.Range(0f, 1f) > limit;
+		bool b = Random.Range(0f, 1f) < limit;
 		Yarn.Value randBool = new Yarn.Value(b);
 		storage.SetValue("$random_bool", randBool);
 	}
@@ -230,7 +233,7 @@ public class DialogScreen : MonoBehaviour
 	[YarnCommand("networkconnections")]
 	public void NumberOfConnections() {
 		IEnumerable<CrewMember> connected = Globals.GameVars.Network.CrewMembersWithNetwork(city, true);
-		int connectedNum = System.Linq.Enumerable.Count(connected);
+		int connectedNum = Enumerable.Count(connected);
 		storage.SetValue("$connections_number", connectedNum);
 	}
 
@@ -240,6 +243,23 @@ public class DialogScreen : MonoBehaviour
 		storage.SetValue("$city_description", new Yarn.Value(city.description));
 	}
 
-
+	[YarnCommand("connectedcrew")]
+	public void ConnectedCrewName() {
+		if (true /*Globals.GameVars.Network.GetCrewMemberNetwork(Globals.GameVars.Jason).Contains(city)*/) {
+			storage.SetValue("$jason_connected", true);
+			storage.SetValue("$crew_description", Globals.GameVars.Jason.backgroundInfo);
+			storage.SetValue("$crew_home", Globals.GameVars.Jason.originCity);
+		}
+		else {
+			IEnumerable<CrewMember> connected = Globals.GameVars.Network.CrewMembersWithNetwork(city);
+			if (connected.Count() == 0) {
+				connected = Globals.GameVars.playerShipVariables.ship.crewRoster;
+			}
+			CrewMember crew = connected.RandomElement();
+			storage.SetValue("$crew_name", crew.name);
+			storage.SetValue("$crew_description", crew.backgroundInfo);
+			storage.SetValue("$crew_home", crew.originCity);
+		}
+	}
 }
 

@@ -18,7 +18,10 @@ public class DialogText
 		jasonnetworklow,
 		jasonnetworkmid,
 		jasonnetworkhigh,
-		jasoninsults
+		jasoninsults,
+		jasondocumentation,
+		jasonwitness,
+		jasoncourt
 	}
 
 	public enum Emotion
