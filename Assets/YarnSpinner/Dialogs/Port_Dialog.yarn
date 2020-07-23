@@ -42,7 +42,7 @@ Can I come into the city? What are my fees?
 << randombool DialogScreen .15 >> 
 
 << if $random_bool is true >>
-    This is a civilized place, and in no civilized place does the state not play a role in trade. Not at our docks will you trade like the barbarians Herodotus described: 
+    This is a civilized place, and in no civilized place does the state not play a role in trade. Not at our docks will you trade like the barbarians Herodotus described:
     'There is a place in Libya, they say, where men live beyond the Pillars of Heracles; they come here and unload their cargo; then, having laid it in order along the beach, they go aboard their ships and light a smoking fire. The people of the country see the smoke, and, coming to the sea, they lay down gold to pay for the cargo, and withdraw from the wares. Then the Carthaginians disembark and examine the gold; if it seems to them a fair price for their cargo, they take it and go away; but if not, they go back aboard and wait, and the people come back and add more gold until the sailors are satisfied. In this transaction, it is said, neither party defrauds the other: the Carthaginians do not touch the gold until it equals the value of their cargo, nor do the people touch the cargo until the sailors have taken the gold.' (4.196)
 << else >>
     Paying taxes in an honor! To do so defines our best citizens, who know that running a city is not free.
@@ -85,10 +85,10 @@ Harumph! Why should I believe you? You could just be making this up in order to 
 
 << setspeaker DialogScreen Jason >> 
 << connectedcrew DialogScreen >> 
-Ah, but you should meet [select {$jason_connected} true="me" false=$crew_name ]! {$crew_description}. [select {$jason_connected} true="I" false=$crew_name ] [select {$jason_connected} true=" hail" false=" hails"] from {$crew_home}, which shares in your network.
+Ah, but you should meet {$crew_name_1}! {$crew_description}. {$crew_name_2} [select {$jason_connected} True="hail" False="hails"] from {$crew_home}, which shares in your network.
 
 << setspeaker DialogScreen other >>
-I don't believe you. [select {$jason_connected} true="You" false=$crew_name] must produce the documentation!
+I don't believe you. {$crew_name_3} must produce the documentation!
 
 << setspeaker DialogScreen Jason>> 
 ->I offer you the desired documentation.
@@ -143,6 +143,7 @@ position: 409,-589
 << setspeaker DialogScreen other >>
 << setend DialogScreen >> 
 << cityinfo DialogScreen >>
+<< setsprite Partner bragging >>
 No, it's {$city_name}. {$city_description}
 
 << if $asked_networks is false >>
@@ -163,63 +164,51 @@ position: 885,-594
 /{$random_text}
 
 << setspeaker DialogScreen other >> 
-Our city has {$city_networks} networks.
 
 << if $city_networks gt 1 >>
     << randomtext DialogScreen networkhigh neutral >> 
-	We have a high amount of networks.
-    /{$random_text}
+	<< setsprite Partner bragging >>
 
 << else >>
 
     << if $city_networks eq 1>>
         << randomtext DialogScreen networkmid neutral >>
-		We have a medium amount of networks.
-        /{$random_text}
+		<< setsprite Partner happy >>
 
     << else >>
         << randomtext DialogScreen networklow neutral >>
-		We have a low amount of networks.
-        /{$random_text}
+		<< setsprite Partner unhappy >>
     << endif >> 
 
 << endif >> 
+/{$random_text}
 
-<< setspeaker DialogScreen Jason >> 
-Our crew shares {$connections_number} networks with your city.
+<< setspeaker DialogScreen Jason >>
 
 << if $connections_number gt 1 >> 
     << randomtext DialogScreen jasonnetworkhigh neutral >>
-	That's a high number of matches.
-	<< setend DialogScreen >>
-    /{$random_text}
 
 << else >>
 
     << if $connections_number eq 1 >>
         << randomtext DialogScreen jasonnetworkmid neutral >>
-		That's a medium number of matches.
-		<< setend DialogScreen >>
-        /{$random_text}
 
     << else >>
         << randomtext DialogScreen jasonnetworklow neutral >>
-		That's a low number of matches.
-		<< setend DialogScreen >>
-        /{$random_text}
     << endif >> 
 
 << endif >> 
+	<< setend DialogScreen >>
+    /{$random_text}
 
 <<  if $connections_number >= 1 >>
-    [[ We share a connection Do I not therefore get a discount? .|tax_network]]
+    [[ We share a connection. Do I not therefore get a discount?|tax_network]]
 << else >>
     << if $asked_where is false >>
         [[ Where is this? |where]]
     << endif >> 
-    [[ Can I come into the city? |tax_start]]
 << endif >> 
-[[Can I just come in? |tax_start]]
+[[Can I come into the city? |tax_start]]
 ===
 title: tax_why
 tags: 

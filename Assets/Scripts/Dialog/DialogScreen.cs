@@ -12,6 +12,7 @@ public class DialogScreen : MonoBehaviour
 
 	public script_GUI gui;
 
+	public TextMeshProUGUI moneyText;
 	public TextMeshProUGUI conversationTitle;
 	public Scrollbar conversationScroll;
 	public Transform conversationHolder;
@@ -26,23 +27,16 @@ public class DialogScreen : MonoBehaviour
 	private DialogueRunner runner;
 	private Settlement city;
 
-	private string[] DialogInitializer(string prefix, int length) 
-	{
-		string[] dialog = new string[length];
-
-		for (int i = 0; i < length; i++) 
-		{
-			dialog[i] = prefix + i;
-		}
-
-		return dialog;
-	}
-
 	private void OnValidate() 
 	{
 		yarnUI = GetComponent<CustomDialogUI>();
 		storage = GetComponent<InMemoryVariableStorage>();
 		runner = GetComponent<DialogueRunner>();
+	}
+
+	private void OnEnable() 
+	{
+		UpdateMoney();
 	}
 
 	public void AddToDialogText(string speaker, string text, TextAlignmentOptions align) {
@@ -243,23 +237,91 @@ public class DialogScreen : MonoBehaviour
 		storage.SetValue("$city_description", new Yarn.Value(city.description));
 	}
 
+	[YarnCommand("updatemoney")]
+	public void UpdateMoney() 
+	{
+		moneyText.text = Globals.GameVars.playerShipVariables.ship.currency + " dr";
+	}
+
+	[YarnCommand("checkafford")]
+	public void CheckAffordability(string cost) {
+		int itemCost = 0;
+		if (cost[0] == '$') {
+			itemCost = IntFromVariableName(cost);
+		}
+		else {
+			itemCost = int.Parse(cost);
+		}
+		storage.SetValue("$can_afford", Globals.GameVars.playerShipVariables.ship.currency >= itemCost);
+	}
+
+	[YarnCommand("checkaffordpercent")]
+	public void CheckAffordability(string[] costs) {
+		int itemCost = 0;
+		if (costs[0][0] == '$') {
+			itemCost = IntFromVariableName(costs[0]);
+		}
+		else {
+			itemCost = int.Parse(costs[0]);
+		}
+		float percent = float.Parse(costs[1]);
+
+		float total = itemCost + (itemCost * percent);
+
+		storage.SetValue("$can_afford", Globals.GameVars.playerShipVariables.ship.currency >= total);
+	}
+
+	[YarnCommand("pay")]
+	public void PayAmount(string cost) {
+		int itemCost = 0;
+		if (cost[0] == '$') {
+			itemCost = IntFromVariableName(cost);
+		}
+		else {
+			itemCost = int.Parse(cost);
+		}
+		Globals.GameVars.playerShipVariables.ship.currency -= itemCost;
+		UpdateMoney();
+	}
+
+	[YarnCommand("calculatetaxes")]
+	public void CalculateTaxCharges() {
+		storage.SetValue("$tax_subtotal", Random.Range(1, 250));
+	}
+
+	[YarnCommand("calculatepercent")]
+	public void CalculateIntentPercent(string percent) {
+		float subtotal = storage.GetValue("$tax_subtotal").AsNumber;
+		float taxAmt = subtotal * float.Parse(percent);
+		float total = subtotal + taxAmt;
+
+		storage.SetValue("$intent_charge", (int)taxAmt);
+		storage.SetValue("$total_charge", (int)total);
+	}
+
 	[YarnCommand("connectedcrew")]
 	public void ConnectedCrewName() {
-		if (true /*Globals.GameVars.Network.GetCrewMemberNetwork(Globals.GameVars.Jason).Contains(city)*/) {
+		if (Globals.GameVars.Network.GetCrewMemberNetwork(Globals.GameVars.Jason).Contains(city)) {
 			storage.SetValue("$jason_connected", true);
+			storage.SetValue("$crew_name_1", "me");
+			storage.SetValue("$crew_name_2", "I");
+			storage.SetValue("$crew_name_3", "You");
 			storage.SetValue("$crew_description", Globals.GameVars.Jason.backgroundInfo);
-			storage.SetValue("$crew_home", Globals.GameVars.Jason.originCity);
+			storage.SetValue("$crew_home", Globals.GameVars.GetSettlementFromID(Globals.GameVars.Jason.originCity).name);
 		}
 		else {
 			IEnumerable<CrewMember> connected = Globals.GameVars.Network.CrewMembersWithNetwork(city);
-			if (connected.Count() == 0) {
-				connected = Globals.GameVars.playerShipVariables.ship.crewRoster;
-			}
 			CrewMember crew = connected.RandomElement();
-			storage.SetValue("$crew_name", crew.name);
+			storage.SetValue("$crew_name_1", crew.name);
+			storage.SetValue("$crew_name_2", crew.name);
+			storage.SetValue("$crew_name_3", crew.name);
 			storage.SetValue("$crew_description", crew.backgroundInfo);
-			storage.SetValue("$crew_home", crew.originCity);
+			storage.SetValue("$crew_home", Globals.GameVars.GetSettlementFromID(crew.originCity).name);
 		}
+	}
+
+	private int IntFromVariableName(string name) {
+		return (int)storage.GetValue(name).AsNumber;
 	}
 }
 
