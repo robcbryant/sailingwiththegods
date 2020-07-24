@@ -131,7 +131,9 @@ public class CrewCard : MonoBehaviour
 		}));
 	}
 
+#if UNITY_EDITOR
 	public void OnDrawGizmos() {
 		Utils.drawString(cardIndex.ToString(), transform.position, Color.red);
 	}
+#endif
 }

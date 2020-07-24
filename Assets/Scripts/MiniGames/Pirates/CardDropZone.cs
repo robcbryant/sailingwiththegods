@@ -46,8 +46,9 @@ public class CardDropZone : MonoBehaviour
 		allowDropping = drop;
 		//dropIndex++;
 	}
-
+#if UNITY_EDITOR
 	public void OnDrawGizmos() {
 		Utils.drawString(dropIndex.ToString(), transform.position);
 	}
+#endif
 }
