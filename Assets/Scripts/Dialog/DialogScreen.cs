@@ -289,14 +289,36 @@ public class DialogScreen : MonoBehaviour
 		storage.SetValue("$tax_subtotal", Random.Range(1, 250));
 	}
 
-	[YarnCommand("calculatepercent")]
-	public void CalculateIntentPercent(string percent) {
+	[YarnCommand("calculatepercents")]
+	public void CalculateIntentPercent() {
 		float subtotal = storage.GetValue("$tax_subtotal").AsNumber;
-		float taxAmt = subtotal * float.Parse(percent);
-		float total = subtotal + taxAmt;
+		float cargo = CargoValue();
 
-		storage.SetValue("$intent_charge", (int)taxAmt);
-		storage.SetValue("$total_charge", (int)total);
+		float percent = 0.1f;
+		storage.SetValue("$water_intent", (int)(percent * cargo + subtotal));
+
+		percent = 0.2f;
+		storage.SetValue("$trade_intent", (int)(percent * cargo + subtotal));
+
+		percent = 0.3f;
+		storage.SetValue("$tavern_intent", (int)(percent * cargo + subtotal));
+
+		percent = 0.5f;
+		storage.SetValue("$all_intent", (int)(percent * cargo + subtotal));
+	}
+
+	[YarnCommand("checkcitytaxes")]
+	public void CheckCityTaxes() {
+		storage.SetValue("$god_tax", Random.Range(0.0f, 1.0f) > 0.5f);
+		storage.SetValue("$god_tax_amount", Random.Range(0, 50));
+		storage.SetValue("$transit_tax", Random.Range(0.0f, 1.0f) > 0.5f);
+		storage.SetValue("$transit_tax_amount", Random.Range(2, 6));
+		storage.SetValue("$foreigner_tax", Random.Range(0.0f, 1.0f) > 0.5f);
+		storage.SetValue("$foreigner_tax_amount", 2);
+		storage.SetValue("$wealth_tax", CargoValue() >= 1000000);
+		storage.SetValue("$wealth_tax_amount", 10);
+
+		storage.SetValue("$no_taxes", !storage.GetValue("$god_tax").AsBool && !storage.GetValue("$transit_tax").AsBool && !storage.GetValue("$foreigner_tax").AsBool && !storage.GetValue("$wealth_tax").AsBool);
 	}
 
 	[YarnCommand("connectedcrew")]
@@ -322,6 +344,10 @@ public class DialogScreen : MonoBehaviour
 
 	private int IntFromVariableName(string name) {
 		return (int)storage.GetValue(name).AsNumber;
+	}
+
+	private float CargoValue() {
+		return Globals.GameVars.playerShipVariables.ship.GetTotalCargoAmount();
 	}
 }
 

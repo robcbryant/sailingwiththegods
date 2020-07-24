@@ -112,15 +112,8 @@ I don't believe you. {$crew_name_3} must produce the documentation!
     Alright, you share in our social network!
 
 << else >>
-
-    << if $connections_number eq 1 >>
-        << setsprite Partner happy >> 
-		It seems you are not a stranger to our social network!
-
-    << else >>
-        << setsprite Partner bragging >> 
-        I do not know you or your people, stranger. You will pay full port taxes here!
-    << endif >> 
+    << setsprite Partner happy >> 
+	It seems you are not a stranger to our social network!
 
 << endif >>
 
@@ -198,15 +191,25 @@ position: 885,-594
     << endif >> 
 
 << endif >> 
+
+<< if $connections_number >= 1 >> 
 	<< setend DialogScreen >>
+<< endif >> 
     /{$random_text}
+
+<< if $connections_number < 1>> 
+    << setspeaker DialogScreen other >>
+    << setsprite Partner bragging >>
+    << setend DialogScreen >> 
+    I do not know you or your people, stranger. You will pay full taxes at this port!
+<< endif >> 
 
 <<  if $connections_number >= 1 >>
     [[ We share a connection. Do I not therefore get a discount?|tax_network]]
-<< else >>
-    << if $asked_where is false >>
-        [[ Where is this? |where]]
-    << endif >> 
+<< endif >>
+
+<< if $asked_where is false >>
+    [[ Where is this? |where]]
 << endif >> 
 [[Can I come into the city? |tax_start]]
 ===
@@ -287,26 +290,89 @@ position: 345,1031
 << setspeaker DialogScreen Jason >>
 What types of taxes do you charge here? I must decide if it is worth it to enter your city!
 
+<< checkcitytaxes DialogScreen >> 
 << setspeaker DialogScreen other >>
-We charge Tax 1 for this one thing.
-There's also Tax 2 for this other thing.
-<< setend DialogScreen >> 
-Etc Etc Etc
+<< setsprite Partner happy >>
+As in all cities, we charge an ellimenion to pay for the harbor: its fine guard houses, its places for unloading, the streets that lead to the agora, the shrine where you can thank the gods you made it here! Network connections can influence how much you pay.
 
+<< setsprite Partner bragging >>
+Here we also charge the following taxes:
+
+<< if $god_tax is true >>
+    The god tax: the gods who watch over us, whom we praise and dance for in our festivals, whom our fathers and grandfathers and great grandfathers knew - they need funds! The roofs of their shrines are leaky, their sacrificial implements are getting rusty, and you should see the state of the costumes for the priests...
+<< endif >>
+
+<< if $transit_tax is true >>
+    The transit tax: founded as we are at the meeting point of river and shore, of overland highways, and indeed of paths where Hermes guards every righteous traveler - we have a special tax, so you can show us how grateful you are for these benefits! Our friends at Tisaia and Calchedon have used these: every ship, whether full of traders, of heroes, of scoundrels or priests, must pay!
+<< endif >>
+
+You can pay a herald's fee: if you wish to sell your goods, surely you will need to advertise them! Hire a herald, with a voice like honey, lungs like the North Wind, and a face like Hermes himself. That will cost you - but you will profit from your expense!
+
+<< if $foreigner_tax is true >>
+    The foreigner's fee: guest friendship is a noble institution, but too many guests can impoverish a city. Our wise founding fathers have made provision against such a loss: foreigners in this town pay an additional fee for access to our markets, our shrines, our banks, and our marketplace.
+<< endif >>
+
+<< if $wealth_tax is true >>
+    << setsprite Partner flattering >>
+    And for you, a wealth tax! Democracy is founded on the noblest of notions - equality! And you, dear stranger, are far too rich.
+<< endif >> 
+
+<< setsprite Partner happy >>
+Lastly, you must pay the intent tax! What are your purposes in our dear city? The more you wish to partake in our services, the more you pay!
+Will you come through but briefly, and only to restock your water? That requires a minimum of what we offer. This is a 1% tax.
+Wise men take advantage of opportunities! If you are among them, here to sell and buy, we'll need a 2% offering from your ship's stores.
+Have the seas made you spring a leak, will you be seeking tar, rope, fresh sails, and skilled workers? Plus your men look a bit too lean and hungry - food and water are the only important items on your shopping list? This is a 3% tax.
+<< setend DialogScreen >>
+Or if you are in great need of our great stores! You'll be hiring, seeking repairs, seeking to trade, stocking up with water, and imploring our local gods for help on the way? You can make full use of anything we offer - but of course, you'll be taxed accordingly at 5%!
+
+[[What exactly will each of these taxes cost me? |tax_breakdown]]
 [[Alright, I understand. I know what I want to do. |tax_short]]
 [[That's far too many taxes! (leave without paying) |exit]]
 ===
 title: tax_breakdown
 tags: 
 colorID: 0
-position: 676,880
+position: 675,879
 ---
 << setspeaker DialogScreen Jason >>
 Okay then, what would I have to pay? I must decide if it is worth it to enter your city.
 
-<< setspeaker DialogScreen other>>
+<< checkcitytaxes DialogScreen >> 
+<< setspeaker DialogScreen other >> 
+
+<< if $god_tax is true >>
+    << setsprite Partner happy >>
+    Lucky you, noble strangers, for the god tax you get to pay {$god_tax_amount}.
+<< endif >>
+<< if $transit_tax is true >>
+    << setsprite Partner happy >>
+    For transit here {$transit_tax_amount}%.
+<< endif >>
+
+<< if $foreigner_tax is true >>
+    << setsprite Partner happy >>
+    As a foreigner here you pay {$foreigner_tax_amount}% to use the market.
+<< endif >>
+<< if $wealth_tax is true >>
+    << setsprite Partner happy >>
+    Due to your great wealth, for you, {$wealth_tax_amount}% of your cargo needs to be paid before you leave!
+<< endif >>
+<< if $no_taxes is true >>
+    << setsprite Partner unhappy >>
+    Lucky you! Only the ellimenion and intent fee apply in this port.
+<< endif >> 
+
+<< calculatetaxes DialogScreen >> 
+
+<< if $asked_networks is true and $connections_number >= 1 >>
+
+<< else >>
+    << setsprite Partner bragging >>
+    You pay all port taxes! This adds up to {$tax_subtotal} in addition to your intent!
+<< endif >> 
+
 << setend DialogScreen >> 
-Your total is $3000 for the first tax and $4000 for the next tax etc etc so altogether you owe $100000 plus your intent fee.
+Here's where all your intent charges will be listed.
 
 [[I would like to rest and buy water. (1%) |enter_water]]
 [[I would like to trade my cargo. (2%)|enter_trading]]
@@ -342,7 +408,11 @@ position: 788,1601
 << setend DialogScreen >> 
 Thank you for your business! Do you also want to pay for a herald to help with your sales?
 
-[[I will pay for a herald. ($500)|herald_pay]]
+<< checkafford DialogScreen 2 >>
+<< if $can_afford is true >>
+    [[I will pay for a herald. (2 dr)|herald_pay]]
+<< endif >> 
+
 [[I do not need a herald. |herald_no]]
 ===
 title: enter_water
