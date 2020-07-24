@@ -126,7 +126,8 @@ public class RitualController : MonoBehaviour
 					performText += $"\n-{currentRitual.ResourceAmounts[i]} Drachma (You have {Globals.GameVars.playerShipVariables.ship.currency} Drachma)";
 					break;
 				default:
-					performText += $"\n-{currentRitual.ResourceAmounts[i]}kg {Globals.GameVars.masterResourceList[currentRitual.ResourceTypes[i]].name} (You have {Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]]}kg)";
+					performText += $"\n-{currentRitual.ResourceAmounts[i]}kg {Globals.GameVars.masterResourceList[currentRitual.ResourceTypes[i]].name} " +
+						$"(You have {Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].name}kg)";
 					break;
 			}
 		}

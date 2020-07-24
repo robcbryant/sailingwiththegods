@@ -17,8 +17,10 @@ public class CardDropZone : MonoBehaviour
 			CrewCard cc = collision.GetComponent<CrewCard>();
 			SetOccupied(true);
 			cc.cardIndex = this.dropIndex;
+			//dropIndex++;
 			cc.OverDropSpot(GetComponent<RectTransform>().position, startingPoint);
 		}
+		//dropIndex++;
 	}
 
 	private void OnTriggerExit2D(Collider2D collision) 
@@ -28,16 +30,25 @@ public class CardDropZone : MonoBehaviour
 			CrewCard cc = collision.GetComponent<CrewCard>();
 			SetOccupied(false);
 			cc.LeaveDropSpot(GetComponent<RectTransform>().position);
+			//dropIndex++; //<-- changes the dropIndex value one time ONLY
 		}
+		//dropIndex++;
 	}
 
 	public void SetOccupied(bool occupy) 
 	{
 		occupied = occupy;
+		//dropIndex++;
 	}
 
 	public void ToggleDropping(bool drop) 
 	{
 		allowDropping = drop;
+		//dropIndex++;
 	}
+#if UNITY_EDITOR
+	public void OnDrawGizmos() {
+		Utils.drawString(dropIndex.ToString(), transform.position);
+	}
+#endif
 }

@@ -28,38 +28,47 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-namespace Yarn.Unity.Example {
+namespace Yarn.Unity.Example
+{
 
-    [RequireComponent (typeof (SpriteRenderer))]
-    /// Attach SpriteSwitcher to game object
-    public class SpriteSwitcher : MonoBehaviour {
+	[RequireComponent(typeof(SpriteRenderer))]
+	/// Attach SpriteSwitcher to game object
+	public class SpriteSwitcher : MonoBehaviour
+	{
 
-        [System.Serializable]
-        public struct SpriteInfo {
-            public string name;
-            public Sprite sprite;
-        }
+		public InMemoryVariableStorage storage;
 
-        public SpriteInfo[] sprites;
+		[System.Serializable]
+		public struct SpriteInfo
+		{
+			public string name;
+			public Sprite sprite;
+		}
 
-        /// Create a command to use on a sprite
-        [YarnCommand("setsprite")]
-        public void UseSprite(string spriteName) {
+		public SpriteInfo[] sprites;
 
-            Sprite s = null;
-            foreach(var info in sprites) {
-                if (info.name == spriteName) {
-                    s = info.sprite;
-                    break;
-                }
-             }
-            if (s == null) {
-                Debug.LogErrorFormat("Can't find sprite named {0}!", spriteName);
-                return;
-            }
+		/// Create a command to use on a sprite
+		[YarnCommand("setsprite")]
+		public void UseSprite(string spriteName) {
 
-            GetComponent<Image>().sprite = s;
-        }
-    }
+			if (spriteName[0] == '$') {
+				spriteName = storage.GetValue(spriteName).AsString;
+			}
+
+			Sprite s = null;
+			foreach (var info in sprites) {
+				if (info.name == spriteName) {
+					s = info.sprite;
+					break;
+				}
+			}
+			if (s == null) {
+				Debug.LogErrorFormat("Can't find sprite named {0}!", spriteName);
+				return;
+			}
+
+			GetComponent<Image>().sprite = s;
+		}
+	}
 
 }

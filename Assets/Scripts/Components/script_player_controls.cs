@@ -74,6 +74,13 @@ public class script_player_controls : MonoBehaviour
 	List<string> windZoneNamesToTurnOn = new List<string>();
 	List<string> currentZoneNamesToTurnOn = new List<string>();
 
+	[Header("Pirate Zones Bools")]
+	public bool isAetolianRegionZone = false;
+	public bool isCretanRegionZone = false;
+	public bool isEtruscanPirateRegionZone = false;
+	public bool isIllyrianRegionZone = false;
+	[HideInInspector] public List<string> zonesList = new List<string>();
+
 	public void Reset() {
 		ship = new Ship("Argo", 7.408f, 100, 500);
 		ship.networkID = 246;
@@ -124,13 +131,13 @@ public class script_player_controls : MonoBehaviour
 		//}
 
 		// TODO: Remove - this is just here as an initial test of minigames
-		//if(Input.GetKeyUp(KeyCode.B)) {
+		//if (Input.GetKeyUp(KeyCode.B)) {
 		//	Globals.MiniGames.Enter("Pirate Game/Pirate Game");
 		//}
-		//if(Input.GetKeyUp(KeyCode.N)) {
+		//if (Input.GetKeyUp(KeyCode.N)) {
 		//	Globals.MiniGames.Enter("Storm MG/Storm Game");
 		//}
-		//if(Input.GetKeyUp(KeyCode.M)) {
+		//if (Input.GetKeyUp(KeyCode.M)) {
 		//	Globals.MiniGames.Exit();
 		//}
 
@@ -444,8 +451,6 @@ public class script_player_controls : MonoBehaviour
 
 	}
 
-
-
 	public void TravelToSelectedTarget(Vector3 destination) {
 		//Let's slowly rotate the ship towards the direction it's traveling and then allow the ship to move
 		if (!shipTravelStartRotationFinished) {
@@ -630,6 +635,23 @@ public class script_player_controls : MonoBehaviour
 				CheckIfPlayerFoundKnownSettlementAndTurnGhostTrailBackOn(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
 			}
 		}
+
+		if (trigger.transform.tag == "AetolianRegionZone") {
+			isAetolianRegionZone = true;
+			zonesList.Add("Aetolian");
+		}
+		if (trigger.transform.tag == "CretanRegionZone") {
+			isCretanRegionZone = true;
+			zonesList.Add("Cretan");
+		}
+		if (trigger.transform.tag == "EtruscanPirateRegionZone") {
+			isEtruscanPirateRegionZone = true;
+			zonesList.Add("Etruscan");
+		}
+		if (trigger.transform.tag == "IllyrianRegionZone") {
+			isIllyrianRegionZone = true;
+			zonesList.Add("Illyrian");
+		}
 	}
 
 	void OnTriggerExit(Collider trigger) {
@@ -647,6 +669,23 @@ public class script_player_controls : MonoBehaviour
 			GameVars.RemoveEntriesFromCurrentLogPool(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
 			//We add the triggered settlement ID to the list of settlements to look for narrative bits from. In the OnTriggerExit() function, we remove them
 			GameVars.activeSettlementInfluenceSphereList.Remove(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
+		}
+
+		if (trigger.transform.tag == "AetolianRegionZone") {
+			isAetolianRegionZone = false;
+			zonesList.Remove("Aetolian");
+		}
+		if (trigger.transform.tag == "CretanRegionZone") {
+			isCretanRegionZone = false;
+			zonesList.Remove("Cretan");
+		}
+		if (trigger.transform.tag == "EtruscanPirateRegionZone") {
+			isEtruscanPirateRegionZone = false;
+			zonesList.Remove("Etruscan");
+		}
+		if (trigger.transform.tag == "IllyrianRegionZone") {
+			isIllyrianRegionZone = false;
+			zonesList.Remove("Illyrian");
 		}
 	}
 
@@ -770,7 +809,7 @@ public class script_player_controls : MonoBehaviour
 	/// <summary>
 	/// the current actual speed of the ship
 	/// </summary>
-	float shipSpeed_Actual {
+	public float shipSpeed_Actual {
 		get {
 			var result = ship.speed - shipSpeedModifiers.Crew - shipSpeedModifiers.Hunger - shipSpeedModifiers.Thirst - shipSpeedModifiers.ShipHP + shipSpeedModifiers.Event;
 

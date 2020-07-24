@@ -1,92 +1,125 @@
 title: Start
 tags: 
 colorID: 0
-position: 1269,-143
+position: 657,-242
 ---
 << reset DialogScreen >>
 << setpartnername DialogScreen Tax_Collector_Bob_III>>
+<< setconvotitle DialogScreen Example_Port_Conversation>> 
 << setsprite Partner neutral >>
 << setspeaker DialogScreen other>> 
 Welcome to port! This is a city with a port! The city is called City! Here you can find goods like Goods and Luxuries. We worship a Greek god.
 << setend DialogScreen >>
-Anyway, enough formalities. I'm going to tax you as much as I possibly can, because that's my job and I like tax money.
-
+Stenochoria is the little goddess of our docks: her name means 'financial strain' and embodies our state. We are feeling a bit poorly, which is to say, poor: our roads need repair, our temple roofs are sagging, the columns in our stoa need some fresh touching up with bright colored paint: a good city needs a good budget. These are the reasons our citizens dig deep into their pockets: you should dig just as deep into yours, if you seek to build clout as well as profit!
 
 [[ I hate taxes and I hate you! |angry]] 
-[[ Sounds reasonable, how much do I owe you? I am very wealthy. |swindler]] 
-[[ You don't look like you're from here. |foreigner]] 
-[[ Whatever, goodbye. |leave]]
+[[ Sounds reasonable, how much do I owe you? I am very wealthy. |happy]]
+[[ OK. I understand how taxes work. |neutral]]
 ===
 title: angry
 tags: 
 colorID: 0
-position: 980,147
+position: 1143,60
 ---
 << setspeaker DialogScreen Jason>>
 I'm a big cool hero and that means I shouldn't have to pay taxes. You're dumb and I hate you. A pox upon your house or whatever.
 
 << setspeaker DialogScreen other>> 
-<< setsprite Partner angry>>
+<< setsprite Partner unhappy>>
+<< randomtext DialogScreen response angry >>
 Hey, that's not very nice! Taxes are good! I'm just doing my job!
+/{$random_text}
 You're very mean and because of that I'm going to charge you double, so there.
 
 << setspeaker DialogScreen Jason>>
 << setend DialogScreen >>
 Well darn.
 
-[[ Let's try this over again. | Start]]
+[[ Ugh, whatever! I'm out of here! |angrygoodbye]]
 ===
-title: swindler
+title: happy
 tags: 
 colorID: 0
-position: 1199,146
+position: 1119,-570
 ---
 << setspeaker DialogScreen Jason>> 
 I'm very rich but also very stupid! I don't get how taxes work! You can easily take advantage of me and I'd have no idea!
 
 << setspeaker DialogScreen other>> 
-<< setsprite Partner swindler>>
+<< setsprite Partner flattering>>
+<< randomtext DialogScreen response happy >>
 I like wealthy people! For you, I'll give you a special tax rate of double the usual taxes!
+/{$random_text}
 
 << setspeaker DialogScreen Jason>>
 << setend DialogScreen >>
 Sounds like a good deal to me, the local wealthy idiot!
 
-[[ Let's try this over again. | Start]]
+[[ Can you tell me anything about the city? |happygoodbye]]
 ===
-title: foreigner
+title: neutral
 tags: 
 colorID: 0
-position: 1420,147
----
-<<setspeaker DialogScreen Jason>>
-I can't help but notice that weird hat. I've never seen one like that in Ancient Greece. Are you foreign?
-
-<< setspeaker DialogScreen other>> 
-<< setsprite Partner foreigner>> 
-You're right! It's called a cowboy hat! It's from Texas! I'm a time traveler! Time traveling cowboy!
-
-<< setspeaker DialogScreen Jason>>
-<< setend DialogScreen >>
-That's very very strange, but I'm sure that's a thing the gods can just do if they feel like it or something.
-
-[[ Let's try this over again. | Start]]
-===
-title: leave
-tags: 
-colorID: 0
-position: 1641,147
+position: 1188,-263
 ---
 << setspeaker DialogScreen Jason>>
-I'm bored with this conversation. I don't feel like paying taxes, so I'm going to sail away now without entering port.
+I will pay my taxes and then leave.
 
 << setspeaker DialogScreen other>>
-<< setsprite Partner grumpy>> 
-Fine then, don't pay. Come back when you're feeling more generous or are more desperate for supplies.
+<< setsprite Partner neutral >>
+<< randomtext DialogScreen response neutral>>
+You seem like a normal person.
+<< setend DialogScreen >> 
+/{$random_text}
 
+[[ Alright, I will go now|neutralgoodbye]]
+===
+title: happygoodbye
+tags: 
+colorID: 0
+position: 1465,-521
+---
 << setspeaker DialogScreen Jason>>
-<< setend DialogScreen >>
-Bye.
+It was so nice meeting you! Goodbye!
 
-[[ Let's try this over again. | Start]]
+<< setspeaker DialogScreen other>>
+<< setsprite Partner happy>>
+<< randomtext DialogScreen farewell happy>> 
+Same to you!
+<< setend DialogScreen >>
+/{$random_text}
+
+[[ That was fun. Let'd do it over again. |Start]]
+===
+title: neutralgoodbye
+tags: 
+colorID: 0
+position: 1440,-48
+---
+<< setspeaker DialogScreen Jason>>
+Alright, that concludes our business. This was a very neutral interaction.
+
+<< setspeaker DialogScreen other>>
+<< randomtext DialogScreen farewell neutral>>
+Yes, that was exceedingly neutral.
+<< setend DialogScreen>>
+/{$random_text}
+
+[[ That was very average. Let's try it again. |Start]]
+===
+title: angrygoodbye
+tags: 
+colorID: 0
+position: 1190,391
+---
+<< setspeaker DialogScreen Jason>>
+My own rudeness has lead to me paying extra! I'm super mad now!
+
+<< setspeaker DialogScreen other>>
+<< randomtext DialogScreen farewell angry>> 
+This interaction has been awful! I hate you now!
+<< setend DialogScreen >>
+/{$random_text}
+
+[[ Ugh, that was awful! Let's try it over again. |Start]]
 ===

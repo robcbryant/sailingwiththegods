@@ -80,6 +80,7 @@ public class CrewCard : MonoBehaviour
 		overStart = isStart;
 	}
 
+	//this is unused in any other script; might be what we need <--?
 	public void setIndex(int index) {
 		cardIndex = index;
 	}
@@ -105,7 +106,7 @@ public class CrewCard : MonoBehaviour
 		power = crew.clout;
 	}
 
-	public void updatePower(int tempPower) {
+	public void UpdatePower(int tempPower) {
 		power = tempPower;
 		powerText.text = power.ToString();
 		powerText.color = Color.red;
@@ -129,4 +130,10 @@ public class CrewCard : MonoBehaviour
 			})
 		}));
 	}
+
+#if UNITY_EDITOR
+	public void OnDrawGizmos() {
+		Utils.drawString(cardIndex.ToString(), transform.position, Color.red);
+	}
+#endif
 }

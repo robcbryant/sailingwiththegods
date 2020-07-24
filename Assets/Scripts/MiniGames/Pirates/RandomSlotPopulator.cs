@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class RandomSlotPopulator : MonoBehaviour
 {
@@ -35,6 +36,8 @@ public class RandomSlotPopulator : MonoBehaviour
 
 	private int crewNum;
 	private bool loaded = false;
+
+	GameObject[] pirateSlots, playerSlots;
 	
 	void OnEnable()
     {
@@ -54,56 +57,58 @@ public class RandomSlotPopulator : MonoBehaviour
 		PopulateScreen();
 		ActivateCrewRow(0);
 		loaded = true;
+		GameObject.FindObjectOfType<MiniGameManager>().InitilizePirates(playerSlots);
+		//MiniGameManager.InitilizePirates();
 	}
 
 	public void SetPirateType(PirateType t) 
 	{
 		typeToSpawn = t;
-		Debug.Log($"Spawning only pirates of type {typeToSpawn.name}");
+		//Debug.Log($"Spawning only pirates of type {typeToSpawn.name}"); //<-- that type gets changed again later when the actual pirate cardds are loaded in (based on the zone(s) the player is currently in
 	}
 
 	public void PopulateScreen() 
 	{
 		//random number of enemy priates created (1-12) 
-		//different ranging numbers of prirates will be added later
+		//different ranging numbers of pirates will be added later
 		pirateRange.y = Mathf.Min(pirateRange.y, crewNum);
 		int enAndPlayCnt = Random.Range(pirateRange.x, pirateRange.y+1);
 
-		//print to the console for development team to check and make sure the call is going correctly
-		print(enAndPlayCnt);
-
 		//if the number is even, the even array objects will be called
-		GameObject[] pirateSlots = enAndPlayCnt % 2 == 0 ? enemySlotsEven : enemySlotsOdd;
-		GameObject[] playerSlots = enAndPlayCnt % 2 == 0 ? playableSlotsEven : playableSlotsOdd;
+		pirateSlots = enAndPlayCnt % 2 == 0 ? enemySlotsEven : enemySlotsOdd;
+		playerSlots = enAndPlayCnt % 2 == 0 ? playableSlotsEven : playableSlotsOdd;
 
 		List<CrewMember> possiblePirates = Globals.GameVars.Pirates.Where(x => x.pirateType.Equals(typeToSpawn)).ToList();
-		if(typeToSpawn.difficulty == 1) {
-			foreach(CrewMember p in possiblePirates) {
-				p.clout = (int)(p.clout / 5);
-			}
-		}
-		else if (typeToSpawn.difficulty == 2) {
-			foreach (CrewMember p in possiblePirates) {
-				p.clout = (int)(p.clout / 3);
-			}
-		}
-		else if (typeToSpawn.difficulty == 4) {
-			foreach (CrewMember p in possiblePirates) {
-				p.clout = (int)(p.clout * 1.5);
-			}
-		}
 		for (int x = 0; x < enAndPlayCnt; x++) 
 		{
 			pirateSlots[x].SetActive(true);
 			Pirate g = Instantiate(pirate);
+			//Debug.Log("pirate local scale = " + pirate.transform.localScale);
+			//Debug.Log("pirate lossy scale = " + pirate.transform.lossyScale);
+			if (typeToSpawn.difficulty == 1) {
+				g.GetComponent<CrewCard>().power = (g.GetComponent<CrewCard>().power / 5);
+				g.GetComponent<CrewCard>().powerText.text = g.GetComponent<CrewCard>().power.ToString();
+			}
+			else if (typeToSpawn.difficulty == 2) {
+				g.GetComponent<CrewCard>().power = (g.GetComponent<CrewCard>().power / 3);
+				g.GetComponent<CrewCard>().powerText.text = g.GetComponent<CrewCard>().power.ToString();
+			}
+			else if (typeToSpawn.difficulty == 4) {
+				g.GetComponent<CrewCard>().power = (int)(g.GetComponent<CrewCard>().power * 1.5f);
+				g.GetComponent<CrewCard>().powerText.text = g.GetComponent<CrewCard>().power.ToString();
+
+			}
+
 			//CrewMember randomPirate = Globals.GameVars.Pirates.RandomElement();
 			CrewMember randomPirate = possiblePirates.RandomElement();
 			g.SetCrew(randomPirate);
 			g.Bind();
 			possiblePirates.Remove(randomPirate);
-			g.GetComponent<RectTransform>().anchoredPosition = pirateSlots[x].GetComponent<RectTransform>().anchoredPosition;
+			g.GetComponent<RectTransform>().position = pirateSlots[x].GetComponent<RectTransform>().position;
 			g.transform.SetParent(pirateParent);
 			playerSlots[x].SetActive(true);
+
+			g.GetComponent<CrewCard>().cardIndex = pirateSlots[x].GetComponent<CardDropZone>().dropIndex;
 		}
 
 		int totalCrewRows = Mathf.CeilToInt((crewNum * 1.0f) / crewPerRow);
@@ -134,6 +139,8 @@ public class RandomSlotPopulator : MonoBehaviour
 					newCrew.transform.SetParent(crewParentInOrigin);
 					newCrew.SetCrew(Globals.GameVars.playerShipVariables.ship.crewRoster[spawnedSlots]);
 					cdz.SetOccupied(true);
+					//Debug.Log("crewmember scale = " + crew.transform.localScale);
+					//Debug.Log("crewmember lossy scale = " + crew.transform.lossyScale);
 				}
 				
 				//Moves to the next point

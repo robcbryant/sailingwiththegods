@@ -44,11 +44,13 @@ public class script_GUI : MonoBehaviour
 	//  SETUP ALL VARIABLES FOR THE GUI
 	//======================================================================================================================================================================
 	//======================================================================================================================================================================
-	
 
+
+	public bool useDialog = true;
 	//-----------------------------------------------------------
 	// Game Over Notification Variables
 	//-----------------------------------------------------------
+	[Header("Game Over Notification")]
 	public GameObject gameover_main;
 	public GameObject gameover_message;
 	public GameObject gameover_restart;
@@ -57,6 +59,7 @@ public class script_GUI : MonoBehaviour
 	//-----------------------------------------------------------
 	// Player Non-Port Notification Variables
 	//-----------------------------------------------------------
+	[Header("Not Port Notifications")]
 	public GameObject nonport_info_main;
 	public GameObject nonport_info_name;
 	public GameObject nonport_info_notification;
@@ -66,6 +69,8 @@ public class script_GUI : MonoBehaviour
 	//-----------------------------------------------------------
 	// Player Port Notification Variables
 	//-----------------------------------------------------------
+	[Header("Port Notifications")]
+	public GameObject port_dialog;
 	public GameObject port_info_main;
 	public GameObject port_info_name;
 	public GameObject port_info_notification;
@@ -90,12 +95,14 @@ public class script_GUI : MonoBehaviour
 	//-----------------------------------------------------------
 	// Player Notification Variables
 	//-----------------------------------------------------------
+	[Header("Player Notification")]
 	public GameObject notice_notificationParent;
 	public GameObject notice_notificationSystem;
 
 	//-----------------------------------------------------------
 	// Player HUD Variables
 	//-----------------------------------------------------------
+	[Header("Player HUD")]
 	public GameObject player_hud_parent;
 
 	public GameObject hud_waterStores;
@@ -119,7 +126,7 @@ public class script_GUI : MonoBehaviour
 	//****************************************************************
 	//GUI INFORMATION PANEL VARIABLES
 	//****************************************************************
-
+	[Header("Misc")]
 	//---------------------
 	//REPAIR SHIP PANEL VARIABLES
 	int costToRepair;
@@ -132,12 +139,6 @@ public class script_GUI : MonoBehaviour
 	public GameObject player_current_cargo;
 	public GameObject player_max_cargo;
 
-
-
-
-
-
-
 	//======================================================================================================================================================================
 	//  INITIALIZE ANY NECESSARY VARIABLES
 	//======================================================================================================================================================================
@@ -145,12 +146,6 @@ public class script_GUI : MonoBehaviour
 		GameVars = Globals.GameVars;
 
 	}
-
-
-
-
-
-
 
 
 	//======================================================================================================================================================================
@@ -289,13 +284,6 @@ public class script_GUI : MonoBehaviour
 	 //======================================================================================================================================================================
 
 
-
-
-
-
-
-
-
 	//======================================================================================================================================================================
 	//======================================================================================================================================================================
 	//  ALL FUNCTIONS
@@ -362,38 +350,49 @@ public class script_GUI : MonoBehaviour
 	public void GUI_ShowPortDockingNotification() {
 		GameVars.controlsLocked = true;
 
-		//Show the port notification pop up
-		port_info_main.SetActive(true);
-		//Set the title
-		port_info_name.GetComponent<Text>().text = GameVars.currentSettlement.name;
-		//Setup the message for the scroll view
-		string portMessage = "";
-		portMessage += GameVars.currentSettlement.description;
-		portMessage += "\n\n";
-		if (GameVars.isInNetwork) {
-			var crewMemberWithNetwork = GameVars.Network.CrewMemberWithNetwork(GameVars.currentSettlement);
-			portMessage += "This Port is part of your network!\n";
-			if (crewMemberWithNetwork != null) portMessage += "Your crewman, " + crewMemberWithNetwork.name + " assures you their connections here are strong! They should welcome you openly and waive your port taxes on entering!";
-			else portMessage += "You know this port as captain very well! You expect that your social connections here will soften the port taxes in your favor!";
+		if (useDialog) {
+			port_dialog.SetActive(true);
+			port_dialog.GetComponent<DialogScreen>().StartDialog(GameVars.currentSettlement);
 		}
 		else {
-			portMessage += "This port is outside your social network!\n";
+			//Show the port notification pop up
+			port_info_main.SetActive(true);
+			//Set the title
+			port_info_name.GetComponent<Text>().text = GameVars.currentSettlement.name;
+			//Setup the message for the scroll view
+			string portMessage = "";
+			portMessage += GameVars.currentSettlement.description;
+			portMessage += "\n\n";
+			if (GameVars.isInNetwork) {
+				var crewMemberWithNetwork = GameVars.Network.CrewMemberWithNetwork(GameVars.currentSettlement);
+				portMessage += "This Port is part of your network!\n";
+				if (crewMemberWithNetwork != null)
+					portMessage += "Your crewman, " + crewMemberWithNetwork.name + " assures you their connections here are strong! They should welcome you openly and waive your port taxes on entering!";
+				else
+					portMessage += "You know this port as captain very well! You expect that your social connections here will soften the port taxes in your favor!";
+			}
+			else {
+				portMessage += "This port is outside your social network!\n";
+			}
+
+			if (GameVars.currentPortTax != 0) {
+				portMessage += "If you want to dock here, your tax for entering will be " + GameVars.currentPortTax + " drachma. \n";
+				//If the port tax will make the player go negative--alert them as they enter
+				if (GameVars.playerShipVariables.ship.currency - GameVars.currentPortTax < 0)
+					portMessage += "Docking here will put you in debt for " + (GameVars.playerShipVariables.ship.currency - GameVars.currentPortTax) + "drachma, and you may lose your ship!\n";
+			}
+			else {
+				portMessage += "You only have food and water stores on board, with no taxable goods. Thankfully you will dock for free!";
+			}
+
+			port_info_notification.GetComponent<Text>().text = portMessage;
+			port_info_enter.GetComponent<Button>().onClick.RemoveAllListeners();
+			port_info_leave.GetComponent<Button>().onClick.RemoveAllListeners();
+			port_info_enter.GetComponent<Button>().onClick.AddListener(() => GUI_EnterPort());
+			port_info_leave.GetComponent<Button>().onClick.AddListener(() => GUI_ExitPortNotification());
 		}
 
-		if (GameVars.currentPortTax != 0) {
-			portMessage += "If you want to dock here, your tax for entering will be " + GameVars.currentPortTax + " drachma. \n";
-			//If the port tax will make the player go negative--alert them as they enter
-			if (GameVars.playerShipVariables.ship.currency - GameVars.currentPortTax < 0) portMessage += "Docking here will put you in debt for " + (GameVars.playerShipVariables.ship.currency - GameVars.currentPortTax) + "drachma, and you may lose your ship!\n";
-		}
-		else {
-			portMessage += "You only have food and water stores on board, with no taxable goods. Thankfully you will dock for free!";
-		}
 
-		port_info_notification.GetComponent<Text>().text = portMessage;
-		port_info_enter.GetComponent<Button>().onClick.RemoveAllListeners();
-		port_info_leave.GetComponent<Button>().onClick.RemoveAllListeners();
-		port_info_enter.GetComponent<Button>().onClick.AddListener(() => GUI_EnterPort());
-		port_info_leave.GetComponent<Button>().onClick.AddListener(() => GUI_ExitPortNotification());
 	}
 
 	//-------------------------------------------------------------------------------------------------------------------------

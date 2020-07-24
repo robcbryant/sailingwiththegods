@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using System;
-using JetBrains.Annotations;
 
 public class MiniGameManager : MonoBehaviour
 {
@@ -28,14 +27,14 @@ public class MiniGameManager : MonoBehaviour
 	public string lostGameClose;
 
 	[Header("Gameplay")]
+	public Vector2 runningBounds = new Vector2(0.1f, 0.9f);
 	public GameObject piratesParent, crewParent;
-	public List<GameObject> pirates, crew;
+	public List<GameObject> crewSlots;
 	public Transform[] pirateSpaces, crewSpaces;
 
 	[Header("Clout")]
 	public int wonFightClout;
 	public int tookNegotiationClout;
-	public int rejectedNegotiationClout;
 	public int succeedRunClout;
 	public int failedRunClout;
 
@@ -52,24 +51,41 @@ public class MiniGameManager : MonoBehaviour
 		}
 		cloutChange = 0;
 
-		//CALCULATE RUN CHANCE HERE
-		runChance = 0.5f;
-
 		alreadyTriedRunning = false;
 		alreadyTriedNegotiating = false;
+
+		foreach (ButtonExplanation button in negotiateButtons) 
+		{
+			button.SetExplanationText("The pirates may let you go\nYou will be known as a coward");
+			button.GetComponentInChildren<Button>().interactable = true;
+		}
+
+		//check true zones, out of those, have a pirate type spawn from one of the "true" areas
+		//no pirates should appear if there aren't any actve zones
+		if (Globals.GameVars.playerShipVariables.zonesList.Count > 0) {
+			int randomPirateTypeFromActiveZones = UnityEngine.Random.Range(1, Globals.GameVars.playerShipVariables.zonesList.Count);
+
+			string randomPirateTypeName = Globals.GameVars.playerShipVariables.zonesList[randomPirateTypeFromActiveZones];
+
+			PirateType theType = Globals.GameVars.PirateTypes.FirstOrDefault(t => t.name == randomPirateTypeName);
+			//Debug.Log("theType = " + theType);
+			rsp.SetPirateType(theType);
+			//Debug.Log("Pirate type in game is: " + rsp.GetType());
+		}
+		else {
+			//temporary code 
+			rsp.SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
+		}
+
+		runChance = CalculateRunChance();
 		foreach (ButtonExplanation button in runButtons) 
 		{
 			button.SetExplanationText($"{runChance * 100}% success chance\nYou will be known as a coward");
 			button.GetComponentInChildren<Button>().interactable = true;
 		}
-		foreach (ButtonExplanation button in negotiateButtons) 
-		{
-			button.SetExplanationText("The pirates may let you go if you give them what they want");
-			button.GetComponentInChildren<Button>().interactable = true;
-		}
 
+		
 
-		rsp.SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
 		string pirateTypeText = "";
 		CrewMember pirateKnower = CrewFromPirateHometown(rsp.CurrentPirates);
 
@@ -83,8 +99,8 @@ public class MiniGameManager : MonoBehaviour
 		}
 		else 
 		{
-			pirateTypeText = "You are not sure where these pirates are from. You ask around your crew, but it doesn't seem like any of them are from the same region as the pirates. " +
-				"Perhaps if you had more cities in your network you would have some advance warning of what kind of pirates you are about to face.";
+			pirateTypeText = $"You ask around your crew, but it doesn't seem like any of them are from the same region as the pirates. You think they may be {rsp.CurrentPirates.name}. " +
+				"Perhaps if you had more cities in your network you would have some advance warning of how they fight.";
 		}
 
 		mgInfo.gameObject.SetActive(true);
@@ -124,7 +140,7 @@ public class MiniGameManager : MonoBehaviour
 			{
 				if (crewNetwork.Contains(Globals.GameVars.GetSettlementFromID(p.originCity))) 
 				{
-					Debug.Log($"{c.name} knows the home city of Pirate {p.name}: {Globals.GameVars.GetSettlementFromID(c.originCity).name}");
+					//Debug.Log($"{c.name} knows the home city of Pirate {p.name}: {Globals.GameVars.GetSettlementFromID(c.originCity).name}");
 					return c;
 				}
 			}
@@ -133,17 +149,39 @@ public class MiniGameManager : MonoBehaviour
 		return null;
 	}
 
+	public void InitilizePirates(GameObject[] playableSlots) {
+		
+		//foreach (Transform p in piratesParent.transform) {
+		//	pirates.Add(p.gameObject);
+		//}
+		//Debug.Log("Pirate cout: " + pirates.Count);
+		//pirates = pirates.OrderBy(GameObject => GameObject.transform.GetComponent<CrewCard>().cardIndex).ToList<GameObject>();
+
+		//foreach (Transform c in crewParent.transform) {
+		//	//crew.Add(c.gameObject);
+		//	//Debug.Log(c.transform.GetComponent<CrewCard>().cardIndex + "\t" + c.transform.GetComponent<CrewCard>().nameText.name + "\t" + c);
+		//}
+
+		//crew = playableSlots.ToList();
+
+		crewSlots = playableSlots.Where(slot => slot.active).ToList();
+		
+
+		//crewSlots = crewSlots.OrderBy(GameObject => GameObject.transform.GetComponent<CardDropZone>().dropIndex).ToList<GameObject>();
+	}
+
 	#region Negotiation
 	private int moneyDemand = 0;
-	private Resource[] playerInvo = Globals.GameVars.playerShipVariables.ship.cargo;
-	private int[] demandedAmounts = new int[Globals.GameVars.playerShipVariables.ship.cargo.Length];
+	private Resource[] playerInvo => Globals.GameVars.playerShipVariables.ship.cargo;
+	int[] demandedAmounts;
 
 	public void OpenNegotiations() 
 	{
+		demandedAmounts = new int[Globals.GameVars.playerShipVariables.ship.cargo.Length];
+
 		if (!alreadyTriedNegotiating) 
 		{
 			//NEGOTIATION ALGORITHM GOES HERE
-
 			//right now: completely random and uses random of % weight of an item for taking ---------------------------------------------------
 
 			int currentPlayerMoney = Globals.GameVars.playerShipVariables.ship.currency;
@@ -216,7 +254,6 @@ public class MiniGameManager : MonoBehaviour
 			mgInfo.DisplayText(
 				Globals.GameVars.pirateTitles[1],
 				Globals.GameVars.pirateSubtitles[1],
-				//Globals.GameVars.pirateNegotiateText[0] + "\n\n" + deal + "\n\n" + Globals.GameVars.pirateNegotiateText[UnityEngine.Random.Range(1, Globals.GameVars.pirateNegotiateText.Count)],
 				Globals.GameVars.pirateNegotiateText[0] + "\n\n" + deal + "\n\nIf you take this deal, you will escape with your lives, but you will be thought a coward for avoiding a fight - your clout will go down!\n\n" +
 					Globals.GameVars.pirateNegotiateText[UnityEngine.Random.Range(1, Globals.GameVars.pirateNegotiateText.Count)],
 				pirateIcon,
@@ -248,7 +285,8 @@ public class MiniGameManager : MonoBehaviour
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[1],
 			Globals.GameVars.pirateSubtitles[1],
-			"You accepted the trade deal. You hand over what the pirates asked for and sail away.",
+			"You accepted the trade deal. You hand over what the pirates asked for and sail away. Though you have survived, your cowardly avoidance of a fight will stick with you. Your clout has gone down by" +
+				$"{Mathf.Abs(tookNegotiationClout)}. Combined with the earlier {cloutChange}, that is a net clout change of {tookNegotiationClout + cloutChange}.",
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
 	}
@@ -258,12 +296,10 @@ public class MiniGameManager : MonoBehaviour
 		closeButton.onClick.RemoveAllListeners();
 		closeButton.onClick.AddListener(mgInfo.CloseDialog);
 
-		cloutChange += rejectedNegotiationClout;
-
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[1],
 			Globals.GameVars.pirateSubtitles[1],
-			$"You rejected the pirate's deal and prepare to fight. Your clout has decreased by {rejectedNegotiationClout}.",
+			$"You reject the pirate's deal and prepare to fight. Even if it was not your first choice, you will have to prove your heroism now.",
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
 	}
@@ -305,10 +341,11 @@ public class MiniGameManager : MonoBehaviour
 		mgInfo.DisplayText(
 			Globals.GameVars.pirateTitles[2],
 			Globals.GameVars.pirateSubtitles[2],
-			//Globals.GameVars.pirateRunSuccessText + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunSuccessText[Random.Range(1, Globals.GameVars.pirateRunSuccessText.Count)],
 			Globals.GameVars.pirateRunSuccessText[0] + "\n\n" + cloutText + "\n\n" + Globals.GameVars.pirateRunSuccessText[UnityEngine.Random.Range(1, Globals.GameVars.pirateRunSuccessText.Count)],
 			pirateIcon,
 			MiniGameInfoScreen.MiniGame.Finish);
+
+		//Globals.MiniGames.Exit();
 	}
 
 	public void FailedRunning() 
@@ -336,40 +373,100 @@ public class MiniGameManager : MonoBehaviour
 			MiniGameInfoScreen.MiniGame.Finish);
 	}
 
+	public float CalculateRunChance() 
+	{
+		int difficulty = rsp.CurrentPirates.difficulty;
+
+		float baseShipSpeed = 7.408f;
+		float crewMod = Globals.GameVars.playerShipVariables.shipSpeed_Actual / baseShipSpeed / 1.5f;
+		float run = (1.0f / difficulty) * crewMod;
+		run = Mathf.Max(runningBounds.x, run);
+		run = Mathf.Min(runningBounds.y, run);
+
+		//Debug.Log($"{1.0f / difficulty} * {crewMod} = {run}");
+		
+		return run;
+	}
+
 	#endregion
 
 	#region Fighting
+	
+
 	public void Fight() 
 	{
+		Debug.Log("FIGHT BUTTON");
 		CrewCard crewMember, pirate;
-		foreach(Transform p in piratesParent.transform) {
-			pirates.Add(p.gameObject);
-		}
-		pirates = pirates.OrderBy(GameObject => GameObject.transform.position.x).ToList<GameObject>();
-		foreach (Transform c in crewParent.transform) {
-			crew.Add(c.gameObject);
-		}
-		crew = crew.OrderBy(GameObject => GameObject.transform.position.x).ToList<GameObject>();
-		for (int index = 0; index <= crewParent.transform.childCount - 1; index++) {
-			crewMember = crew[index].transform.GetComponent<CrewCard>();
-			pirate = pirates[index].transform.GetComponent<CrewCard>();
 
-			if (crewMember.gameObject.activeSelf && pirate.gameObject.activeSelf) {
+		//adding the crewmembers in the play area to the list of playable crew
+		var minIndex = crewSlots.Min(c => c.GetComponent<CardDropZone>().dropIndex);
+		var maxIndex = crewSlots.Max(c => c.GetComponent<CardDropZone>().dropIndex);
+
+			for (var index = minIndex; index <= maxIndex; index++) {
+			//int zeroBasedIndex = index - minIndex;
+
+			//crewMember = crew[index].transform.GetComponentInChildren<CrewCard>();
+			crewMember = crewParent.transform.GetComponentsInChildren<CrewCard>().FirstOrDefault(crewCard => crewCard.cardIndex == index);
+			pirate = piratesParent.transform.GetComponentsInChildren<CrewCard>().FirstOrDefault(crewCard => crewCard.cardIndex == index);
+			//pirates[index].transform.GetComponent<CrewCard>();
+
+			//if there is an active game object for the crew list and for the pirates list that correspond, then they will fight
+			if (crewMember != null && pirate != null && crewMember.gameObject.activeSelf && pirate.gameObject.activeSelf) {
+				//if the pirate's power is greater than the crewmem's, the crewmem will "die"
+				//pirate's power goes down by the amount of power the crewmem had
+				//the crewmem MUST be removed from the crew list to keep the count updated
 				if (crewMember.power < pirate.power) {
-					pirate.updatePower(pirate.power -= crewMember.power);
+					pirate.UpdatePower(pirate.power -= crewMember.power); 
 					crewMember.gameObject.SetActive(false);
+					//crew.Remove(crewMember.gameObject);
+					//crew[zeroBasedIndex] = null;
+					Debug.Log("CREW MEMBER " + crewMember.nameText.text + " DIED with index = " + index + " and POWER = " + crewMember.power + "\n\n");
 				}
+				//if the crewmem's power is greater than the pirate's, the pirate will "die" 
+				//crewmem's power goes down by the amount of power the pirate had
+				//the pirate MUST be removed from the pirates list to keep the count updated
 				else if (crewMember.power > pirate.power) {
-					crewMember.updatePower(crewMember.power -= pirate.power);
+					crewMember.UpdatePower(crewMember.power -= pirate.power);
 					pirate.gameObject.SetActive(false);
+					//pirates.Remove(pirate.gameObject);
+					//pirates[zeroBasedIndex] = null;
+					Debug.Log("PIRATE " + pirate.nameText.text + " DIED with index = " + index + " and POWER = " + crewMember.power + "\n\n");
 				}
+				//if the crewmem and the pirate have powers of equal value, they cancel out
+				//the crewmem MUST be removed from the crew list to keep the count updated
+				//the pirate MUST be removed from the pirates list to keep the count updated
 				else {
+					//this has not happened yet as of 07/02/2020
 					crewMember.gameObject.SetActive(false);
 					pirate.gameObject.SetActive(false);
+
+					//crew[zeroBasedIndex] = null;
+					//pirates[zeroBasedIndex] = null;
+
+					Debug.Log("CREW MEMBER AND PIRATE DIED\n\n");
 				}
 			}
+			else {
+				Debug.Log("One of the above gameobject was not active or null.");
+			}
+			Debug.Log("\n\n");
+			//no need for an else statement because of the updates within the above if/else if/else statements 
+		}
+
+		int pirateCounter = piratesParent.transform.GetComponentsInChildren<CrewCard>().Count();
+
+		int crewCounter = crewParent.transform.GetComponentsInChildren<CrewCard>().Count();
+		
+		if (pirateCounter <= 0) {
+			WinGame(crewCounter * 5);
+		}
+
+		if (crewCounter <= 0) {
+			LoseGame();
 		}
 	}
+
+
 
 	public void WinGame(int clout) 
 	{
@@ -409,5 +506,6 @@ public class MiniGameManager : MonoBehaviour
 	private void UnloadMinigame() {
 		//UNLOAD MINIGAME CODE GOES HERE
 		gameObject.SetActive(false);
+		Globals.MiniGames.Exit();
 	}
 }
