@@ -164,7 +164,7 @@ public class MiniGameManager : MonoBehaviour
 
 		//crew = playableSlots.ToList();
 
-		crewSlots = playableSlots.Where(slot => slot.active).ToList();
+		crewSlots = playableSlots.Where(slot => slot.activeSelf).ToList();
 		
 
 		//crewSlots = crewSlots.OrderBy(GameObject => GameObject.transform.GetComponent<CardDropZone>().dropIndex).ToList<GameObject>();

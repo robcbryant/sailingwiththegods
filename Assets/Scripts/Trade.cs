@@ -32,18 +32,8 @@ public class Trade
 	}
 
 	public int GetTaxRateOnCurrentShipManifest() {
-		//We need to get the total price of all cargo on the ship
-		float totalPriceOfGoods = 0f;
 
-		//Loop through each resource in the settlement's cargo and figure out the price of that resource 
-		for (int setIndex = 2; setIndex < GameVars.currentSettlement.cargo.Length; setIndex++) {
-			float currentResourcePrice = GetPriceOfResource(GameVars.currentSettlement.cargo[setIndex].name, GameVars.currentSettlement);
-			//with this price, let's check the ships cargo at the same index position and calculate its worth and add it to the total
-			totalPriceOfGoods += (currentResourcePrice * GameVars.playerShipVariables.ship.cargo[setIndex].amount_kg);
-			//Debug.Log (MGV.currentSettlement.cargo[setIndex].name + totalPriceOfGoods);
-
-
-		}
+		float totalPriceOfGoods = GetTotalPriceOfGoods();
 
 		float taxRateToApply = 0f;
 		//Now we need to figure out the tax on the total price of the cargo--which is based on the settlements in/out of network tax
@@ -60,6 +50,27 @@ public class Trade
 		GameVars.currentPortTax = (int)newTaxRate;
 
 		return (int)((totalPriceOfGoods / 100) * taxRateToApply);
+	}
+
+	public float GetTotalPriceOfGoods() {
+		//We need to get the total price of all cargo on the ship
+		float totalPriceOfGoods = 0f;
+		//Debug.Log($"Checking prices in {GameVars.currentSettlement}");
+
+		//Loop through each resource in the settlement's cargo and figure out the price of that resource 
+		for (int setIndex = 2; setIndex < GameVars.currentSettlement.cargo.Length; setIndex++) {
+			float currentResourcePrice = GetPriceOfResource(GameVars.currentSettlement.cargo[setIndex].name, GameVars.currentSettlement);
+			//with this price, let's check the ships cargo at the same index position and calculate its worth and add it to the total
+			float totalResourcePrice = (currentResourcePrice * GameVars.playerShipVariables.ship.cargo[setIndex].amount_kg);
+			totalPriceOfGoods += totalResourcePrice;
+			//Debug.Log (MGV.currentSettlement.cargo[setIndex].name + totalPriceOfGoods)
+
+			//Debug.Log($"You have {GameVars.playerShipVariables.ship.cargo[setIndex].amount_kg}kg of {GameVars.currentSettlement.cargo[setIndex].name}, which sells for {currentResourcePrice} each for a total of {totalResourcePrice}.");
+		}
+
+		//Debug.Log($"Altogether, your cargo is worth {totalPriceOfGoods}");
+
+		return totalPriceOfGoods;
 	}
 
 	public int AdjustBuy(int amountToCheck, string resourceName) {

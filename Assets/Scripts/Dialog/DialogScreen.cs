@@ -278,7 +278,7 @@ public class DialogScreen : MonoBehaviour
 			itemCost = IntFromVariableName(cost);
 		}
 		else {
-			itemCost = int.Parse(cost);
+			itemCost = Mathf.RoundToInt(float.Parse(cost));
 		}
 		Globals.GameVars.playerShipVariables.ship.currency -= itemCost;
 		UpdateMoney();
@@ -286,7 +286,28 @@ public class DialogScreen : MonoBehaviour
 
 	[YarnCommand("calculatetaxes")]
 	public void CalculateTaxCharges() {
-		storage.SetValue("$tax_subtotal", Random.Range(1, 250));
+		float subtotal = 0;
+		int cargo = Mathf.RoundToInt(CargoValue());
+		if (storage.GetValue("$god_tax").AsBool) {
+			//God Tax is a flat number
+			subtotal += storage.GetValue("$god_tax_amount").AsNumber;
+		}
+		if (storage.GetValue("$transit_tax").AsBool) {
+			//Transit tax is a percent
+			subtotal += storage.GetValue("$transit_tax_amount").AsNumber * cargo;
+		}
+		if (storage.GetValue("$foreigner_tax").AsBool) {
+			//Foreigner tax is a percent
+			subtotal += storage.GetValue("$foreigner_tax_amount").AsNumber * cargo;
+		}
+		if (storage.GetValue("$wealth_tax").AsBool) {
+			//Wealth tax is a percent
+			subtotal += storage.GetValue("$wealth_tax_amount").AsNumber * cargo;
+		}
+
+		storage.SetValue("$tax_subtotal", Mathf.RoundToInt(subtotal));
+		storage.SetValue("$cargo_value", cargo);
+		storage.SetValue("$ellimenion_percent", .05f);
 	}
 
 	[YarnCommand("calculatepercents")]
@@ -294,29 +315,31 @@ public class DialogScreen : MonoBehaviour
 		float subtotal = storage.GetValue("$tax_subtotal").AsNumber;
 		float cargo = CargoValue();
 
-		float percent = 0.1f;
-		storage.SetValue("$water_intent", (int)(percent * cargo + subtotal));
+		float percent = 0.01f;
+		storage.SetValue("$water_intent", Mathf.RoundToInt(percent * cargo));
 
-		percent = 0.2f;
-		storage.SetValue("$trade_intent", (int)(percent * cargo + subtotal));
+		percent = 0.02f;
+		storage.SetValue("$trade_intent", Mathf.RoundToInt(percent * cargo));
 
-		percent = 0.3f;
-		storage.SetValue("$tavern_intent", (int)(percent * cargo + subtotal));
+		percent = 0.03f;
+		storage.SetValue("$tavern_intent", Mathf.RoundToInt(percent * cargo));
 
-		percent = 0.5f;
-		storage.SetValue("$all_intent", (int)(percent * cargo + subtotal));
+		percent = 0.05f;
+		storage.SetValue("$all_intent", Mathf.RoundToInt(percent * cargo));
 	}
 
 	[YarnCommand("checkcitytaxes")]
 	public void CheckCityTaxes() {
+		int places = 3;
+
 		storage.SetValue("$god_tax", Random.Range(0.0f, 1.0f) > 0.5f);
 		storage.SetValue("$god_tax_amount", Random.Range(0, 50));
 		storage.SetValue("$transit_tax", Random.Range(0.0f, 1.0f) > 0.5f);
-		storage.SetValue("$transit_tax_amount", Random.Range(2, 6));
+		storage.SetValue("$transit_tax_amount", Truncate(Random.Range(.02f, .06f), places));
 		storage.SetValue("$foreigner_tax", Random.Range(0.0f, 1.0f) > 0.5f);
-		storage.SetValue("$foreigner_tax_amount", 2);
+		storage.SetValue("$foreigner_tax_amount", .02f);
 		storage.SetValue("$wealth_tax", CargoValue() >= 1000000);
-		storage.SetValue("$wealth_tax_amount", 10);
+		storage.SetValue("$wealth_tax_amount", .10f);
 
 		storage.SetValue("$no_taxes", !storage.GetValue("$god_tax").AsBool && !storage.GetValue("$transit_tax").AsBool && !storage.GetValue("$foreigner_tax").AsBool && !storage.GetValue("$wealth_tax").AsBool);
 	}
@@ -343,11 +366,18 @@ public class DialogScreen : MonoBehaviour
 	}
 
 	private int IntFromVariableName(string name) {
-		return (int)storage.GetValue(name).AsNumber;
+		return Mathf.RoundToInt(storage.GetValue(name).AsNumber);
 	}
 
 	private float CargoValue() {
-		return Globals.GameVars.playerShipVariables.ship.GetTotalCargoAmount();
+		return Globals.GameVars.Trade.GetTotalPriceOfGoods() + Globals.GameVars.playerShipVariables.ship.currency;
+	}
+
+
+	private float Truncate(float num, int places) {
+		int factor = (int)Mathf.Pow(10, places);
+
+		return Mathf.Round(num * factor) / factor;
 	}
 }
 

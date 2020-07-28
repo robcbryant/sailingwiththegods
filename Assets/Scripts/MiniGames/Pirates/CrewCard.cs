@@ -8,7 +8,9 @@ public class CrewCard : MonoBehaviour
 	private const string ResourcePath = "crew_portraits";
 	private const string DefaultPortrait = "crew_portraits/phoenician_sailor";
 
+#pragma warning disable 0649
 	[SerializeField] ButtonView infoButton;
+#pragma warning restore 0649
 
 	public bool dragable = true;
 	public TMPro.TextMeshProUGUI nameText;

@@ -1,12 +1,13 @@
 title: Start
 tags: 
 colorID: 0
-position: 662,-899
+position: 661,-900
 ---
 << reset DialogScreen >>
 << setpartnername DialogScreen Telones >>
-<< setconvotitle DialogScreen Test_Outline >>
+<< setconvotitle DialogScreen Docking_at_Port >>
 << setsprite Partner neutral >>
+
 << set $asked_where to false >>
 << set $asked_networks to false >>
 << set $asked_who to false >>
@@ -15,12 +16,13 @@ position: 662,-899
 
 << citynetworks DialogScreen >>
 << networkconnections DialogScreen >> 
+<< checkcitytaxes DialogScreen >> 
 
 << setspeaker DialogScreen other >>
-<< randomtext DialogScreen greeting any >> 
 I am the first and the last face you'll see here: no ordinary citizen I! You may call me Telones, 'tax man' - I have paid the state for the right to collect its taxes from you. Get set to dig deep into your pockets!
-<< setend DialogScreen >>
+<< randomtext DialogScreen greeting any >> 
 << setsprite Partner $emotion >>
+<< setend DialogScreen >>
 /{$random_text}
 
 
@@ -107,14 +109,12 @@ I don't believe you. {$crew_name_3} must produce the documentation!
     These are the risks you face if you fail to honor the freedom from taxes that comes from our network: {$random_text}
 
 << setspeaker DialogScreen other>> 
-<< if $connections_number gt 1 >> 
+<< if $connections_number > 1 >> 
     << setsprite Partner happy >>
     Alright, you share in our social network!
-
 << else >>
     << setsprite Partner happy >> 
 	It seems you are not a stranger to our social network!
-
 << endif >>
 
 << if $asked_where is false>>
@@ -134,9 +134,9 @@ position: 409,-589
 /{$random_text}
 
 << setspeaker DialogScreen other >>
-<< setend DialogScreen >> 
-<< cityinfo DialogScreen >>
 << setsprite Partner bragging >>
+<< cityinfo DialogScreen >>
+<< setend DialogScreen >>
 No, it's {$city_name}. {$city_description}
 
 << if $asked_networks is false >>
@@ -158,38 +158,29 @@ position: 885,-594
 
 << setspeaker DialogScreen other >> 
 
-<< if $city_networks gt 1 >>
+<< if $city_networks > 1 >>
     << randomtext DialogScreen networkhigh neutral >> 
 	<< setsprite Partner bragging >>
-
-<< else >>
-
-    << if $city_networks eq 1>>
+<< elseif $city_networks == 1 >>
         << randomtext DialogScreen networkmid neutral >>
 		<< setsprite Partner happy >>
 
-    << else >>
+<< else >>
         << randomtext DialogScreen networklow neutral >>
 		<< setsprite Partner unhappy >>
-    << endif >> 
-
 << endif >> 
+
 /{$random_text}
 
 << setspeaker DialogScreen Jason >>
 
-<< if $connections_number gt 1 >> 
+<< if $connections_number > 1 >> 
     << randomtext DialogScreen jasonnetworkhigh neutral >>
 
-<< else >>
-
-    << if $connections_number eq 1 >>
+<< elseif $connections_number == 1 >>
         << randomtext DialogScreen jasonnetworkmid neutral >>
-
-    << else >>
+<< else >>
         << randomtext DialogScreen jasonnetworklow neutral >>
-    << endif >> 
-
 << endif >> 
 
 << if $connections_number >= 1 >> 
@@ -251,7 +242,7 @@ Say what you will, it's down to business. Quick quick then, let's get this done 
 The poorest man in the smallest boat can haul me before the magistrates! They could put me in prison, dishonor me as a public debtor, confiscate my property. That's why the city has made it easy for me to extract your taxes: all commercial transactions happen here or in the agora, and I'm not alone in keeping my eye on you: we have agoranomoi to back me up.
 
 << if $asked_who is false >>
-    [[ Why you? |tax_why]]
+    [[ Why do I pay you? |tax_why]]
 << endif >>
 [[ How much do I owe? |tax_explain]]
 ===
@@ -283,14 +274,13 @@ Pleasure doing business with you!
 title: tax_types
 tags: 
 colorID: 0
-position: 345,1031
+position: 344,1030
 ---
 << set $asked_types to true >>
 
 << setspeaker DialogScreen Jason >>
 What types of taxes do you charge here? I must decide if it is worth it to enter your city!
 
-<< checkcitytaxes DialogScreen >> 
 << setspeaker DialogScreen other >>
 << setsprite Partner happy >>
 As in all cities, we charge an ellimenion to pay for the harbor: its fine guard houses, its places for unloading, the streets that lead to the agora, the shrine where you can thank the gods you made it here! Network connections can influence how much you pay.
@@ -335,27 +325,26 @@ colorID: 0
 position: 675,879
 ---
 << setspeaker DialogScreen Jason >>
-Okay then, what would I have to pay? I must decide if it is worth it to enter your city.
+Okay then, what are the exact charges? I must know if you are charging me fairly!
 
-<< checkcitytaxes DialogScreen >> 
 << setspeaker DialogScreen other >> 
 
 << if $god_tax is true >>
     << setsprite Partner happy >>
-    Lucky you, noble strangers, for the god tax you get to pay {$god_tax_amount}.
+    Lucky you, noble strangers, for the god tax you get to pay {$god_tax_amount} drachma.
 << endif >>
 << if $transit_tax is true >>
     << setsprite Partner happy >>
-    For transit here {$transit_tax_amount}%.
+    For transit here {$transit_tax_amount * 100}% of your cargo value: {$transit_tax_amount * $cargo_value} dr.
 << endif >>
 
 << if $foreigner_tax is true >>
     << setsprite Partner happy >>
-    As a foreigner here you pay {$foreigner_tax_amount}% to use the market.
+    As a foreigner here you pay {$foreigner_tax_amount * 100}% of your cargo to use the market: {$foreigner_tax_amount * $cargo_value} dr.
 << endif >>
 << if $wealth_tax is true >>
     << setsprite Partner happy >>
-    Due to your great wealth, for you, {$wealth_tax_amount}% of your cargo needs to be paid before you leave!
+    Due to your great wealth, for you, {$wealth_tax_amount * 100}% of your cargo needs to be paid before you leave: {$wealth_tax * $cargo_value} dr!
 << endif >>
 << if $no_taxes is true >>
     << setsprite Partner unhappy >>
@@ -363,21 +352,37 @@ Okay then, what would I have to pay? I must decide if it is worth it to enter yo
 << endif >> 
 
 << calculatetaxes DialogScreen >> 
+<< calculatepercents DialogScreen >> 
 
 << if $asked_networks is true and $connections_number >= 1 >>
+    << if $connections_number > 1 >>
+        << setsprite Partner unhappy >>
+        << set $ellimenion_percent to 0 >> 
+        << if $no_taxes == true >> 
+            Your ellimenion taxes are waived, which means you only owe us the fee for your intent. 
+        << else >> 
+            Your ellimenion taxes are waived! You only have to pay {$tax_subtotal} Drachma in addition to your intent.
+        << endif >>  
+    << else >>
+        << setsprite Partner happy >>
+        << set $ellimenion_percent to ($ellimenion_percent / 2)>> 
+        Your ellimenion taxes are reduced by half to only {$ellimenion_percent * 100}% of your cargo's value - a mere {$ellimenion_percent * $cargo_value} Drachma! You only have to pay {$ellimenion_percent * $cargo_value + $tax_subtotal} dr in addition to your intent.
+    << endif >> 
 
 << else >>
     << setsprite Partner bragging >>
-    You pay all port taxes! This adds up to {$tax_subtotal} in addition to your intent!
+    You pay all port taxes! Our ellimenion is {$ellimenion_percent * 100}% of your cargo value, which for you is {$ellimenion_percent * $cargo_value} Drachma. In total, you owe {$ellimenion_percent * $cargo_value + $tax_subtotal} dr in addition to your intent!
 << endif >> 
 
-<< setend DialogScreen >> 
-Here's where all your intent charges will be listed.
+<< set $updated_subtotal to ($ellimenion_percent * $cargo_value + $tax_subtotal) >>
 
-[[I would like to rest and buy water. (1%) |enter_water]]
-[[I would like to trade my cargo. (2%)|enter_trading]]
-[[I would like a long rest and to manage my crew. (3%) |enter_shelter]]
-[[I would like to take full advantage of this port. (5%) |enter_full]]
+<< setend DialogScreen >> 
+If you want only water and brief rest, you owe {$updated_subtotal + $water_intent} Drachma. If you are here to trade, your total will be {$updated_subtotal + $trade_intent} Drachma. If you need long rest, new crew, and repairs, you have to pay {$updated_subtotal + $tavern_intent} Drachma. Or if you want to take full advantage of our port, it comes out to {$updated_subtotal + $all_intent} Drachma.
+
+[[I would like to rest and buy water. (pay {$updated_subtotal + $water_intent} dr) |enter_water]]
+[[I would like to trade my cargo. (pay {$updated_subtotal + $trade_intent} dr) |enter_trading]]
+[[I would like a long rest and to manage my crew. (pay {$updated_subtotal + $tavern_intent} dr) |enter_shelter]]
+[[I would like to take full advantage of this port. (pay {$updated_subtotal + $all_intent} dr) |enter_full]]
 [[That's far too much! (exit without paying) |exit]]
 ===
 title: tax_short
@@ -388,25 +393,44 @@ position: 987,1029
 << setspeaker DialogScreen Jason >>
 I already know what I want to do.
 
+<< calculatetaxes DialogScreen >> 
+<< calculatepercents DialogScreen >> 
+
+<< if $asked_networks is true >>
+    << if $connections_number > 1 >>
+        << set $ellimenion_percent to 0 >>  
+    << elseif $connections_number == 1 >>
+        << set $ellimenion_percent to ($ellimenion_percent / 2)>> 
+    << endif >> 
+<< endif >> 
+
+<< set $updated_subtotal to ($ellimenion_percent * $cargo_value + $tax_subtotal) >>
+
 << setspeaker DialogScreen other >>
 << setend DialogScreen >> 
-Very well then. Your total is $10000 plus the intent fee.
 
-[[I would like to rest and buy water. (1%) |enter_water]]
-[[I would like to trade my cargo. (2%)|enter_trading]]
-[[I would like a long rest and to manage my crew. (3%) |enter_shelter]]
-[[I would like to take full advantage of this port. (5%) |enter_full]]
+<< if $updated_subtotal == 0 >>
+	Very well then. We charge no taxes but the ellimenion here and your network has waived that, so you owe only the intent fee.
+<< else >>
+	Very well then. Your total is {$updated_subtotal} Drachma plus the intent fee.
+<< endif >>
+
+[[What is that money paying for? |tax_breakdown]]
+[[I would like to rest and buy water. (pay {$updated_subtotal + $water_intent} dr) |enter_water]]
+[[I would like to trade my cargo. (pay {$updated_subtotal + $trade_intent} dr) |enter_trading]]
+[[I would like a long rest and to manage my crew. (pay {$updated_subtotal + $tavern_intent} dr) |enter_shelter]]
+[[I would like to take full advantage of this port. (pay {$updated_subtotal + $all_intent} dr) |enter_full]]
 [[That's far too much! (exit without paying) |exit]]
 ===
 title: herald_fee
 tags: 
 colorID: 0
-position: 788,1601
+position: 780,1669
 ---
 << setspeaker DialogScreen other >>
 << setsprite DialogScreen happy >>
 << setend DialogScreen >> 
-Thank you for your business! Do you also want to pay for a herald to help with your sales?
+Do you also want to pay for a herald to help with your sales?
 
 << checkafford DialogScreen 2 >>
 << if $can_afford is true >>
@@ -418,13 +442,17 @@ Thank you for your business! Do you also want to pay for a herald to help with y
 title: enter_water
 tags: 
 colorID: 0
-position: 472,1312
+position: 471,1311
 ---
 << setspeaker DialogScreen other >>
 << setend DialogScreen >> 
-Thank you for your business! Your total comes to $1001000.
 
-[[Continue. |enter]]
+<< set $final_cost to ($updated_subtotal + $water_intent)>> 
+<< pay DialogScreen $final_cost >> 
+
+Thank you for your business! That's {$final_cost} Drachma exactly!
+
+[[Continue |enter]]
 ===
 title: enter_trading
 tags: 
@@ -433,20 +461,28 @@ position: 695,1311
 ---
 << setspeaker DialogScreen other >>
 << setend DialogScreen >> 
-Thank you for your business! Your total comes to $1002000.
 
-[[Continue. |herald_fee]]
+<< set $final_cost to ($updated_subtotal + $trade_intent)>> 
+<< pay DialogScreen $final_cost >> 
+
+Thank you for your business! That's {$final_cost} Drachma exactly!
+
+[[Continue |herald_fee]]
 ===
 title: enter_shelter
 tags: 
 colorID: 0
-position: 915,1311
+position: 914,1310
 ---
 << setspeaker DialogScreen other >>
 << setend DialogScreen >> 
-Thank you for your business! Your total comes to $1003000.
 
-[[Continue. |enter]]
+<< set $final_cost to ($updated_subtotal + $tavern_intent)>> 
+<< pay DialogScreen $final_cost >> 
+
+Thank you for your business! That's {$final_cost} Drachma exactly!
+
+[[Continue |enter]]
 ===
 title: enter_full
 tags: 
@@ -455,9 +491,13 @@ position: 1135,1311
 ---
 << setspeaker DialogScreen other >>
 << setend DialogScreen >> 
-Thank you for your business! Your total comes to $1005000.
 
-[[Continue. |herald_fee]]
+<< set $final_cost to ($updated_subtotal + $all_intent)>> 
+<< pay DialogScreen $final_cost >> 
+
+Thank you for your business! That's {$final_cost} Drachma exactly!
+
+[[Continue |herald_fee]]
 ===
 title: herald_pay
 tags: 
@@ -467,16 +507,18 @@ position: 763,2050
 << setspeaker DialogScreen Jason >>
 I will pay for a herald to help me sell my cargo.
 
+<< pay DialogScreen 2 >> 
+
 << setspeaker DialogScreen other >>
 << setend DialogScreen >> 
 Excellent decision!
 
-[[Continue. |enter]]
+[[Continue |enter]]
 ===
 title: herald_no
 tags: 
 colorID: 0
-position: 1020,1874
+position: 1039,1898
 ---
 << setspeaker DialogScreen Jason >>
 I have no need for a herald.
@@ -486,5 +528,5 @@ I have no need for a herald.
 << setsprite Partner unhappy >> 
 A poor decision. You will surely lose out on much higher profits!
 
-[[Continue. |enter]]
+[[Continue |enter]]
 ===
