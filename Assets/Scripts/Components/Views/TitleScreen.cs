@@ -123,8 +123,8 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 
 				Subscribe(windowedResolutionButtons[x]
 					.onClick, () => {
-						Screen.SetResolution(supportedResolutions[x].x, supportedResolutions[x].y, false);
-						green_text_pos = x;
+						Screen.SetResolution(supportedResolutions[index].x, supportedResolutions[index].y, false);
+						green_text_pos = index;
 
 						SetGreenText();
 					});
