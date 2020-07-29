@@ -117,6 +117,8 @@ public class script_player_controls : MonoBehaviour
 		StartCoroutine(waterCurrentZoneMaintenance());
 		StartCoroutine(WindZoneMaintenance());
 
+		HidePirateZones();
+
 		CheckCurrentWaterWindZones();
 	}
 
@@ -686,6 +688,17 @@ public class script_player_controls : MonoBehaviour
 		if (trigger.transform.tag == "IllyrianRegionZone") {
 			isIllyrianRegionZone = false;
 			zonesList.Remove("Illyrian");
+		}
+	}
+
+	// TODO: this is a hack to avoid conflicting with existing scene changes from the in progress dialog branch.
+	// delete as soon as we can and just disable the renderer in the scene
+	void HidePirateZones() {
+		var zonesParent = GameObject.Find("QGIS Zones");
+		if(zonesParent != null) {
+			foreach (var renderer in zonesParent.GetComponentsInChildren<Renderer>()) {
+				renderer.enabled = false;
+			}
 		}
 	}
 
