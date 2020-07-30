@@ -346,11 +346,6 @@ public class CustomDialogUI : Yarn.Unity.DialogueUIBehaviour
 		currentOptionSelectionHandler?.Invoke(optionID);
 	}
 
-	[YarnCommand("setpartnername")]
-	public void SetOtherName(string name) {
-		otherName = name.Replace('_', ' ');
-	}
-
 	[YarnCommand("setspeaker")]
 	public void SetCurrentSpeaker(string speaker) {
 		if (speaker.ToLower() == "jason") {
@@ -363,6 +358,11 @@ public class CustomDialogUI : Yarn.Unity.DialogueUIBehaviour
 		}
 	}
 
+	[YarnCommand("setpartnername")]
+	public void SetOtherName(string name) {
+		otherName = name.Replace('_', ' ');
+	}
+
 	[YarnCommand("showcontinue")]
 	public void ShowContinueButton() {
 		ds.AddContinueOption();
@@ -371,7 +371,6 @@ public class CustomDialogUI : Yarn.Unity.DialogueUIBehaviour
 	[YarnCommand("setend")]
 	public void SetEndOfBlock() {
 		end = true;
-		Debug.Log("Set end to true");
 	}
 
 	public bool EndOfBlock {
