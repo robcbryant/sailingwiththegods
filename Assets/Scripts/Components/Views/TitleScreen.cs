@@ -180,7 +180,9 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 	public void Make_Zones_Invisible_On_Play_Start() {
 		foreach( GameObject zone in regional_zones) {
 			zone.SetActive(true);
-			zone.GetComponentInChildren<MeshRenderer>().enabled = false;
+			foreach(var zonePiece in zone.GetComponentsInChildren<MeshRenderer>()) {
+				zonePiece.enabled = false;
+			}
 		}
 	}
 	#endregion
