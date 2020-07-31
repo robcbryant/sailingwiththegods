@@ -26,11 +26,11 @@ I am the first and the last face you'll see here: no ordinary citizen I! You may
 /{$random_text}
 
 
-[[ What kind of place have I come to? |where ]]
-[[ What are the networks in this city? |networks ]]
-[[ Can I enter the city? |tax_start ]]
-[[ ENTER CITY SHORTCUT |enter_water ]]
-[[ LEAVE WITHOUT PAYING SHORTCUT |exit ]]
+[[ What kind of place have I come to? |where]]
+[[ What are the networks in this city? |networks]]
+[[ Can I enter the city? |tax_start]]
+[[ ENTER CITY SHORTCUT |enter_water]]
+[[ LEAVE WITHOUT PAYING SHORTCUT |exit]]
 ===
 title: where
 tags: 
@@ -50,9 +50,9 @@ position: 409,-589
 No, it's {$city_name}. {$city_description}
 
 << if $asked_networks is false >>
-    [[What are this city's networks? |networks ]]    
+    [[What are this city's networks? |networks]]    
 << endif >> 
-[[ Can I come into your city? |tax_start ]]
+[[ Can I come into your city? |tax_start]]
 ===
 title: networks
 tags: 
@@ -103,13 +103,13 @@ position: 885,-594
 << endif >> 
 
 <<  if $connections_number >= 1 >>
-    [[ We share a connection. Do I not therefore get a discount?|tax_network ]]
+    [[ We share a connection. Do I not therefore get a discount?|tax_network]]
 << endif >>
 
 << if $asked_where is false >>
-    [[ Where is this? |where ]]
+    [[ Where is this? |where]]
 << endif >> 
-[[Can I come into the city? |tax_start ]]
+[[Can I come into the city? |tax_start]]
 ===
 title: tax_network
 tags: 
@@ -156,9 +156,9 @@ I don't believe you. {$crew_name_3} must produce some proof!
 << endif >>
 
 << if $asked_where is false >>
-    [[ Where is this? |where ]]
+    [[ Where is this? |where]]
 << endif >> 
-[[ Can I come into the city? |tax_start ]]
+[[ Can I come into the city? |tax_start]]
 ===
 title: tax_start
 tags: 
@@ -180,9 +180,9 @@ Can I come into the city? What are my fees?
     /{$random_text}
 << endif >> 
 
-[[ Why do I pay you? |tax_why ]] 
-[[ What a risky way to make a living. |tax_insult ]]
-[[ This sounds serious! How much do I owe? |tax_explain ]]
+[[ Why do I pay you? |tax_why]] 
+[[ What a risky way to make a living. |tax_insult]]
+[[ This sounds serious! How much do I owe? |tax_explain]]
 ===
 title: tax_why
 tags: 
@@ -200,9 +200,9 @@ Why do I have to pay you? What makes you special?
 /{$random_text}
 
 << if $insulted is false >>
-    [[ What a risky way to make a living. |tax_insult ]]
+    [[ What a risky way to make a living. |tax_insult]]
 << endif >>
-[[ How much do I owe? |tax_explain ]]
+[[ How much do I owe? |tax_explain]]
 ===
 title: tax_insult
 tags: 
@@ -222,14 +222,14 @@ Say what you will, it's down to business. Quick quick then, let's get this done 
 The poorest man in the smallest boat can haul me before the magistrates! They could put me in prison, dishonor me as a public debtor, confiscate my property. That's why the city has made it easy for me to extract your taxes: all commercial transactions happen here or in the agora, and I'm not alone in keeping my eye on you: we have agoranomoi to back me up.
 
 << if $asked_who is false >>
-    [[ Why do I pay you? |tax_why ]]
+    [[ Why do I pay you? |tax_why]]
 << endif >>
-[[ How much do I owe? |tax_explain ]]
+[[ How much do I owe? |tax_explain]]
 ===
 title: tax_explain
 tags: 
 colorID: 0
-position: 670,609
+position: 671,609
 ---
 << setspeaker DialogScreen Jason >> 
 By the gods, this sounds serious. What kind of money are we talking about?
@@ -239,9 +239,9 @@ By the gods, this sounds serious. What kind of money are we talking about?
 << setend DialogScreen >> 
 /{$random_text}
 
-[[What types of taxes do you charge here? |tax_types ]]
-[[How much will I have to pay? |tax_breakdown ]]
-[[I already know what I want to do. |tax_short ]]
+[[What types of taxes do you charge here? |tax_types]]
+[[How much will I have to pay? |tax_breakdown]]
+[[I already know what I want to do. |tax_short]]
 ===
 title: tax_types
 tags: 
@@ -287,9 +287,9 @@ Have the seas made you spring a leak, will you be seeking tar, rope, fresh sails
 << setend DialogScreen >>
 Or if you are in great need of our great stores! You'll be hiring, seeking repairs, seeking to trade, stocking up with water, and imploring our local gods for help on the way? You can make full use of anything we offer - but of course, you'll be taxed accordingly at 5%!
 
-[[What exactly will each of these taxes cost me? |tax_breakdown ]]
-[[Alright, I understand. I know what I want to do. |tax_short ]]
-[[That's far too many taxes! (leave without paying) |exit ]]
+[[What exactly will each of these taxes cost me? |tax_breakdown]]
+[[Alright, I understand. I know what I want to do. |tax_short]]
+[[That's far too many taxes! (leave without paying) |exit]]
 ===
 title: tax_breakdown
 tags: 
@@ -351,10 +351,10 @@ Okay then, what are the exact charges? I must know if you are charging me fairly
 << setend DialogScreen >> 
 If you want only water and brief rest, you owe {$updated_subtotal + $water_intent} Drachma. If you are here to trade, your total will be {$updated_subtotal + $trade_intent} Drachma. If you need long rest, new crew, and repairs, you have to pay {$updated_subtotal + $tavern_intent} Drachma. Or if you want to take full advantage of our port, it comes out to {$updated_subtotal + $all_intent} Drachma.
 
-[[I would like to rest and buy water. (pay {$updated_subtotal + $water_intent} dr) |enter_water ]]
-[[I would like to trade my cargo. (pay {$updated_subtotal + $trade_intent} dr) |enter_trading ]]
-[[I would like a long rest and to manage my crew. (pay {$updated_subtotal + $tavern_intent} dr) |enter_shelter ]]
-[[I would like to take full advantage of this port. (pay {$updated_subtotal + $all_intent} dr) |enter_full ]]
+[[I would like to rest and buy water. (pay {$updated_subtotal + $water_intent} dr) |enter_water]]
+[[I would like to trade my cargo. (pay {$updated_subtotal + $trade_intent} dr) |enter_trading]]
+[[I would like a long rest and to manage my crew. (pay {$updated_subtotal + $tavern_intent} dr) |enter_shelter]]
+[[I would like to take full advantage of this port. (pay {$updated_subtotal + $all_intent} dr) |enter_full]]
 [[That's far too much! (exit without paying) |exit]]
 ===
 title: tax_short
@@ -387,12 +387,12 @@ I already know what I want to do.
 	Very well then. Your total is {$updated_subtotal} Drachma plus the intent fee.
 << endif >>
 
-[[What is that money paying for? |tax_breakdown ]]
-[[I would like to rest and buy water. (pay {$updated_subtotal + $water_intent} dr) |enter_water ]]
-[[I would like to trade my cargo. (pay {$updated_subtotal + $trade_intent} dr) |enter_trading ]]
-[[I would like a long rest and to manage my crew. (pay {$updated_subtotal + $tavern_intent} dr) |enter_shelter ]]
-[[I would like to take full advantage of this port. (pay {$updated_subtotal + $all_intent} dr) |enter_full ]]
-[[That's far too much! (exit without paying) |exit ]]
+[[What is that money paying for? |tax_breakdown]]
+[[I would like to rest and buy water. (pay {$updated_subtotal + $water_intent} dr) |enter_water]]
+[[I would like to trade my cargo. (pay {$updated_subtotal + $trade_intent} dr) |enter_trading]]
+[[I would like a long rest and to manage my crew. (pay {$updated_subtotal + $tavern_intent} dr) |enter_shelter]]
+[[I would like to take full advantage of this port. (pay {$updated_subtotal + $all_intent} dr) |enter_full]]
+[[That's far too much! (exit without paying) |exit]]
 ===
 title: enter_water
 tags: 
@@ -404,13 +404,11 @@ Nymphs are generous, water falls from the sky - and yet we must pay you! But pay
 
 << setspeaker DialogScreen other >>
 << setsprite Partner happy >>
-<< setend DialogScreen >> 
 
 << set $final_cost to ($updated_subtotal + $water_intent)>> 
 << pay DialogScreen $final_cost >> 
 << set $entering_city to true >>
 Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your time in our fair city!
-
 ===
 title: enter_trading
 tags: 
@@ -429,7 +427,7 @@ Too great is the lure of your market for us to resist - even at those rates! Acc
 
 Thank you for your business! That's {$final_cost} Drachma exactly!
 
-[[Continue |herald_fee ]]
+[[Continue |herald_fee]]
 ===
 title: enter_shelter
 tags: 
@@ -441,13 +439,11 @@ A weary ship, a thirsty crew, growling stomachs and empty seats - what choice do
 
 << setspeaker DialogScreen other >>
 << setsprite Partner happy >>
-<< setend DialogScreen >> 
 
 << set $final_cost to ($updated_subtotal + $tavern_intent)>> 
 << pay DialogScreen $final_cost >> 
 << set $entering_city to true >>
 Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your time in our fair city!
-
 ===
 title: enter_full
 tags: 
@@ -480,10 +476,10 @@ If you wish to sell your goods, surely you will need to advertise them! Hire a h
 
 << checkafford DialogScreen 2 >>
 << if $can_afford is true >>
-    [[I will pay for a herald. (2 dr) |herald_pay ]]
+    [[I will pay for a herald. (2 dr) |herald_pay]]
 << endif >> 
 
-[[I do not need a herald. |herald_no ]]
+[[I do not need a herald. |herald_no]]
 ===
 title: herald_pay
 tags: 
@@ -494,11 +490,10 @@ position: 763,2050
 << pay DialogScreen 2 >> 
 Indeed I'll pay! Heralds are a noble profession and I'm wise in matters of the market.
 
-<< setspeaker DialogScreen to other >>
+<< setspeaker DialogScreen other >>
 << setsprite Partner happy >>
 << set $entering_city to true >>
 A wise decision! Enjoy your time in our fair city!
-
 ===
 title: herald_no
 tags: 
