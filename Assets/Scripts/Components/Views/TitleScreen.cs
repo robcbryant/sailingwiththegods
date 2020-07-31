@@ -93,6 +93,7 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 		SetResolutionsAndGreenTexts();
 	}
 
+	#region Resolutions Settings
 	//make sure only one copy of resolution in list
 	public void AddSupportedReolutionsToArray() {
 		var distinctResoultionsList = Screen.resolutions
@@ -103,7 +104,6 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 			.Take(5)
 			.ToArray();
 	}
-
 
 	public void SetResolutionsAndGreenTexts() {
 		for (int x = 0; x < 5; x++) {
@@ -151,6 +151,7 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 			}
 		}
 	}
+	#endregion
 
 	#region GUI Show and Hide
 	override protected void OnEnable() {

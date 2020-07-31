@@ -130,16 +130,16 @@ public class script_player_controls : MonoBehaviour
 		//	MGV.DEBUG_currentQuestLegIncrease = false;
 		//}
 
-		// TODO: Remove - this is just here as an initial test of minigames
-		//if (Input.GetKeyUp(KeyCode.B)) {
-		//	Globals.MiniGames.Enter("Pirate Game/Pirate Game");
-		//}
-		//if (Input.GetKeyUp(KeyCode.N)) {
-		//	Globals.MiniGames.Enter("Storm MG/Storm Game");
-		//}
-		//if (Input.GetKeyUp(KeyCode.M)) {
-		//	Globals.MiniGames.Exit();
-		//}
+		//TODO: Remove - this is just here as an initial test of minigames
+		if (Input.GetKeyUp(KeyCode.B)) {
+			Globals.MiniGames.Enter("Pirate Game/Pirate Game");
+		}
+		if (Input.GetKeyUp(KeyCode.N)) {
+			Globals.MiniGames.Enter("Storm MG/Storm Game");
+		}
+		if (Input.GetKeyUp(KeyCode.M)) {
+			Globals.MiniGames.Exit();
+		}
 
 		// debug tool to see where you are in lat long
 		longXLatY = CoordinateUtil.ConvertWebMercatorToWGS1984(CoordinateUtil.Convert_UnityWorld_WebMercator(GameVars.playerShip.transform.position));
