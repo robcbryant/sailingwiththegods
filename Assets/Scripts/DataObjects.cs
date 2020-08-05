@@ -612,6 +612,8 @@ public class Resource : Model
 	public const string Bronze = "Bronze";
 	public const string PrestigeGoods = "Prestige Goods";
 
+	public static readonly string[] All = new string[] { Water, Provisions, Grain, Wine, Timber, Gold, Silver, Copper, Tin, Obsidian, Lead, Livestock, Iron, Bronze, PrestigeGoods };
+
 	public string name { get; private set; }
 
 	private float _initial_amount_kg;
@@ -622,6 +624,10 @@ public class Resource : Model
 
 	public Resource(string name, float amount_kg) {
 		this.name = name;
+		Initialize(amount_kg);
+	}
+
+	public void Initialize(float amount_kg) {
 		this.amount_kg = amount_kg;
 		this.initial_amount_kg = amount_kg;
 	}
@@ -647,6 +653,17 @@ public class Settlement
 	public ObservableCollection<CrewMember> availableCrew;
 	public string prefabName;
 
+	// tax factors
+	public int godTax;
+	public int godTaxAmount;
+	public int transitTax;
+	public float transitTaxPercent;
+	public int foreignerFee;
+	public float foreignerFeePercent;
+	public float ellimenionPercent;
+
+	public string coinText;
+
 	public Resource GetCargoByName(string name) => cargo.FirstOrDefault(c => c.name == name);
 
 	public Settlement(int settlementID, string name, Vector2 location_longXlatY, float elevation, int population) {
@@ -655,23 +672,7 @@ public class Settlement
 		this.elevation = elevation;
 		this.name = name;
 		this.population = population;
-		cargo = new Resource[] {
-			new Resource ("Water", 0f),
-			new Resource ("Provisions", 0f),
-			new Resource ("Grain", 0f),
-			new Resource ("Wine", 0f),
-			new Resource ("Timber", 0f),
-			new Resource ("Gold", 0f),
-			new Resource ("Silver", 0f),
-			new Resource ("Copper", 0f),
-			new Resource ("Tin", 0f),
-			new Resource ("Obsidian", 0f),
-			new Resource ("Lead", 0f),
-			new Resource ("Livestock", 0f),
-			new Resource ("Iron", 0f),
-			new Resource ("Bronze", 0f),
-			new Resource ("Prestige Goods", 0f),
-		};
+		cargo = Resource.All.Select(r => new Resource(r, 0f)).ToArray();
 		networks = new List<int>();
 		availableCrew = new ObservableCollection<CrewMember>();
 	}
@@ -768,23 +769,9 @@ public class Ship : Model
 		this.crewRoster = new ObservableCollection<CrewMember>();
 		this.playerJournal = new Journal();
 
-		cargo = new Resource[] {
-			new Resource ("Water", 100f),
-			new Resource ("Provisions", 100f),
-			new Resource ("Grain", 0f),
-			new Resource ("Wine", 0f),
-			new Resource ("Timber", 0f),
-			new Resource ("Gold", 0f),
-			new Resource ("Silver", 0f),
-			new Resource ("Copper", 0f),
-			new Resource ("Tin", 0f),
-			new Resource ("Obsidian", 0f),
-			new Resource ("Lead", 0f),
-			new Resource ("Livestock", 0f),
-			new Resource ("Iron", 0f),
-			new Resource ("Bronze", 0f),
-			new Resource ("Prestige Goods", 0f),
-		};
+		cargo = Resource.All.Select(r => new Resource(r, 0f)).ToArray();
+		GetCargoByName(Resource.Water).Initialize(100f);
+		GetCargoByName(Resource.Provisions).Initialize(100f);
 
 		this.currency = 500;
 		this.crewCapacity = StartingCrewCap;

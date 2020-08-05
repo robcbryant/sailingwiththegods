@@ -7,6 +7,20 @@ using UnityEngine;
 
 public static class CSVLoader
 {
+	static Resource[] ParseSettlementCargo(string[] records, string[] headers, int startColumnIdx, int population) {
+		var results = new List<Resource>();
+		for(var i = startColumnIdx; i < startColumnIdx + Resource.All.Length; i++) { 
+			var probabilityOfAvailability = float.Parse(records[i]);
+
+			//TODO The probability values are 1-100 and population affects the amount
+			//  Population/2 x (probabilityOfResource/100)
+			float amount = (population / 2) * (probabilityOfAvailability / 1.5f);
+
+			// settlement csv may get names wrong, treat order as the important thing instead (TODO: which is obviously a mistake because it's easier to get names right than order probably)
+			results.Add(new Resource(Resource.All[i - startColumnIdx], amount));
+		}
+		return results.ToArray();
+	}
 
 	public static Settlement[] LoadSettlementList() {
 		char[] lineDelimiter = new char[] { '@' };
@@ -15,76 +29,44 @@ public static class CSVLoader
 		string filename = "settlement_list_newgame";
 		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
-		//subtract one to account for the header line
 		var settlement_masterList = new Dictionary<int, Settlement>();
-		//start at index 1 to skip the record headers we have to then subtract 
-		//one when adding NEW settlements to the list to ensure we start at ZERO and not ONE
-		for (int lineCount = 1; lineCount < fileByLine.Length; lineCount++) {
-			//Debug.Log("-->" + fileByLine[lineCount]);
-			string[] records = fileByLine[lineCount].Split(lineDelimiter, StringSplitOptions.None);
-			//Debug.Log (records[1] + "  " + records[2] + " " + records[3] + " " + records[4]);
-			//NAME | LAT LONG | POPULATION | ELEVATION
-			int id;
-			if (records[0] == null)
-				id = -1;
-			else
-				id = int.Parse(records[0]);
-			string name;
-			if (records[1] == null)
-				name = "NO NAME";
-			else
-				name = records[1];
-			Vector2 longXlatY;
-			try {
-				longXlatY = new Vector2(float.Parse(records[3]), float.Parse(records[2]));
-			}
-			catch {
-				longXlatY = Vector2.zero;
-			}
-			float elevation;
-			try {
-				elevation = float.Parse(records[4]);
-			}
-			catch {
-				elevation = 0f;
-			}
-			int population;
-			population = int.Parse(records[5]);
+		var headers = fileByLine[0].Split(lineDelimiter, StringSplitOptions.None);
+		for (int row = 1; row < fileByLine.Length; row++) {
+			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
+			
+			// parse indices before cargo list
+			int id = int.Parse(records[0]);
 
-			var settlement = new Settlement(id, name, longXlatY, elevation, population);
-			settlement_masterList.Add(id, settlement);
+			var settlement = new Settlement(
+				settlementID: id,
+				name: records[1],
+				location_longXlatY: ParseEastingNorthing(records[2], records[3]),
+				elevation: float.Parse(records[4]),
+				population: int.Parse(records[5])
+			);
 
-			//Grab the networks it belongs to
-			//List<int> networks = new List<int>();
-			string[] parsedNetworks = records[7].Split(recordDelimiter, StringSplitOptions.None);
-			foreach (string networkID in parsedNetworks)
-				settlement.networks.Add(int.Parse(networkID));
-
-			//load settlement's in/out network taxes
+			settlement.networks = ParseIntList(records[7]);
 			settlement.tax_neutral = float.Parse(records[9]);
 			settlement.tax_network = float.Parse(records[10]);
-			//load the settlement type, e.g. port, no port
-			settlement.typeOfSettlement = int.Parse(records[26]);
-			//add resources to settlement (records length - 2 is confusing, but there are items after the last resource--can probably change this later)
-			for (int recordIndex = 11; recordIndex < records.Length - 3; recordIndex++) {
-				var probabilityOfAvailability = float.Parse(records[recordIndex]);
-				//TODO The probability values are 1-100 and population affects the amount
-				//  Population/2 x (probabilityOfResource/100)
-				float amount = (settlement.population / 2) * (probabilityOfAvailability / 1.5f);
-				settlement.cargo[recordIndex - 11].amount_kg = amount;
-				settlement.cargo[recordIndex - 11].initial_amount_kg = amount;
-			}
-			//Add model/prefab name to settlement
-			settlement.prefabName = records[records.Length - 2];
-			//Debug.Log("********PREFAB NAME:     " + settlement.prefabName);
-			//Add description to settlement
-			settlement.description = records[records.Length - 1];
 
-			//Debug.Log (settlement_masterList[lineCount-1].ToString());
-			//Vector2 test = CoordinateUtil.ConvertWGS1984ToWebMercator(longXlatY);
-			//Debug.Log (records[1] + " : " + test.x + " , " + test.y);
+			const int cargoStartIndex = 11;
+			settlement.cargo = ParseSettlementCargo(records, headers, cargoStartIndex, settlement.population);
 
+			// parse indices after cargo list (using an offset from the end of it)
+			int afterCargo = cargoStartIndex + Resource.All.Length;
+			settlement.typeOfSettlement = int.Parse(records[afterCargo]);
+			settlement.prefabName = records[afterCargo + 1];
+			settlement.description = records[afterCargo + 2];
+			settlement.godTax = int.Parse(records[afterCargo + 3]);
+			settlement.godTaxAmount = int.Parse(records[afterCargo + 4]);
+			settlement.transitTax = int.Parse(records[afterCargo + 5]);
+			settlement.transitTaxPercent = float.Parse(records[afterCargo + 6]);
+			settlement.foreignerFee = int.Parse(records[afterCargo + 7]);
+			settlement.foreignerFeePercent = float.Parse(records[afterCargo + 8]);
+			settlement.ellimenionPercent = float.Parse(records[afterCargo + 9]);
+			settlement.coinText = records[afterCargo + 10];
 
+			settlement_masterList.Add(id, settlement);
 		}
 
 		LoadAdjustedSettlementLocations(settlement_masterList);
@@ -180,6 +162,15 @@ public static class CSVLoader
 	static Vector2 ToVector2(this List<float> list) {
 		return new Vector2(list[0], list[1]);
 	}
+
+	static Vector2 ParseEastingNorthing(string easting, string northing) {
+		return new [] {float.Parse(easting), float.Parse(northing)}.ToList().ToVector2().Reverse();
+	}
+
+	// csv uses is (lat/easting, long/northing) but the game uses (long/northing, lat/easting) 
+	static Vector2 ParseEastingNorthing(string cellData) {
+		return ParseFloatList(cellData).ToVector2().Reverse();
+	}
 	
 	static QuestSegment.Trigger ParseTrigger(string triggerTypeCell, string triggerDataCell) {
 		var triggerType = (QuestSegment.TriggerType)Enum.Parse(typeof(QuestSegment.TriggerType), triggerTypeCell);
@@ -187,7 +178,7 @@ public static class CSVLoader
 			case QuestSegment.TriggerType.City:
 				return new QuestSegment.CityTrigger(int.Parse(triggerDataCell));
 			case QuestSegment.TriggerType.Coord:
-				return new QuestSegment.CoordTrigger(ParseFloatList(triggerDataCell).ToVector2().Reverse());			// csv uses is (lat/easting, long/northing) but the game uses (long/northing, lat/easting) 
+				return new QuestSegment.CoordTrigger(ParseEastingNorthing(triggerDataCell));			
 			case QuestSegment.TriggerType.UpgradeShip:
 				return new QuestSegment.UpgradeShipTrigger();
 			case QuestSegment.TriggerType.None:
