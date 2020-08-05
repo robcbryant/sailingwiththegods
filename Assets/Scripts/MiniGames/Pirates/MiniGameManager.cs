@@ -74,7 +74,7 @@ public class MiniGameManager : MonoBehaviour
 		}
 		else {
 			//temporary code 
-			rsp.SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
+			//rsp.SetPirateType(Globals.GameVars.PirateTypes.RandomElement());
 		}
 
 		runChance = CalculateRunChance();

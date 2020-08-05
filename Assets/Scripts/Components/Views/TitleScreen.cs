@@ -71,7 +71,6 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 		Subscribe(resolutions_settings_button.onClick, () => GUI_ShowReolutionsSettings());
 		Subscribe(resolutions_settings_exit.onClick, () => GUI_HideResolutionsSettings());
 
-
 		information_texts = new Text[5] { highest_text, higher_text, default_text, lower_text, lowest_text };
 		regional_zones = new GameObject[] { Aetolian_Region_Zone, Cretan_Region_Zone, Etruscan_Pirate_Region_Zone, Illyrian_Region_Zone };
 
@@ -181,7 +180,9 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 	public void Make_Zones_Invisible_On_Play_Start() {
 		foreach( GameObject zone in regional_zones) {
 			zone.SetActive(true);
-			zone.GetComponentInChildren<MeshRenderer>().enabled = false;
+			foreach (var zonePiece in zone.GetComponentsInChildren<MeshRenderer>()) {
+				zonePiece.enabled = false;
+			}
 		}
 	}
 	#endregion

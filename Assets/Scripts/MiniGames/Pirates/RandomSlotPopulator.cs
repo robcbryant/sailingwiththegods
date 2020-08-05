@@ -83,8 +83,8 @@ public class RandomSlotPopulator : MonoBehaviour
 		{
 			pirateSlots[x].SetActive(true);
 			Pirate g = Instantiate(pirate);
-			//Debug.Log("pirate local scale = " + pirate.transform.localScale);
-			//Debug.Log("pirate lossy scale = " + pirate.transform.lossyScale);
+			Debug.Log("pirate local scale = " + pirate.transform.localScale);
+			Debug.Log("pirate lossy scale = " + pirate.transform.lossyScale);
 			if (typeToSpawn.difficulty == 1) {
 				g.GetComponent<CrewCard>().power = (g.GetComponent<CrewCard>().power / 5);
 				g.GetComponent<CrewCard>().powerText.text = g.GetComponent<CrewCard>().power.ToString();
@@ -106,6 +106,9 @@ public class RandomSlotPopulator : MonoBehaviour
 			possiblePirates.Remove(randomPirate);
 			g.GetComponent<RectTransform>().position = pirateSlots[x].GetComponent<RectTransform>().position;
 			g.transform.SetParent(pirateParent);
+			//no idea why this is necessary, but all cards need to be scaled to the local scale of the canvas of the minigame 
+			//same thing below is done for the crew cards
+			g.transform.localScale = GetComponent<Canvas>().transform.localScale;
 			playerSlots[x].SetActive(true);
 
 			g.GetComponent<CrewCard>().cardIndex = pirateSlots[x].GetComponent<CardDropZone>().dropIndex;
@@ -124,6 +127,8 @@ public class RandomSlotPopulator : MonoBehaviour
 				//Spawns a new crew slot
 				GameObject slot = Instantiate(crewMemberSlot);
 				slot.transform.SetParent(crewSlotParent);
+				//scaling crew card slots
+				slot.transform.localScale = GetComponent<Canvas>().transform.localScale;
 				RectTransform slotRect = slot.GetComponent<RectTransform>();
 				slotRect.anchoredPosition = new Vector2(xPos, yPos);
 				CardDropZone cdz = slot.GetComponent<CardDropZone>();
@@ -137,18 +142,20 @@ public class RandomSlotPopulator : MonoBehaviour
 					newCrew.Bind();
 					newCrew.GetComponent<RectTransform>().anchoredPosition = slotRect.position;
 					newCrew.transform.SetParent(crewParentInOrigin);
+					//scaling crew cards
+					newCrew.transform.localScale = GetComponent<Canvas>().transform.localScale;
 					newCrew.SetCrew(Globals.GameVars.playerShipVariables.ship.crewRoster[spawnedSlots]);
 					cdz.SetOccupied(true);
-					//Debug.Log("crewmember scale = " + crew.transform.localScale);
-					//Debug.Log("crewmember lossy scale = " + crew.transform.lossyScale);
+					Debug.Log("crewmember scale = " + crew.transform.localScale);
+					Debug.Log("crewmember lossy scale = " + crew.transform.lossyScale);
 				}
 				
 				//Moves to the next point
-				xPos += paddingX;
+				xPos += paddingX * (GetComponent<Canvas>().transform.localScale.x);
 				spawnedSlots++;
 			}
 			xPos = startPos.x;
-			yPos += paddingY;
+			yPos += paddingY * (GetComponent<Canvas>().transform.localScale.y);
 		}
 	}
 

@@ -567,7 +567,6 @@ public class script_player_controls : MonoBehaviour
 		}//End of initial ship rotation
 	}
 
-
 	public void UpdateShipAtrophyAfterTravelTime(float travelTime, bool isPassingTime) {
 		float dailyProvisionsKG = .83f;
 		float dailyWaterKG = 5f;
