@@ -57,11 +57,11 @@ public static class CSVLoader
 			settlement.typeOfSettlement = int.Parse(records[afterCargo]);
 			settlement.prefabName = records[afterCargo + 1];
 			settlement.description = records[afterCargo + 2];
-			settlement.godTax = int.Parse(records[afterCargo + 3]);
+			settlement.godTax = int.Parse(records[afterCargo + 3]) == 1;
 			settlement.godTaxAmount = int.Parse(records[afterCargo + 4]);
-			settlement.transitTax = int.Parse(records[afterCargo + 5]);
+			settlement.transitTax = int.Parse(records[afterCargo + 5]) == 1;
 			settlement.transitTaxPercent = float.Parse(records[afterCargo + 6]);
-			settlement.foreignerFee = int.Parse(records[afterCargo + 7]);
+			settlement.foreignerFee = int.Parse(records[afterCargo + 7]) == 1;
 			settlement.foreignerFeePercent = float.Parse(records[afterCargo + 8]);
 			settlement.ellimenionPercent = float.Parse(records[afterCargo + 9]);
 			settlement.coinText = records[afterCargo + 10];

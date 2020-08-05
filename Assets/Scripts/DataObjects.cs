@@ -654,11 +654,11 @@ public class Settlement
 	public string prefabName;
 
 	// tax factors
-	public int godTax;
+	public bool godTax;
 	public int godTaxAmount;
-	public int transitTax;
+	public bool transitTax;
 	public float transitTaxPercent;
-	public int foreignerFee;
+	public bool foreignerFee;
 	public float foreignerFeePercent;
 	public float ellimenionPercent;
 
