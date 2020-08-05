@@ -723,7 +723,7 @@ public class GameVars : MonoBehaviour
 	//====================================================================================================
 	//      DATA SAVING FUNCTIONS
 	//====================================================================================================
-	public void SaveUserGameData(bool isRestart) {
+	public void SaveUserGameData() {
 		string delimitedData = playerShipVariables.journey.ConvertJourneyLogToCSVText();
 		Debug.Log(delimitedData);
 		string filePath = Application.persistentDataPath + "/";
@@ -741,8 +741,7 @@ public class GameVars : MonoBehaviour
 		try {
 			//save a backup before Joanna's edits
 			System.IO.File.WriteAllText(Application.persistentDataPath + "/BACKUP-" + SystemInfo.deviceUniqueIdentifier + "_player_data_" + System.DateTime.UtcNow.ToString("HH-mm-ss_dd_MMMM_yyyy") + ".csv", delimitedData);
-			//Only save the game for loading if it's not a restart--otherwise if the player loads, it will load right where the player restarted the game
-			if (!isRestart) System.IO.File.WriteAllText(Application.persistentDataPath + "/" + fileName, delimitedData);
+			System.IO.File.WriteAllText(Application.persistentDataPath + "/" + fileName, delimitedData);
 			//TODO Temporary addition for joanna to remove the captains log from the server upload
 			string fileToUpload = RemoveCaptainsLogForJoanna(delimitedData);
 			System.IO.File.WriteAllText(Application.persistentDataPath + "/" + fileNameServer, fileToUpload);
@@ -936,7 +935,7 @@ public class GameVars : MonoBehaviour
 
 		//Debug.Log ("Quest Seg: " + playerShipVariables.ship.mainQuest.currentQuestSegment);
 		//First we need to save the game that just ended
-		SaveUserGameData(true);
+		SaveUserGameData();
 		//Then we need to re-initialize all the player's variables
 		playerShipVariables.Reset();
 
