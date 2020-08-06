@@ -83,19 +83,20 @@ public class RandomSlotPopulator : MonoBehaviour
 		{
 			pirateSlots[x].SetActive(true);
 			Pirate g = Instantiate(pirate);
+			CrewCard gCard = g.GetComponent<CrewCard>();
 			Debug.Log("pirate local scale = " + pirate.transform.localScale);
 			Debug.Log("pirate lossy scale = " + pirate.transform.lossyScale);
 			if (typeToSpawn.difficulty == 1) {
-				g.GetComponent<CrewCard>().power = (g.GetComponent<CrewCard>().power / 5);
-				g.GetComponent<CrewCard>().powerText.text = g.GetComponent<CrewCard>().power.ToString();
+				gCard.power = (gCard.power / 5);
+				gCard.powerText.text = gCard.power.ToString();
 			}
 			else if (typeToSpawn.difficulty == 2) {
-				g.GetComponent<CrewCard>().power = (g.GetComponent<CrewCard>().power / 3);
-				g.GetComponent<CrewCard>().powerText.text = g.GetComponent<CrewCard>().power.ToString();
+				gCard.power = (gCard.power / 3);
+				gCard.powerText.text = gCard.power.ToString();
 			}
 			else if (typeToSpawn.difficulty == 4) {
-				g.GetComponent<CrewCard>().power = (int)(g.GetComponent<CrewCard>().power * 1.5f);
-				g.GetComponent<CrewCard>().powerText.text = g.GetComponent<CrewCard>().power.ToString();
+				gCard.power = (int)(gCard.power * 1.5f);
+				gCard.powerText.text = gCard.power.ToString();
 
 			}
 
@@ -126,9 +127,9 @@ public class RandomSlotPopulator : MonoBehaviour
 			{
 				//Spawns a new crew slot
 				GameObject slot = Instantiate(crewMemberSlot);
-				slot.transform.SetParent(crewSlotParent);
 				//scaling crew card slots
 				slot.transform.localScale = GetComponent<Canvas>().transform.localScale;
+				slot.transform.SetParent(crewSlotParent);
 				RectTransform slotRect = slot.GetComponent<RectTransform>();
 				slotRect.anchoredPosition = new Vector2(xPos, yPos);
 				CardDropZone cdz = slot.GetComponent<CardDropZone>();
