@@ -7,6 +7,12 @@ using UnityEngine;
 //*crewmember is sick: they may or may not die, but temporarily acts as one less crew member, and uses twice as much water
 public class SickCrewMember : RandomEvents.NegativeEvent
 {
+	//weight scaled down to zero to prevent the plague-like event on 08/07/2020
+	//removed due to concern of reletivity to current events (Coronavirus Pandemic) 
+	public override float Weight() {
+		return 0f;
+	}
+
 	public override void Execute() {
 		//A random crewmember gets sick, and there is a chance up to two members die from the event
 		//Kill up to 2 crew members!
