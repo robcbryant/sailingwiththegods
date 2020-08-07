@@ -29,6 +29,8 @@ public class CrewCard : MonoBehaviour
 	private RandomSlotPopulator rsp;
 	public int cardIndex;
 
+	private Vector2 pos = new Vector2();
+
 	private void Start() 
 	{
 		rect = GetComponent<RectTransform>();
@@ -72,7 +74,7 @@ public class CrewCard : MonoBehaviour
 
 	private void ToMousePos() 
 	{
-		rect.anchoredPosition = Input.mousePosition;
+		rect.position = Input.mousePosition;
 	}
 
 	public void OverDropSpot(Vector2 pos, bool isStart) 
@@ -126,6 +128,15 @@ public class CrewCard : MonoBehaviour
 				Message = crew.backgroundInfo
 			})
 		}));
+	}
+
+	public Vector2 Position {
+		get {
+			return pos;
+		}
+		set {
+			pos = value;
+		}
 	}
 
 #if UNITY_EDITOR
