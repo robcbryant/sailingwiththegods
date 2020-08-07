@@ -26,12 +26,14 @@ public class DialogScreen : MonoBehaviour
 	private InMemoryVariableStorage storage;
 	private DialogueRunner runner;
 	private Settlement city;
+	private Canvas canvas;
 
 	private void OnValidate() 
 	{
 		yarnUI = GetComponent<CustomDialogUI>();
 		storage = GetComponent<InMemoryVariableStorage>();
 		runner = GetComponent<DialogueRunner>();
+		canvas = GetComponentInParent<Canvas>();
 	}
 
 	private void OnEnable() 
@@ -75,6 +77,7 @@ public class DialogScreen : MonoBehaviour
 		yield return null;
 		p.transform.SetParent(conversationHolder);
 		p.transform.SetSiblingIndex(conversationHolder.childCount - 2);
+		p.transform.localScale = Vector3.one;
 		yield return null;
 		conversationScroll.value = 0;
 		yield return null;
@@ -91,6 +94,7 @@ public class DialogScreen : MonoBehaviour
 			yield return null;
 			i.transform.SetParent(conversationHolder);
 			i.transform.SetSiblingIndex(conversationHolder.childCount - 2);
+			i.transform.localScale = Vector3.one;
 			yield return null;
 			conversationScroll.value = 0;
 			yield return null;
@@ -119,6 +123,7 @@ public class DialogScreen : MonoBehaviour
 		DialogChoice c = Instantiate(choiceObject);
 		c.SetText(text);
 		c.transform.SetParent(choiceHolder);
+		c.transform.localScale = Vector3.one;
 		c.SetOnClick(click);
 	}
 

@@ -103,6 +103,7 @@ public class CrewCard : MonoBehaviour
 	{
 		//Will eventually do some fun calculations in here to get the actual number
 		power = crew.clout;
+		powerText.text = power.ToString();
 	}
 
 	public void UpdatePower(int tempPower) {
@@ -121,7 +122,8 @@ public class CrewCard : MonoBehaviour
 	public void Bind() 
 	{
 		infoButton?.Bind(ValueModel.New(new ButtonViewModel {
-			OnClick = () => Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
+			OnClick = () =>
+			Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
 				Icon = crewImage.sprite,
 				Title = crew.name,
 				Subtitle = Globals.GameVars.GetJobClassEquivalency(crew.typeOfCrew),
