@@ -29,7 +29,7 @@ public class MiniGameManager : MonoBehaviour
 	[Header("Gameplay")]
 	public Vector2 runningBounds = new Vector2(0.1f, 0.9f);
 	public GameObject piratesParent, crewParent;
-	public List<GameObject> crewSlots;
+	public List<CardDropZone> crewSlots;
 	public Transform[] pirateSpaces, crewSpaces;
 
 	[Header("Clout")]
@@ -149,8 +149,8 @@ public class MiniGameManager : MonoBehaviour
 		return null;
 	}
 
-	public void InitilizePirates(GameObject[] playableSlots) {
-		
+	public void InitilizePirates(List<CardDropZone> playableSlots) {
+
 		//foreach (Transform p in piratesParent.transform) {
 		//	pirates.Add(p.gameObject);
 		//}
@@ -164,7 +164,7 @@ public class MiniGameManager : MonoBehaviour
 
 		//crew = playableSlots.ToList();
 
-		crewSlots = playableSlots.Where(slot => slot.activeSelf).ToList();
+		crewSlots = playableSlots;
 		
 
 		//crewSlots = crewSlots.OrderBy(GameObject => GameObject.transform.GetComponent<CardDropZone>().dropIndex).ToList<GameObject>();
@@ -399,8 +399,8 @@ public class MiniGameManager : MonoBehaviour
 		CrewCard crewMember, pirate;
 
 		//adding the crewmembers in the play area to the list of playable crew
-		var minIndex = crewSlots.Min(c => c.GetComponent<CardDropZone>().dropIndex);
-		var maxIndex = crewSlots.Max(c => c.GetComponent<CardDropZone>().dropIndex);
+		var minIndex = crewSlots.Min(c => c.dropIndex);
+		var maxIndex = crewSlots.Max(c => c.dropIndex);
 
 			for (var index = minIndex; index <= maxIndex; index++) {
 			//int zeroBasedIndex = index - minIndex;
