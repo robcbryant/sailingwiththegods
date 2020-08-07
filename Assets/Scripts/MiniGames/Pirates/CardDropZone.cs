@@ -9,6 +9,11 @@ public class CardDropZone : MonoBehaviour
 	public int dropIndex;
 
 	private bool allowDropping = true;
+	private RectTransform rect;
+
+	private void Start() {
+		rect = GetComponent<RectTransform>();
+	}
 
 	private void OnTriggerEnter2D(Collider2D collision) 
 	{
@@ -18,7 +23,8 @@ public class CardDropZone : MonoBehaviour
 			SetOccupied(true);
 			cc.cardIndex = this.dropIndex;
 			//dropIndex++;
-			cc.OverDropSpot(GetComponent<RectTransform>().position, startingPoint);
+			cc.OverDropSpot(rect.position, startingPoint);
+			Debug.Log($"Card is over a spot {rect.position.x} {rect.position.y}");
 		}
 		//dropIndex++;
 	}
@@ -29,7 +35,7 @@ public class CardDropZone : MonoBehaviour
 		{
 			CrewCard cc = collision.GetComponent<CrewCard>();
 			SetOccupied(false);
-			cc.LeaveDropSpot(GetComponent<RectTransform>().position);
+			cc.LeaveDropSpot(rect.position);
 			//dropIndex++; //<-- changes the dropIndex value one time ONLY
 		}
 		//dropIndex++;

@@ -26,12 +26,14 @@ public class DialogScreen : MonoBehaviour
 	private InMemoryVariableStorage storage;
 	private DialogueRunner runner;
 	private Settlement city;
+	private Canvas canvas;
 
 	private void OnValidate() 
 	{
 		yarnUI = GetComponent<CustomDialogUI>();
 		storage = GetComponent<InMemoryVariableStorage>();
 		runner = GetComponent<DialogueRunner>();
+		canvas = GetComponentInParent<Canvas>();
 	}
 
 	private void OnEnable() 
@@ -75,6 +77,7 @@ public class DialogScreen : MonoBehaviour
 		yield return null;
 		p.transform.SetParent(conversationHolder);
 		p.transform.SetSiblingIndex(conversationHolder.childCount - 2);
+		p.transform.localScale = Vector3.one;
 		yield return null;
 		conversationScroll.value = 0;
 		yield return null;
@@ -91,6 +94,7 @@ public class DialogScreen : MonoBehaviour
 			yield return null;
 			i.transform.SetParent(conversationHolder);
 			i.transform.SetSiblingIndex(conversationHolder.childCount - 2);
+			i.transform.localScale = Vector3.one;
 			yield return null;
 			conversationScroll.value = 0;
 			yield return null;
@@ -119,6 +123,7 @@ public class DialogScreen : MonoBehaviour
 		DialogChoice c = Instantiate(choiceObject);
 		c.SetText(text);
 		c.transform.SetParent(choiceHolder);
+		c.transform.localScale = Vector3.one;
 		c.SetOnClick(click);
 	}
 
@@ -167,23 +172,93 @@ public class DialogScreen : MonoBehaviour
 		StartCoroutine(DeactivateSelf());
 	}
 
-	[YarnCommand("reset")]
-	public void ResetConversation() {
-		storage.SetValue("$random_text", new Yarn.Value("Random text"));
-		storage.SetValue("$random_bool", new Yarn.Value(false));
-		storage.SetValue("$convo_title", new Yarn.Value("Convertation Title"));
-		storage.SetValue("$emotion", new Yarn.Value("neutral"));
-		storage.SetValue("$jason_connected", false);
-		storage.SetValue("$crew_name", new Yarn.Value("Bob IV"));
-		Clear();
-	}
-
+	#region Yarn Funtions - Start
 	[YarnCommand("setconvotitle")]
 	public void SetConversationTitle(string title) {
 		string text = title.Replace('_', ' ');
 		conversationTitle.text = text;
 	}
 
+	[YarnCommand("reset")]
+	public void ResetConversation() {
+		storage.SetValue("$random_text", "Random text");
+		storage.SetValue("$random_bool", false);
+		storage.SetValue("$convo_title", "Convertation Title");
+		storage.SetValue("$emotion", "neutral");
+		storage.SetValue("$jason_connected", false);
+		storage.SetValue("$crew_name", "Bob IV");
+		Clear();
+	}
+	#endregion
+
+	#region Yarn Functions - Set Variables
+	[YarnCommand("citynetworks")]
+	public void NumberOfCityNetworks() {
+		storage.SetValue("$city_networks", city.networks.Count);
+	}
+
+	[YarnCommand("networkconnections")]
+	public void NumberOfConnections() {
+		IEnumerable<CrewMember> connected = Globals.GameVars.Network.CrewMembersWithNetwork(city, true);
+		int connectedNum = Enumerable.Count(connected);
+		storage.SetValue("$connections_number", connectedNum);
+	}
+
+	[YarnCommand("cityinfo")]
+	public void SetCityInfo() {
+		storage.SetValue("$city_name", city.name);
+		storage.SetValue("$city_description", city.description);
+	}
+
+	[YarnCommand("checkcitytaxes")]
+	public void CheckCityTaxes() {
+		int places = 3;
+
+		storage.SetValue("$god_tax", Random.Range(0.0f, 1.0f) > 0.5f);
+		storage.SetValue("$god_tax_amount", Random.Range(0, 50));
+		storage.SetValue("$transit_tax", Random.Range(0.0f, 1.0f) > 0.5f);
+		storage.SetValue("$transit_tax_amount", Truncate(Random.Range(.02f, .06f), places));
+		storage.SetValue("$foreigner_tax", Random.Range(0.0f, 1.0f) > 0.5f);
+		storage.SetValue("$foreigner_tax_amount", .02f);
+		storage.SetValue("$wealth_tax", CargoValue() >= 1000000);
+		storage.SetValue("$wealth_tax_amount", .10f);
+
+		storage.SetValue("$no_taxes", !storage.GetValue("$god_tax").AsBool && !storage.GetValue("$transit_tax").AsBool && !storage.GetValue("$foreigner_tax").AsBool);
+	}
+
+	[YarnCommand("connectedcrew")]
+	public void ConnectedCrewName() {
+		if (storage.GetValue("$connections_number").AsNumber > 0) {
+			if (Globals.GameVars.Network.GetCrewMemberNetwork(Globals.GameVars.Jason).Contains(city)) {
+				storage.SetValue("$jason_connected", true);
+				storage.SetValue("$crew_name_1", "me");
+				storage.SetValue("$crew_name_2", "I");
+				storage.SetValue("$crew_name_3", "You");
+				storage.SetValue("$crew_description", Globals.GameVars.Jason.backgroundInfo);
+				storage.SetValue("$crew_home", Globals.GameVars.GetSettlementFromID(Globals.GameVars.Jason.originCity).name);
+			}
+			else {
+				IEnumerable<CrewMember> connected = Globals.GameVars.Network.CrewMembersWithNetwork(city);
+				CrewMember crew = connected.RandomElement();
+				storage.SetValue("$crew_name_1", crew.name);
+				storage.SetValue("$crew_name_2", crew.name);
+				storage.SetValue("$crew_name_3", crew.name);
+				storage.SetValue("$crew_description", crew.backgroundInfo);
+				storage.SetValue("$crew_home", Globals.GameVars.GetSettlementFromID(crew.originCity).name);
+			}
+		}
+		else {
+			storage.SetValue("$jason_connected", false);
+			storage.SetValue("$crew_name_1", "ERROR");
+			storage.SetValue("$crew_name_2", "ERROR");
+			storage.SetValue("$crew_name_3", "ERROR");
+			storage.SetValue("$crew_description", "ERROR");
+			storage.SetValue("$crew_home", "ERROR");
+		}
+	}
+	#endregion
+
+	#region Yarn Functions - Random
 	[YarnCommand("randomtext")]
 	public void GenerateRandomText(string[] inputs) 
 	{
@@ -205,42 +280,62 @@ public class DialogScreen : MonoBehaviour
 
 		int i = Random.Range(0, matchingBoth.Count);
 		
-		Yarn.Value randText = new Yarn.Value(matchingBoth[i].Text);
-		storage.SetValue("$random_text", randText);
+		storage.SetValue("$random_text", matchingBoth[i].Text);
 
-		storage.SetValue("$emotion", new Yarn.Value(e.ToString()));
+		storage.SetValue("$emotion", e.ToString());
 	}
 
 	[YarnCommand("randombool")]
 	public void TrueOrFalse(string threshold) {
 		float limit = float.Parse(threshold);
 		bool b = Random.Range(0f, 1f) < limit;
-		Yarn.Value randBool = new Yarn.Value(b);
-		storage.SetValue("$random_bool", randBool);
+		storage.SetValue("$random_bool", b);
+	}
+	#endregion
+
+	#region Yarn functions - Tax Calculations
+	[YarnCommand("calculatetaxes")]
+	public void CalculateTaxCharges() {
+		float subtotal = 0;
+		int cargo = Mathf.RoundToInt(CargoValue());
+		if (storage.GetValue("$god_tax").AsBool) {
+			//God Tax is a flat number
+			subtotal += storage.GetValue("$god_tax_amount").AsNumber;
+		}
+		if (storage.GetValue("$transit_tax").AsBool) {
+			//Transit tax is a percent
+			subtotal += storage.GetValue("$transit_tax_amount").AsNumber * cargo;
+		}
+		if (storage.GetValue("$foreigner_tax").AsBool) {
+			//Foreigner tax is a percent
+			subtotal += storage.GetValue("$foreigner_tax_amount").AsNumber * cargo;
+		}
+		if (storage.GetValue("$wealth_tax").AsBool) {
+			//Wealth tax is a percent
+			subtotal += storage.GetValue("$wealth_tax_amount").AsNumber * cargo;
+		}
+
+		storage.SetValue("$tax_subtotal", Mathf.RoundToInt(subtotal));
+		storage.SetValue("$cargo_value", cargo);
+		storage.SetValue("$ellimenion_percent", .05f);
 	}
 
-	[YarnCommand("citynetworks")]
-	public void NumberOfCityNetworks() {
-		storage.SetValue("$city_networks", city.networks.Count);
-	}
+	[YarnCommand("calculatepercents")]
+	public void CalculateIntentPercent() {
+		float subtotal = storage.GetValue("$tax_subtotal").AsNumber;
+		float cargo = CargoValue();
 
-	[YarnCommand("networkconnections")]
-	public void NumberOfConnections() {
-		IEnumerable<CrewMember> connected = Globals.GameVars.Network.CrewMembersWithNetwork(city, true);
-		int connectedNum = Enumerable.Count(connected);
-		storage.SetValue("$connections_number", connectedNum);
-	}
+		float percent = 0.01f;
+		storage.SetValue("$water_intent", Mathf.RoundToInt(percent * cargo));
 
-	[YarnCommand("cityinfo")]
-	public void SetCityInfo() {
-		storage.SetValue("$city_name", new Yarn.Value(city.name));
-		storage.SetValue("$city_description", new Yarn.Value(city.description));
-	}
+		percent = 0.02f;
+		storage.SetValue("$trade_intent", Mathf.RoundToInt(percent * cargo));
 
-	[YarnCommand("updatemoney")]
-	public void UpdateMoney() 
-	{
-		moneyText.text = Globals.GameVars.playerShipVariables.ship.currency + " dr";
+		percent = 0.03f;
+		storage.SetValue("$tavern_intent", Mathf.RoundToInt(percent * cargo));
+
+		percent = 0.05f;
+		storage.SetValue("$all_intent", Mathf.RoundToInt(percent * cargo));
 	}
 
 	[YarnCommand("checkafford")]
@@ -255,21 +350,6 @@ public class DialogScreen : MonoBehaviour
 		storage.SetValue("$can_afford", Globals.GameVars.playerShipVariables.ship.currency >= itemCost);
 	}
 
-	[YarnCommand("checkaffordpercent")]
-	public void CheckAffordability(string[] costs) {
-		int itemCost = 0;
-		if (costs[0][0] == '$') {
-			itemCost = IntFromVariableName(costs[0]);
-		}
-		else {
-			itemCost = int.Parse(costs[0]);
-		}
-		float percent = float.Parse(costs[1]);
-
-		float total = itemCost + (itemCost * percent);
-
-		storage.SetValue("$can_afford", Globals.GameVars.playerShipVariables.ship.currency >= total);
-	}
 
 	[YarnCommand("pay")]
 	public void PayAmount(string cost) {
@@ -278,76 +358,33 @@ public class DialogScreen : MonoBehaviour
 			itemCost = IntFromVariableName(cost);
 		}
 		else {
-			itemCost = int.Parse(cost);
+			itemCost = Mathf.RoundToInt(float.Parse(cost));
 		}
 		Globals.GameVars.playerShipVariables.ship.currency -= itemCost;
 		UpdateMoney();
 	}
+	#endregion
 
-	[YarnCommand("calculatetaxes")]
-	public void CalculateTaxCharges() {
-		storage.SetValue("$tax_subtotal", Random.Range(1, 250));
-	}
-
-	[YarnCommand("calculatepercents")]
-	public void CalculateIntentPercent() {
-		float subtotal = storage.GetValue("$tax_subtotal").AsNumber;
-		float cargo = CargoValue();
-
-		float percent = 0.1f;
-		storage.SetValue("$water_intent", (int)(percent * cargo + subtotal));
-
-		percent = 0.2f;
-		storage.SetValue("$trade_intent", (int)(percent * cargo + subtotal));
-
-		percent = 0.3f;
-		storage.SetValue("$tavern_intent", (int)(percent * cargo + subtotal));
-
-		percent = 0.5f;
-		storage.SetValue("$all_intent", (int)(percent * cargo + subtotal));
-	}
-
-	[YarnCommand("checkcitytaxes")]
-	public void CheckCityTaxes() {
-		storage.SetValue("$god_tax", Random.Range(0.0f, 1.0f) > 0.5f);
-		storage.SetValue("$god_tax_amount", Random.Range(0, 50));
-		storage.SetValue("$transit_tax", Random.Range(0.0f, 1.0f) > 0.5f);
-		storage.SetValue("$transit_tax_amount", Random.Range(2, 6));
-		storage.SetValue("$foreigner_tax", Random.Range(0.0f, 1.0f) > 0.5f);
-		storage.SetValue("$foreigner_tax_amount", 2);
-		storage.SetValue("$wealth_tax", CargoValue() >= 1000000);
-		storage.SetValue("$wealth_tax_amount", 10);
-
-		storage.SetValue("$no_taxes", !storage.GetValue("$god_tax").AsBool && !storage.GetValue("$transit_tax").AsBool && !storage.GetValue("$foreigner_tax").AsBool && !storage.GetValue("$wealth_tax").AsBool);
-	}
-
-	[YarnCommand("connectedcrew")]
-	public void ConnectedCrewName() {
-		if (Globals.GameVars.Network.GetCrewMemberNetwork(Globals.GameVars.Jason).Contains(city)) {
-			storage.SetValue("$jason_connected", true);
-			storage.SetValue("$crew_name_1", "me");
-			storage.SetValue("$crew_name_2", "I");
-			storage.SetValue("$crew_name_3", "You");
-			storage.SetValue("$crew_description", Globals.GameVars.Jason.backgroundInfo);
-			storage.SetValue("$crew_home", Globals.GameVars.GetSettlementFromID(Globals.GameVars.Jason.originCity).name);
-		}
-		else {
-			IEnumerable<CrewMember> connected = Globals.GameVars.Network.CrewMembersWithNetwork(city);
-			CrewMember crew = connected.RandomElement();
-			storage.SetValue("$crew_name_1", crew.name);
-			storage.SetValue("$crew_name_2", crew.name);
-			storage.SetValue("$crew_name_3", crew.name);
-			storage.SetValue("$crew_description", crew.backgroundInfo);
-			storage.SetValue("$crew_home", Globals.GameVars.GetSettlementFromID(crew.originCity).name);
-		}
+	#region Yarn Helpers
+	public void UpdateMoney() {
+		moneyText.text = Globals.GameVars.playerShipVariables.ship.currency + " dr";
 	}
 
 	private int IntFromVariableName(string name) {
-		return (int)storage.GetValue(name).AsNumber;
+		return Mathf.RoundToInt(storage.GetValue(name).AsNumber);
 	}
 
 	private float CargoValue() {
-		return Globals.GameVars.playerShipVariables.ship.GetTotalCargoAmount();
+		return Globals.GameVars.Trade.GetTotalPriceOfGoods() + Globals.GameVars.playerShipVariables.ship.currency;
 	}
+
+
+	private float Truncate(float num, int places) {
+		int factor = (int)Mathf.Pow(10, places);
+
+		return Mathf.Round(num * factor) / factor;
+	}
+	#endregion
+
 }
 

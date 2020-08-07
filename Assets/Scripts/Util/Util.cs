@@ -36,6 +36,20 @@ public static class Utils
 	}
 #endif
 
+	public static T WeightedRandomElement<T>(this IEnumerable<T> self, IEnumerable<float> weights) {
+		var totalWeight = weights.Sum();
+		var random = UnityEngine.Random.Range(0f, 1f) * totalWeight;
+		var currWeight = 0f;
+		for (var i = 0; i < weights.Count(); i++) {
+			currWeight += weights.ElementAt(i);
+			if (random < currWeight) {
+				return self.ElementAt(i);
+			}
+		}
+
+		return default(T);
+	}
+
 	public static Vector2 XZ(this Vector3 self) => new Vector2(self.x, self.z);
 	public static Vector2 Reverse(this Vector2 self) => new Vector2(self.y, self.x);
 
@@ -49,7 +63,7 @@ public static class Utils
 		new Color(r ?? self.r, g ?? self.g, b ?? self.b, a ?? self.a);
 
 	public static T RandomElement<T>(this IEnumerable<T> list) {
-		return list.ElementAt(UnityEngine.Random.Range(0, list.Count() - 1));
+		return list.ElementAtOrDefault(UnityEngine.Random.Range(0, list.Count() - 1));
 	}
 
 	// Based on: https://stackoverflow.com/questions/11883469/takewhile-but-get-the-element-that-stopped-it-also

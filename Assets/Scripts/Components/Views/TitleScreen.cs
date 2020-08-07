@@ -71,7 +71,6 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 		Subscribe(resolutions_settings_button.onClick, () => GUI_ShowReolutionsSettings());
 		Subscribe(resolutions_settings_exit.onClick, () => GUI_HideResolutionsSettings());
 
-
 		information_texts = new Text[5] { highest_text, higher_text, default_text, lower_text, lowest_text };
 		regional_zones = new GameObject[] { Aetolian_Region_Zone, Cretan_Region_Zone, Etruscan_Pirate_Region_Zone, Illyrian_Region_Zone };
 
@@ -93,6 +92,7 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 		SetResolutionsAndGreenTexts();
 	}
 
+	#region Resolutions Settings
 	//make sure only one copy of resolution in list
 	public void AddSupportedReolutionsToArray() {
 		var distinctResoultionsList = Screen.resolutions
@@ -103,7 +103,6 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 			.Take(5)
 			.ToArray();
 	}
-
 
 	public void SetResolutionsAndGreenTexts() {
 		for (int x = 0; x < 5; x++) {
@@ -151,6 +150,7 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 			}
 		}
 	}
+	#endregion
 
 	#region GUI Show and Hide
 	override protected void OnEnable() {
@@ -180,7 +180,7 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 	public void Make_Zones_Invisible_On_Play_Start() {
 		foreach( GameObject zone in regional_zones) {
 			zone.SetActive(true);
-			foreach(var zonePiece in zone.GetComponentsInChildren<MeshRenderer>()) {
+			foreach (var zonePiece in zone.GetComponentsInChildren<MeshRenderer>()) {
 				zonePiece.enabled = false;
 			}
 		}

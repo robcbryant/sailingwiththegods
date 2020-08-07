@@ -2,23 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Animations;
 
 public class RandomSlotPopulator : MonoBehaviour
 {
 	//Arrays of the drops zones (names respectively to their roles) are public so they may be edited in the future
 	[Header("Drop Zones")]
-	public GameObject[] enemySlotsEven;
-	public GameObject[] enemySlotsOdd;
-	public GameObject[] playableSlotsEven;
-	public GameObject[] playableSlotsOdd;
+	public Transform[] enemyZones = new Transform[2];
+	public Transform[] crewZones = new Transform[2];
+	public CardDropZone enemySlot;
+	public CardDropZone crewSlot;
+	//public GameObject[] enemySlotsEven;
+	//public GameObject[] enemySlotsOdd;
+	//public GameObject[] playableSlotsEven;
+	//public GameObject[] playableSlotsOdd;
 	[Header("Crew Slots")]
 	public GameObject crewMemberSlot;
 	public Transform crewSlotParent;
-	public int crewPerRow = 5;
-	public float paddingX = 250;
-	public float paddingY = 250;
-	public Vector2 startPos;
+	public int padding = 50;
 
 	[Header("Spawning")]
 	public Pirate pirate;
@@ -34,15 +36,24 @@ public class RandomSlotPopulator : MonoBehaviour
 
 	private CardDropZone[,] spawnedCrewSlots;
 
+	private Canvas canvas;
 	private int crewNum;
+	private GridLayoutGroup crewGrid;
+
+	private int crewPerRow;
+	private int slotsPerRow;
 	private bool loaded = false;
 
-	GameObject[] pirateSlots, playerSlots;
-	
+	//GameObject[] pirateSlots, playerSlots;
+
 	void OnEnable()
     {
 		loaded = false;
+		canvas = GetComponent<Canvas>();
 		crewNum = Globals.GameVars.playerShipVariables.ship.crew;
+		crewGrid = crewSlotParent.GetComponent<GridLayoutGroup>();
+		crewPerRow = crewGrid.constraintCount;
+		slotsPerRow = Mathf.CeilToInt(pirateRange.y / 2f);
 	}
 
 	private void OnDisable() {
@@ -57,7 +68,6 @@ public class RandomSlotPopulator : MonoBehaviour
 		PopulateScreen();
 		ActivateCrewRow(0);
 		loaded = true;
-		GameObject.FindObjectOfType<MiniGameManager>().InitilizePirates(playerSlots);
 		//MiniGameManager.InitilizePirates();
 	}
 
@@ -69,51 +79,118 @@ public class RandomSlotPopulator : MonoBehaviour
 
 	public void PopulateScreen() 
 	{
+		/*---------------------------------------------------------------------
+		PIRATE SPAWNING
+		---------------------------------------------------------------------*/
+
 		//random number of enemy priates created (1-12) 
 		//different ranging numbers of pirates will be added later
 		pirateRange.y = Mathf.Min(pirateRange.y, crewNum);
-		int enAndPlayCnt = Random.Range(pirateRange.x, pirateRange.y+1);
-
-		//if the number is even, the even array objects will be called
-		pirateSlots = enAndPlayCnt % 2 == 0 ? enemySlotsEven : enemySlotsOdd;
-		playerSlots = enAndPlayCnt % 2 == 0 ? playableSlotsEven : playableSlotsOdd;
-
+		int count = Random.Range(pirateRange.x, pirateRange.y+1);
 		List<CrewMember> possiblePirates = Globals.GameVars.Pirates.Where(x => x.pirateType.Equals(typeToSpawn)).ToList();
-		for (int x = 0; x < enAndPlayCnt; x++) 
-		{
-			pirateSlots[x].SetActive(true);
-			Pirate g = Instantiate(pirate);
-			//Debug.Log("pirate local scale = " + pirate.transform.localScale);
-			//Debug.Log("pirate lossy scale = " + pirate.transform.lossyScale);
-			if (typeToSpawn.difficulty == 1) {
-				g.GetComponent<CrewCard>().power = (g.GetComponent<CrewCard>().power / 5);
-				g.GetComponent<CrewCard>().powerText.text = g.GetComponent<CrewCard>().power.ToString();
-			}
-			else if (typeToSpawn.difficulty == 2) {
-				g.GetComponent<CrewCard>().power = (g.GetComponent<CrewCard>().power / 3);
-				g.GetComponent<CrewCard>().powerText.text = g.GetComponent<CrewCard>().power.ToString();
-			}
-			else if (typeToSpawn.difficulty == 4) {
-				g.GetComponent<CrewCard>().power = (int)(g.GetComponent<CrewCard>().power * 1.5f);
-				g.GetComponent<CrewCard>().powerText.text = g.GetComponent<CrewCard>().power.ToString();
 
-			}
+		List<CardDropZone> crewSlots = new List<CardDropZone>();
 
-			//CrewMember randomPirate = Globals.GameVars.Pirates.RandomElement();
-			CrewMember randomPirate = possiblePirates.RandomElement();
-			g.SetCrew(randomPirate);
-			g.Bind();
-			possiblePirates.Remove(randomPirate);
-			g.GetComponent<RectTransform>().position = pirateSlots[x].GetComponent<RectTransform>().position;
-			g.transform.SetParent(pirateParent);
-			playerSlots[x].SetActive(true);
+		for (int i = 0; i < count; i++) {
+			CardDropZone newEnemySlot = Instantiate(enemySlot);
+			CardDropZone newCrewSlot = Instantiate(crewSlot);
 
-			g.GetComponent<CrewCard>().cardIndex = pirateSlots[x].GetComponent<CardDropZone>().dropIndex;
+			newEnemySlot.transform.SetParent(enemyZones[i < slotsPerRow ? 0 : 1]);
+			newCrewSlot.transform.SetParent(crewZones[i < slotsPerRow ? 0 : 1]);
+
+			newEnemySlot.transform.localScale = Vector3.one;
+			newCrewSlot.transform.localScale = Vector3.one;
+
+			newEnemySlot.dropIndex = i;
+			newCrewSlot.dropIndex = i;
+
+			crewSlots.Add(newCrewSlot);
 		}
 
+		GetComponent<MiniGameManager>().InitilizePirates(crewSlots);
+
+		for (int i = 0; i < count; i++) {
+			Pirate p = Instantiate(pirate);
+			CrewCard pCard = p.GetComponent<CrewCard>();
+			switch (typeToSpawn.difficulty) {
+				case (1):
+					pCard.power /= 5;
+					break;
+				case (2):
+					pCard.power /= 3;
+					break;
+				case (4):
+					pCard.power = (int)(pCard.power * 1.5f);
+					break;
+			}
+
+			CrewMember randomPirate = possiblePirates.RandomElement();
+			pCard.SetCrew(randomPirate);
+			p.Bind();
+			possiblePirates.Remove(randomPirate);
+			Transform row = i < slotsPerRow ? enemyZones[0] : enemyZones[1];
+
+			p.transform.SetParent(row.transform.GetChild(i % slotsPerRow));
+			p.transform.localScale = Vector3.one;
+
+			StartCoroutine(WaitAndChangeParent(p.transform, pirateParent));
+			
+			pCard.cardIndex = i;
+		}
+
+
+		//for (int x = 0; x < count; x++) 
+		//{
+		//	pirateSlots[x].SetActive(true);
+		//	//pirateSlots[x].GetComponent<RectTransform>().localScale = canvas.transform.localScale;
+		//	Pirate g = Instantiate(pirate);
+		//	CrewCard gCard = g.GetComponent<CrewCard>();
+		//	//Debug.Log("pirate local scale = " + pirate.transform.localScale);
+		//	//Debug.Log("pirate lossy scale = " + pirate.transform.lossyScale);
+		//	if (typeToSpawn.difficulty == 1) {
+		//		gCard.power = (gCard.power / 5);
+		//		gCard.powerText.text = gCard.power.ToString();
+		//	}
+		//	else if (typeToSpawn.difficulty == 2) {
+		//		gCard.power = (gCard.power / 3);
+		//		gCard.powerText.text = gCard.power.ToString();
+		//	}
+		//	else if (typeToSpawn.difficulty == 4) {
+		//		gCard.power = (int)(gCard.power * 1.5f);
+		//		gCard.powerText.text = gCard.power.ToString();
+
+		//	}
+
+		//	//CrewMember randomPirate = Globals.GameVars.Pirates.RandomElement();
+		//	CrewMember randomPirate = possiblePirates.RandomElement();
+		//	g.SetCrew(randomPirate);
+		//	g.Bind();
+		//	possiblePirates.Remove(randomPirate);
+		//	g.GetComponent<RectTransform>().position = pirateSlots[x].GetComponent<RectTransform>().position;
+		//	g.transform.SetParent(pirateParent);
+		//	//no idea why this is necessary, but all cards need to be scaled to the local scale of the canvas of the minigame 
+		//	//same thing below is done for the crew cards
+		//	g.transform.localScale = Vector3.one;
+		//	playerSlots[x].SetActive(true);
+		//	//playerSlots[x].GetComponent<RectTransform>().localScale = canvas.transform.localScale;
+
+		//	g.GetComponent<CrewCard>().cardIndex = pirateSlots[x].GetComponent<CardDropZone>().dropIndex;
+		//}
+
+
+		/*----------------------------------------------------------------------
+		SCALING
+		----------------------------------------------------------------------*/
+		float width = crew.GetComponent<RectTransform>().rect.width;
+		//crewSlotParent.GetComponent<RectTransform>().localScale = canvas.transform.localScale;
+		//crewParentInOrigin.GetComponent<RectTransform>().localScale = canvas.transform.localScale;
+
+
+		/*----------------------------------------------------------------------
+		ORIGIN SLOT SPAWNING
+		----------------------------------------------------------------------*/
+
 		int totalCrewRows = Mathf.CeilToInt((crewNum * 1.0f) / crewPerRow);
-		float xPos = startPos.x;
-		float yPos = startPos.y;
 		int spawnedSlots = 0;
 		spawnedCrewSlots = new CardDropZone[totalCrewRows, crewPerRow];
 
@@ -123,32 +200,57 @@ public class RandomSlotPopulator : MonoBehaviour
 			{
 				//Spawns a new crew slot
 				GameObject slot = Instantiate(crewMemberSlot);
+				//scaling crew card slots
 				slot.transform.SetParent(crewSlotParent);
+				slot.transform.localScale = Vector3.one;
+				
 				RectTransform slotRect = slot.GetComponent<RectTransform>();
-				slotRect.anchoredPosition = new Vector2(xPos, yPos);
 				CardDropZone cdz = slot.GetComponent<CardDropZone>();
 				spawnedCrewSlots[r, c] = cdz;
+			}
+		}
 
+		RectTransform crewParentRect = crewSlotParent.GetComponent<RectTransform>();
+		crewParentRect.anchoredPosition = new Vector2(crewParentRect.anchoredPosition.x, CenterGrid(totalCrewRows, padding, width));
+
+		/*----------------------------------------------------------------------
+		CREW SPAWNING
+		----------------------------------------------------------------------*/
+
+		float startX = width / 2;
+		float startY = crewSlotParent.GetComponent<RectTransform>().rect.height / 2;
+		Debug.Log("Height: " + startY);
+
+		float xPos = startX;
+		float yPos = startY;
+
+		for (int r = 0; r < totalCrewRows; r++) 
+		{
+			for (int c = 0; c < crewPerRow; c++) 
+			{
 				//Spawns a new crew member
 				if (spawnedSlots < crewNum) 
 				{
 					CrewCard newCrew = Instantiate(crew);
 					newCrew.SetRSP(this);
 					newCrew.Bind();
-					newCrew.GetComponent<RectTransform>().anchoredPosition = slotRect.position;
 					newCrew.transform.SetParent(crewParentInOrigin);
+					newCrew.name = "Card " + r + ", " + c;
+					CardDropZone cdz = spawnedCrewSlots[r, c];
+					//scaling crew cards
+					newCrew.transform.localScale = Vector3.one;
+					newCrew.GetComponent<RectTransform>().anchoredPosition = new Vector2(xPos, yPos);
 					newCrew.SetCrew(Globals.GameVars.playerShipVariables.ship.crewRoster[spawnedSlots]);
 					cdz.SetOccupied(true);
 					//Debug.Log("crewmember scale = " + crew.transform.localScale);
 					//Debug.Log("crewmember lossy scale = " + crew.transform.lossyScale);
+					spawnedSlots++;
+					xPos += width;
 				}
-				
-				//Moves to the next point
-				xPos += paddingX;
-				spawnedSlots++;
 			}
-			xPos = startPos.x;
-			yPos += paddingY;
+
+			xPos = startX;
+			yPos -= padding + width;
 		}
 	}
 
@@ -175,4 +277,25 @@ public class RandomSlotPopulator : MonoBehaviour
 	{
 		get { return typeToSpawn; }
 	}
+
+	public int CrewPerRow {
+		get {
+			return crewPerRow;
+		}
+	}
+
+	private float CenterGrid(int rows, float padding, float size) {
+		float total = (size * rows) + (padding * (rows - 1));
+
+		float offset = total / -2.0f;
+		offset += size / 2.0f;
+
+		return offset;
+	}
+
+	private IEnumerator WaitAndChangeParent(Transform child, Transform newParent) {
+		yield return null;
+		child.SetParent(newParent);
+	}
+
 }

@@ -8,7 +8,9 @@ public class CrewCard : MonoBehaviour
 	private const string ResourcePath = "crew_portraits";
 	private const string DefaultPortrait = "crew_portraits/phoenician_sailor";
 
+#pragma warning disable 0649
 	[SerializeField] ButtonView infoButton;
+#pragma warning restore 0649
 
 	public bool dragable = true;
 	public TMPro.TextMeshProUGUI nameText;
@@ -26,6 +28,8 @@ public class CrewCard : MonoBehaviour
 	private bool overStart = true;
 	private RandomSlotPopulator rsp;
 	public int cardIndex;
+
+	private Vector2 pos = new Vector2();
 
 	private void Start() 
 	{
@@ -70,7 +74,7 @@ public class CrewCard : MonoBehaviour
 
 	private void ToMousePos() 
 	{
-		rect.anchoredPosition = Input.mousePosition;
+		rect.position = Input.mousePosition;
 	}
 
 	public void OverDropSpot(Vector2 pos, bool isStart) 
@@ -78,11 +82,6 @@ public class CrewCard : MonoBehaviour
 		overSpot = true;
 		dropPos = pos;
 		overStart = isStart;
-	}
-
-	//this is unused in any other script; might be what we need <--?
-	public void setIndex(int index) {
-		cardIndex = index;
 	}
 
 	public void LeaveDropSpot(Vector2 pos) 
@@ -104,6 +103,7 @@ public class CrewCard : MonoBehaviour
 	{
 		//Will eventually do some fun calculations in here to get the actual number
 		power = crew.clout;
+		powerText.text = power.ToString();
 	}
 
 	public void UpdatePower(int tempPower) {
@@ -122,13 +122,27 @@ public class CrewCard : MonoBehaviour
 	public void Bind() 
 	{
 		infoButton?.Bind(ValueModel.New(new ButtonViewModel {
-			OnClick = () => Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
+			OnClick = () =>
+			Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {
 				Icon = crewImage.sprite,
 				Title = crew.name,
 				Subtitle = Globals.GameVars.GetJobClassEquivalency(crew.typeOfCrew),
 				Message = crew.backgroundInfo
 			})
 		}));
+	}
+
+	public Vector2 Position {
+		get {
+			return pos;
+		}
+		set {
+			pos = value;
+		}
+	}
+
+	public void UpdateScroll(float scrollAmount) {
+		startPos += Vector2.up * scrollAmount;
 	}
 
 #if UNITY_EDITOR

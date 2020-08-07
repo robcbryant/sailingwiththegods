@@ -81,6 +81,10 @@ public class script_player_controls : MonoBehaviour
 	public bool isIllyrianRegionZone = false;
 	[HideInInspector] public List<string> zonesList = new List<string>();
 
+	[Header("Playtesting Bools")]
+	//make sure these are false in Unity's "Inspector" tab before making builds 
+	public bool hotkeysOn = true;
+
 	public void Reset() {
 		ship = new Ship("Argo", 7.408f, 100, 500);
 		ship.networkID = 246;
@@ -130,16 +134,18 @@ public class script_player_controls : MonoBehaviour
 		//	MGV.DEBUG_currentQuestLegIncrease = false;
 		//}
 
-		// TODO: Remove - this is just here as an initial test of minigames
-		//if (Input.GetKeyUp(KeyCode.B)) {
-		//	Globals.MiniGames.Enter("Pirate Game/Pirate Game");
-		//}
-		//if (Input.GetKeyUp(KeyCode.N)) {
-		//	Globals.MiniGames.Enter("Storm MG/Storm Game");
-		//}
-		//if (Input.GetKeyUp(KeyCode.M)) {
-		//	Globals.MiniGames.Exit();
-		//}
+		if (hotkeysOn) {
+			//TODO: Remove - this is just here as an initial test of minigames
+			if (Input.GetKeyUp(KeyCode.B)) {
+				Globals.MiniGames.Enter("Pirate Game/Pirate Game");
+			}
+			if (Input.GetKeyUp(KeyCode.N)) {
+				Globals.MiniGames.Enter("Storm MG/Storm Game");
+			}
+			if (Input.GetKeyUp(KeyCode.M)) {
+				Globals.MiniGames.Exit();
+			}
+		}
 
 		// debug tool to see where you are in lat long
 		longXLatY = CoordinateUtil.ConvertWebMercatorToWGS1984(CoordinateUtil.Convert_UnityWorld_WebMercator(GameVars.playerShip.transform.position));
@@ -566,7 +572,6 @@ public class script_player_controls : MonoBehaviour
 			}//End of Travel
 		}//End of initial ship rotation
 	}
-
 
 	public void UpdateShipAtrophyAfterTravelTime(float travelTime, bool isPassingTime) {
 		float dailyProvisionsKG = .83f;
