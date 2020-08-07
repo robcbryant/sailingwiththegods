@@ -121,7 +121,7 @@ public class GameViewModel : Model
 	//THIS IS THE SAVE DATA BUTTON
 	public void GUI_saveGame() {
 		GameVars.ShowANotificationMessage("Saved Data File 'player_save_game.txt' To: " + Application.persistentDataPath + "/");
-		GameVars.SaveUserGameData(false);
+		GameVars.SaveUserGameData();
 	}
 
 	//-----------------------------------------------------
