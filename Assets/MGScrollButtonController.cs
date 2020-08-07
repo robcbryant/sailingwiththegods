@@ -7,6 +7,7 @@ public class MGScrollButtonController : MonoBehaviour
 {
 	public float scrollDistance = 250;
 	public RectTransform[] scrollObjects;
+	public GameObject originCardHolder;
 	public RandomSlotPopulator rsp;
 	public Button up;
 	public Button down;
@@ -17,7 +18,7 @@ public class MGScrollButtonController : MonoBehaviour
 	private void Start() 
 	{
 		//-1 here so it goes from 0 to n-1 instead of 1 to n
-		totalRows = Mathf.CeilToInt((Globals.GameVars.playerShipVariables.ship.crew * 1.0f) / rsp.crewPerRow) - 1;
+		totalRows = Mathf.CeilToInt((Globals.GameVars.playerShipVariables.ship.crew * 1.0f) / rsp.CrewPerRow) - 1;
 		CheckButtons();
 	}
 
@@ -25,7 +26,8 @@ public class MGScrollButtonController : MonoBehaviour
 	{
 		if (currentRow < totalRows) 
 		{
-			MoveArrayObjects(scrollObjects, new Vector3(0, scrollDistance));
+			MoveArrayObjects(scrollObjects, new Vector2(0, scrollDistance));
+			UpdateCards(scrollDistance);
 			currentRow++;
 			rsp.ActivateCrewRow(currentRow);
 		}
@@ -35,9 +37,17 @@ public class MGScrollButtonController : MonoBehaviour
 	{
 		if (currentRow > 0) 
 		{
-			MoveArrayObjects(scrollObjects, new Vector3(0, -scrollDistance));
+			MoveArrayObjects(scrollObjects, new Vector2(0, -scrollDistance));
+			UpdateCards(-scrollDistance);
 			currentRow--;
 			rsp.ActivateCrewRow(currentRow);
+		}
+	}
+
+	public void UpdateCards(float scroll) {
+		CrewCard[] cards = originCardHolder.GetComponentsInChildren<CrewCard>();
+		foreach (CrewCard c in cards) {
+			c.UpdateScroll(scroll);
 		}
 	}
 
@@ -62,11 +72,11 @@ public class MGScrollButtonController : MonoBehaviour
 		}
 	}
 
-	private void MoveArrayObjects(RectTransform[] rt, Vector3 moveBy) 
+	private void MoveArrayObjects(RectTransform[] rt, Vector2 moveBy) 
 	{
 		foreach (RectTransform r in rt) 
 		{
-			r.position += moveBy;
+			r.anchoredPosition += moveBy;
 		}
 	}
 }

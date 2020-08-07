@@ -139,6 +139,10 @@ public class CrewCard : MonoBehaviour
 		}
 	}
 
+	public void UpdateScroll(float scrollAmount) {
+		startPos += Vector2.up * scrollAmount;
+	}
+
 #if UNITY_EDITOR
 	public void OnDrawGizmos() {
 		Utils.drawString(cardIndex.ToString(), transform.position, Color.red);

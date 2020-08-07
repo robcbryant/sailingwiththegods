@@ -9,10 +9,10 @@ public class RandomSlotPopulator : MonoBehaviour
 {
 	//Arrays of the drops zones (names respectively to their roles) are public so they may be edited in the future
 	[Header("Drop Zones")]
-	public Transform enemyZones;
-	public Transform crewZones;
-	public CardDropZone enemySlot;
-	public CardDropZone crewSlot;
+	//public Transform enemyZones;
+	//public Transform crewZones;
+	//public CardDropZone enemySlot;
+	//public CardDropZone crewSlot;
 	public GameObject[] enemySlotsEven;
 	public GameObject[] enemySlotsOdd;
 	public GameObject[] playableSlotsEven;
@@ -20,7 +20,7 @@ public class RandomSlotPopulator : MonoBehaviour
 	[Header("Crew Slots")]
 	public GameObject crewMemberSlot;
 	public Transform crewSlotParent;
-	public int crewPerRow = 5;
+	public int padding = 50;
 
 	[Header("Spawning")]
 	public Pirate pirate;
@@ -38,6 +38,9 @@ public class RandomSlotPopulator : MonoBehaviour
 
 	private Canvas canvas;
 	private int crewNum;
+	private GridLayoutGroup crewGrid;
+
+	private int crewPerRow;
 	private bool loaded = false;
 
 	GameObject[] pirateSlots, playerSlots;
@@ -47,6 +50,8 @@ public class RandomSlotPopulator : MonoBehaviour
 		loaded = false;
 		canvas = GetComponent<Canvas>();
 		crewNum = Globals.GameVars.playerShipVariables.ship.crew;
+		crewGrid = crewSlotParent.GetComponent<GridLayoutGroup>();
+		crewPerRow = crewGrid.constraintCount;
 	}
 
 	private void OnDisable() {
@@ -158,6 +163,9 @@ public class RandomSlotPopulator : MonoBehaviour
 			}
 		}
 
+		RectTransform crewParentRect = crewSlotParent.GetComponent<RectTransform>();
+		crewParentRect.anchoredPosition = new Vector2(crewParentRect.anchoredPosition.x, CenterGrid(totalCrewRows, padding, width));
+
 		/*----------------------------------------------------------------------
 		CREW SPAWNING
 		----------------------------------------------------------------------*/
@@ -185,7 +193,6 @@ public class RandomSlotPopulator : MonoBehaviour
 					//scaling crew cards
 					newCrew.transform.localScale = Vector3.one;
 					newCrew.GetComponent<RectTransform>().anchoredPosition = new Vector2(xPos, yPos);
-					Debug.Log($"Card local position {newCrew.GetComponent<RectTransform>().position.x}, {newCrew.GetComponent<RectTransform>().position.y}");
 					newCrew.SetCrew(Globals.GameVars.playerShipVariables.ship.crewRoster[spawnedSlots]);
 					cdz.SetOccupied(true);
 					//Debug.Log("crewmember scale = " + crew.transform.localScale);
@@ -196,7 +203,7 @@ public class RandomSlotPopulator : MonoBehaviour
 			}
 
 			xPos = startX;
-			yPos += width;
+			yPos -= padding + width;
 		}
 	}
 
@@ -222,6 +229,21 @@ public class RandomSlotPopulator : MonoBehaviour
 	public PirateType CurrentPirates 
 	{
 		get { return typeToSpawn; }
+	}
+
+	public int CrewPerRow {
+		get {
+			return crewPerRow;
+		}
+	}
+
+	private float CenterGrid(int rows, float padding, float size) {
+		float total = (size * rows) + (padding * (rows - 1));
+
+		float offset = total / -2.0f;
+		offset += size / 2.0f;
+
+		return offset;
 	}
 
 }
