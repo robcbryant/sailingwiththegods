@@ -90,7 +90,7 @@ public class RandomSlotPopulator : MonoBehaviour
 		for (int x = 0; x < enAndPlayCnt; x++) 
 		{
 			pirateSlots[x].SetActive(true);
-			pirateSlots[x].GetComponent<RectTransform>().localScale = canvas.transform.localScale;
+			//pirateSlots[x].GetComponent<RectTransform>().localScale = canvas.transform.localScale;
 			Pirate g = Instantiate(pirate);
 			CrewCard gCard = g.GetComponent<CrewCard>();
 			//Debug.Log("pirate local scale = " + pirate.transform.localScale);
@@ -118,9 +118,9 @@ public class RandomSlotPopulator : MonoBehaviour
 			g.transform.SetParent(pirateParent);
 			//no idea why this is necessary, but all cards need to be scaled to the local scale of the canvas of the minigame 
 			//same thing below is done for the crew cards
-			g.transform.localScale = canvas.transform.localScale;
+			g.transform.localScale = Vector3.one;
 			playerSlots[x].SetActive(true);
-			playerSlots[x].GetComponent<RectTransform>().localScale = canvas.transform.localScale;
+			//playerSlots[x].GetComponent<RectTransform>().localScale = canvas.transform.localScale;
 
 			g.GetComponent<CrewCard>().cardIndex = pirateSlots[x].GetComponent<CardDropZone>().dropIndex;
 		}
@@ -130,8 +130,8 @@ public class RandomSlotPopulator : MonoBehaviour
 		SCALING
 		----------------------------------------------------------------------*/
 		float width = crew.GetComponent<RectTransform>().rect.width;
-		crewSlotParent.GetComponent<RectTransform>().localScale = canvas.transform.localScale;
-		crewParentInOrigin.GetComponent<RectTransform>().localScale = canvas.transform.localScale;
+		//crewSlotParent.GetComponent<RectTransform>().localScale = canvas.transform.localScale;
+		//crewParentInOrigin.GetComponent<RectTransform>().localScale = canvas.transform.localScale;
 
 
 		/*----------------------------------------------------------------------
