@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 public class SpriteImporter : AssetPostprocessor
 {
@@ -11,7 +12,15 @@ public class SpriteImporter : AssetPostprocessor
 			return;
 		}
 
-		if (assetPath.Contains("Sprites") && assetPath.Contains(".png")) {
+		var paths = new string[]
+		{
+			"Sprites",
+			"crew_portraits",
+			"settlement_coins",
+			"settlement_portraits"
+		};
+
+		if (paths.Any(p => assetPath.Contains(p)) && assetPath.Contains(".png")) {
 			importer.textureType = TextureImporterType.Sprite;
 			importer.spriteImportMode = SpriteImportMode.Single;
 			importer.mipmapEnabled = false;
