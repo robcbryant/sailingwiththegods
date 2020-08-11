@@ -212,18 +212,18 @@ public class DialogScreen : MonoBehaviour
 
 	[YarnCommand("checkcitytaxes")]
 	public void CheckCityTaxes() {
-		int places = 3;
 
-		storage.SetValue("$god_tax", Random.Range(0.0f, 1.0f) > 0.5f);
-		storage.SetValue("$god_tax_amount", Random.Range(0, 50));
-		storage.SetValue("$transit_tax", Random.Range(0.0f, 1.0f) > 0.5f);
-		storage.SetValue("$transit_tax_amount", Truncate(Random.Range(.02f, .06f), places));
-		storage.SetValue("$foreigner_tax", Random.Range(0.0f, 1.0f) > 0.5f);
-		storage.SetValue("$foreigner_tax_amount", .02f);
+		storage.SetValue("$god_tax", city.godTax);
+		storage.SetValue("$god_tax_amount", city.godTaxAmount);
+		storage.SetValue("$transit_tax", city.transitTax);
+		storage.SetValue("$transit_tax_amount", city.transitTaxPercent);
+		storage.SetValue("$foreigner_tax", city.foreignerFee);
+		storage.SetValue("$foreigner_tax_amount", city.foreignerFeePercent);
 		storage.SetValue("$wealth_tax", CargoValue() >= 1000000);
 		storage.SetValue("$wealth_tax_amount", .10f);
 
-		storage.SetValue("$no_taxes", !storage.GetValue("$god_tax").AsBool && !storage.GetValue("$transit_tax").AsBool && !storage.GetValue("$foreigner_tax").AsBool);
+		storage.SetValue("$no_taxes", !city.godTax && !city.transitTax && !city.foreignerFee);
+		storage.SetValue("$cargo_value", Mathf.CeilToInt(CargoValue()));
 	}
 
 	[YarnCommand("connectedcrew")]
@@ -297,7 +297,7 @@ public class DialogScreen : MonoBehaviour
 	[YarnCommand("calculatetaxes")]
 	public void CalculateTaxCharges() {
 		float subtotal = 0;
-		int cargo = Mathf.RoundToInt(CargoValue());
+		float cargo = CargoValue();
 		if (storage.GetValue("$god_tax").AsBool) {
 			//God Tax is a flat number
 			subtotal += storage.GetValue("$god_tax_amount").AsNumber;
@@ -315,7 +315,7 @@ public class DialogScreen : MonoBehaviour
 			subtotal += storage.GetValue("$wealth_tax_amount").AsNumber * cargo;
 		}
 
-		storage.SetValue("$tax_subtotal", Mathf.RoundToInt(subtotal));
+		storage.SetValue("$tax_subtotal", Mathf.CeilToInt(subtotal));
 		storage.SetValue("$cargo_value", cargo);
 		storage.SetValue("$ellimenion_percent", .05f);
 	}
@@ -326,16 +326,16 @@ public class DialogScreen : MonoBehaviour
 		float cargo = CargoValue();
 
 		float percent = 0.01f;
-		storage.SetValue("$water_intent", Mathf.RoundToInt(percent * cargo));
+		storage.SetValue("$water_intent", Mathf.CeilToInt(percent * cargo));
 
 		percent = 0.02f;
-		storage.SetValue("$trade_intent", Mathf.RoundToInt(percent * cargo));
+		storage.SetValue("$trade_intent", Mathf.CeilToInt(percent * cargo));
 
 		percent = 0.03f;
-		storage.SetValue("$tavern_intent", Mathf.RoundToInt(percent * cargo));
+		storage.SetValue("$tavern_intent", Mathf.CeilToInt(percent * cargo));
 
 		percent = 0.05f;
-		storage.SetValue("$all_intent", Mathf.RoundToInt(percent * cargo));
+		storage.SetValue("$all_intent", Mathf.CeilToInt(percent * cargo));
 	}
 
 	[YarnCommand("checkafford")]
@@ -371,7 +371,7 @@ public class DialogScreen : MonoBehaviour
 	}
 
 	private int IntFromVariableName(string name) {
-		return Mathf.RoundToInt(storage.GetValue(name).AsNumber);
+		return Mathf.CeilToInt(storage.GetValue(name).AsNumber);
 	}
 
 	private float CargoValue() {
