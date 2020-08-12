@@ -1,7 +1,7 @@
 title: Start
 tags: 
 colorID: 0
-position: 662,-1146
+position: 661,-1148
 ---
 << reset DialogScreen >>
 << setpartnername DialogScreen Telones >>
@@ -611,7 +611,7 @@ No problem! You can pay your taxes out of your cargo! To cover everything, you'l
 title: tax_short_2
 tags: 
 colorID: 0
-position: 1124,290
+position: 1123,289
 ---
 << setspeaker DialogScreen other >>
 << setend DialogScreen >> 
@@ -648,7 +648,7 @@ position: 1124,290
 << if $can_afford == true >>
     [[I would like a long rest and to manage my crew. (pay {$tavern_total} dr) |enter_tavern]]
 << else >>
-    [[I would like a long rest and to manage my crew. (pay {$tavern_total} worth of cargo|enter_tavern_cargo]]
+    [[I would like a long rest and to manage my crew. (pay {$tavern_total} worth of cargo) |enter_tavern_cargo]]
 << endif >> 
 
 << set $all_total to ($updated_subtotal + $all_intent) >>
