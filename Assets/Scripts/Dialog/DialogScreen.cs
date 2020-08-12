@@ -17,6 +17,7 @@ public class DialogScreen : MonoBehaviour
 	public Scrollbar conversationScroll;
 	public Transform conversationHolder;
 	public Transform choiceHolder;
+	public RectTransform choiceGrandParent;
 	public DialogChoice choiceObject;
 	public DialogPiece dialogObject;
 	public Image dialogImage;
@@ -121,11 +122,12 @@ public class DialogScreen : MonoBehaviour
 	public void AddChoice(string text, UnityEngine.Events.UnityAction click) 
 	{
 		DialogChoice c = Instantiate(choiceObject);
-		c.SetText(text);
 		c.transform.SetParent(choiceHolder);
+		c.SetText(text, choiceGrandParent);
 		c.transform.localScale = Vector3.one;
 		c.SetOnClick(click);
 	}
+
 
 	public void Clear() 
 	{
@@ -297,22 +299,23 @@ public class DialogScreen : MonoBehaviour
 	[YarnCommand("calculatetaxes")]
 	public void CalculateTaxCharges() {
 		float subtotal = 0;
-		float cargo = CargoValue();
+		//float cargo = CargoValue();
+		float cargo = 1000000;
 		if (storage.GetValue("$god_tax").AsBool) {
 			//God Tax is a flat number
 			subtotal += storage.GetValue("$god_tax_amount").AsNumber;
 		}
 		if (storage.GetValue("$transit_tax").AsBool) {
 			//Transit tax is a percent
-			subtotal += storage.GetValue("$transit_tax_amount").AsNumber * cargo;
+			subtotal += storage.GetValue("$transit_tax_amount").AsNumber * cargo * 100;
 		}
 		if (storage.GetValue("$foreigner_tax").AsBool) {
 			//Foreigner tax is a percent
-			subtotal += storage.GetValue("$foreigner_tax_amount").AsNumber * cargo;
+			subtotal += storage.GetValue("$foreigner_tax_amount").AsNumber * cargo * 100;
 		}
 		if (storage.GetValue("$wealth_tax").AsBool) {
 			//Wealth tax is a percent
-			subtotal += storage.GetValue("$wealth_tax_amount").AsNumber * cargo;
+			subtotal += storage.GetValue("$wealth_tax_amount").AsNumber * cargo * 100;
 		}
 
 		storage.SetValue("$tax_subtotal", Mathf.CeilToInt(subtotal));
@@ -345,9 +348,21 @@ public class DialogScreen : MonoBehaviour
 			itemCost = IntFromVariableName(cost);
 		}
 		else {
-			itemCost = int.Parse(cost);
+			itemCost = Mathf.CeilToInt(float.Parse(cost));
 		}
 		storage.SetValue("$can_afford", Globals.GameVars.playerShipVariables.ship.currency >= itemCost);
+	}
+
+	[YarnCommand("roundup")]
+	public void RoundToInt(string cost) {
+		int itemCost = 0;
+		if (cost[0] == '$') {
+			itemCost = IntFromVariableName(cost);
+		}
+		else {
+			itemCost = Mathf.CeilToInt(float.Parse(cost));
+		}
+		storage.SetValue("$rounded_num", itemCost);
 	}
 
 
