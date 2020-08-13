@@ -21,7 +21,8 @@ public class DialogText
 		jasoninsults,
 		jasondocumentation,
 		jasonwitness,
-		jasoncourt
+		jasoncourt,
+		cantafford
 	}
 
 	public enum Emotion

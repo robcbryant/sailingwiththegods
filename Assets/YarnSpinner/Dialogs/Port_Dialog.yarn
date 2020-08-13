@@ -354,12 +354,14 @@ Okay then, what are the exact charges? I must know if you are charging me fairly
 << setend DialogScreen >> 
 If you want only water and brief rest, you owe {$updated_subtotal + $water_intent} Drachma. If you are here to trade, your total will be {$updated_subtotal + $trade_intent} Drachma. If you need long rest, new crew, and repairs, you have to pay {$updated_subtotal + $tavern_intent} Drachma. Or if you want to take full advantage of our port, it comes out to {$updated_subtotal + $all_intent} Drachma.
 
+<< set $total_cargos to 0 >> 
 << set $water_total to ($updated_subtotal + $water_intent) >>
 << checkafford DialogScreen $water_total >> 
 
 << if $can_afford == true >>
     [[I would like to rest and buy water. (pay {$water_total} dr) |enter_water]]  
 << else >>
+    << set $total_cargos to $total_cargos + 1 >> 
     [[I would like to rest and buy water. (pay {$water_total} worth of cargo) |enter_water_cargo]]
 << endif >> 
 
@@ -369,6 +371,7 @@ If you want only water and brief rest, you owe {$updated_subtotal + $water_inten
 << if $can_afford == true >>
     [[I would like to trade my cargo. (pay {$trading_total} dr) |enter_trading]]
 << else >>
+    << set $total_cargos to $total_cargos + 1 >> 
     [[I would like to trade my cargo. (pay {$trading_total} worth of cargo) |enter_trading_cargo]]
 << endif >> 
 
@@ -378,6 +381,7 @@ If you want only water and brief rest, you owe {$updated_subtotal + $water_inten
 << if $can_afford == true >>
     [[I would like a long rest and to manage my crew. (pay {$tavern_total} dr) |enter_tavern]]
 << else >>
+    << set $total_cargos to $total_cargos + 1 >> 
     [[I would like a long rest and to manage my crew. (pay {$tavern_total} worth of cargo) |enter_tavern_cargo]]
 << endif >> 
 
@@ -387,8 +391,12 @@ If you want only water and brief rest, you owe {$updated_subtotal + $water_inten
 << if $can_afford == true >>
     [[I would like to take full advantage of this port. (pay {$all_total} dr) |enter_full]]
 << else >>
+    << set $total_cargos to $total_cargos + 1 >> 
     [[I would like to take full advantage of this port. (pay {$all_total} worth of cargo) |enter_full_cargo]]
 << endif >> 
+
+<< if $total_cargos >= 1 >>
+Your stores of cash are depleted! You must pay us in cargo - for you may not refuse to pay us just because you lack coins.
 
 [[That's far too much! (exit without paying) |exit]]
 [[That's far too much! (exit without paying) |exit]]
@@ -547,22 +555,30 @@ Your fees are steep and your town disappoints: we'll take our profit and our cha
 title: enter_water_cargo
 tags: 
 colorID: 0
-position: 465,961
+position: 465,959
 ---
 << set $intent to "water" >>
 << set $final_cost to $water_total >> 
 
-[[ enter_cargo ]]
+<< if $final_cost > $cargo_value >>
+    [[ cant_afford ]]
+<< else >> 
+    [[ enter_cargo ]]
+<< endif >>
 ===
 title: enter_trading_cargo
 tags: 
 colorID: 0
-position: 833,962
+position: 833,961
 ---
 << set $intent to "trading" >>
 << set $final_cost to $trading_total >> 
 
-[[ enter_cargo ]]
+<< if $final_cost > $cargo_value >>
+    [[ cant_afford ]]
+<< else >> 
+    [[ enter_cargo ]]
+<< endif >>
 ===
 title: enter_tavern_cargo
 tags: 
@@ -572,40 +588,48 @@ position: 1439,947
 << set $intent to "tavern" >>
 << set $final_cost to $tavern_total >> 
 
-[[ enter_cargo ]]
+<< if $final_cost > $cargo_value >>
+    [[ cant_afford ]]
+<< else >> 
+    [[ enter_cargo ]]
+<< endif >>
 ===
 title: enter_full_cargo
 tags: 
 colorID: 0
-position: 1766,966
+position: 1752,947
 ---
 << set $intent to "all" >>
 << set $final_cost to $all_total >> 
 
-[[ enter_cargo ]]
+<< if $final_cost > $cargo_value >>
+    [[ cant_afford ]]
+<< else >> 
+    [[ enter_cargo ]]
+<< endif >>
 ===
 title: enter_cargo
 tags: 
 colorID: 0
 position: 1124,1232
 ---
-<< setspeaker DialogScreen Jason >>
-Your fees are exhorbitant! I carry most of my wealth in my ship's stores.
-
 << setspeaker DialogScreen other >>
-No problem! You can pay your taxes out of your cargo! To cover everything, you'll owe all X of your drachma, plus LIST OF CARGO.
+We will seize from your cargo hold what you lack in your pockets! We'll start with grain, fruit of the earth, maker of men; then seize your livestock, the four-footed beasts the heroes most prized; then turn to gold, torn from the ribs of earth in Pangaion or Thasos; or silver, which gleams in the veins beneath Attica itself. The prestige goods exchanged among princes are next fungible, we will happily remove your Assyrian earrings, your Scythian vessels, silks from Arabia and linen from Asia Minor, woven by the bests of slaves. 
+Wine is also fair for trade! No port lacks eager recipients, and your bellies do not deserve what our citizens would enjoy. Then bronze, fit for armour and vessels, helmets and votives, we'll seize from your stores. Copper is always welcome, mother of bronze and partner of tin. Iron, tin, and lead, cold, hard, and unyielding, serve our city well - hand over your stores! And finally obsidian, shining like glass and harder than stone, is a welcome exchange!
+<< getresources DialogScreen >> 
+In addition to your {$drachma} drachma, you also owe {$demanded_resources}.
 
 << if $intent == "water" >>
-    [[I still want to refill my water and supplies. (pay {$final_cost} worth of cargo) |enter_water]]
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_water]]
 << elseif $intent == "trading" >>
-    [[I still want to trade my goods. (pay {$final_cost} worth of cargo) |enter_trading]]
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_trading]]
 << elseif $intent == "tavern" >>
-    [[I still want to rest and manage my crew. (pay {$final_cost} worth of cargo) |enter_tavern]]
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_tavern]]
 << elseif $intent == "all" >>
-    [[I still want to take full advantage of port. (pay {$final_cost} worth of cargo) |enter_full]]
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_full]]
 << endif >> 
 
-[[ I want to rethink my intent. |tax_short_2]]
+[[ I want to rethink my intent. |redo_intention]]
 [[ My cargo is my own! (leave without paying) |exit]]
 ===
 title: tax_short_2
@@ -624,12 +648,14 @@ position: 1123,289
 
 [[What is that money paying for? |tax_breakdown]]
 
+<< set $total_cargos to 0 >> 
 << set $water_total to ($updated_subtotal + $water_intent) >>
 << checkafford DialogScreen $water_total >> 
 
 << if $can_afford == true >>
     [[I would like to rest and buy water. (pay {$water_total} dr) |enter_water]]  
 << else >>
+    << set $total_cargos to $total_cargos + 1 >> 
     [[I would like to rest and buy water. (pay {$water_total} worth of cargo) |enter_water_cargo]]
 << endif >> 
 
@@ -639,6 +665,7 @@ position: 1123,289
 << if $can_afford == true >>
     [[I would like to trade my cargo. (pay {$trading_total} dr) |enter_trading]]
 << else >>
+    << set $total_cargos to $total_cargos + 1 >> 
     [[I would like to trade my cargo. (pay {$trading_total} worth of cargo) |enter_trading_cargo]]
 << endif >> 
 
@@ -648,6 +675,7 @@ position: 1123,289
 << if $can_afford == true >>
     [[I would like a long rest and to manage my crew. (pay {$tavern_total} dr) |enter_tavern]]
 << else >>
+    << set $total_cargos to $total_cargos + 1 >> 
     [[I would like a long rest and to manage my crew. (pay {$tavern_total} worth of cargo) |enter_tavern_cargo]]
 << endif >> 
 
@@ -657,8 +685,32 @@ position: 1123,289
 << if $can_afford == true >>
     [[I would like to take full advantage of this port. (pay {$all_total} dr) |enter_full]]
 << else >>
+    << set $total_cargos to $total_cargos + 1 >> 
     [[I would like to take full advantage of this port. (pay {$all_total} worth of cargo) |enter_full_cargo]]
 << endif >> 
 
+<< if $total_cargos >= 1 >>
+Your stores of cash are depleted! You must pay us in cargo - for you may not refuse to pay us just because you lack coins.
+
 [[That's far too much! (exit without paying) |exit]]
+===
+title: redo_intention
+tags: 
+colorID: 0
+position: 1516,291
+---
+<< setspeaker DialogScreen Jason >>
+So many fees, so little mercy, so little friendship shown to us! We will not pay. If we use fewer of your resources, would the price for entry be less?
+
+[[ Continue |tax_short_2]]
+===
+title: cant_afford
+tags: 
+colorID: 0
+position: -131,1544
+---
+<< setspeaker DialogScreen other >>
+<< setsprite Partner unhappy >>
+<< set $entering_city to false>> 
+You must leave - taxes are not optional!
 ===

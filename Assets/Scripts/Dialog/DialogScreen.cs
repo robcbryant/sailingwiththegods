@@ -28,6 +28,7 @@ public class DialogScreen : MonoBehaviour
 	private DialogueRunner runner;
 	private Settlement city;
 	private Canvas canvas;
+	private List<Resource> owedResources = new List<Resource>();
 
 	private void OnValidate() 
 	{
@@ -378,6 +379,64 @@ public class DialogScreen : MonoBehaviour
 		Globals.GameVars.playerShipVariables.ship.currency -= itemCost;
 		UpdateMoney();
 	}
+
+	[YarnCommand("payresources")]
+	public void PayAmountResources(string cost) {
+		Globals.GameVars.playerShipVariables.ship.currency = 0;
+		for (int i = 0; i < owedResources.Count; i++) {
+			Resource r = System.Array.Find(Globals.GameVars.playerShipVariables.ship.cargo, x => x.name == owedResources[i].name);
+			r.amount_kg -= owedResources[i].amount_kg;
+		}
+	}
+
+	[YarnCommand("getresources")]
+	public void CalculateNeededResources() {
+		owedResources.Clear();
+		float currentDr = Globals.GameVars.playerShipVariables.ship.currency;
+		storage.SetValue("$drachma", currentDr);
+		float cost = storage.GetValue("$final_cost").AsNumber;
+		float owedDr = cost - currentDr;
+
+		MetaResource[] sortedResources = Globals.GameVars.masterResourceList.OrderBy(x => x.trading_priority).ToArray();
+		Resource[] playerResources = Globals.GameVars.playerShipVariables.ship.cargo;
+
+		for (int i = 0; i < sortedResources.Length; i++) {
+			//If you have any of it...
+			int id = sortedResources[i].id;
+			if (playerResources[id].amount_kg > 0) {
+				//Do you have enough to completely cover your costs?
+				float value = OneCargoValue(playerResources[id], playerResources[id].amount_kg);
+				Resource r;
+
+				if (value >= owedDr) {
+					//If you do have more than enough, check how much is enough
+					int amt;
+					for (amt = 1; amt < Mathf.FloorToInt(playerResources[id].amount_kg); amt++) {
+						float currentCost = OneCargoValue(playerResources[id], amt);
+						if (currentCost >= owedDr) {
+							break;
+						}
+					}
+					value = OneCargoValue(playerResources[id], amt);
+					r = new Resource(playerResources[id].name, amt);
+				}
+				else {
+					//Otherwise, you'll need to add all of it and keep going
+					r = new Resource(playerResources[id].name, playerResources[id].amount_kg);
+				}
+
+				owedDr -= value;
+				owedResources.Add(r);
+
+				//If you've got enough value, end the loop
+				if (owedDr <= 0) {
+					break;
+				}
+			}
+		}
+
+		storage.SetValue("$demanded_resources", FormatList(owedResources));
+	}
 	#endregion
 
 	#region Yarn Helpers
@@ -393,11 +452,30 @@ public class DialogScreen : MonoBehaviour
 		return Globals.GameVars.Trade.GetTotalPriceOfGoods() + Globals.GameVars.playerShipVariables.ship.currency;
 	}
 
+	private float OneCargoValue(Resource r, float qty) {
+		return Globals.GameVars.Trade.GetPriceOfResource(r.name, city) * qty;
+	}
 
 	private float Truncate(float num, int places) {
 		int factor = (int)Mathf.Pow(10, places);
 
 		return Mathf.Round(num * factor) / factor;
+	}
+
+	private string FormatList(List<Resource> resources) 
+	{
+		string formatted = $"{resources[0].amount_kg}kg of {resources[0].name}";
+		if (resources.Count >= 2) {
+			formatted += ", ";
+		}
+		for (int i = 1; i < resources.Count - 1; i++) {
+			formatted += $"{resources[i].amount_kg}kg of {resources[i].name}, ";
+		}
+		if (resources.Count > 1) {
+			formatted += $"and {resources[resources.Count - 1].amount_kg}kg of {resources[resources.Count - 1].name}";
+		}
+
+		return formatted;
 	}
 	#endregion
 
