@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using NaughtyAttributes;
+using UnityEngine.UI;
 
 public class script_player_controls : MonoBehaviour
 {
@@ -18,7 +20,6 @@ public class script_player_controls : MonoBehaviour
 
 	GameVars GameVars;
 
-	[HideInInspector] public Ship ship;
 	[HideInInspector] public PlayerJourneyLog journey;
 	[HideInInspector] public Vector3 lastPlayerShipPosition;
 	[HideInInspector] public Vector3 travel_lastOrigin;
@@ -44,46 +45,75 @@ public class script_player_controls : MonoBehaviour
 	[HideInInspector] public int dayCounterStarving = 0;
 	[HideInInspector] public int dayCounterThirsty = 0;
 
-	[ReadOnly] public Vector2 longXLatY;
-
 	bool notEnoughSpeedToMove = false;
 
 	float initialAngle = 0f;
 	float initialCelestialAngle = 0f;
 	float targetAngle = 0f;
 
-
+	[Header("Scene References")]
 	public GameObject cursorRing;
+	public GameObject fogWall;
+	public AudioSource SFX_birdsong;
 
 	Material cursorRingMaterial;
 	bool cursorRingIsGreen = true;
 	float cursorRingAnimationClock = 0f;
 
-
-	public GameObject fogWall;
-
 	bool shipTravelStartRotationFinished = false;
-
 
 	[HideInInspector] public bool rayCheck_stopShip = false;
 	bool rayCheck_stopCurrents = false;
 	bool rayCheck_playBirdSong = false;
 
-	public AudioSource SFX_birdsong;
-
 	List<string> windZoneNamesToTurnOn = new List<string>();
 	List<string> currentZoneNamesToTurnOn = new List<string>();
 
-	[Header("Pirate Zones Bools")]
-	public bool isAetolianRegionZone = false;
-	public bool isCretanRegionZone = false;
-	public bool isEtruscanPirateRegionZone = false;
-	public bool isIllyrianRegionZone = false;
 	[HideInInspector] public List<string> zonesList = new List<string>();
 
 	[Header("Playtesting Bools")]
 	//make sure these are false in Unity's "Inspector" tab before making builds 
-	public bool hotkeysOn = true;
+	[SerializeField] bool hotkeysOn = true;
+
+
+	#region Debug Tools (keep at bottom)
+
+	bool ApplicationIsPlaying => Application.isPlaying;
+
+	[Header("Debug Tools")]
+	[EnableIf("ApplicationIsPlaying")]
+	public Ship ship;
+
+	[ReadOnly]
+	public Vector2 longXLatY;
+
+	[Header("Pirate Zones Bools")]
+	[ReadOnly] public bool isAetolianRegionZone = false;
+	[ReadOnly] public bool isCretanRegionZone = false;
+	[ReadOnly] public bool isEtruscanPirateRegionZone = false;
+	[ReadOnly] public bool isIllyrianRegionZone = false;
+
+	List<string> teleportToSettlementOptions = new List<string>();
+
+	[Dropdown("teleportToSettlementOptions")]
+	[SerializeField] string teleportToSettlementChoice = null;
+
+	[Button("Teleport to Settlement")]
+	void TeleportToSettlement() {
+		if (teleportToSettlementChoice == null) {
+			Debug.LogError("No settlement chosen");
+		}
+
+		var settlement = Globals.GameVars.GetSettlementByName(teleportToSettlementChoice);
+		if (settlement == null) {
+			Debug.LogError("Invalid settlement chosen");
+		}
+
+		var goalPos = settlement.theGameObject.transform.position;
+		transform.position = new Vector3(goalPos.x, transform.position.y, goalPos.z);
+	}
+	#endregion
+
 
 	public void Reset() {
 		ship = new Ship("Argo", 7.408f, 100, 500);
@@ -98,6 +128,9 @@ public class script_player_controls : MonoBehaviour
 
 		//initialize players ghost route
 		UpdatePlayerGhostRouteLineRenderer(GameVars.IS_NEW_GAME);
+
+		// setup teleport debug tool options (see inspector)
+		teleportToSettlementOptions = GameVars.settlement_masterList.Select(s => s.name).ToList();
 	}
 
 	// Use this for initialization
