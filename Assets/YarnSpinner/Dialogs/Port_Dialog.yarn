@@ -397,8 +397,8 @@ If you want only water and brief rest, you owe {$updated_subtotal + $water_inten
 
 << if $total_cargos >= 1 >>
 Your stores of cash are depleted! You must pay us in cargo - for you may not refuse to pay us just because you lack coins.
+<< endif >>
 
-[[That's far too much! (exit without paying) |exit]]
 [[That's far too much! (exit without paying) |exit]]
 ===
 title: tax_short_1
@@ -691,6 +691,7 @@ position: 1123,289
 
 << if $total_cargos >= 1 >>
 Your stores of cash are depleted! You must pay us in cargo - for you may not refuse to pay us just because you lack coins.
+<< endif >>
 
 [[That's far too much! (exit without paying) |exit]]
 ===
