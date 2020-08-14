@@ -63,9 +63,7 @@ public class MiniGameManager : MonoBehaviour
 		//check true zones, out of those, have a pirate type spawn from one of the "true" areas
 		//no pirates should appear if there aren't any actve zones
 		if (Globals.GameVars.playerShipVariables.zonesList.Count > 0) {
-			int randomPirateTypeFromActiveZones = UnityEngine.Random.Range(1, Globals.GameVars.playerShipVariables.zonesList.Count);
-
-			string randomPirateTypeName = Globals.GameVars.playerShipVariables.zonesList[randomPirateTypeFromActiveZones];
+			string randomPirateTypeName = Globals.GameVars.playerShipVariables.zonesList.RandomElement();
 
 			PirateType theType = Globals.GameVars.PirateTypes.FirstOrDefault(t => t.name == randomPirateTypeName);
 			//Debug.Log("theType = " + theType);
