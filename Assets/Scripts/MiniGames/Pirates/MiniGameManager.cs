@@ -63,9 +63,10 @@ public class MiniGameManager : MonoBehaviour
 		//check true zones, out of those, have a pirate type spawn from one of the "true" areas
 		//no pirates should appear if there aren't any actve zones
 		if (Globals.GameVars.playerShipVariables.zonesList.Count > 0) {
-			int randomPirateTypeFromActiveZones = UnityEngine.Random.Range(1, Globals.GameVars.playerShipVariables.zonesList.Count);
+			//below line is unneeded
+			//int randomPirateTypeFromActiveZones = UnityEngine.Random.Range(1, Globals.GameVars.playerShipVariables.zonesList.Count);
 
-			string randomPirateTypeName = Globals.GameVars.playerShipVariables.zonesList[randomPirateTypeFromActiveZones];
+			string randomPirateTypeName = Globals.GameVars.playerShipVariables.zonesList.RandomElement();
 
 			PirateType theType = Globals.GameVars.PirateTypes.FirstOrDefault(t => t.name == randomPirateTypeName);
 			//Debug.Log("theType = " + theType);
@@ -95,7 +96,10 @@ public class MiniGameManager : MonoBehaviour
 			typeInfo = typeInfo.Replace("{0}", pirateKnower.name);
 			typeInfo = typeInfo.Replace("{1}", rsp.CurrentPirates.name);
 
-			pirateTypeText = typeInfo + " " + Globals.GameVars.pirateTypeIntroText[1 + rsp.CurrentPirates.ID];
+			//commented out the "1 + " to test for text matching up to type of Pirate in PMG
+			//works as of 08/14/2020
+			pirateTypeText = typeInfo + " " + Globals.GameVars.pirateTypeIntroText[/*1 + */rsp.CurrentPirates.ID];
+			Debug.Log("current pirate ID: " + rsp.CurrentPirates.ID);
 		}
 		else 
 		{
