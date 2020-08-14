@@ -93,7 +93,10 @@ public class MiniGameManager : MonoBehaviour
 			typeInfo = typeInfo.Replace("{0}", pirateKnower.name);
 			typeInfo = typeInfo.Replace("{1}", rsp.CurrentPirates.name);
 
-			pirateTypeText = typeInfo + " " + Globals.GameVars.pirateTypeIntroText[1 + rsp.CurrentPirates.ID];
+			//commented out the "1 + " to test for text matching up to type of Pirate in PMG
+			//works as of 08/14/2020
+			pirateTypeText = typeInfo + " " + Globals.GameVars.pirateTypeIntroText[/*1 + */rsp.CurrentPirates.ID];
+			Debug.Log("current pirate ID: " + rsp.CurrentPirates.ID);
 		}
 		else 
 		{

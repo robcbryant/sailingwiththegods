@@ -58,6 +58,7 @@ public class Trade
 		//Debug.Log($"Checking prices in {GameVars.currentSettlement}");
 
 		//Loop through each resource in the settlement's cargo and figure out the price of that resource 
+		//The reason this starts at 2 is so it ignores the value of your food and water
 		for (int setIndex = 2; setIndex < GameVars.currentSettlement.cargo.Length; setIndex++) {
 			float currentResourcePrice = GetPriceOfResource(GameVars.currentSettlement.cargo[setIndex].name, GameVars.currentSettlement);
 			//with this price, let's check the ships cargo at the same index position and calculate its worth and add it to the total

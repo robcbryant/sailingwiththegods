@@ -335,7 +335,7 @@ public static class CSVLoader
 		//start at index 1 to skip the record headers we have to then subtract 
 		for (int lineCount = 1; lineCount < fileByLine.Length; lineCount++) {
 			string[] records = fileByLine[lineCount].Split(lineDelimiter, StringSplitOptions.None);
-			masterResourceList.Add(new MetaResource(records[1], int.Parse(records[0]), records[3], records[2]));
+			masterResourceList.Add(new MetaResource(records[1], int.Parse(records[0]), records[3], records[2], int.Parse(records[4])));
 		}
 
 		return masterResourceList;

@@ -581,14 +581,16 @@ public class MetaResource
 {
 	public string name;
 	public int id;
+	public int trading_priority;
 	public string description;
 	public string icon;
 
-	public MetaResource(string name, int id, string description, string icon) {
+	public MetaResource(string name, int id, string description, string icon, int trading_priority) {
 		this.name = name;
 		this.id = id;
 		this.description = description;
 		this.icon = icon;
+		this.trading_priority = trading_priority;
 	}
 
 }

@@ -1,7 +1,7 @@
 title: Start
 tags: 
 colorID: 0
-position: 661,-900
+position: 661,-1148
 ---
 << reset DialogScreen >>
 << setpartnername DialogScreen Telones >>
@@ -29,13 +29,14 @@ I am the first and the last face you'll see here: no ordinary citizen I! You may
 [[ What kind of place have I come to? |where]]
 [[ What are the networks in this city? |networks]]
 [[ Can I enter the city? |tax_start]]
+[[ TAXES SHORTCUT|tax_explain]]
 [[ ENTER CITY SHORTCUT |enter_water]]
 [[ LEAVE WITHOUT PAYING SHORTCUT |exit]]
 ===
 title: where
 tags: 
 colorID: 0
-position: 409,-589
+position: 314,-985
 ---
 << set $asked_where to true >> 
 
@@ -57,7 +58,7 @@ No, it's {$city_name}. {$city_description}
 title: networks
 tags: 
 colorID: 0
-position: 885,-594
+position: 979,-990
 ---
 << set $asked_networks to true >>
 
@@ -114,7 +115,7 @@ position: 885,-594
 title: tax_network
 tags: 
 colorID: 0
-position: 1007,-272
+position: 983,-743
 ---
 << setspeaker DialogScreen Jason >> 
 We share connections. Does this not mean we get discounted taxes? 
@@ -163,7 +164,7 @@ I don't believe you. {$crew_name_3} must produce some proof!
 title: tax_start
 tags: 
 colorID: 0
-position: 667,104
+position: 669,-548
 ---
 << setspeaker DialogScreen Jason >>
 Can I come into the city? What are my fees?
@@ -187,7 +188,7 @@ Can I come into the city? What are my fees?
 title: tax_why
 tags: 
 colorID: 0
-position: 395,377
+position: 349,-331
 ---
 << set $asked_who to true >> 
 
@@ -207,7 +208,7 @@ Why do I have to pay you? What makes you special?
 title: tax_insult
 tags: 
 colorID: 0
-position: 944,382
+position: 990,-322
 ---
 << set $insulted to true >> 
 
@@ -229,7 +230,7 @@ The poorest man in the smallest boat can haul me before the magistrates! They co
 title: tax_explain
 tags: 
 colorID: 0
-position: 671,609
+position: 661,-103
 ---
 << setspeaker DialogScreen Jason >> 
 By the gods, this sounds serious. What kind of money are we talking about?
@@ -241,12 +242,12 @@ By the gods, this sounds serious. What kind of money are we talking about?
 
 [[What types of taxes do you charge here? |tax_types]]
 [[How much will I have to pay? |tax_breakdown]]
-[[I already know what I want to do. |tax_short]]
+[[I already know what I want to do. |tax_short_1]]
 ===
 title: tax_types
 tags: 
 colorID: 0
-position: 344,1030
+position: 44,120
 ---
 << set $asked_types to true >>
 
@@ -288,13 +289,13 @@ Have the seas made you spring a leak, will you be seeking tar, rope, fresh sails
 Or if you are in great need of our great stores! You'll be hiring, seeking repairs, seeking to trade, stocking up with water, and imploring our local gods for help on the way? You can make full use of anything we offer - but of course, you'll be taxed accordingly at 5%!
 
 [[What exactly will each of these taxes cost me? |tax_breakdown]]
-[[Alright, I understand. I know what I want to do. |tax_short]]
+[[Alright, I understand. I know what I want to do. |tax_short_1]]
 [[That's far too many taxes! (leave without paying) |exit]]
 ===
 title: tax_breakdown
 tags: 
 colorID: 0
-position: 675,879
+position: 655,295
 ---
 << setspeaker DialogScreen Jason >>
 Okay then, what are the exact charges? I must know if you are charging me fairly!
@@ -347,22 +348,66 @@ Okay then, what are the exact charges? I must know if you are charging me fairly
 << endif >> 
 
 << set $updated_subtotal to ($ellimenion_percent * $cargo_value + $tax_subtotal) >>
+<< roundup DialogScreen $updated_subtotal >>
+<< set $updated_subtotal to $rounded_num >> 
 
 << setend DialogScreen >> 
 If you want only water and brief rest, you owe {$updated_subtotal + $water_intent} Drachma. If you are here to trade, your total will be {$updated_subtotal + $trade_intent} Drachma. If you need long rest, new crew, and repairs, you have to pay {$updated_subtotal + $tavern_intent} Drachma. Or if you want to take full advantage of our port, it comes out to {$updated_subtotal + $all_intent} Drachma.
 
-[[I would like to rest and buy water. (pay {$updated_subtotal + $water_intent} dr) |enter_water]]
-[[I would like to trade my cargo. (pay {$updated_subtotal + $trade_intent} dr) |enter_trading]]
-[[I would like a long rest and to manage my crew. (pay {$updated_subtotal + $tavern_intent} dr) |enter_shelter]]
-[[I would like to take full advantage of this port. (pay {$updated_subtotal + $all_intent} dr) |enter_full]]
+<< set $total_cargos to 0 >> 
+<< set $water_total to ($updated_subtotal + $water_intent) >>
+<< checkafford DialogScreen $water_total >> 
+
+<< if $can_afford == true >>
+    [[I would like to rest and buy water. (pay {$water_total} dr) |enter_water]]  
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like to rest and buy water. (pay {$water_total} worth of cargo) |enter_water_cargo]]
+<< endif >> 
+
+<< set $trading_total to ($updated_subtotal + $trade_intent) >>
+<< checkafford DialogScreen $trading_total >>
+
+<< if $can_afford == true >>
+    [[I would like to trade my cargo. (pay {$trading_total} dr) |enter_trading]]
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like to trade my cargo. (pay {$trading_total} worth of cargo) |enter_trading_cargo]]
+<< endif >> 
+
+<< set $tavern_total to ($updated_subtotal + $tavern_intent) >>
+<< checkafford DialogScreen $tavern_total >>
+
+<< if $can_afford == true >>
+    [[I would like a long rest and to manage my crew. (pay {$tavern_total} dr) |enter_tavern]]
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like a long rest and to manage my crew. (pay {$tavern_total} worth of cargo) |enter_tavern_cargo]]
+<< endif >> 
+
+<< set $all_total to ($updated_subtotal + $all_intent) >>
+<< checkafford DialogScreen $all_total >>
+
+<< if $can_afford == true >>
+    [[I would like to take full advantage of this port. (pay {$all_total} dr) |enter_full]]
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like to take full advantage of this port. (pay {$all_total} worth of cargo) |enter_full_cargo]]
+<< endif >> 
+
+<< if $total_cargos >= 1 >>
+Your stores of cash are depleted! You must pay us in cargo - for you may not refuse to pay us just because you lack coins.
+<< endif >>
+
 [[That's far too much! (exit without paying) |exit]]
 ===
-title: tax_short
+title: tax_short_1
 tags: 
 colorID: 0
-position: 987,1029
+position: 1114,-15
 ---
 << setspeaker DialogScreen Jason >>
+<< setend DialogScreen >> 
 I already know what I want to do.
 
 << calculatetaxes DialogScreen >> 
@@ -377,27 +422,15 @@ I already know what I want to do.
 << endif >> 
 
 << set $updated_subtotal to ($ellimenion_percent * $cargo_value + $tax_subtotal) >>
+<< roundup DialogScreen $updated_subtotal >>
+<< set $updated_subtotal to $rounded_num >> 
 
-<< setspeaker DialogScreen other >>
-<< setend DialogScreen >> 
-
-<< if $updated_subtotal == 0 >>
-	Very well then. We charge no taxes but the ellimenion here and your network has waived that, so you owe only the intent fee.
-<< else >>
-	Very well then. Your total is {$updated_subtotal} Drachma plus the intent fee.
-<< endif >>
-
-[[What is that money paying for? |tax_breakdown]]
-[[I would like to rest and buy water. (pay {$updated_subtotal + $water_intent} dr) |enter_water]]
-[[I would like to trade my cargo. (pay {$updated_subtotal + $trade_intent} dr) |enter_trading]]
-[[I would like a long rest and to manage my crew. (pay {$updated_subtotal + $tavern_intent} dr) |enter_shelter]]
-[[I would like to take full advantage of this port. (pay {$updated_subtotal + $all_intent} dr) |enter_full]]
-[[That's far too much! (exit without paying) |exit]]
+[[Continue |tax_short_2]]
 ===
 title: enter_water
 tags: 
 colorID: 0
-position: 471,1311
+position: 473,1531
 ---
 << setspeaker DialogScreen Jason >>
 Nymphs are generous, water falls from the sky - and yet we must pay you! But pay we will, for we cannot proceed without water for our crew.
@@ -413,7 +446,7 @@ Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your ti
 title: enter_trading
 tags: 
 colorID: 0
-position: 695,1311
+position: 823,1542
 ---
 << setspeaker DialogScreen Jason >>
 Too great is the lure of your market for us to resist - even at those rates! Accept our money and let us in!
@@ -429,10 +462,10 @@ Thank you for your business! That's {$final_cost} Drachma exactly!
 
 [[Continue |herald_fee]]
 ===
-title: enter_shelter
+title: enter_tavern
 tags: 
 colorID: 0
-position: 914,1310
+position: 1457,1535
 ---
 << setspeaker DialogScreen Jason >>
 A weary ship, a thirsty crew, growling stomachs and empty seats - what choice do we have? We'll pay your fees, say a prayer to Ploutos the god of wealth, and come in.
@@ -448,7 +481,7 @@ Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your ti
 title: enter_full
 tags: 
 colorID: 0
-position: 1135,1311
+position: 1790,1526
 ---
 << setspeaker DialogScreen Jason >>
 We have much to accomplish in your town - you're a lucky man today! Take our drachmae and let us in.
@@ -462,12 +495,12 @@ We have much to accomplish in your town - you're a lucky man today! Take our dra
 
 Thank you for your business! That's {$final_cost} Drachma exactly!
 
-[[Continue |herald_fee ]]
+[[Continue |herald_fee]]
 ===
 title: herald_fee
 tags: 
 colorID: 0
-position: 780,1669
+position: 1147,2107
 ---
 << setspeaker DialogScreen other >>
 << setsprite DialogScreen happy >>
@@ -484,7 +517,7 @@ If you wish to sell your goods, surely you will need to advertise them! Hire a h
 title: herald_pay
 tags: 
 colorID: 0
-position: 763,2050
+position: 1130,2488
 ---
 << setspeaker DialogScreen Jason >>
 << pay DialogScreen 2 >> 
@@ -498,7 +531,7 @@ A wise decision! Enjoy your time in our fair city!
 title: herald_no
 tags: 
 colorID: 0
-position: 1039,1898
+position: 1406,2336
 ---
 << setspeaker DialogScreen Jason >>
 My goods speak for themselves! I'll let rumors of our arrival do the work - and keep the fee in my own pocket.
@@ -512,10 +545,176 @@ Your loss, my friend! Still, enjoy your time in our fair city.
 title: exit
 tags: 
 colorID: 0
-position: -193,1639
+position: -1548,915
 ---
 << setspeaker DialogScreen Jason >>
 << setsprite Partner unhappy >>
 << set $entering_city to false >>
 Your fees are steep and your town disappoints: we'll take our profit and our chances to the next port.
+===
+title: enter_water_cargo
+tags: 
+colorID: 0
+position: 465,959
+---
+<< set $intent to "water" >>
+<< set $final_cost to $water_total >> 
+
+<< if $final_cost > $cargo_value >>
+You have {$cargo_value} value but owe {$final_cost}!
+    [[ cant_afford ]]
+<< else >> 
+You have {$cargo_value} value and only owe {$final_cost}
+    [[ enter_cargo ]]
+<< endif >>
+===
+title: enter_trading_cargo
+tags: 
+colorID: 0
+position: 833,961
+---
+<< set $intent to "trading" >>
+<< set $final_cost to $trading_total >> 
+
+<< if $final_cost > $cargo_value >>
+    [[ cant_afford ]]
+<< else >> 
+    [[ enter_cargo ]]
+<< endif >>
+===
+title: enter_tavern_cargo
+tags: 
+colorID: 0
+position: 1439,947
+---
+<< set $intent to "tavern" >>
+<< set $final_cost to $tavern_total >> 
+
+<< if $final_cost > $cargo_value >>
+    [[ cant_afford ]]
+<< else >> 
+    [[ enter_cargo ]]
+<< endif >>
+===
+title: enter_full_cargo
+tags: 
+colorID: 0
+position: 1752,947
+---
+<< set $intent to "all" >>
+<< set $final_cost to $all_total >> 
+
+<< if $final_cost > $cargo_value >>
+    [[ cant_afford ]]
+<< else >> 
+    [[ enter_cargo ]]
+<< endif >>
+===
+title: enter_cargo
+tags: 
+colorID: 0
+position: 1124,1232
+---
+<< setspeaker DialogScreen other >>
+We will seize from your cargo hold what you lack in your pockets! We'll start with grain, fruit of the earth, maker of men; then seize your livestock, the four-footed beasts the heroes most prized; then turn to gold, torn from the ribs of earth in Pangaion or Thasos; or silver, which gleams in the veins beneath Attica itself. The prestige goods exchanged among princes are next fungible, we will happily remove your Assyrian earrings, your Scythian vessels, silks from Arabia and linen from Asia Minor, woven by the bests of slaves. 
+Wine is also fair for trade! No port lacks eager recipients, and your bellies do not deserve what our citizens would enjoy. Then bronze, fit for armour and vessels, helmets and votives, we'll seize from your stores. Copper is always welcome, mother of bronze and partner of tin. Iron, tin, and lead, cold, hard, and unyielding, serve our city well - hand over your stores! And finally obsidian, shining like glass and harder than stone, is a welcome exchange!
+<< getresources DialogScreen >> 
+In addition to your {$drachma} drachma, you also owe {$demanded_resources}.
+
+<< if $intent == "water" >>
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_water]]
+<< elseif $intent == "trading" >>
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_trading]]
+<< elseif $intent == "tavern" >>
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_tavern]]
+<< elseif $intent == "all" >>
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_full]]
+<< endif >> 
+
+[[ I want to rethink my intent. |redo_intention]]
+[[ My cargo is my own! (leave without paying) |exit]]
+===
+title: tax_short_2
+tags: 
+colorID: 0
+position: 1123,289
+---
+<< setspeaker DialogScreen other >>
+<< setend DialogScreen >> 
+
+<< if $updated_subtotal == 0 >>
+	Very well then. We charge no taxes but the ellimenion here and your network has waived that, so you owe only the intent fee.
+<< else >>
+	Very well then. Your total is {$updated_subtotal} Drachma plus the intent fee.
+<< endif >>
+
+[[What is that money paying for? |tax_breakdown]]
+
+<< set $total_cargos to 0 >> 
+<< set $water_total to ($updated_subtotal + $water_intent) >>
+<< checkafford DialogScreen $water_total >> 
+
+<< if $can_afford == true >>
+    [[I would like to rest and buy water. (pay {$water_total} dr) |enter_water]]  
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like to rest and buy water. (pay {$water_total} worth of cargo) |enter_water_cargo]]
+<< endif >> 
+
+<< set $trading_total to ($updated_subtotal + $trade_intent) >>
+<< checkafford DialogScreen $trading_total >>
+
+<< if $can_afford == true >>
+    [[I would like to trade my cargo. (pay {$trading_total} dr) |enter_trading]]
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like to trade my cargo. (pay {$trading_total} worth of cargo) |enter_trading_cargo]]
+<< endif >> 
+
+<< set $tavern_total to ($updated_subtotal + $tavern_intent) >>
+<< checkafford DialogScreen $tavern_total >>
+
+<< if $can_afford == true >>
+    [[I would like a long rest and to manage my crew. (pay {$tavern_total} dr) |enter_tavern]]
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like a long rest and to manage my crew. (pay {$tavern_total} worth of cargo) |enter_tavern_cargo]]
+<< endif >> 
+
+<< set $all_total to ($updated_subtotal + $all_intent) >>
+<< checkafford DialogScreen $all_total >>
+
+<< if $can_afford == true >>
+    [[I would like to take full advantage of this port. (pay {$all_total} dr) |enter_full]]
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like to take full advantage of this port. (pay {$all_total} worth of cargo) |enter_full_cargo]]
+<< endif >> 
+
+<< if $total_cargos >= 1 >>
+Your stores of cash are depleted! You must pay us in cargo - for you may not refuse to pay us just because you lack coins.
+<< endif >>
+
+[[That's far too much! (exit without paying) |exit]]
+===
+title: redo_intention
+tags: 
+colorID: 0
+position: 1516,291
+---
+<< setspeaker DialogScreen Jason >>
+<< setend DialogScreen >>
+So many fees, so little mercy, so little friendship shown to us! We will not pay. If we use fewer of your resources, would the price for entry be less?
+
+[[ Continue |tax_short_2]]
+===
+title: cant_afford
+tags: 
+colorID: 0
+position: -131,1544
+---
+<< setspeaker DialogScreen other >>
+<< setsprite Partner unhappy >>
+<< set $entering_city to false>> 
+You must leave - taxes are not optional!
 ===
