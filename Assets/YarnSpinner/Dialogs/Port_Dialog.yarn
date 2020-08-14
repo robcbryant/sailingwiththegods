@@ -561,8 +561,10 @@ position: 465,959
 << set $final_cost to $water_total >> 
 
 << if $final_cost > $cargo_value >>
+You have {$cargo_value} value but owe {$final_cost}!
     [[ cant_afford ]]
 << else >> 
+You have {$cargo_value} value and only owe {$final_cost}
     [[ enter_cargo ]]
 << endif >>
 ===
@@ -701,6 +703,7 @@ colorID: 0
 position: 1516,291
 ---
 << setspeaker DialogScreen Jason >>
+<< setend DialogScreen >>
 So many fees, so little mercy, so little friendship shown to us! We will not pay. If we use fewer of your resources, would the price for entry be less?
 
 [[ Continue |tax_short_2]]

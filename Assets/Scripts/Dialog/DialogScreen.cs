@@ -259,6 +259,11 @@ public class DialogScreen : MonoBehaviour
 			storage.SetValue("$crew_home", "ERROR");
 		}
 	}
+
+	[YarnCommand("cargovalue")]
+	public void StoreCargoValue() {
+		storage.SetValue("$cargo_value", Mathf.CeilToInt(CargoValue()));
+	}
 	#endregion
 
 	#region Yarn Functions - Random
@@ -300,8 +305,9 @@ public class DialogScreen : MonoBehaviour
 	[YarnCommand("calculatetaxes")]
 	public void CalculateTaxCharges() {
 		float subtotal = 0;
-		//float cargo = CargoValue();
+		//TESTING
 		float cargo = 1000000;
+
 		if (storage.GetValue("$god_tax").AsBool) {
 			//God Tax is a flat number
 			subtotal += storage.GetValue("$god_tax_amount").AsNumber;
@@ -319,6 +325,7 @@ public class DialogScreen : MonoBehaviour
 			subtotal += storage.GetValue("$wealth_tax_amount").AsNumber * cargo * 100;
 		}
 
+		cargo = CargoValue();
 		storage.SetValue("$tax_subtotal", Mathf.CeilToInt(subtotal));
 		storage.SetValue("$cargo_value", cargo);
 		storage.SetValue("$ellimenion_percent", .05f);
