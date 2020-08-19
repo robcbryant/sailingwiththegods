@@ -29,7 +29,7 @@ I am the first and the last face you'll see here: no ordinary citizen I! You may
 [[ What kind of place have I come to? |where]]
 [[ What are the networks in this city? |networks]]
 [[ Can I enter the city? |tax_start]]
-[[ TAXES SHORTCUT|tax_explain]]
+[[ TAXES SHORTCUT BUT THE TEXT HERE IS SUPER SUPER LONG FOR TESTING PURPOSES PLEASE WORK AND WRAP TO A NEW LINE PLEASE|tax_explain]]
 [[ ENTER CITY SHORTCUT |enter_water]]
 [[ LEAVE WITHOUT PAYING SHORTCUT |exit]]
 ===
@@ -615,9 +615,12 @@ tags:
 colorID: 0
 position: 1124,1232
 ---
+<< setspeaker DialogScreen Jason >>
+I will enter your city! My ship is heavy with jars of baked earth, holding all sorts of goods, bags bulging with valuables, boxes, and barrels. But what kind of goods do you wish to extract from me?
+
 << setspeaker DialogScreen other >>
 We will seize from your cargo hold what you lack in your pockets! We'll start with grain, fruit of the earth, maker of men; then seize your livestock, the four-footed beasts the heroes most prized; then turn to gold, torn from the ribs of earth in Pangaion or Thasos; or silver, which gleams in the veins beneath Attica itself. The prestige goods exchanged among princes are next fungible, we will happily remove your Assyrian earrings, your Scythian vessels, silks from Arabia and linen from Asia Minor, woven by the bests of slaves. 
-Wine is also fair for trade! No port lacks eager recipients, and your bellies do not deserve what our citizens would enjoy. Then bronze, fit for armour and vessels, helmets and votives, we'll seize from your stores. Copper is always welcome, mother of bronze and partner of tin. Iron, tin, and lead, cold, hard, and unyielding, serve our city well - hand over your stores! And finally obsidian, shining like glass and harder than stone, is a welcome exchange!
+Wine is also fair for trade! No port lacks eager recipients, and your bellies do not deserve what our citizens would enjoy. Then bronze, fit for armour and vessels, helmets and votives, we'll seize from your stores. Timber from the heights of Ossa and Pelion, trees that touched the sky, brought now to our docks to mend our ships and speak with the waves. Copper is always welcome, mother of bronze and partner of tin. Iron, tin, and lead, cold, hard, and unyielding, serve our city well - hand over your stores! And finally obsidian, shining like glass and harder than stone, is a welcome exchange!
 << getresources DialogScreen >> 
 In addition to your {$drachma} drachma, you also owe {$demanded_resources}.
 

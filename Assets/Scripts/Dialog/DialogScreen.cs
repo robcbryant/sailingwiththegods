@@ -12,12 +12,18 @@ public class DialogScreen : MonoBehaviour
 
 	public script_GUI gui;
 
+	[Header("Conversation")]
 	public TextMeshProUGUI moneyText;
 	public TextMeshProUGUI conversationTitle;
 	public Scrollbar conversationScroll;
 	public Transform conversationHolder;
+
+	[Header("Choices")]
+	public RectTransform choiceScroll;
 	public Transform choiceHolder;
 	public RectTransform choiceGrandParent;
+
+	[Header("Prefabs")]
 	public DialogChoice choiceObject;
 	public DialogPiece dialogObject;
 	public Image dialogImage;
@@ -124,7 +130,9 @@ public class DialogScreen : MonoBehaviour
 	{
 		DialogChoice c = Instantiate(choiceObject);
 		c.transform.SetParent(choiceHolder);
-		c.SetText(text, choiceGrandParent);
+		VerticalLayoutGroup choiceLayout = choiceHolder.GetComponent<VerticalLayoutGroup>();
+		float padding = choiceLayout.padding.left + choiceLayout.padding.right + choiceScroll.rect.width + 1;
+		c.SetText(text, choiceGrandParent, padding);
 		c.transform.localScale = Vector3.one;
 		c.SetOnClick(click);
 	}
@@ -408,38 +416,42 @@ public class DialogScreen : MonoBehaviour
 		Resource[] playerResources = Globals.GameVars.playerShipVariables.ship.cargo;
 
 		for (int i = 0; i < sortedResources.Length; i++) {
-			//If you have any of it...
-			int id = sortedResources[i].id;
-			if (playerResources[id].amount_kg > 0) {
-				//Do you have enough to completely cover your costs?
-				float value = OneCargoValue(playerResources[id], playerResources[id].amount_kg);
-				Resource r;
+			//If it's something that can be demanded (ie not water or food)...
+			if (sortedResources[i].trading_priority != 100) {
+				//If you have any of it...
+				int id = sortedResources[i].id;
+				if (playerResources[id].amount_kg > 0) {
+					//Do you have enough to completely cover your costs?
+					float value = OneCargoValue(playerResources[id], playerResources[id].amount_kg);
+					Resource r;
 
-				if (value >= owedDr) {
-					//If you do have more than enough, check how much is enough
-					int amt;
-					for (amt = 1; amt < Mathf.FloorToInt(playerResources[id].amount_kg); amt++) {
-						float currentCost = OneCargoValue(playerResources[id], amt);
-						if (currentCost >= owedDr) {
-							break;
+					if (value >= owedDr) {
+						//If you do have more than enough, check how much is enough
+						int amt;
+						for (amt = 1; amt < Mathf.FloorToInt(playerResources[id].amount_kg); amt++) {
+							float currentCost = OneCargoValue(playerResources[id], amt);
+							if (currentCost >= owedDr) {
+								break;
+							}
 						}
+						value = OneCargoValue(playerResources[id], amt);
+						r = new Resource(playerResources[id].name, amt);
 					}
-					value = OneCargoValue(playerResources[id], amt);
-					r = new Resource(playerResources[id].name, amt);
-				}
-				else {
-					//Otherwise, you'll need to add all of it and keep going
-					r = new Resource(playerResources[id].name, playerResources[id].amount_kg);
-				}
+					else {
+						//Otherwise, you'll need to add all of it and keep going
+						r = new Resource(playerResources[id].name, playerResources[id].amount_kg);
+					}
 
-				owedDr -= value;
-				owedResources.Add(r);
+					owedDr -= value;
+					owedResources.Add(r);
 
-				//If you've got enough value, end the loop
-				if (owedDr <= 0) {
-					break;
+					//If you've got enough value, end the loop
+					if (owedDr <= 0) {
+						break;
+					}
 				}
 			}
+			
 		}
 
 		storage.SetValue("$demanded_resources", FormatList(owedResources));
