@@ -19,6 +19,8 @@ public class MiniGameManager : MonoBehaviour
 	public ButtonExplanation acceptNegotiationButton;
 	public Button rejectNegotiationButton;
 	public Button closeButton;
+
+	[Header("Button Text")]
 	public string acceptedNegotiationClose;
 	public string rejectedNegotiationClose;
 	public string failedRunClose;
@@ -28,9 +30,7 @@ public class MiniGameManager : MonoBehaviour
 
 	[Header("Gameplay")]
 	public Vector2 runningBounds = new Vector2(0.1f, 0.9f);
-	public GameObject piratesParent, crewParent;
-	public List<CardDropZone> crewSlots;
-	public Transform[] pirateSpaces, crewSpaces;
+	public Transform piratesParent, crewParent;
 
 	[Header("Clout")]
 	public int wonFightClout;
@@ -38,11 +38,15 @@ public class MiniGameManager : MonoBehaviour
 	public int succeedRunClout;
 	public int failedRunClout;
 
+	private List<CardDropZone> crewSlots;
 	private float runChance;
 	private bool alreadyTriedRunning;
 	private bool alreadyTriedNegotiating;
 	private RandomSlotPopulator rsp;
 	private int cloutChange;
+	private int moneyDemand = 0;
+	private Resource[] playerInvo => Globals.GameVars.playerShipVariables.ship.cargo;
+	int[] demandedAmounts;
 
 	private void OnEnable() 
 	{
@@ -132,7 +136,12 @@ public class MiniGameManager : MonoBehaviour
 		return $"For sailing away with your lives, your clout has increased by {clout}. {previousChange}";
 	}
 
-
+	/// <summary>
+	/// Finds a person with a connection to the pirate's hometowns
+	/// Can probably be replaced with something from Network.cs
+	/// </summary>
+	/// <param name="pirate"></param>
+	/// <returns></returns>
 	private CrewMember CrewFromPirateHometown(PirateType pirate) 
 	{
 		List<CrewMember> allPirates = Globals.GameVars.Pirates.Where(x => x.pirateType.Equals(pirate)).ToList();
@@ -153,7 +162,7 @@ public class MiniGameManager : MonoBehaviour
 		return null;
 	}
 
-	public void InitilizePirates(List<CardDropZone> playableSlots) {
+	public void InitializeCrewSlots(List<CardDropZone> playableSlots) {
 
 		//foreach (Transform p in piratesParent.transform) {
 		//	pirates.Add(p.gameObject);
@@ -175,9 +184,7 @@ public class MiniGameManager : MonoBehaviour
 	}
 
 	#region Negotiation
-	private int moneyDemand = 0;
-	private Resource[] playerInvo => Globals.GameVars.playerShipVariables.ship.cargo;
-	int[] demandedAmounts;
+
 
 	public void OpenNegotiations() 
 	{
@@ -185,9 +192,6 @@ public class MiniGameManager : MonoBehaviour
 
 		if (!alreadyTriedNegotiating) 
 		{
-			//NEGOTIATION ALGORITHM GOES HERE
-			//right now: completely random and uses random of % weight of an item for taking ---------------------------------------------------
-
 			int currentPlayerMoney = Globals.GameVars.playerShipVariables.ship.currency;
 
 			//Only consider stuff you have any actual quantity of
@@ -203,6 +207,7 @@ public class MiniGameManager : MonoBehaviour
 
 			Resource[] demandedItems = new Resource[typesOfCargo];
 
+			//Depending on how tough the pirates are, they ask for more/less of stuff, calculated here as % of stuff to demand
 			Vector2 amountMod = new Vector2(1, 1);
 			if (rsp.CurrentPirates.difficulty > 3) {
 				amountMod = new Vector2(.5f, .75f);
@@ -220,6 +225,7 @@ public class MiniGameManager : MonoBehaviour
 			moneyDemand = UnityEngine.Random.Range((int)(currentPlayerMoney * amountMod.x), (int)(currentPlayerMoney * amountMod.y));
 			string demandsText = "";
 
+			//Add random stuff to the list of demands
 			for (int i = 0; i < typesOfCargo; i++) {
 				Resource randomResource = availableInvo[UnityEngine.Random.Range(0, availableInvo.Count)];
 				int randomResourceIndex = Globals.GameVars.masterResourceList.FindIndex(x => x.name == randomResource.name);
@@ -250,6 +256,8 @@ public class MiniGameManager : MonoBehaviour
 
 			rejectNegotiationButton.onClick.RemoveAllListeners();
 			rejectNegotiationButton.onClick.AddListener(mgInfo.CloseDialog);
+
+			//If you negotiate before trying to fight, the game won't be loaded in, so if you reject the offer you need to load it
 			if (!rsp.Loaded) {
 				rejectNegotiationButton.onClick.AddListener(rsp.StartMinigame);
 			}
@@ -314,9 +322,9 @@ public class MiniGameManager : MonoBehaviour
 	public void TryRunning() 
 	{
 		if (!alreadyTriedRunning) {
-			//RUNNING CALCULATION GOES HERE
 			bool check = runChance < UnityEngine.Random.Range(0.0f, 1.0f);
 
+			//Context-specific listeners will be added depending on if you succeeded or failed
 			closeButton.onClick.RemoveAllListeners();
 
 			if (check) 
@@ -332,6 +340,7 @@ public class MiniGameManager : MonoBehaviour
 
 	public void RanAway() 
 	{
+		//You can adjust clout here because this is the end of the game, so you don't need to save that for later
 		Globals.GameVars.AdjustPlayerClout(succeedRunClout + cloutChange, false);
 		string cloutText = $"Your cowardice has tarnished your reputation and your clout has gone down by {succeedRunClout}.";
 		if (cloutChange != 0) {
@@ -354,6 +363,7 @@ public class MiniGameManager : MonoBehaviour
 
 	public void FailedRunning() 
 	{
+		//Since the game keeps going, you remember how much your clout changed but don't actually change it yet
 		string cloutText = $"Your failure to run has decreased your clout by {failedRunClout}.";
 
 		cloutChange += failedRunClout;
@@ -410,8 +420,8 @@ public class MiniGameManager : MonoBehaviour
 			//int zeroBasedIndex = index - minIndex;
 
 			//crewMember = crew[index].transform.GetComponentInChildren<CrewCard>();
-			crewMember = crewParent.transform.GetComponentsInChildren<CrewCard>().FirstOrDefault(crewCard => crewCard.cardIndex == index);
-			pirate = piratesParent.transform.GetComponentsInChildren<CrewCard>().FirstOrDefault(crewCard => crewCard.cardIndex == index);
+			crewMember = crewParent.GetComponentsInChildren<CrewCard>().FirstOrDefault(crewCard => crewCard.CardIndex == index);
+			pirate = piratesParent.GetComponentsInChildren<CrewCard>().FirstOrDefault(crewCard => crewCard.CardIndex == index);
 			//pirates[index].transform.GetComponent<CrewCard>();
 
 			//if there is an active game object for the crew list and for the pirates list that correspond, then they will fight
@@ -419,22 +429,22 @@ public class MiniGameManager : MonoBehaviour
 				//if the pirate's power is greater than the crewmem's, the crewmem will "die"
 				//pirate's power goes down by the amount of power the crewmem had
 				//the crewmem MUST be removed from the crew list to keep the count updated
-				if (crewMember.power < pirate.power) {
-					pirate.UpdatePower(pirate.power -= crewMember.power); 
+				if (crewMember.Power < pirate.Power) {
+					pirate.UpdatePower(pirate.Power - crewMember.Power); 
 					crewMember.gameObject.SetActive(false);
 					//crew.Remove(crewMember.gameObject);
 					//crew[zeroBasedIndex] = null;
-					Debug.Log("CREW MEMBER " + crewMember.nameText.text + " DIED with index = " + index + " and POWER = " + crewMember.power + "\n\n");
+					Debug.Log("CREW MEMBER " + crewMember.nameText.text + " DIED with index = " + index + " and POWER = " + crewMember.Power + "\n\n");
 				}
 				//if the crewmem's power is greater than the pirate's, the pirate will "die" 
 				//crewmem's power goes down by the amount of power the pirate had
 				//the pirate MUST be removed from the pirates list to keep the count updated
-				else if (crewMember.power > pirate.power) {
-					crewMember.UpdatePower(crewMember.power -= pirate.power);
+				else if (crewMember.Power > pirate.Power) {
+					crewMember.UpdatePower(crewMember.Power - pirate.Power);
 					pirate.gameObject.SetActive(false);
 					//pirates.Remove(pirate.gameObject);
 					//pirates[zeroBasedIndex] = null;
-					Debug.Log("PIRATE " + pirate.nameText.text + " DIED with index = " + index + " and POWER = " + crewMember.power + "\n\n");
+					Debug.Log("PIRATE " + pirate.nameText.text + " DIED with index = " + index + " and POWER = " + crewMember.Power + "\n\n");
 				}
 				//if the crewmem and the pirate have powers of equal value, they cancel out
 				//the crewmem MUST be removed from the crew list to keep the count updated
@@ -457,9 +467,9 @@ public class MiniGameManager : MonoBehaviour
 			//no need for an else statement because of the updates within the above if/else if/else statements 
 		}
 
-		int pirateCounter = piratesParent.transform.GetComponentsInChildren<CrewCard>().Count();
+		int pirateCounter = piratesParent.GetComponentsInChildren<CrewCard>().Count();
 
-		int crewCounter = crewParent.transform.GetComponentsInChildren<CrewCard>().Count();
+		int crewCounter = crewParent.GetComponentsInChildren<CrewCard>().Count();
 		
 		if (pirateCounter <= 0) {
 			WinGame(crewCounter * 5);

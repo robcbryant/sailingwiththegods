@@ -84,15 +84,19 @@ public class DialogScreen : MonoBehaviour
 		p.SetText(speaker, text);
 		yield return null;
 		p.transform.SetParent(conversationHolder);
+		//Set this as almost but not quite the last element, since we always want the spacer to be the last
+		//Without the spacer, the text winds up too close to the bottom of the screen and is hard to read
 		p.transform.SetSiblingIndex(conversationHolder.childCount - 2);
 		p.transform.localScale = Vector3.one;
+
+		//I don't know why I need to do this twice, but it seems to work better this way?
 		yield return null;
 		conversationScroll.value = 0;
 		yield return null;
 		conversationScroll.value = 0;
 	}
 
-	public IEnumerator DoAddImage(string imgName) 
+	private IEnumerator DoAddImage(string imgName) 
 	{
 		Sprite s = Resources.Load<Sprite>(ResourcePath + "/" + imgName);
 
@@ -130,8 +134,10 @@ public class DialogScreen : MonoBehaviour
 	{
 		DialogChoice c = Instantiate(choiceObject);
 		c.transform.SetParent(choiceHolder);
+
 		VerticalLayoutGroup choiceLayout = choiceHolder.GetComponent<VerticalLayoutGroup>();
 		float padding = choiceLayout.padding.left + choiceLayout.padding.right + choiceScroll.rect.width + 1;
+
 		c.SetText(text, choiceGrandParent, padding);
 		c.transform.localScale = Vector3.one;
 		c.SetOnClick(click);
@@ -278,6 +284,7 @@ public class DialogScreen : MonoBehaviour
 	[YarnCommand("randomtext")]
 	public void GenerateRandomText(string[] inputs) 
 	{
+		//Get the parameters for the text
 		System.Enum.TryParse(inputs[0], out DialogText.Type t);
 		DialogText.Emotion e = DialogText.Emotion.neutral;
 		if (inputs[1] == "any") {
@@ -287,6 +294,7 @@ public class DialogScreen : MonoBehaviour
 			System.Enum.TryParse(inputs[1], out e);
 		}
 
+		//Gets a list of text that matches just the type and then the type and emotion of the desired random text
 		List<DialogText> matchingType = Globals.GameVars.portDialogText.FindAll(x => x.TextType == t);
 		List<DialogText> matchingBoth = matchingType.FindAll(x => x.TextEmotion == e);
 
@@ -313,8 +321,8 @@ public class DialogScreen : MonoBehaviour
 	[YarnCommand("calculatetaxes")]
 	public void CalculateTaxCharges() {
 		float subtotal = 0;
-		//TESTING
-		float cargo = 1000000;
+
+		float cargo = CargoValue();
 
 		if (storage.GetValue("$god_tax").AsBool) {
 			//God Tax is a flat number
