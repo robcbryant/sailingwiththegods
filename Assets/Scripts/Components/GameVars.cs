@@ -123,6 +123,7 @@ public class GameVars : MonoBehaviour
 	[HideInInspector] public GameObject currentZoneParent;
 
 	// settlements
+	[HideInInspector] public Region[] region_masterList;
 	[HideInInspector] public Settlement[] settlement_masterList;
 	[HideInInspector] public GameObject settlement_masterList_parent;
 	[HideInInspector] public GameObject currentSettlementGameObject;
@@ -281,7 +282,8 @@ public class GameVars : MonoBehaviour
 			out pirateRunSuccessText, out pirateRunFailText, out pirateSuccessText, out pirateFailureText);
 		portDialogText = CSVLoader.LoadPortDialog();
 
-		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list and crew list
+		region_masterList = CSVLoader.LoadRegionList();
+		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list, region list, and crew list
 
 		CreateSettlementsFromList();
 		currentSettlementGameObject = settlement_masterList_parent.transform.GetChild(0).gameObject;
@@ -1150,6 +1152,7 @@ public class GameVars : MonoBehaviour
 		return title;
 	}
 
+	public Region GetRegionByName(string name) => region_masterList.FirstOrDefault(r => r.Name == name);
 	public Settlement GetSettlementByName(string name) => settlement_masterList.FirstOrDefault(s => s.name == name);
 
 	public Settlement GetSettlementFromID(int ID) {

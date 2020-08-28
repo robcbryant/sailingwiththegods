@@ -637,6 +637,12 @@ public class Resource : Model
 	}
 }
 
+public class Region
+{
+	public string Name;
+	public string Description;
+}
+
 public class Settlement
 {
 
@@ -667,6 +673,7 @@ public class Settlement
 	public float ellimenionPercent;
 
 	public string coinText;
+	public Region Region;
 
 	public Resource GetCargoByName(string name) => cargo.FirstOrDefault(c => c.name == name);
 
