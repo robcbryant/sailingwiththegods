@@ -80,6 +80,7 @@ public class CityViewModel : Model
 	public Settlement City { get; private set; }
 
 	public string PortName => City.name;
+	public string RegionName => City.Region.Name;
 	public string PortDescription => City.description;
 
 	public float Distance => Vector3.Distance(City.theGameObject.transform.position, GameVars.playerShip.transform.position);

@@ -12,6 +12,7 @@ public class CityView : ViewBehaviour<CityViewModel>
 	[SerializeField] CrewManagementListView Crew = null;
 
 	[SerializeField] StringView PortName = null;
+	[SerializeField] StringView Region = null;
 	[SerializeField] StringView Distance = null;
 
 	[SerializeField] CargoListView Buy = null;
@@ -30,6 +31,7 @@ public class CityView : ViewBehaviour<CityViewModel>
 		}
 
 		PortName?.Bind(ValueModel.New(model.PortName));
+		Region?.Bind(ValueModel.New(model.RegionName));
 		Distance?.Bind(ValueModel.New(model.Distance)
 			.Select(d => string.Format("{0} km away", Mathf.RoundToInt(d)))
 		);
