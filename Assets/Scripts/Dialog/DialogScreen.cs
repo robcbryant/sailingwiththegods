@@ -353,20 +353,16 @@ public class DialogScreen : MonoBehaviour
 		float cargo = CargoValue();
 
 		float percent = 0.01f;
-		//storage.SetValue("$water_intent", Mathf.CeilToInt(percent * cargo));
-		storage.SetValue("$water_intent", 5000f);
+		storage.SetValue("$water_intent", Mathf.CeilToInt(percent * cargo));
 
 		percent = 0.02f;
-		//storage.SetValue("$trade_intent", Mathf.CeilToInt(percent * cargo));
-		storage.SetValue("$trade_intent", 5000f);
+		storage.SetValue("$trade_intent", Mathf.CeilToInt(percent * cargo));
 
 		percent = 0.03f;
-		//storage.SetValue("$tavern_intent", Mathf.CeilToInt(percent * cargo));
-		storage.SetValue("$tavern_intent", 5000f);
+		storage.SetValue("$tavern_intent", Mathf.CeilToInt(percent * cargo));
 
 		percent = 0.05f;
-		//storage.SetValue("$all_intent", Mathf.CeilToInt(percent * cargo));
-		storage.SetValue("$all_intent", 5000f);
+		storage.SetValue("$all_intent", Mathf.CeilToInt(percent * cargo));
 	}
 
 	[YarnCommand("checkafford")]
@@ -423,6 +419,7 @@ public class DialogScreen : MonoBehaviour
 		storage.SetValue("$drachma", currentDr);
 		float cost = storage.GetValue("$final_cost").AsNumber;
 		float owedDr = cost - currentDr;
+		Debug.Log($"Taxes remaining: {owedDr}dr");
 
 		MetaResource[] sortedResources = Globals.GameVars.masterResourceList.OrderBy(x => x.trading_priority).ToArray();
 		Resource[] playerResources = Globals.GameVars.playerShipVariables.ship.cargo;
@@ -448,13 +445,16 @@ public class DialogScreen : MonoBehaviour
 						}
 						value = OneCargoValue(playerResources[id], amt);
 						r = new Resource(playerResources[id].name, amt);
+						Debug.Log($"Paying {amt}kg of {r.name}: value {value}dr");
 					}
 					else {
 						//Otherwise, you'll need to add all of it and keep going
 						r = new Resource(playerResources[id].name, playerResources[id].amount_kg);
+						Debug.Log($"Paying {r.amount_kg}kg of {r.name}: value {value}dr");
 					}
 
 					owedDr -= value;
+					Debug.Log($"Taxes remaining: {owedDr}dr");
 					owedResources.Add(r);
 
 					//If you've got enough value, end the loop
@@ -463,7 +463,7 @@ public class DialogScreen : MonoBehaviour
 					}
 				}
 			}
-			
+
 		}
 
 		storage.SetValue("$demanded_resources", FormatList(owedResources));
