@@ -353,16 +353,20 @@ public class DialogScreen : MonoBehaviour
 		float cargo = CargoValue();
 
 		float percent = 0.01f;
-		storage.SetValue("$water_intent", Mathf.CeilToInt(percent * cargo));
+		//storage.SetValue("$water_intent", Mathf.CeilToInt(percent * cargo));
+		storage.SetValue("$water_intent", 5000f);
 
 		percent = 0.02f;
-		storage.SetValue("$trade_intent", Mathf.CeilToInt(percent * cargo));
+		//storage.SetValue("$trade_intent", Mathf.CeilToInt(percent * cargo));
+		storage.SetValue("$trade_intent", 5000f);
 
 		percent = 0.03f;
-		storage.SetValue("$tavern_intent", Mathf.CeilToInt(percent * cargo));
+		//storage.SetValue("$tavern_intent", Mathf.CeilToInt(percent * cargo));
+		storage.SetValue("$tavern_intent", 5000f);
 
 		percent = 0.05f;
-		storage.SetValue("$all_intent", Mathf.CeilToInt(percent * cargo));
+		//storage.SetValue("$all_intent", Mathf.CeilToInt(percent * cargo));
+		storage.SetValue("$all_intent", 5000f);
 	}
 
 	[YarnCommand("checkafford")]
