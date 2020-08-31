@@ -5,6 +5,7 @@ using System.Text;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using UnityEngine;
+using NaughtyAttributes;
 
 public class Loan
 {
@@ -595,7 +596,7 @@ public class MetaResource
 
 }
 
-
+[Serializable]
 public class Resource : Model
 {
 	public const string Water = "Water";
@@ -616,16 +617,17 @@ public class Resource : Model
 
 	public static readonly string[] All = new string[] { Water, Provisions, Grain, Wine, Timber, Gold, Silver, Copper, Tin, Obsidian, Lead, Livestock, Iron, Bronze, PrestigeGoods };
 
-	public string name { get; private set; }
+	[SerializeField] private string _name;
+	public string name => _name;
 
-	private float _initial_amount_kg;
+	[SerializeField] private float _initial_amount_kg;
 	public float initial_amount_kg { get => _initial_amount_kg; set { _initial_amount_kg = value; Notify(); } }
 
-	private float _amount_kg;
+	[SerializeField] private float _amount_kg;
 	public float amount_kg { get => _amount_kg; set { _amount_kg = value; Notify(); } }
 
 	public Resource(string name, float amount_kg) {
-		this.name = name;
+		_name = name;
 		Initialize(amount_kg);
 	}
 
@@ -633,6 +635,12 @@ public class Resource : Model
 		this.amount_kg = amount_kg;
 		this.initial_amount_kg = amount_kg;
 	}
+}
+
+public class Region
+{
+	public string Name;
+	public string Description;
 }
 
 public class Settlement
@@ -665,6 +673,7 @@ public class Settlement
 	public float ellimenionPercent;
 
 	public string coinText;
+	public Region Region;
 
 	public Resource GetCargoByName(string name) => cargo.FirstOrDefault(c => c.name == name);
 
@@ -704,6 +713,7 @@ public class Settlement
 
 }
 
+[Serializable]
 public class Ship : Model
 {
 	public const int StartingCrewCap = 10;		// 30
@@ -727,31 +737,31 @@ public class Ship : Model
 	public MainQuestLine mainQuest;
 
 	// TODO: Reconcile mainQuest and objective concepts. These systems seem like they should be merged
-	private string _objective;
+	[SerializeField] private string _objective;
 	public string objective { get => _objective; set { _objective = value; Notify(); } }
 
 	public int crew => crewRoster.Count;
 	public ObservableCollection<CrewMember> crewRoster;
 
-	private float _totalNumOfDaysTraveled;
+	[SerializeField] private float _totalNumOfDaysTraveled;
 	public float totalNumOfDaysTraveled { get => _totalNumOfDaysTraveled; set { _totalNumOfDaysTraveled = value; Notify(); } }
 
-	private int _crewCapacity = StartingCrewCap;
+	[SerializeField] private int _crewCapacity = StartingCrewCap;
 	public int crewCapacity { get => _crewCapacity; set { _crewCapacity = value; Notify(); } }
 
-	private bool _sailsAreUnfurled = true;
+	[SerializeField] private bool _sailsAreUnfurled = true;
 	public bool sailsAreUnfurled { get => _sailsAreUnfurled; set { _sailsAreUnfurled = value; Notify(); } }
 
-	private int _upgradeLevel;
+	[SerializeField] private int _upgradeLevel;
 	public int upgradeLevel { get => _upgradeLevel; set { _upgradeLevel = value; Notify(); } }
 
-	private float _health;
+	[SerializeField] private float _health;
 	public float health { get => _health; set { _health = value; Notify(); } }
 
-	private string _builtMonuments = "";
+	[SerializeField] private string _builtMonuments = "";
 	public string builtMonuments { get => _builtMonuments; set { _builtMonuments = value; Notify(); } }
 
-	private int _currency;
+	[SerializeField] private int _currency;
 	public int currency { get => _currency; set { _currency = value; Notify(); } }
 
 	public float _playerClout;

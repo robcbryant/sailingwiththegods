@@ -65,6 +65,7 @@ public static class CSVLoader
 			settlement.foreignerFeePercent = float.Parse(records[afterCargo + 8]);
 			settlement.ellimenionPercent = float.Parse(records[afterCargo + 9]);
 			settlement.coinText = records[afterCargo + 10];
+			settlement.Region = Globals.GameVars.GetRegionByName(records[afterCargo + 11]);
 
 			settlement_masterList.Add(id, settlement);
 		}
@@ -73,6 +74,28 @@ public static class CSVLoader
 
 		return settlement_masterList.Values.ToArray();
 
+	}
+
+	public static Region[] LoadRegionList() {
+		char[] lineDelimiter = new char[] { '@' };
+		char[] recordDelimiter = new char[] { '_' };
+
+		string filename = "regions_list";
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		var result = new List<Region>();
+		for (int row = 1; row < fileByLine.Length; row++) {
+			string[] records = fileByLine[row].Split(lineDelimiter, StringSplitOptions.None);
+
+			// parse indices before cargo list
+			var region = new Region {
+				Name = records[0],
+				Description = records[1]
+			};
+			result.Add(region);
+		}
+
+		return result.ToArray();
 	}
 
 	public static WindRose[,] LoadWindRoses(int width, int height) {

@@ -123,6 +123,7 @@ public class GameVars : MonoBehaviour
 	[HideInInspector] public GameObject currentZoneParent;
 
 	// settlements
+	[HideInInspector] public Region[] region_masterList;
 	[HideInInspector] public Settlement[] settlement_masterList;
 	[HideInInspector] public GameObject settlement_masterList_parent;
 	[HideInInspector] public GameObject currentSettlementGameObject;
@@ -281,7 +282,8 @@ public class GameVars : MonoBehaviour
 			out pirateRunSuccessText, out pirateRunFailText, out pirateSuccessText, out pirateFailureText);
 		portDialogText = CSVLoader.LoadPortDialog();
 
-		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list and crew list
+		region_masterList = CSVLoader.LoadRegionList();
+		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list, region list, and crew list
 
 		CreateSettlementsFromList();
 		currentSettlementGameObject = settlement_masterList_parent.transform.GetChild(0).gameObject;
@@ -746,6 +748,9 @@ public class GameVars : MonoBehaviour
 			string fileToUpload = RemoveCaptainsLogForJoanna(delimitedData);
 			System.IO.File.WriteAllText(Application.persistentDataPath + "/" + fileNameServer, fileToUpload);
 			Debug.Log(Application.persistentDataPath);
+
+			// secretly save a JSON version of the save data to prep for a move to make that the canonical save file - but it's not hooked up to be loaded yet
+			System.IO.File.WriteAllText(Application.persistentDataPath + "/save.json", JsonUtility.ToJson(playerShipVariables.ship));
 		}
 		catch (Exception e) {
 			ShowANotificationMessage("ERROR: a backup wasn't saved at: " + Application.persistentDataPath + "  - which means it may not have uploaded either: " + e.Message);
@@ -1146,6 +1151,9 @@ public class GameVars : MonoBehaviour
 		else title = "ERROR: clout is not between 0 and 100";
 		return title;
 	}
+
+	public Region GetRegionByName(string name) => region_masterList.FirstOrDefault(r => r.Name == name);
+	public Settlement GetSettlementByName(string name) => settlement_masterList.FirstOrDefault(s => s.name == name);
 
 	public Settlement GetSettlementFromID(int ID) {
 		//Debug.Log (settlement_masterList.Length);
