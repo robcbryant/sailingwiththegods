@@ -46307,17 +46307,36 @@ MonoBehaviour:
   numOfDaysWithoutWater: 0
   dayCounterStarving: 0
   dayCounterThirsty: 0
-  longXLatY: {x: 0, y: 0}
   cursorRing: {fileID: 1928260897}
   fogWall: {fileID: 358151443}
-  rayCheck_stopShip: 0
   SFX_birdsong: {fileID: 1829480785}
+  rayCheck_stopShip: 0
+  zonesList: []
+  hotkeysOn: 1
+  ship:
+    name: 
+    speed: 0
+    cargo_capicity_kg: 0
+    cargo: []
+    networkID: 0
+    currentNavigatorTarget: 0
+    networks: 
+    originSettlement: 0
+    _objective: 
+    _totalNumOfDaysTraveled: 0
+    _crewCapacity: 0
+    _sailsAreUnfurled: 0
+    _upgradeLevel: 0
+    _health: 0
+    _builtMonuments: 
+    _currency: 0
+    _playerClout: 0
+  longXLatY: {x: 0, y: 0}
   isAetolianRegionZone: 0
   isCretanRegionZone: 0
   isEtruscanPirateRegionZone: 0
   isIllyrianRegionZone: 0
-  zonesList: []
-  hotkeysOn: 1
+  teleportToSettlementChoice: 
 --- !u!82 &1829480785
 AudioSource:
   m_ObjectHideFlags: 0
@@ -47481,14 +47500,6 @@ PrefabInstance:
     - target: {fileID: 164335844, guid: 279925e90389e7c4e8e585184a0486dc, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 164335844, guid: 279925e90389e7c4e8e585184a0486dc, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: -17
-      objectReference: {fileID: 0}
-    - target: {fileID: 164335844, guid: 279925e90389e7c4e8e585184a0486dc, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 1483655691321183711, guid: 279925e90389e7c4e8e585184a0486dc,
         type: 3}
@@ -53814,6 +53825,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 612486308}
     m_Modifications:
+    - target: {fileID: 2717817831626493128, guid: 63a95f87f802269439e0570785899d0a,
+        type: 3}
+      propertyPath: m_Name
+      value: Captains Log
+      objectReference: {fileID: 0}
     - target: {fileID: 2717817831626493135, guid: 63a95f87f802269439e0570785899d0a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -53918,11 +53934,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2717817831626493128, guid: 63a95f87f802269439e0570785899d0a,
-        type: 3}
-      propertyPath: m_Name
-      value: Captains Log
       objectReference: {fileID: 0}
     - target: {fileID: 2717817833032456728, guid: 63a95f87f802269439e0570785899d0a,
         type: 3}
@@ -56472,6 +56483,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1147334406}
     m_Modifications:
+    - target: {fileID: 4684528981749090125, guid: 3df0c1729c6c959408fe6a1878f04c87,
+        type: 3}
+      propertyPath: m_Name
+      value: content_build_a_monument
+      objectReference: {fileID: 0}
+    - target: {fileID: 4684528981749090125, guid: 3df0c1729c6c959408fe6a1878f04c87,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4684528981749090126, guid: 3df0c1729c6c959408fe6a1878f04c87,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -56576,16 +56597,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4684528981749090125, guid: 3df0c1729c6c959408fe6a1878f04c87,
-        type: 3}
-      propertyPath: m_Name
-      value: content_build_a_monument
-      objectReference: {fileID: 0}
-    - target: {fileID: 4684528981749090125, guid: 3df0c1729c6c959408fe6a1878f04c87,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6078353011769949465, guid: 3df0c1729c6c959408fe6a1878f04c87,
         type: 3}
@@ -56740,6 +56751,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1147334406}
     m_Modifications:
+    - target: {fileID: 6443592466318790785, guid: 5ef4853e0ac3f5342b6bc80fb11b223a,
+        type: 3}
+      propertyPath: m_Name
+      value: content_ship_repairs
+      objectReference: {fileID: 0}
+    - target: {fileID: 6443592466318790785, guid: 5ef4853e0ac3f5342b6bc80fb11b223a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6443592466318790790, guid: 5ef4853e0ac3f5342b6bc80fb11b223a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -56845,16 +56866,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 6443592466318790785, guid: 5ef4853e0ac3f5342b6bc80fb11b223a,
-        type: 3}
-      propertyPath: m_Name
-      value: content_ship_repairs
-      objectReference: {fileID: 0}
-    - target: {fileID: 6443592466318790785, guid: 5ef4853e0ac3f5342b6bc80fb11b223a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4317763052176802042, guid: 5ef4853e0ac3f5342b6bc80fb11b223a,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -56879,6 +56890,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 153789044}
     m_Modifications:
+    - target: {fileID: 7008280156569418318, guid: f845233753a0d4a409693a0360e5dc0b,
+        type: 3}
+      propertyPath: m_Name
+      value: Title Screen
+      objectReference: {fileID: 0}
     - target: {fileID: 7008280156569418319, guid: f845233753a0d4a409693a0360e5dc0b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -56983,11 +56999,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7008280156569418318, guid: f845233753a0d4a409693a0360e5dc0b,
-        type: 3}
-      propertyPath: m_Name
-      value: Title Screen
       objectReference: {fileID: 0}
     - target: {fileID: 7008280155687583437, guid: f845233753a0d4a409693a0360e5dc0b,
         type: 3}

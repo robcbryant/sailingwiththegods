@@ -136,9 +136,8 @@ public class DialogScreen : MonoBehaviour
 		c.transform.SetParent(choiceHolder);
 
 		VerticalLayoutGroup choiceLayout = choiceHolder.GetComponent<VerticalLayoutGroup>();
-		float padding = choiceLayout.padding.left + choiceLayout.padding.right + choiceScroll.rect.width + 1;
 
-		c.SetText(text, choiceGrandParent, padding);
+		c.SetText(text, choiceGrandParent);
 		c.transform.localScale = Vector3.one;
 		c.SetOnClick(click);
 	}
@@ -330,15 +329,15 @@ public class DialogScreen : MonoBehaviour
 		}
 		if (storage.GetValue("$transit_tax").AsBool) {
 			//Transit tax is a percent
-			subtotal += storage.GetValue("$transit_tax_amount").AsNumber * cargo * 100;
+			subtotal += storage.GetValue("$transit_tax_amount").AsNumber * cargo;
 		}
 		if (storage.GetValue("$foreigner_tax").AsBool) {
 			//Foreigner tax is a percent
-			subtotal += storage.GetValue("$foreigner_tax_amount").AsNumber * cargo * 100;
+			subtotal += storage.GetValue("$foreigner_tax_amount").AsNumber * cargo;
 		}
 		if (storage.GetValue("$wealth_tax").AsBool) {
 			//Wealth tax is a percent
-			subtotal += storage.GetValue("$wealth_tax_amount").AsNumber * cargo * 100;
+			subtotal += storage.GetValue("$wealth_tax_amount").AsNumber * cargo;
 		}
 
 		cargo = CargoValue();
@@ -354,15 +353,19 @@ public class DialogScreen : MonoBehaviour
 
 		float percent = 0.01f;
 		storage.SetValue("$water_intent", Mathf.CeilToInt(percent * cargo));
+		//storage.SetValue("$water_intent", 5000);
 
 		percent = 0.02f;
 		storage.SetValue("$trade_intent", Mathf.CeilToInt(percent * cargo));
+		//storage.SetValue("$trade_intent", 3590);
 
 		percent = 0.03f;
 		storage.SetValue("$tavern_intent", Mathf.CeilToInt(percent * cargo));
+		//storage.SetValue("$tavern_intent", 3592);
 
 		percent = 0.05f;
 		storage.SetValue("$all_intent", Mathf.CeilToInt(percent * cargo));
+		//storage.SetValue("$all_intent", 3591);
 	}
 
 	[YarnCommand("checkafford")]
@@ -399,16 +402,18 @@ public class DialogScreen : MonoBehaviour
 		else {
 			itemCost = Mathf.RoundToInt(float.Parse(cost));
 		}
+
 		Globals.GameVars.playerShipVariables.ship.currency -= itemCost;
 		UpdateMoney();
 	}
 
-	[YarnCommand("payresources")]
+	[YarnCommand("cargopay")]
 	public void PayAmountResources(string cost) {
 		Globals.GameVars.playerShipVariables.ship.currency = 0;
+		UpdateMoney();
 		for (int i = 0; i < owedResources.Count; i++) {
-			Resource r = System.Array.Find(Globals.GameVars.playerShipVariables.ship.cargo, x => x.name == owedResources[i].name);
-			r.amount_kg -= owedResources[i].amount_kg;
+			System.Array.Find(Globals.GameVars.playerShipVariables.ship.cargo, x => x.name == owedResources[i].name).amount_kg -= owedResources[i].amount_kg;
+			Debug.Log($"Paying {owedResources[i].amount_kg}kg of {owedResources[i].name}");
 		}
 	}
 
@@ -466,6 +471,7 @@ public class DialogScreen : MonoBehaviour
 
 		}
 
+		storage.SetValue("$demanded_resources_value", cost - owedDr);
 		storage.SetValue("$demanded_resources", FormatList(owedResources));
 	}
 	#endregion
@@ -496,9 +502,7 @@ public class DialogScreen : MonoBehaviour
 	private string FormatList(List<Resource> resources) 
 	{
 		string formatted = $"{resources[0].amount_kg}kg of {resources[0].name}";
-		if (resources.Count >= 2) {
-			formatted += ", ";
-		}
+		formatted += resources.Count > 2 ? ", " : " ";
 		for (int i = 1; i < resources.Count - 1; i++) {
 			formatted += $"{resources[i].amount_kg}kg of {resources[i].name}, ";
 		}

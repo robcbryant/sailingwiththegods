@@ -18,14 +18,14 @@ public class DialogChoice : MonoBehaviour
 		rt = GetComponent<RectTransform>();
 	}
 
-	public void SetText(string s, RectTransform grandParent, float padding) 
+	public void SetText(string s, RectTransform grandParent) 
 	{
 		if (rt == null) 
 		{
 			rt = GetComponent<RectTransform>();
 		}
 		text.text = s;
-		rt.sizeDelta = new Vector2(grandParent.rect.width - padding, 1);
+		rt.sizeDelta = new Vector2(grandParent.rect.width, 1);
 		rt.sizeDelta = new Vector2(rt.sizeDelta.x, text.preferredHeight);
 
 		RectTransform buttonRect = button.GetComponent<RectTransform>();
