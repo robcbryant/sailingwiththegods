@@ -7,9 +7,9 @@ name: activate-unity
 on:
   # disabled for now until we need to activate again
   push:
-    #branches-ignore:
-    #  - '**'
-    branches: [ develop ]
+    branches-ignore:
+      - '**'
+    #branches: [ develop ]
   #pull_request:
     #branches: [ develop ]
 
