@@ -6,6 +6,7 @@ name: activate-unity
 # events but only for the master branch
 on:
   # disabled for now until we need to activate again
+  # remember to upload the alf this generates to https://license.unity3d.com/manual to get a ulf which goes in the github secret
   push:
     branches-ignore:
       - '**'
