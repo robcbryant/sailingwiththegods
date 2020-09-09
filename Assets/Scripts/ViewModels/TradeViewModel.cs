@@ -29,7 +29,12 @@ public class TradeViewModel : CityViewModel
 
 	public BoundModel<int> Money;
 
-	public TradeViewModel() : base(Globals.GameVars.currentSettlement, null) {
+	public bool allowPortAccess;
+	public bool monuments;
+
+	public TradeViewModel(bool justWater = false, bool portAccess = true) : base(Globals.GameVars.currentSettlement, null) {
+
+		portAccess = justWater ? false : portAccess;
 
 		Money = new BoundModel<int>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.currency));
 
@@ -43,6 +48,20 @@ public class TradeViewModel : CityViewModel
 			.Select(r => new CargoItemTradeViewModel(TradeAction.Sell, r, this))
 		));
 
+		if (justWater) {
+			foreach (CargoItemTradeViewModel item in Available.Value) {
+				if (item.Name != "Water" && item.Name != "Provisions") {
+					item.AllowSelection = false;
+				}
+			}
+
+			foreach (CargoItemTradeViewModel item in Mine.Value) {
+				item.AllowSelection = false;
+			}
+		}
+
+		allowPortAccess = portAccess;
+		monuments = !justWater;
 	}
 
 	public void BackToPort() {

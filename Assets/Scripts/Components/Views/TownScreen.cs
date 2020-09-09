@@ -19,6 +19,7 @@ public class TownScreen : ViewBehaviour<TradeViewModel>
 
 	[SerializeField] ButtonView Info = null;
 	[SerializeField] ButtonView Port = null;
+	[SerializeField] ButtonView Sail = null;
 
 	[SerializeField] ButtonView SmallTxn = null;
 	[SerializeField] ButtonView LargeTxn = null;
@@ -33,15 +34,22 @@ public class TownScreen : ViewBehaviour<TradeViewModel>
 
 		Available?.Bind(model.Available);
 		Mine?.Bind(model.Mine);
-
+		
 		Port?.Bind(ValueModel.New(new ButtonViewModel {
 			Label = "Port",
 			OnClick = model.BackToPort
 		}));
+		Port.Interactable = model.allowPortAccess;
 
 		Monuments?.Bind(ValueModel.New(new ButtonViewModel {
 			Label = "Monuments",
 			OnClick = () => Globals.UI.Show<ShrinesView, ShrinesViewModel>(new ShrinesViewModel())
+		}));
+		Monuments.Interactable = model.monuments;
+
+		Sail?.Bind(ValueModel.New(new ButtonViewModel {
+			Label = "Sail",
+			OnClick = model.GUI_Button_TryToLeavePort
 		}));
 
 		Info?.Bind(ValueModel.New(new ButtonViewModel {

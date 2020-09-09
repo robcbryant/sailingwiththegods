@@ -178,8 +178,28 @@ public class DialogScreen : MonoBehaviour
 		bool city = storage.GetValue("$entering_city").AsBool;
 		Debug.Log($"Exiting the conversation. Entering the city {city}");
 
+		string intentText = storage.GetValue("$intent").AsString;
+		script_GUI.Intention intent;
+		switch (intentText) {
+			case ("water"):
+				intent = script_GUI.Intention.Water;
+				break;
+			case ("trading"):
+				intent = script_GUI.Intention.Trading;
+				break;
+			case ("tavern"):
+				intent = script_GUI.Intention.Tavern;
+				break;
+			case ("all"):
+				intent = script_GUI.Intention.All;
+				break;
+			default:
+				intent = script_GUI.Intention.Water;
+				break;
+		}
+
 		if (city) {
-			gui.GUI_EnterPort();
+			gui.GUI_EnterPort(intent);
 		}
 		else {
 			gui.GUI_ExitPortNotification();

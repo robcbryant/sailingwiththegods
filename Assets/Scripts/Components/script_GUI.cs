@@ -44,7 +44,7 @@ public class script_GUI : MonoBehaviour
 	//  SETUP ALL VARIABLES FOR THE GUI
 	//======================================================================================================================================================================
 	//======================================================================================================================================================================
-
+	public enum Intention {Water, Trading, Tavern, All };
 
 	public bool useDialog = true;
 	//-----------------------------------------------------------
@@ -64,7 +64,6 @@ public class script_GUI : MonoBehaviour
 	public GameObject nonport_info_name;
 	public GameObject nonport_info_notification;
 	public GameObject nonport_info_okay;
-
 
 	//-----------------------------------------------------------
 	// Player Port Notification Variables
@@ -408,7 +407,7 @@ public class script_GUI : MonoBehaviour
 		GameVars.menuControlsLock = false;
 	}
 
-	public void GUI_EnterPort() {
+	public void GUI_EnterPort(Intention i = Intention.All) {
 		//Turn off port welcome screen
 		GameVars.showPortDockingNotification = false;
 		port_info_main.SetActive(false);
@@ -426,7 +425,14 @@ public class script_GUI : MonoBehaviour
 		//NEW GUI FUNCTIONS FOR SETTING UP TAB CONTENT
 		//Show Port Menu
 		Globals.UI.Hide<Dashboard>();
-		Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel());
+
+		if (i.Equals(Intention.Water) || i.Equals(Intention.Trading)) {
+			Globals.UI.Show<TownScreen, TradeViewModel>(new TradeViewModel(i.Equals(Intention.Water), false));
+		}
+		else {
+			Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel(!i.Equals(Intention.Tavern)));
+		}
+		
 
 		//Add a new route to the player journey log as a port entry
 		GameVars.playerShipVariables.journey.AddRoute(new PlayerRoute(GameVars.playerShip.transform.position, Vector3.zero, GameVars.currentSettlement.settlementID, GameVars.currentSettlement.name, false, GameVars.playerShipVariables.ship.totalNumOfDaysTraveled), GameVars.playerShipVariables, GameVars.CaptainsLog);

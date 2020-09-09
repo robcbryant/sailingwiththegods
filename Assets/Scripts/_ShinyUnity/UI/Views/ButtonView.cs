@@ -79,4 +79,13 @@ public class ButtonView : ViewBehaviour<IValueModel<ButtonViewModel>>
 	void OnClick() {
 		Model?.Value?.OnClick?.Invoke();
 	}
+
+	public bool Interactable {
+		get {
+			return Button.interactable;
+		}
+		set {
+			Button.interactable = value;
+		}
+	}
 }

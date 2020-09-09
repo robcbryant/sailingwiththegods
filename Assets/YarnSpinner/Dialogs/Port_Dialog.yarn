@@ -31,7 +31,10 @@ I am the first and the last face you'll see here: no ordinary citizen I! You may
 [[ What are the networks in this city? |networks]]
 [[ Can I enter the city? |tax_start]]
 [[ (TESTING) TAXES SHORTCUT BUT THE TEXT HERE IS SUPER SUPER LONG FOR TESTING PURPOSES|tax_short_1]]
-[[ (TESTING) ENTER CITY SHORTCUT |enter_water]]
+[[ (TESTING) ENTER WATER SHORTCUT |enter_water ]]
+[[ (TESTING) ENTER TRADING SHORTCUT | enter_trading ]]
+[[ (TESTING) ENTER TAVERN SHORTCUT | enter_tavern ]]
+[[ (TESTING) ENTER FULL SHORTCUT | enter_full ]]
 [[ (TESTING) LEAVE WITHOUT PAYING SHORTCUT |exit]]
 ===
 title: where
@@ -440,6 +443,7 @@ Nymphs are generous, water falls from the sky - and yet we must pay you! But pay
 << setsprite Partner happy >>
 
 << set $final_cost to ($updated_subtotal + $water_intent)>> 
+<< set $intent to "water" >>
 << set $entering_city to true >>
 
 << if $cargo_pay is false >> 
@@ -462,6 +466,7 @@ Too great is the lure of your market for us to resist - even at those rates! Acc
 << setsprite Partner happy >>
 
 << set $final_cost to ($updated_subtotal + $trade_intent)>> 
+<< set $intent to "trading" >>
 
 << if $cargo_pay is false >> 
     << pay DialogScreen $final_cost >> 
@@ -486,6 +491,7 @@ A weary ship, a thirsty crew, growling stomachs and empty seats - what choice do
 << setsprite Partner happy >>
 
 << set $final_cost to ($updated_subtotal + $tavern_intent)>> 
+<< set $intent to "tavern" >>
 << set $entering_city to true >>
 
 << if $cargo_pay is false >> 
@@ -508,6 +514,7 @@ We have much to accomplish in your town - you're a lucky man today! Take our dra
 << setsprite Partner bragging >>
 
 << set $final_cost to ($updated_subtotal + $all_intent)>> 
+<< set $intent to "all" >>
 
 << if $cargo_pay is false >> 
     << pay DialogScreen $final_cost >> 
