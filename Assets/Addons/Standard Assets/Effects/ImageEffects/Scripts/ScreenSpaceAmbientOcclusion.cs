@@ -55,7 +55,7 @@ namespace UnityStandardAssets.ImageEffects
 
         void Start()
         {
-            if (!SystemInfo.supportsImageEffects || !SystemInfo.SupportsRenderTextureFormat (RenderTextureFormat.Depth))
+            if (!SystemInfo.SupportsRenderTextureFormat (RenderTextureFormat.Depth))
             {
                 m_Supported = false;
                 enabled = false;

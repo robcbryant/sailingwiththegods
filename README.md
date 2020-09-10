@@ -15,7 +15,7 @@ This game is designed to:
 
 # Setup
 
-This Build uses Unity 2018.3.8f1
+This Build uses Unity 2019.4.9f1
 
 While the main game code is open source, the game depends on a private repo for assets purchased from the Unity Asset Store. This should go in the ```Assets/_Proprietary``` folder.
 
