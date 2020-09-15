@@ -22970,6 +22970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useDialog: 1
+  useExample: 0
   gameover_main: {fileID: 537742712}
   gameover_message: {fileID: 1335463517}
   gameover_restart: {fileID: 1001214362}
@@ -47633,6 +47634,17 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3504769730347088719, guid: 279925e90389e7c4e8e585184a0486dc,
+        type: 3}
+      propertyPath: yarnScripts.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3504769730347088719, guid: 279925e90389e7c4e8e585184a0486dc,
+        type: 3}
+      propertyPath: yarnScripts.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 83522946a17620c439eccf919b71d205,
+        type: 3}
     - target: {fileID: 3942354960877684637, guid: 279925e90389e7c4e8e585184a0486dc,
         type: 3}
       propertyPath: m_AnchorMax.x

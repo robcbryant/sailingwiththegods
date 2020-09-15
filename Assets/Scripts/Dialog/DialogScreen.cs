@@ -17,6 +17,7 @@ public class DialogScreen : MonoBehaviour
 	public TextMeshProUGUI conversationTitle;
 	public Scrollbar conversationScroll;
 	public Transform conversationHolder;
+	public Yarn.Unity.Example.SpriteSwitcher[] convoPartners;
 
 	[Header("Choices")]
 	public RectTransform choiceScroll;
@@ -65,9 +66,16 @@ public class DialogScreen : MonoBehaviour
 		storage.SetValue("$city_description", new Yarn.Value(city.description));
 	}
 
-	public void StartDialog(Settlement s) {
+	public void StartDialog(Settlement s, string startNode) {
 		SetCity(s);
 		Clear();
+		runner.startNode = startNode;
+		StartCoroutine(StartDialog());
+	}
+
+	public void StartDialog(string startNode) {
+		Clear();
+		runner.startNode = startNode;
 		StartCoroutine(StartDialog());
 	}
 
@@ -224,6 +232,18 @@ public class DialogScreen : MonoBehaviour
 		storage.SetValue("$jason_connected", false);
 		storage.SetValue("$crew_name", "Bob IV");
 		Clear();
+	}
+
+	[YarnCommand("setpartner")]
+	public void SetConversationPartner(string name) {
+		foreach (Yarn.Unity.Example.SpriteSwitcher p in convoPartners) {
+			if (p.name == name) {
+				p.gameObject.SetActive(true);
+			}
+			else {
+				p.gameObject.SetActive(false);
+			}
+		}
 	}
 	#endregion
 
