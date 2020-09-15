@@ -12,12 +12,19 @@ public class DialogScreen : MonoBehaviour
 
 	public script_GUI gui;
 
+	[Header("Conversation")]
 	public TextMeshProUGUI moneyText;
 	public TextMeshProUGUI conversationTitle;
 	public Scrollbar conversationScroll;
 	public Transform conversationHolder;
+	public Yarn.Unity.Example.SpriteSwitcher[] convoPartners;
+
+	[Header("Choices")]
+	public RectTransform choiceScroll;
 	public Transform choiceHolder;
 	public RectTransform choiceGrandParent;
+
+	[Header("Prefabs")]
 	public DialogChoice choiceObject;
 	public DialogPiece dialogObject;
 	public Image dialogImage;
@@ -59,9 +66,16 @@ public class DialogScreen : MonoBehaviour
 		storage.SetValue("$city_description", new Yarn.Value(city.description));
 	}
 
-	public void StartDialog(Settlement s) {
+	public void StartDialog(Settlement s, string startNode) {
 		SetCity(s);
 		Clear();
+		runner.startNode = startNode;
+		StartCoroutine(StartDialog());
+	}
+
+	public void StartDialog(string startNode) {
+		Clear();
+		runner.startNode = startNode;
 		StartCoroutine(StartDialog());
 	}
 
@@ -78,15 +92,19 @@ public class DialogScreen : MonoBehaviour
 		p.SetText(speaker, text);
 		yield return null;
 		p.transform.SetParent(conversationHolder);
+		//Set this as almost but not quite the last element, since we always want the spacer to be the last
+		//Without the spacer, the text winds up too close to the bottom of the screen and is hard to read
 		p.transform.SetSiblingIndex(conversationHolder.childCount - 2);
 		p.transform.localScale = Vector3.one;
+
+		//I don't know why I need to do this twice, but it seems to work better this way?
 		yield return null;
 		conversationScroll.value = 0;
 		yield return null;
 		conversationScroll.value = 0;
 	}
 
-	public IEnumerator DoAddImage(string imgName) 
+	private IEnumerator DoAddImage(string imgName) 
 	{
 		Sprite s = Resources.Load<Sprite>(ResourcePath + "/" + imgName);
 
@@ -124,6 +142,9 @@ public class DialogScreen : MonoBehaviour
 	{
 		DialogChoice c = Instantiate(choiceObject);
 		c.transform.SetParent(choiceHolder);
+
+		VerticalLayoutGroup choiceLayout = choiceHolder.GetComponent<VerticalLayoutGroup>();
+
 		c.SetText(text, choiceGrandParent);
 		c.transform.localScale = Vector3.one;
 		c.SetOnClick(click);
@@ -165,8 +186,28 @@ public class DialogScreen : MonoBehaviour
 		bool city = storage.GetValue("$entering_city").AsBool;
 		Debug.Log($"Exiting the conversation. Entering the city {city}");
 
+		string intentText = storage.GetValue("$intent").AsString;
+		script_GUI.Intention intent;
+		switch (intentText) {
+			case ("water"):
+				intent = script_GUI.Intention.Water;
+				break;
+			case ("trading"):
+				intent = script_GUI.Intention.Trading;
+				break;
+			case ("tavern"):
+				intent = script_GUI.Intention.Tavern;
+				break;
+			case ("all"):
+				intent = script_GUI.Intention.All;
+				break;
+			default:
+				intent = script_GUI.Intention.Water;
+				break;
+		}
+
 		if (city) {
-			gui.GUI_EnterPort();
+			gui.GUI_EnterPort(intent);
 		}
 		else {
 			gui.GUI_ExitPortNotification();
@@ -191,6 +232,18 @@ public class DialogScreen : MonoBehaviour
 		storage.SetValue("$jason_connected", false);
 		storage.SetValue("$crew_name", "Bob IV");
 		Clear();
+	}
+
+	[YarnCommand("setpartner")]
+	public void SetConversationPartner(string name) {
+		foreach (Yarn.Unity.Example.SpriteSwitcher p in convoPartners) {
+			if (p.name == name) {
+				p.gameObject.SetActive(true);
+			}
+			else {
+				p.gameObject.SetActive(false);
+			}
+		}
 	}
 	#endregion
 
@@ -270,6 +323,7 @@ public class DialogScreen : MonoBehaviour
 	[YarnCommand("randomtext")]
 	public void GenerateRandomText(string[] inputs) 
 	{
+		//Get the parameters for the text
 		System.Enum.TryParse(inputs[0], out DialogText.Type t);
 		DialogText.Emotion e = DialogText.Emotion.neutral;
 		if (inputs[1] == "any") {
@@ -279,6 +333,7 @@ public class DialogScreen : MonoBehaviour
 			System.Enum.TryParse(inputs[1], out e);
 		}
 
+		//Gets a list of text that matches just the type and then the type and emotion of the desired random text
 		List<DialogText> matchingType = Globals.GameVars.portDialogText.FindAll(x => x.TextType == t);
 		List<DialogText> matchingBoth = matchingType.FindAll(x => x.TextEmotion == e);
 
@@ -305,8 +360,8 @@ public class DialogScreen : MonoBehaviour
 	[YarnCommand("calculatetaxes")]
 	public void CalculateTaxCharges() {
 		float subtotal = 0;
-		//TESTING
-		float cargo = 1000000;
+
+		float cargo = CargoValue();
 
 		if (storage.GetValue("$god_tax").AsBool) {
 			//God Tax is a flat number
@@ -314,15 +369,15 @@ public class DialogScreen : MonoBehaviour
 		}
 		if (storage.GetValue("$transit_tax").AsBool) {
 			//Transit tax is a percent
-			subtotal += storage.GetValue("$transit_tax_amount").AsNumber * cargo * 100;
+			subtotal += storage.GetValue("$transit_tax_amount").AsNumber * cargo;
 		}
 		if (storage.GetValue("$foreigner_tax").AsBool) {
 			//Foreigner tax is a percent
-			subtotal += storage.GetValue("$foreigner_tax_amount").AsNumber * cargo * 100;
+			subtotal += storage.GetValue("$foreigner_tax_amount").AsNumber * cargo;
 		}
 		if (storage.GetValue("$wealth_tax").AsBool) {
 			//Wealth tax is a percent
-			subtotal += storage.GetValue("$wealth_tax_amount").AsNumber * cargo * 100;
+			subtotal += storage.GetValue("$wealth_tax_amount").AsNumber * cargo;
 		}
 
 		cargo = CargoValue();
@@ -338,15 +393,19 @@ public class DialogScreen : MonoBehaviour
 
 		float percent = 0.01f;
 		storage.SetValue("$water_intent", Mathf.CeilToInt(percent * cargo));
+		//storage.SetValue("$water_intent", 5000);
 
 		percent = 0.02f;
 		storage.SetValue("$trade_intent", Mathf.CeilToInt(percent * cargo));
+		//storage.SetValue("$trade_intent", 3590);
 
 		percent = 0.03f;
 		storage.SetValue("$tavern_intent", Mathf.CeilToInt(percent * cargo));
+		//storage.SetValue("$tavern_intent", 3592);
 
 		percent = 0.05f;
 		storage.SetValue("$all_intent", Mathf.CeilToInt(percent * cargo));
+		//storage.SetValue("$all_intent", 3591);
 	}
 
 	[YarnCommand("checkafford")]
@@ -383,16 +442,18 @@ public class DialogScreen : MonoBehaviour
 		else {
 			itemCost = Mathf.RoundToInt(float.Parse(cost));
 		}
+
 		Globals.GameVars.playerShipVariables.ship.currency -= itemCost;
 		UpdateMoney();
 	}
 
-	[YarnCommand("payresources")]
+	[YarnCommand("cargopay")]
 	public void PayAmountResources(string cost) {
 		Globals.GameVars.playerShipVariables.ship.currency = 0;
+		UpdateMoney();
 		for (int i = 0; i < owedResources.Count; i++) {
-			Resource r = System.Array.Find(Globals.GameVars.playerShipVariables.ship.cargo, x => x.name == owedResources[i].name);
-			r.amount_kg -= owedResources[i].amount_kg;
+			System.Array.Find(Globals.GameVars.playerShipVariables.ship.cargo, x => x.name == owedResources[i].name).amount_kg -= owedResources[i].amount_kg;
+			Debug.Log($"Paying {owedResources[i].amount_kg}kg of {owedResources[i].name}");
 		}
 	}
 
@@ -403,45 +464,54 @@ public class DialogScreen : MonoBehaviour
 		storage.SetValue("$drachma", currentDr);
 		float cost = storage.GetValue("$final_cost").AsNumber;
 		float owedDr = cost - currentDr;
+		Debug.Log($"Taxes remaining: {owedDr}dr");
 
 		MetaResource[] sortedResources = Globals.GameVars.masterResourceList.OrderBy(x => x.trading_priority).ToArray();
 		Resource[] playerResources = Globals.GameVars.playerShipVariables.ship.cargo;
 
 		for (int i = 0; i < sortedResources.Length; i++) {
-			//If you have any of it...
-			int id = sortedResources[i].id;
-			if (playerResources[id].amount_kg > 0) {
-				//Do you have enough to completely cover your costs?
-				float value = OneCargoValue(playerResources[id], playerResources[id].amount_kg);
-				Resource r;
+			//If it's something that can be demanded (ie not water or food)...
+			if (sortedResources[i].trading_priority != 100) {
+				//If you have any of it...
+				int id = sortedResources[i].id;
+				if (playerResources[id].amount_kg > 0) {
+					//Do you have enough to completely cover your costs?
+					float value = OneCargoValue(playerResources[id], playerResources[id].amount_kg);
+					Resource r;
 
-				if (value >= owedDr) {
-					//If you do have more than enough, check how much is enough
-					int amt;
-					for (amt = 1; amt < Mathf.FloorToInt(playerResources[id].amount_kg); amt++) {
-						float currentCost = OneCargoValue(playerResources[id], amt);
-						if (currentCost >= owedDr) {
-							break;
+					if (value >= owedDr) {
+						//If you do have more than enough, check how much is enough
+						int amt;
+						for (amt = 1; amt < Mathf.FloorToInt(playerResources[id].amount_kg); amt++) {
+							float currentCost = OneCargoValue(playerResources[id], amt);
+							if (currentCost >= owedDr) {
+								break;
+							}
 						}
+						value = OneCargoValue(playerResources[id], amt);
+						r = new Resource(playerResources[id].name, amt);
+						Debug.Log($"Paying {amt}kg of {r.name}: value {value}dr");
 					}
-					value = OneCargoValue(playerResources[id], amt);
-					r = new Resource(playerResources[id].name, amt);
-				}
-				else {
-					//Otherwise, you'll need to add all of it and keep going
-					r = new Resource(playerResources[id].name, playerResources[id].amount_kg);
-				}
+					else {
+						//Otherwise, you'll need to add all of it and keep going
+						r = new Resource(playerResources[id].name, playerResources[id].amount_kg);
+						Debug.Log($"Paying {r.amount_kg}kg of {r.name}: value {value}dr");
+					}
 
-				owedDr -= value;
-				owedResources.Add(r);
+					owedDr -= value;
+					Debug.Log($"Taxes remaining: {owedDr}dr");
+					owedResources.Add(r);
 
-				//If you've got enough value, end the loop
-				if (owedDr <= 0) {
-					break;
+					//If you've got enough value, end the loop
+					if (owedDr <= 0) {
+						break;
+					}
 				}
 			}
+
 		}
 
+		storage.SetValue("$demanded_resources_value", cost - owedDr);
 		storage.SetValue("$demanded_resources", FormatList(owedResources));
 	}
 	#endregion
@@ -472,9 +542,7 @@ public class DialogScreen : MonoBehaviour
 	private string FormatList(List<Resource> resources) 
 	{
 		string formatted = $"{resources[0].amount_kg}kg of {resources[0].name}";
-		if (resources.Count >= 2) {
-			formatted += ", ";
-		}
+		formatted += resources.Count > 2 ? ", " : " ";
 		for (int i = 1; i < resources.Count - 1; i++) {
 			formatted += $"{resources[i].amount_kg}kg of {resources[i].name}, ";
 		}

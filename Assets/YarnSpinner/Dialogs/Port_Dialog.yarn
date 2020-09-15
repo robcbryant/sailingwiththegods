@@ -1,18 +1,20 @@
-title: Start
+title: Start_Tax
 tags: 
-colorID: 0
-position: 661,-1148
+colorID: 2
+position: 654,-1183
 ---
 << reset DialogScreen >>
+<< setpartner DialogScreen Telones >>
 << setpartnername DialogScreen Telones >>
 << setconvotitle DialogScreen Docking_at_Port >>
-<< setsprite Partner neutral >>
+<< setsprite Telones neutral >>
 
 << set $asked_where to false >>
 << set $asked_networks to false >>
 << set $asked_who to false >>
 << set $insulted to false >>
 << set $asked_types to false >>
+<< set $cargo_pay to false >> 
 
 << citynetworks DialogScreen >>
 << networkconnections DialogScreen >> 
@@ -21,22 +23,25 @@ position: 661,-1148
 << setspeaker DialogScreen other >>
 I am the first and the last face you'll see here: no ordinary citizen I! You may call me Telones, 'tax man' - I have paid the state for the right to collect its taxes from you. Get set to dig deep into your pockets!
 << randomtext DialogScreen greeting any >> 
-<< setsprite Partner $emotion >>
+<< setsprite Telones $emotion >>
 << setend DialogScreen >>
 /{$random_text}
 
 
 [[ What kind of place have I come to? |where]]
 [[ What are the networks in this city? |networks]]
-[[ Can I enter the city? |tax_start]]
-[[ TAXES SHORTCUT|tax_explain]]
-[[ ENTER CITY SHORTCUT |enter_water]]
-[[ LEAVE WITHOUT PAYING SHORTCUT |exit]]
+[[ Can I enter the city? |tax_intro]]
+[[ (TESTING) TAXES SHORTCUT BUT THE TEXT HERE IS SUPER SUPER LONG FOR TESTING PURPOSES|tax_short_1]]
+[[ (TESTING) ENTER WATER SHORTCUT |enter_water]]
+[[ (TESTING) ENTER TRADING SHORTCUT |enter_trading]]
+[[ (TESTING) ENTER TAVERN SHORTCUT |enter_tavern]]
+[[ (TESTING) ENTER FULL SHORTCUT |enter_full]]
+[[ (TESTING) LEAVE WITHOUT PAYING SHORTCUT |exit]]
 ===
 title: where
 tags: 
-colorID: 0
-position: 314,-985
+colorID: 2
+position: 307,-1020
 ---
 << set $asked_where to true >> 
 
@@ -45,7 +50,7 @@ position: 314,-985
 /{$random_text}
 
 << setspeaker DialogScreen other >>
-<< setsprite Partner bragging >>
+<< setsprite Telones bragging >>
 << cityinfo DialogScreen >>
 << setend DialogScreen >>
 No, it's {$city_name}. {$city_description}
@@ -53,12 +58,12 @@ No, it's {$city_name}. {$city_description}
 << if $asked_networks is false >>
     [[What are this city's networks? |networks]]    
 << endif >> 
-[[ Can I come into your city? |tax_start]]
+[[ Can I come into your city? |tax_intro]]
 ===
 title: networks
 tags: 
-colorID: 0
-position: 979,-990
+colorID: 2
+position: 972,-1025
 ---
 << set $asked_networks to true >>
 
@@ -70,13 +75,13 @@ position: 979,-990
 
 << if $city_networks > 1 >>
     << randomtext DialogScreen networkhigh neutral >> 
-	<< setsprite Partner bragging >>
+	<< setsprite Telones bragging >>
 << elseif $city_networks == 1 >>
     << randomtext DialogScreen networkmid neutral >>
-	<< setsprite Partner happy >>
+	<< setsprite Telones happy >>
 << else >>
     << randomtext DialogScreen networklow neutral >>
-	<< setsprite Partner unhappy >>
+	<< setsprite Telones unhappy >>
 << endif >> 
 
 /{$random_text}
@@ -98,7 +103,7 @@ position: 979,-990
 
 << if $connections_number < 1>> 
     << setspeaker DialogScreen other >>
-    << setsprite Partner bragging >>
+    << setsprite Telones bragging >>
     << setend DialogScreen >> 
     I do not know you or your people, stranger. You will pay full taxes at this port!
 << endif >> 
@@ -110,12 +115,12 @@ position: 979,-990
 << if $asked_where is false >>
     [[ Where is this? |where]]
 << endif >> 
-[[Can I come into the city? |tax_start]]
+[[Can I come into the city? |tax_intro]]
 ===
 title: tax_network
 tags: 
-colorID: 0
-position: 983,-743
+colorID: 2
+position: 976,-778
 ---
 << setspeaker DialogScreen Jason >> 
 We share connections. Does this not mean we get discounted taxes? 
@@ -149,22 +154,22 @@ I don't believe you. {$crew_name_3} must produce some proof!
 
 << setspeaker DialogScreen other >> 
 << if $connections_number > 1 >> 
-    << setsprite Partner happy >>
+    << setsprite Telones happy >>
     Alright, you share in our social network!
 << else >>
-    << setsprite Partner happy >> 
+    << setsprite Telones happy >> 
 	It seems you are not a stranger to our social network!
 << endif >>
 
 << if $asked_where is false >>
     [[ Where is this? |where]]
 << endif >> 
-[[ Can I come into the city? |tax_start]]
+[[ Can I come into the city? |tax_intro]]
 ===
-title: tax_start
+title: tax_intro
 tags: 
-colorID: 0
-position: 669,-548
+colorID: 2
+position: 662,-583
 ---
 << setspeaker DialogScreen Jason >>
 Can I come into the city? What are my fees?
@@ -187,7 +192,7 @@ Can I come into the city? What are my fees?
 ===
 title: tax_why
 tags: 
-colorID: 0
+colorID: 1
 position: 349,-331
 ---
 << set $asked_who to true >> 
@@ -207,7 +212,7 @@ Why do I have to pay you? What makes you special?
 ===
 title: tax_insult
 tags: 
-colorID: 0
+colorID: 1
 position: 990,-322
 ---
 << set $insulted to true >> 
@@ -229,7 +234,7 @@ The poorest man in the smallest boat can haul me before the magistrates! They co
 ===
 title: tax_explain
 tags: 
-colorID: 0
+colorID: 1
 position: 661,-103
 ---
 << setspeaker DialogScreen Jason >> 
@@ -246,8 +251,8 @@ By the gods, this sounds serious. What kind of money are we talking about?
 ===
 title: tax_types
 tags: 
-colorID: 0
-position: 44,120
+colorID: 1
+position: 168,257
 ---
 << set $asked_types to true >>
 
@@ -255,11 +260,11 @@ position: 44,120
 What types of taxes do you charge here? I must decide if it is worth it to enter your city!
 
 << setspeaker DialogScreen other >>
-<< setsprite Partner happy >>
+<< setsprite Telones happy >>
 As in all cities, we charge an ellimenion to pay for the harbor: its fine guard houses, its places for unloading, the streets that lead to the agora, the shrine where you can thank the gods you made it here! Network connections can influence how much you pay.
 
 << if $no_taxes is false >>
-	<< setsprite Partner bragging >>
+	<< setsprite Telones bragging >>
 	Here we also charge the following taxes:
 
 	<< if $god_tax is true >>
@@ -276,11 +281,11 @@ As in all cities, we charge an ellimenion to pay for the harbor: its fine guard 
 << endif >>
 
 << if $wealth_tax is true >>
-	<< setsprite Partner flattering >>
+	<< setsprite Telones flattering >>
 	And for you, a wealth tax! Democracy is founded on the noblest of notions - equality! And you, dear stranger, are far too rich.
 << endif >> 
 
-<< setsprite Partner happy >>
+<< setsprite Telones happy >>
 Lastly, you must pay the intent tax! What are your purposes in our dear city? The more you wish to partake in our services, the more you pay!
 Will you come through but briefly, and only to restock your water? That requires a minimum of what we offer. This is a 1% tax.
 Wise men take advantage of opportunities! If you are among them, here to sell and buy, we'll need a 2% offering from your ship's stores.
@@ -294,8 +299,8 @@ Or if you are in great need of our great stores! You'll be hiring, seeking repai
 ===
 title: tax_breakdown
 tags: 
-colorID: 0
-position: 655,295
+colorID: 6
+position: 653,295
 ---
 << setspeaker DialogScreen Jason >>
 Okay then, what are the exact charges? I must know if you are charging me fairly!
@@ -303,24 +308,24 @@ Okay then, what are the exact charges? I must know if you are charging me fairly
 << setspeaker DialogScreen other >> 
 
 << if $god_tax is true >>
-    << setsprite Partner happy >>
+    << setsprite Telones happy >>
     Lucky you, noble strangers, for the god tax you get to pay {$god_tax_amount} drachma.
 << endif >>
 << if $transit_tax is true >>
-    << setsprite Partner happy >>
+    << setsprite Telones happy >>
     For transit here {$transit_tax_amount * 100}% of your cargo value: {$transit_tax_amount * $cargo_value} dr.
 << endif >>
 
 << if $foreigner_tax is true >>
-    << setsprite Partner happy >>
+    << setsprite Telones happy >>
     As a foreigner here you pay {$foreigner_tax_amount * 100}% of your cargo to use the market: {$foreigner_tax_amount * $cargo_value} dr.
 << endif >>
 << if $wealth_tax is true >>
-    << setsprite Partner happy >>
+    << setsprite Telones happy >>
     Due to your great wealth, for you, {$wealth_tax_amount * 100}% of your cargo needs to be paid before you leave: {$wealth_tax * $cargo_value} dr!
 << endif >>
 << if $no_taxes is true and $wealth_tax is false >>
-    << setsprite Partner unhappy >>
+    << setsprite Telones unhappy >>
     Lucky you! Only the ellimenion and intent fee apply in this port.
 << endif >> 
 
@@ -329,7 +334,7 @@ Okay then, what are the exact charges? I must know if you are charging me fairly
 
 << if $asked_networks is true and $connections_number >= 1 >>
     << if $connections_number > 1 >>
-        << setsprite Partner unhappy >>
+        << setsprite Telones unhappy >>
         << set $ellimenion_percent to 0 >> 
         << if $no_taxes is true and $wealth_tax is false >> 
             Your ellimenion taxes are waived, which means you only owe us the fee for your intent. 
@@ -337,13 +342,13 @@ Okay then, what are the exact charges? I must know if you are charging me fairly
             Your ellimenion taxes are waived! You only have to pay {$tax_subtotal} Drachma in addition to your intent.
         << endif >>  
     << else >>
-        << setsprite Partner happy >>
+        << setsprite Telones happy >>
         << set $ellimenion_percent to ($ellimenion_percent / 2)>> 
         Your ellimenion taxes are reduced by half to only {$ellimenion_percent * 100}% of your cargo's value - a mere {$ellimenion_percent * $cargo_value} Drachma! You only have to pay {$ellimenion_percent * $cargo_value + $tax_subtotal} dr in addition to your intent.
     << endif >> 
 
 << else >>
-    << setsprite Partner bragging >>
+    << setsprite Telones bragging >>
     You pay all port taxes! Our ellimenion is {$ellimenion_percent * 100}% of your cargo value, which for you is {$ellimenion_percent * $cargo_value} Drachma. In total, you owe {$ellimenion_percent * $cargo_value + $tax_subtotal} dr in addition to your intent!
 << endif >> 
 
@@ -403,8 +408,8 @@ Your stores of cash are depleted! You must pay us in cargo - for you may not ref
 ===
 title: tax_short_1
 tags: 
-colorID: 0
-position: 1114,-15
+colorID: 6
+position: 1112,-15
 ---
 << setspeaker DialogScreen Jason >>
 << setend DialogScreen >> 
@@ -429,73 +434,99 @@ I already know what I want to do.
 ===
 title: enter_water
 tags: 
-colorID: 0
+colorID: 3
 position: 473,1531
 ---
 << setspeaker DialogScreen Jason >>
 Nymphs are generous, water falls from the sky - and yet we must pay you! But pay we will, for we cannot proceed without water for our crew.
 
 << setspeaker DialogScreen other >>
-<< setsprite Partner happy >>
+<< setsprite Telones happy >>
 
 << set $final_cost to ($updated_subtotal + $water_intent)>> 
-<< pay DialogScreen $final_cost >> 
+<< set $intent to "water" >>
 << set $entering_city to true >>
-Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your time in our fair city!
+
+<< if $cargo_pay is false >> 
+    << pay DialogScreen $final_cost >> 
+    Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your time in our fair city!
+<< else >> 
+    << cargopay DialogScreen $final_cost >>
+    Thank you for your business! That's {$demanded_resources_value}dr of value altogether - it gets rounded up, of course.
+<< endif >>
 ===
 title: enter_trading
 tags: 
-colorID: 0
-position: 823,1542
+colorID: 3
+position: 822,1540
 ---
 << setspeaker DialogScreen Jason >>
 Too great is the lure of your market for us to resist - even at those rates! Accept our money and let us in!
 
 << setspeaker DialogScreen other >>
-<< setsprite Partner happy >>
-<< setend DialogScreen >> 
+<< setsprite Telones happy >>
 
 << set $final_cost to ($updated_subtotal + $trade_intent)>> 
-<< pay DialogScreen $final_cost >> 
+<< set $intent to "trading" >>
 
-Thank you for your business! That's {$final_cost} Drachma exactly!
-
-[[Continue |herald_fee]]
+<< if $cargo_pay is false >> 
+    << pay DialogScreen $final_cost >> 
+    << setend DialogScreen >> 
+    Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your time in our fair city!
+    [[Continue |herald_fee]]
+<< else >> 
+    << cargopay DialogScreen $final_cost >>
+    << set $entering_city to true >>  
+    Thank you for your business! That's {$demanded_resources_value}dr of value altogether - it gets rounded up, of course.
+<< endif >>
 ===
 title: enter_tavern
 tags: 
-colorID: 0
+colorID: 3
 position: 1457,1535
 ---
 << setspeaker DialogScreen Jason >>
 A weary ship, a thirsty crew, growling stomachs and empty seats - what choice do we have? We'll pay your fees, say a prayer to Ploutos the god of wealth, and come in.
 
 << setspeaker DialogScreen other >>
-<< setsprite Partner happy >>
+<< setsprite Telones happy >>
 
 << set $final_cost to ($updated_subtotal + $tavern_intent)>> 
-<< pay DialogScreen $final_cost >> 
+<< set $intent to "tavern" >>
 << set $entering_city to true >>
-Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your time in our fair city!
+
+<< if $cargo_pay is false >> 
+    << pay DialogScreen $final_cost >> 
+    Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your time in our fair city!
+<< else >> 
+    << cargopay DialogScreen $final_cost >>
+    Thank you for your business! That's {$demanded_resources_value}dr of value altogether - it gets rounded up, of course.
+<< endif >>
 ===
 title: enter_full
 tags: 
-colorID: 0
+colorID: 3
 position: 1790,1526
 ---
 << setspeaker DialogScreen Jason >>
 We have much to accomplish in your town - you're a lucky man today! Take our drachmae and let us in.
 
 << setspeaker DialogScreen other >>
-<< setsprite Partner bragging >>
-<< setend DialogScreen >> 
+<< setsprite Telones bragging >>
 
 << set $final_cost to ($updated_subtotal + $all_intent)>> 
-<< pay DialogScreen $final_cost >> 
+<< set $intent to "all" >>
 
-Thank you for your business! That's {$final_cost} Drachma exactly!
-
-[[Continue |herald_fee]]
+<< if $cargo_pay is false >> 
+    << pay DialogScreen $final_cost >> 
+    << setend DialogScreen >> 
+    Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your time in our fair city!
+    [[Continue |herald_fee]]
+<< else >> 
+    << cargopay DialogScreen $final_cost >>
+    << set $entering_city to true >> 
+    Thank you for your business! That's {$demanded_resources_value}dr of value altogether - it gets rounded up, of course.
+<< endif >>
 ===
 title: herald_fee
 tags: 
@@ -516,97 +547,102 @@ If you wish to sell your goods, surely you will need to advertise them! Hire a h
 ===
 title: herald_pay
 tags: 
-colorID: 0
-position: 1130,2488
+colorID: 3
+position: 1130,2487
 ---
 << setspeaker DialogScreen Jason >>
 << pay DialogScreen 2 >> 
 Indeed I'll pay! Heralds are a noble profession and I'm wise in matters of the market.
 
 << setspeaker DialogScreen other >>
-<< setsprite Partner happy >>
+<< setsprite Telones happy >>
 << set $entering_city to true >>
 A wise decision! Enjoy your time in our fair city!
 ===
 title: herald_no
 tags: 
-colorID: 0
-position: 1406,2336
+colorID: 3
+position: 1406,2335
 ---
 << setspeaker DialogScreen Jason >>
 My goods speak for themselves! I'll let rumors of our arrival do the work - and keep the fee in my own pocket.
 
 << setspeaker DialogScreen other >>
-<< setsprite Partner unhappy >>
+<< setsprite Telones unhappy >>
 << set $entering_city to true >>
 Your loss, my friend! Still, enjoy your time in our fair city.
-
 ===
 title: exit
 tags: 
-colorID: 0
-position: -1548,915
+colorID: 4
+position: -599,1263
 ---
 << setspeaker DialogScreen Jason >>
-<< setsprite Partner unhappy >>
+<< setsprite Telones unhappy >>
 << set $entering_city to false >>
 Your fees are steep and your town disappoints: we'll take our profit and our chances to the next port.
 ===
 title: enter_water_cargo
 tags: 
-colorID: 0
+colorID: 7
 position: 465,959
 ---
 << set $intent to "water" >>
 << set $final_cost to $water_total >> 
 
 << if $final_cost > $cargo_value >>
-You have {$cargo_value} value but owe {$final_cost}!
+    All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
     [[ cant_afford ]]
 << else >> 
-You have {$cargo_value} value and only owe {$final_cost}
+    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
     [[ enter_cargo ]]
 << endif >>
 ===
 title: enter_trading_cargo
 tags: 
-colorID: 0
+colorID: 7
 position: 833,961
 ---
 << set $intent to "trading" >>
 << set $final_cost to $trading_total >> 
 
 << if $final_cost > $cargo_value >>
+    All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
     [[ cant_afford ]]
 << else >> 
+    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
     [[ enter_cargo ]]
 << endif >>
 ===
 title: enter_tavern_cargo
 tags: 
-colorID: 0
+colorID: 7
 position: 1439,947
 ---
 << set $intent to "tavern" >>
 << set $final_cost to $tavern_total >> 
 
 << if $final_cost > $cargo_value >>
+    All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
     [[ cant_afford ]]
 << else >> 
+    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
     [[ enter_cargo ]]
 << endif >>
 ===
 title: enter_full_cargo
 tags: 
-colorID: 0
-position: 1752,947
+colorID: 7
+position: 1750,945
 ---
 << set $intent to "all" >>
 << set $final_cost to $all_total >> 
 
 << if $final_cost > $cargo_value >>
+    All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
     [[ cant_afford ]]
 << else >> 
+    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
     [[ enter_cargo ]]
 << endif >>
 ===
@@ -615,9 +651,14 @@ tags:
 colorID: 0
 position: 1124,1232
 ---
+<< set $cargo_pay to true>> 
+
+<< setspeaker DialogScreen Jason >>
+I will enter your city! My ship is heavy with jars of baked earth, holding all sorts of goods, bags bulging with valuables, boxes, and barrels. But what kind of goods do you wish to extract from me?
+
 << setspeaker DialogScreen other >>
 We will seize from your cargo hold what you lack in your pockets! We'll start with grain, fruit of the earth, maker of men; then seize your livestock, the four-footed beasts the heroes most prized; then turn to gold, torn from the ribs of earth in Pangaion or Thasos; or silver, which gleams in the veins beneath Attica itself. The prestige goods exchanged among princes are next fungible, we will happily remove your Assyrian earrings, your Scythian vessels, silks from Arabia and linen from Asia Minor, woven by the bests of slaves. 
-Wine is also fair for trade! No port lacks eager recipients, and your bellies do not deserve what our citizens would enjoy. Then bronze, fit for armour and vessels, helmets and votives, we'll seize from your stores. Copper is always welcome, mother of bronze and partner of tin. Iron, tin, and lead, cold, hard, and unyielding, serve our city well - hand over your stores! And finally obsidian, shining like glass and harder than stone, is a welcome exchange!
+Wine is also fair for trade! No port lacks eager recipients, and your bellies do not deserve what our citizens would enjoy. Then bronze, fit for armour and vessels, helmets and votives, we'll seize from your stores. Timber from the heights of Ossa and Pelion, trees that touched the sky, brought now to our docks to mend our ships and speak with the waves. Copper is always welcome, mother of bronze and partner of tin. Iron, tin, and lead, cold, hard, and unyielding, serve our city well - hand over your stores! And finally obsidian, shining like glass and harder than stone, is a welcome exchange!
 << getresources DialogScreen >> 
 In addition to your {$drachma} drachma, you also owe {$demanded_resources}.
 
@@ -636,8 +677,8 @@ In addition to your {$drachma} drachma, you also owe {$demanded_resources}.
 ===
 title: tax_short_2
 tags: 
-colorID: 0
-position: 1123,289
+colorID: 6
+position: 1121,289
 ---
 << setspeaker DialogScreen other >>
 << setend DialogScreen >> 
@@ -699,8 +740,8 @@ Your stores of cash are depleted! You must pay us in cargo - for you may not ref
 ===
 title: redo_intention
 tags: 
-colorID: 0
-position: 1516,291
+colorID: 7
+position: 1515,289
 ---
 << setspeaker DialogScreen Jason >>
 << setend DialogScreen >>
@@ -710,11 +751,11 @@ So many fees, so little mercy, so little friendship shown to us! We will not pay
 ===
 title: cant_afford
 tags: 
-colorID: 0
-position: -131,1544
+colorID: 4
+position: -129,1544
 ---
 << setspeaker DialogScreen other >>
-<< setsprite Partner unhappy >>
+<< setsprite Telones unhappy >>
 << set $entering_city to false>> 
 You must leave - taxes are not optional!
 ===
