@@ -697,31 +697,31 @@ MonoBehaviour:
   shipStartPoint: {fileID: 3696558124224406675}
   cam: {fileID: 3696558122851317210}
   camOffset: {x: 0, y: 65, z: 0}
-  shipClearanceRange: 20
-  range: 5
-  rockHolder: {fileID: 3696558123735522971}
-  rockScaleBounds: {x: 1, y: 4}
-  rockPerSqM: {x: 0.13, y: 0.155}
   stormRocks:
   - {fileID: 3217353607499389584, guid: 0da2e1bd4485aad48b2650399da06437, type: 3}
   - {fileID: 105575357220499537, guid: 8f300d1b7d1a2d84c9f13ace77a62d51, type: 3}
   - {fileID: 8130734356660257883, guid: b72ca4fb40a2ab245bf35caf73d89e34, type: 3}
   - {fileID: 7230220209382398406, guid: 479775f1f98c92d458672cc8ddd4e619, type: 3}
   - {fileID: 192518213476457187, guid: 2fd409d2a2e777044b228812aeba8686, type: 3}
-  cloudHolder: {fileID: 3696558124314093979}
-  cloudScaleBounds: {x: 1, y: 3}
-  cloudPerSqM: {x: 0.195, y: 0.225}
-  stormClouds:
-  - {fileID: 5498604549913085531, guid: 34083cf702e9d494eb95c7bda707a679, type: 3}
-  - {fileID: 7653758620165034016, guid: 23548d77aefce4943b7ed5dc6c094ee1, type: 3}
-  - {fileID: 7837580452261017821, guid: 6ce58c1b99ccdf24bae4c9069fe75a58, type: 3}
-  - {fileID: 2540205547307448384, guid: b9b78f96e7f756848a06854367c5e6ba, type: 3}
+  shipClearanceRange: 20
+  range: 5
+  rockHolder: {fileID: 3696558123735522971}
+  rockScaleBounds: {x: 1, y: 4}
+  rockPerSqM: {x: 0.13, y: 0.155}
   edgeHolder: {fileID: 4818749839153947937}
   edgeRockSpacing: 0.1
   spacingBase: 40
   gapsPerSide: 2
   standardGapWidth: 4
   distBtwnGaps: 2
+  stormClouds:
+  - {fileID: 5498604549913085531, guid: 34083cf702e9d494eb95c7bda707a679, type: 3}
+  - {fileID: 7653758620165034016, guid: 23548d77aefce4943b7ed5dc6c094ee1, type: 3}
+  - {fileID: 7837580452261017821, guid: 6ce58c1b99ccdf24bae4c9069fe75a58, type: 3}
+  - {fileID: 2540205547307448384, guid: b9b78f96e7f756848a06854367c5e6ba, type: 3}
+  cloudHolder: {fileID: 3696558124314093979}
+  cloudScaleBounds: {x: 1, y: 3}
+  cloudPerSqM: {x: 0.195, y: 0.225}
   timeLimit: 2
   hintArrow: {fileID: 3696558124727819313}
   difficultyModifiers:
@@ -749,7 +749,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3535cee79575a444292c7656b0b2ab5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLimit: 5
   noResourcesMod: 0.5
   mgInfo: {fileID: 2645445479289688201}
   instructionsText: 'You will need to navigate your ship through the treacherous waves

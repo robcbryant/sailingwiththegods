@@ -6,13 +6,9 @@ using UnityEngine.UI;
 public class RitualController : MonoBehaviour
 {
 
-	public enum RitualResult
-	{
-		Success, Failure, Refusal
-	}
+	public enum RitualResult { Success, Failure, Refusal }
 
 	[Header("General")]
-	public float timeLimit = 5f;
 	[Range(0f, 1f)]
 	public float noResourcesMod = 0.5f;
 	public MiniGameInfoScreen mgInfo;
@@ -76,14 +72,8 @@ public class RitualController : MonoBehaviour
 		List<Ritual> possibleRituals = new List<Ritual>();
 
 		bool hasSeer = CheckForSeer();
-		
-		for (int i = 0; i < Globals.GameVars.stormRituals.Count; i++) 
-		{
-			if (Globals.GameVars.stormRituals[i].HasSeer == hasSeer) 
-			{
-				possibleRituals.Add(Globals.GameVars.stormRituals[i]);
-			}
-		}
+
+		possibleRituals = Globals.GameVars.stormRituals.FindAll(x => x.HasSeer == hasSeer);
 
 		//Select an appropriate ritual
 		currentRitual = possibleRituals[RandomIndex(possibleRituals)];
@@ -127,7 +117,7 @@ public class RitualController : MonoBehaviour
 					break;
 				default:
 					performText += $"\n-{currentRitual.ResourceAmounts[i]}kg {Globals.GameVars.masterResourceList[currentRitual.ResourceTypes[i]].name} " +
-						$"(You have {Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].name}kg)";
+						$"(You have {Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].amount_kg}kg)";
 					break;
 			}
 		}
@@ -141,6 +131,10 @@ public class RitualController : MonoBehaviour
 		rejectButton.SetExplanationText("If you refuse to do the ritual, the storm will surely get worse!");
 	}
 
+	/// <summary>
+	/// Calculates if a ritual is a success or not, subtracts any resources, and updates the text
+	/// </summary>
+	/// <param name="action">0 or greater performs the ritual, less than 0 rejects it</param>
 	public void CalculateRitualResults(int action) 
 	{
 		RandomizerForStorms.StormDifficulty result = RandomizerForStorms.StormDifficulty.Error;
@@ -196,7 +190,7 @@ public class RitualController : MonoBehaviour
 				hasResources = hasResources && (Globals.GameVars.playerShipVariables.ship.currency > currentRitual.ResourceAmounts[i]);
 			}
 			else if (currentRitual.ResourceTypes[i] == -1) {
-				//skip - you know they have a crewmember
+				//skip - you know they have at least one crewmember
 			}
 			else {
 				hasResources = hasResources && (Globals.GameVars.playerShipVariables.ship.cargo[currentRitual.ResourceTypes[i]].amount_kg > currentRitual.ResourceAmounts[i]);
@@ -245,6 +239,7 @@ public class RitualController : MonoBehaviour
 	{
 		rfs.StopDamageTimer();
 		ShipHealth h = GetComponent<ShipHealth>();
+		//Figure out clout change based on damage taken relative to max health
 		float percentDamage = h.Health / h.MaxHealth;
 		int damageBracket = RandomizerForStorms.GetBracket(damageLevelPercents, percentDamage);
 		int cloutGained = Mathf.CeilToInt((survivalGain.y - survivalGain.x) * percentDamage + survivalGain.x);
