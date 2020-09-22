@@ -16,6 +16,8 @@ position: 654,-1183
 << set $asked_types to false >>
 << set $cargo_pay to false >> 
 
+<< set $have_herald to false >> 
+
 << citynetworks DialogScreen >>
 << networkconnections DialogScreen >> 
 << checkcitytaxes DialogScreen >> 
@@ -557,6 +559,7 @@ Indeed I'll pay! Heralds are a noble profession and I'm wise in matters of the m
 << setspeaker DialogScreen other >>
 << setsprite Telones happy >>
 << set $entering_city to true >>
+<< set $have_herald to true >> 
 A wise decision! Enjoy your time in our fair city!
 ===
 title: herald_no
@@ -570,6 +573,7 @@ My goods speak for themselves! I'll let rumors of our arrival do the work - and 
 << setspeaker DialogScreen other >>
 << setsprite Telones unhappy >>
 << set $entering_city to true >>
+<< set $have_herald to false >> 
 Your loss, my friend! Still, enjoy your time in our fair city.
 ===
 title: exit
