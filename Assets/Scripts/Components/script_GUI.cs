@@ -408,7 +408,7 @@ public class script_GUI : MonoBehaviour
 		GameVars.menuControlsLock = false;
 	}
 
-	public void GUI_EnterPort(Intention i = Intention.All) {
+	public void GUI_EnterPort(Intention i = Intention.All, float heraldMod = 1.0f) {
 		//Turn off port welcome screen
 		GameVars.showPortDockingNotification = false;
 		port_info_main.SetActive(false);
@@ -428,7 +428,7 @@ public class script_GUI : MonoBehaviour
 		Globals.UI.Hide<Dashboard>();
 
 		if (i.Equals(Intention.Water) || i.Equals(Intention.Trading)) {
-			Globals.UI.Show<TownScreen, TradeViewModel>(new TradeViewModel(i.Equals(Intention.Water), false));
+			Globals.UI.Show<TownScreen, TradeViewModel>(new TradeViewModel(i.Equals(Intention.Water), false, heraldMod));
 		}
 		else {
 			Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel(!i.Equals(Intention.Tavern)));
@@ -463,7 +463,7 @@ public class script_GUI : MonoBehaviour
 		hud_playerClout.GetComponent<Text>().text = GameVars.GetCloutTitleEquivalency((int)(Mathf.Round(GameVars.playerShipVariables.ship.playerClout * 1000.0f) / 1000.0f));
 		for (int i = 0; i < port_info_cloutMeter.transform.childCount; i++) {
 			Transform currentCloutMeter = port_info_cloutMeter.transform.GetChild(i);
-			Debug.Log(currentCloutMeter.name + "  =?  " + hud_playerClout.GetComponent<Text>().text);
+			//Debug.Log(currentCloutMeter.name + "  =?  " + hud_playerClout.GetComponent<Text>().text);
 			if (currentCloutMeter.name == hud_playerClout.GetComponent<Text>().text) {
 				currentCloutMeter.gameObject.SetActive(true);
 				foundMatch = true;

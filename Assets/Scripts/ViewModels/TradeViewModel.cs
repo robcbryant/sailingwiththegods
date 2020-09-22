@@ -32,7 +32,7 @@ public class TradeViewModel : CityViewModel
 	public bool allowPortAccess;
 	public bool monuments;
 
-	public TradeViewModel(bool justWater = false, bool portAccess = true) : base(Globals.GameVars.currentSettlement, null) {
+	public TradeViewModel(bool justWater = false, bool portAccess = true, float heraldMod = 1.0f) : base(Globals.GameVars.currentSettlement, null) {
 
 		portAccess = justWater ? false : portAccess;
 
@@ -58,6 +58,15 @@ public class TradeViewModel : CityViewModel
 			foreach (CargoItemTradeViewModel item in Mine.Value) {
 				item.AllowSelection = false;
 			}
+		}
+
+		if (heraldMod > 1.0f) {
+			Debug.Log($"TradeViewModel is setting herald to {(heraldMod - 1) * 100}%");
+
+			CargoItemTradeViewModel cargo = Mine.RandomElement();
+			Debug.Log($"Random cargo to boost: {cargo.Name}");
+
+
 		}
 
 		allowPortAccess = portAccess;

@@ -55,7 +55,7 @@ public class YarnTaxes : MonoBehaviour
 				}
 			}
 
-			ds.gui.GUI_EnterPort(intent/*, heraldMod*/);
+			ds.gui.GUI_EnterPort(intent, heraldMod);
 		}
 		else {
 			ds.gui.GUI_ExitPortNotification();
