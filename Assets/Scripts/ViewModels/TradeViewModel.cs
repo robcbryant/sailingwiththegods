@@ -66,7 +66,7 @@ public class TradeViewModel : CityViewModel
 			CargoItemTradeViewModel cargo = Mine.RandomElement();
 			Debug.Log($"Random cargo to boost: {cargo.Name}");
 
-
+			cargo.PriceMod = heraldMod;
 		}
 
 		allowPortAccess = portAccess;
@@ -109,8 +109,8 @@ public class TradeViewModel : CityViewModel
 		GameVars.currentSettlement.GetCargoByName(resourceName).amount_kg += changeAmount;
 	}
 
-	void ChangeShipCargo(string resourceName, float changeAmount) {
-		float price = GameVars.Trade.GetPriceOfResource(resourceName, GameVars.currentSettlement);
+	void ChangeShipCargo(string resourceName, float changeAmount, float priceMod) {
+		float price = GameVars.Trade.GetPriceOfResource(resourceName, GameVars.currentSettlement) * priceMod;
 		Debug.Log(resourceName + "  :  " + GameVars.playerShipVariables.ship.GetCargoByName(resourceName).amount_kg + "  :  " + changeAmount);
 		GameVars.playerShipVariables.ship.GetCargoByName(resourceName).amount_kg += changeAmount;
 		//we use a (-) change amount here because the changeAmount reflects the direction of the goods
@@ -126,7 +126,7 @@ public class TradeViewModel : CityViewModel
 		if (amountToBuy > 0) {
 
 			// these change the values in our model too, just need to notify
-			ChangeShipCargo(item.Name, amountToBuy);
+			ChangeShipCargo(item.Name, amountToBuy, item.PriceMod);
 			ChangeSettlementCargo(item.Name, -amountToBuy);
 
 			// update the list so the new row appears
@@ -156,7 +156,7 @@ public class TradeViewModel : CityViewModel
 		if (amountToSell > 0) {
 
 			// these change the values in our model too, just need to notify
-			ChangeShipCargo(item.Name, -amountToSell);
+			ChangeShipCargo(item.Name, -amountToSell, item.PriceMod);
 			ChangeSettlementCargo(item.Name, amountToSell);
 
 			// update the list so the new row appears
