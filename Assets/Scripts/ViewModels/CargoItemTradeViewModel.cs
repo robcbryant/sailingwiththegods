@@ -36,7 +36,10 @@ public class CargoItemTradeViewModel : Model
 			return priceMod;
 		}
 		set {
-			priceMod = value;
+			if (value >= 0) {
+				priceMod = value;
+			}
+			
 			if (priceMod == 0) {
 				priceMod = 1.0f;
 			}
@@ -67,6 +70,7 @@ public class CargoItemTradeViewModel : Model
 
 	public string Name => Resource.name;
 	public Sprite Icon { get; private set; }
+	public Sprite HeraldIcon { get; set; }
 
 	public bool IsSelected => Parent.Selected == this;
 

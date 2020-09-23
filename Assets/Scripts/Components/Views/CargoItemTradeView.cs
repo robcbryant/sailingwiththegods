@@ -16,6 +16,7 @@ public class CargoItemTradeView : ViewBehaviour<CargoItemTradeViewModel>
 	[SerializeField] StringView Amount = null;
 	[SerializeField] StringView Hint = null;
 	[SerializeField] ImageView Icon = null;
+	[SerializeField] ImageView HeraldIcon = null;
 
 	[SerializeField] Image SelectedOverlay = null;
 	[SerializeField] Image DisabledOverlay = null;
@@ -36,6 +37,7 @@ public class CargoItemTradeView : ViewBehaviour<CargoItemTradeViewModel>
 		Amount?.Bind(new BoundModel<int>(Model, nameof(Model.AmountKg)).AsString());
 		Name?.Bind(new BoundModel<string>(Model, nameof(Model.Name)));
 		Icon?.Bind(new BoundModel<Sprite>(Model, nameof(Model.Icon)));
+		HeraldIcon?.Bind(new BoundModel<Sprite>(Model, nameof(Model.HeraldIcon)));
 		Price?.Bind(new BoundModel<string>(Model, nameof(Model.PriceStr)));
 		Hint?.Bind(new BoundModel<string>(Model, nameof(Model.HintStr)));
 

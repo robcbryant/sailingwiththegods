@@ -408,7 +408,7 @@ public class script_GUI : MonoBehaviour
 		GameVars.menuControlsLock = false;
 	}
 
-	public void GUI_EnterPort(Intention i = Intention.All, float heraldMod = 1.0f) {
+	public void GUI_EnterPort(Sprite heraldIcon = null, Intention i = Intention.All, float heraldMod = 1.0f) {
 		//Turn off port welcome screen
 		GameVars.showPortDockingNotification = false;
 		port_info_main.SetActive(false);
@@ -428,7 +428,7 @@ public class script_GUI : MonoBehaviour
 		Globals.UI.Hide<Dashboard>();
 
 		if (i.Equals(Intention.Water) || i.Equals(Intention.Trading)) {
-			Globals.UI.Show<TownScreen, TradeViewModel>(new TradeViewModel(i.Equals(Intention.Water), false, heraldMod));
+			Globals.UI.Show<TownScreen, TradeViewModel>(new TradeViewModel(heraldIcon, i.Equals(Intention.Water), false, heraldMod));
 		}
 		else {
 			Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel(!i.Equals(Intention.Tavern)));

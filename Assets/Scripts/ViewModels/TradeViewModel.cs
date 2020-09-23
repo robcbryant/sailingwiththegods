@@ -32,7 +32,7 @@ public class TradeViewModel : CityViewModel
 	public bool allowPortAccess;
 	public bool monuments;
 
-	public TradeViewModel(bool justWater = false, bool portAccess = true, float heraldMod = 1.0f) : base(Globals.GameVars.currentSettlement, null) {
+	public TradeViewModel(Sprite heraldIcon = null, bool justWater = false, bool portAccess = true, float heraldMod = 1.0f) : base(Globals.GameVars.currentSettlement, null) {
 
 		portAccess = justWater ? false : portAccess;
 
@@ -67,6 +67,8 @@ public class TradeViewModel : CityViewModel
 			Debug.Log($"Random cargo to boost: {cargo.Name}");
 
 			cargo.PriceMod = heraldMod;
+
+			cargo.HeraldIcon = heraldIcon;
 		}
 
 		allowPortAccess = portAccess;
