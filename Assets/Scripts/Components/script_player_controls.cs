@@ -632,7 +632,7 @@ public class script_player_controls : MonoBehaviour
 
 
 	void OnTriggerEnter(Collider trigger) {
-		Debug.Log("On trigger enter triggering" + trigger.transform.tag);
+		//Debug.Log("On trigger enter triggering" + trigger.transform.tag);
 		if (trigger.transform.tag == "currentDirectionVector") {
 			currentWaterDirectionVector = trigger.transform.GetChild(0).GetChild(0).up.normalized;
 			currentWaterDirectionMagnitude = trigger.transform.GetChild(0).GetComponent<script_WaterWindCurrentVector>().currentMagnitude;

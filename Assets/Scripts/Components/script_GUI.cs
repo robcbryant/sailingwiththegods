@@ -431,7 +431,7 @@ public class script_GUI : MonoBehaviour
 			Globals.UI.Show<TownScreen, TradeViewModel>(new TradeViewModel(heraldIcon, i.Equals(Intention.Water), false, heraldMod));
 		}
 		else {
-			Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel(!i.Equals(Intention.Tavern)));
+			Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel(!i.Equals(Intention.Tavern), heraldIcon, heraldMod));
 		}
 		
 

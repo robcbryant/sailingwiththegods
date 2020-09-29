@@ -31,9 +31,16 @@ public class TradeViewModel : CityViewModel
 
 	public bool allowPortAccess;
 	public bool monuments;
+	private Sprite heraldIcon;
+	private float heraldEffect;
 
-	public TradeViewModel(Sprite heraldIcon = null, bool justWater = false, bool portAccess = true, float heraldMod = 1.0f) : base(Globals.GameVars.currentSettlement, null) {
+	public TradeViewModel(Sprite herald = null, bool justWater = false, bool portAccess = true, float heraldMod = 1.0f) : base(Globals.GameVars.currentSettlement, null) {
 
+		string nullString = "null";
+		Debug.Log($"Creating new TradeViewModel with heraldIcon {(herald != null? herald.name : nullString)}; justWater {justWater}; portAccess {portAccess}; heraldMod {heraldMod}");
+
+		heraldIcon = herald;
+		heraldEffect = heraldMod;
 		portAccess = justWater ? false : portAccess;
 
 		Money = new BoundModel<int>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.currency));
@@ -68,7 +75,7 @@ public class TradeViewModel : CityViewModel
 
 			cargo.PriceMod = heraldMod;
 
-			cargo.HeraldIcon = heraldIcon;
+			cargo.HeraldIcon = herald;
 		}
 
 		allowPortAccess = portAccess;
@@ -77,7 +84,7 @@ public class TradeViewModel : CityViewModel
 
 	public void BackToPort() {
 		Globals.UI.Hide<TownScreen>();
-		Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel());
+		Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel(true, heraldIcon, heraldEffect));
 	}
 
 	public void SmallTxn() {

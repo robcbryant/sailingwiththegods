@@ -11,14 +11,18 @@ public class PortViewModel : CityViewModel
 	public readonly CrewManagementViewModel CrewManagement;
 
 	public bool allowTownAccess;
+	protected Sprite heraldIcon;
+	protected float heraldEffect;
 
-	public PortViewModel(bool town = true) : base(Globals.GameVars.currentSettlement, null){
+	public PortViewModel(bool townAccess = true, Sprite herald = null, float heraldModifier = 1) : base(Globals.GameVars.currentSettlement, null){
 		CrewManagement = new CrewManagementViewModel(City);
-		allowTownAccess = town;
+		allowTownAccess = townAccess;
+		heraldIcon = herald;
+		heraldEffect = heraldModifier;
 	}
 
 	public void GoToTown() {
 		Globals.UI.Hide<PortScreen>();
-		Globals.UI.Show<TownScreen, TradeViewModel>(new TradeViewModel());
+		Globals.UI.Show<TownScreen, TradeViewModel>(new TradeViewModel(heraldIcon, false, true, heraldEffect));
 	}
 }
