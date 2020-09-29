@@ -376,7 +376,7 @@ public class PlayerRoute
 		this.settlementID = -1;
 		this.timeStampInDays = timeStampInDays;
 		this.UnityXYZEndPoint = destination;
-		Debug.Log("Getting called...." + origin.x + "  " + origin.z);
+		Debug.Log("Player route getting called...." + origin.x + "  " + origin.z);
 
 	}
 
@@ -387,7 +387,7 @@ public class PlayerRoute
 		this.settlementName = settlementName;
 		this.timeStampInDays = timeStampInDays;
 		this.UnityXYZEndPoint = origin;
-		Debug.Log("Getting called 2...." + origin.x + "  " + origin.z);
+		Debug.Log("Player route getting called 2...." + origin.x + "  " + origin.z);
 		//TODO this is a dirty fix--under normal route conditions the Unity XYZ is changed to XZY to match 3d geometry conventions (z is up and not forward like in Unity)
 		//TODO --I'm manually making this port stop XZY here so I don't have to change to much of the ConvertJourneyLogToCSVText() function in the PlayerJourneyLog Class
 		//TODO --We only need to change the 'origin' XYZ to XZY because port stops will have Vector3.zero (0,0,0) for the destination values always 
@@ -420,7 +420,7 @@ public class PlayerJourneyLog
 
 	public void AddRoute(PlayerRoute routeToAdd, script_player_controls playerShipVars, string captainsLog) {
 		this.routeLog.Add(routeToAdd);
-		Debug.Log("Getting called 3...." + routeToAdd.theRoute[0].x + "  " + routeToAdd.theRoute[0].z);
+		Debug.Log("Add Route getting called 3...." + routeToAdd.theRoute[0].x + "  " + routeToAdd.theRoute[0].z);
 		AddCargoManifest(playerShipVars.ship.cargo);
 		AddOtherAttributes(playerShipVars, captainsLog, routeToAdd);
 	}
@@ -676,6 +676,7 @@ public class Settlement
 	public Region Region;
 
 	public Resource GetCargoByName(string name) => cargo.FirstOrDefault(c => c.name == name);
+	public Resource GetCargo(Resource r) => cargo.FirstOrDefault(c => c.name == r.name);
 
 	public Settlement(int settlementID, string name, Vector2 location_longXlatY, float elevation, int population) {
 		this.settlementID = settlementID;

@@ -437,12 +437,8 @@ public class script_GUI : MonoBehaviour
 		GameVars.menuControlsLock = false;
 	}
 
-	public void GUI_EnterPort(Sprite heraldIcon = null, Intention i = Intention.All, float heraldMod = 1.0f) {
-
-		StartCoroutine(DoEnterPort(heraldIcon, i, heraldMod));
-	}
-
-	private IEnumerator DoEnterPort(Sprite heraldIcon, Intention i, float heraldMod) {
+	public void GUI_EnterPort(Sprite heraldIcon = null, Sprite noHeraldIcon = null, Intention i = Intention.All, float heraldMod = 1.0f) 
+	{
 		//Turn off port welcome screen
 		GameVars.showPortDockingNotification = false;
 		port_info_main.SetActive(false);
@@ -456,10 +452,8 @@ public class script_GUI : MonoBehaviour
 		GameVars.showSettlementTradeButton = false;
 		GameVars.controlsLocked = true;
 
-		trade = new TradeViewModel(heraldIcon, i.Equals(Intention.Water), i.Equals(Intention.All), heraldMod);
+		trade = new TradeViewModel(heraldIcon, noHeraldIcon, i.Equals(Intention.Water), i.Equals(Intention.All), heraldMod);
 		port = new PortViewModel(i.Equals(Intention.All));
-
-		yield return null;
 
 		//-------------------------------------------------
 		//NEW GUI FUNCTIONS FOR SETTING UP TAB CONTENT
@@ -473,7 +467,6 @@ public class script_GUI : MonoBehaviour
 			Globals.UI.Show<PortScreen, PortViewModel>(port);
 		}
 
-
 		//Add a new route to the player journey log as a port entry
 		GameVars.playerShipVariables.journey.AddRoute(new PlayerRoute(GameVars.playerShip.transform.position, Vector3.zero, GameVars.currentSettlement.settlementID, GameVars.currentSettlement.name, false, GameVars.playerShipVariables.ship.totalNumOfDaysTraveled), GameVars.playerShipVariables, GameVars.CaptainsLog);
 		//We should also update the ghost trail with this route otherwise itp roduce an empty 0,0,0 position later
@@ -482,7 +475,6 @@ public class script_GUI : MonoBehaviour
 		//-------------------------------------------------
 		// UPDATE PLAYER CLOUT METER
 		GUI_UpdatePlayerCloutMeter();
-
 
 		//-------------------------------------------------
 		// OTHER PORT GUI SETUP FUNCTIONS

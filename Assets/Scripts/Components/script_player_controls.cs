@@ -646,7 +646,7 @@ public class script_player_controls : MonoBehaviour
 		if (trigger.transform.tag == "settlement_dock_area") {
 			//Here we first figure out what kind of 'settlement' we arrive at, e.g. is it just a point of interest or is it a actual dockable settlement
 			//if it's a dockable settlement, then allow the docking menu to be accessed, otherwise run quest functions etc.
-			Debug.Log(trigger.transform.parent.GetComponent<script_settlement_functions>().thisSettlement);
+			Debug.Log("Entered docking area for " + trigger.transform.parent.GetComponent<script_settlement_functions>().thisSettlement.name);
 			if (trigger.transform.parent.GetComponent<script_settlement_functions>().thisSettlement.typeOfSettlement == 1) {
 				getSettlementDockButtonReady = true;
 				GameVars.currentSettlement = trigger.transform.parent.gameObject.GetComponent<script_settlement_functions>().thisSettlement;
@@ -956,7 +956,7 @@ public class script_player_controls : MonoBehaviour
 			GameVars.mat_water.SetColor("_Color", waterColorDay);
 			GameVars.mat_waterCurrents.color = Color.white;
 			testAngle = GameVars.skybox_MAIN_CELESTIAL_SPHERE.transform.localRotation.y;
-			Debug.Log(initialAngle + "*********************");
+			Debug.Log("Initial Angle " + initialAngle + "*********************");
 			GameVars.skybox_horizonColor.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f, 1f);
 			GameVars.skybox_clouds.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f);
 			GameVars.skybox_sun.GetComponent<MeshRenderer>().sharedMaterial.color = new Color(1f, 1f, 1f);

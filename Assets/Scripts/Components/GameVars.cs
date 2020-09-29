@@ -1302,7 +1302,7 @@ public class GameVars : MonoBehaviour
 
 		//###### Now we need to determine whether or not the current city (or representative thereof) 
 		//	--is part of the player's hometown/main network(s), e.g. if the player and city is part of the Samothracian network
-		Debug.Log("DEBUG:  " + settlementID);
+		Debug.Log("DEBUG SETTLEMENT ID:  " + settlementID);
 		//If there is no city attached(settlementID == 0) then we are in open waters so return 0
 		if (settlementID != 0) {
 			foreach (int playerNetworkID in playerShipVariables.ship.networks) {

@@ -11,6 +11,7 @@ public class YarnTaxes : MonoBehaviour
 	[Range(0f, 1f)]
 	public float heraldEffect = 0.01f;
 	public Sprite heraldIcon;
+	public Sprite noHeraldIcon;
 
 	private DialogScreen ds;
 	private Settlement city;
@@ -56,7 +57,7 @@ public class YarnTaxes : MonoBehaviour
 				}
 			}
 
-			ds.gui.GUI_EnterPort(heraldIcon, intent, heraldMod);
+			ds.gui.GUI_EnterPort(heraldIcon, noHeraldIcon, intent, heraldMod);
 		}
 		else {
 			ds.gui.GUI_ExitPortNotification();
