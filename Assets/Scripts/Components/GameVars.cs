@@ -89,7 +89,7 @@ public class GameVars : MonoBehaviour
 	public List<CrewMember> currentlyAvailableCrewMembersAtPort; // updated every time ship docks at port
 
 	[Header("GUI Scene Refs")]
-	public GameObject MasterGUISystem;
+	public script_GUI MasterGUISystem;
 	public GameObject GUI_PortMenu;
 	public GameObject GUI_GameHUD;
 	public GameObject selection_ring;
@@ -1208,7 +1208,7 @@ public class GameVars : MonoBehaviour
 				Debug.Log("Lost a level");
 				ShowANotificationMessage("Unfortunately you sunk to a new low level of respect in the world! Before this day you were Jason, " + GetCloutTitleEquivalency(clout) + ".....But now...You have become Jason " + GetCloutTitleEquivalency((int)playerShipVariables.ship.playerClout) + "!");
 			}
-			MasterGUISystem.GetComponent<script_GUI>().GUI_UpdatePlayerCloutMeter();
+			MasterGUISystem.GUI_UpdatePlayerCloutMeter();
 		}
 
 
