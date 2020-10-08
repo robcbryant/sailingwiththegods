@@ -161,6 +161,7 @@ public class TradeViewModel : CityViewModel
 				Debug.Log("Out of herald uses");
 				heraldTarget.PriceMod = 1.0f;
 				heraldTarget.HeraldIcon = noHeraldIcon;
+				heraldTarget.NotifyAny();
 				heraldTarget = null;
 			}
 			Debug.Log("Price with herald mod figured in: " + price);
