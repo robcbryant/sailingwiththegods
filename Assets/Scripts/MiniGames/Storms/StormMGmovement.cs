@@ -8,6 +8,7 @@ public class StormMGmovement : MonoBehaviour
 	[HideInInspector]
 	public GameObject playerBoat;
 	public float speed;
+	public float rotSpeed;
 
 	private bool move;
 
@@ -25,11 +26,15 @@ public class StormMGmovement : MonoBehaviour
 	//left and right turns the boat 
 	private void MoveBoat() 
 	{
-		float movement = Input.GetAxisRaw("Vertical");
-		float rotation = Input.GetAxisRaw("Horizontal");
+		if (playerBoat != null) {
+			float movement = Input.GetAxisRaw("Vertical");
+			float rotation = Input.GetAxisRaw("Horizontal");
+			
+			playerBoat.transform.position += playerBoat.transform.right * speed * movement;
+			//playerBoat.transform.Rotate(0, speed * 2 * rotation, 0);
+			playerBoat.transform.localEulerAngles += Vector3.up * rotSpeed * rotation;
+		}
 
-		playerBoat.transform.Translate(speed * movement, 0, 0);
-		playerBoat.transform.Rotate(0, speed * 2 * rotation, 0);
 	}
 
 	public void ToggleMovement(bool toggle) 
