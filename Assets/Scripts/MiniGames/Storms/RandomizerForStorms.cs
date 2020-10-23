@@ -6,9 +6,8 @@ using System.Linq;
 public class RandomizerForStorms : MonoBehaviour
 {
 	public enum StormDifficulty { Easy, Medium, Hard, Error }
-
-	[ColorUsage(true, true)]
-	public Color stormLighting;
+	
+	public Light stormLight;
 	[Header("Water")]
 	public GameObject miniGameWater;
 	public Vector2 waterSizeBounds = new Vector2(20, 60);
@@ -53,18 +52,21 @@ public class RandomizerForStorms : MonoBehaviour
 
 	private Vector3 randomMGwaterSize;
 	private GameObject ship;
-	private Color baseLighting;
 	private List<Vector3> gaps = new List<Vector3>();
 	private int cloutBracket;
 	private float damagePerSecond;
 	private ShipHealth h;
 	private bool countingDown;
 
+	private GameObject sunLight;
+
 	private void Start() 
 	{
 		h = GetComponent<ShipHealth>();
 
 		damagePerSecond = h.MaxHealth / (timeLimit * 60);
+
+		sunLight = Globals.GameVars.skybox_sun;
 	}
 
 	private void OnEnable() 
@@ -73,8 +75,15 @@ public class RandomizerForStorms : MonoBehaviour
 		{
 			Destroy(ship);
 		}
-		baseLighting = RenderSettings.ambientLight;
-		RenderSettings.ambientLight = stormLighting;
+
+		if (sunLight == null) {
+			sunLight = Globals.GameVars.skybox_sun.GetComponentInChildren<Light>().gameObject;
+		}
+
+		sunLight.SetActive(false);
+		Globals.GameVars.FPVCamera.gameObject.SetActive(false);
+
+		stormLight.gameObject.SetActive(true);
 
 		cloutBracket = GetBracket(cloutRanges, Globals.GameVars.playerShipVariables.ship.playerClout);
 
@@ -84,7 +93,10 @@ public class RandomizerForStorms : MonoBehaviour
 
 	private void OnDisable() 
 	{
-		RenderSettings.ambientLight = baseLighting;
+		sunLight.SetActive(true);
+		Globals.GameVars.FPVCamera.gameObject.SetActive(true);
+		stormLight.gameObject.SetActive(false);
+
 		DestroyAllChildren(rockHolder);
 		DestroyAllChildren(cloudHolder);
 		DestroyAllChildren(edgeHolder);
