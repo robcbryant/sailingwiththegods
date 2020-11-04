@@ -71,6 +71,8 @@ public class script_player_controls : MonoBehaviour
 
 	[HideInInspector] public List<string> zonesList = new List<string>();
 
+	private bool checkedStarvingThirsty = false;
+
 	[Header("Playtesting Bools")]
 	//make sure these are false in Unity's "Inspector" tab before making builds 
 	[SerializeField] bool hotkeysOn = true;
@@ -217,7 +219,8 @@ public class script_player_controls : MonoBehaviour
 				//check to see if we just left a port starving
 				if (GameVars.justLeftPort) {
 					GameVars.justLeftPort = false;
-					CheckIfShipLeftPortStarvingOrThirsty();
+					//CheckIfShipLeftPortStarvingOrThirsty();
+					checkedStarvingThirsty = false;
 					//TODO need to add a check here for notification windows to lock controls
 
 					//
@@ -859,54 +862,74 @@ public class script_player_controls : MonoBehaviour
 	}
 
 
-	void CheckIfShipLeftPortStarvingOrThirsty() {
+	public bool CheckIfShipLeftPortStarvingOrThirsty() {
+
 		//We need to check to see if there is enough Provisions for a single days journey for all the crew
 		//if there isn't--some of the crew will leave the ship
 
-		string notificationMessage = "";
-		bool ProvisionsDeaths = false;
+		bool lowFood = ship.cargo[1].amount_kg < dailyProvisionsKG * ship.crewRoster.Count;
+		bool lowWater = ship.cargo[0].amount_kg < dailyWaterKG * ship.crewRoster.Count;
 
-		if (ship.cargo[1].amount_kg < dailyProvisionsKG * ship.crewRoster.Count) {
-			//start a counter of how many crew members die
-			int crewDeathCount = 0;
-			//make sure we roll for each crew member
-			for (int i = 0; i < ship.crewRoster.Count; i++) {
-				//--we'll base this chance off of a static 30% plus any effect from clout(a maximum change of 25 % in either direction
-				float rollChance = 30 - (((GameVars.playerShipVariables.ship.playerClout - 50f) / 100) / 2);
-				//some crew needs to leave
-				if (Random.Range(0, 100) <= rollChance) {
-					//Kill a crewmember
-					KillCrewMember();
-					crewDeathCount++;
-					ProvisionsDeaths = true;
-				}
+		if (!checkedStarvingThirsty && (lowFood || lowWater)) {
+			string message = "Hey so we don't have enough supplies to leave port safely.";
+
+			if (lowFood) {
+				message += $"\n\nFor {ship.crewRoster.Count} crew members, we need about {Mathf.CeilToInt(dailyProvisionsKG * ship.crewRoster.Count)}kgs of provisions per day, " +
+					$"but we only have {Mathf.RoundToInt(ship.cargo[1].amount_kg)}kgs. ";
 			}
-			notificationMessage += crewDeathCount + " crewmember(s) quit because you left without a full store of Provisions";
-		}
-		if (ProvisionsDeaths) notificationMessage += ", and ";
-		//We need to check to see if there is enough water for a single days journey for all the crew
-		//if there isn't--some of the crew will leave the ship
-		if (ship.cargo[0].amount_kg < dailyWaterKG * ship.crewRoster.Count) {
-			//start a counter of how many crew members die
-			int crewDeathCount = 0;
-			//make sure we roll for each crew member
-			for (int i = 0; i < ship.crewRoster.Count; i++) {
-				//--we'll base this chance off of a static 30% plus any effect from clout(a maximum change of 25 % in either direction
-				float rollChance = 30 - (((GameVars.playerShipVariables.ship.playerClout - 50f) / 100) / 2);
-				//some crew needs to leave
-				if (Random.Range(0, 100) <= rollChance) {
-					//Kill a crewmember
-					KillCrewMember();
-					crewDeathCount++;
-				}
+			if (lowWater) {
+				message += $"\n\nFor {ship.crewRoster.Count} crew members, we need about {Mathf.CeilToInt(dailyWaterKG * ship.crewRoster.Count)}kgs of water per day," +
+					$" but we only have {Mathf.Round(ship.cargo[0].amount_kg)}kgs. ";
 			}
-			notificationMessage += crewDeathCount + " crewmember(s) quit because you left without a full store of water.";
+
+			message += "\n\nIf you still try to leave without buying more supplies, some crew members will refuse to join us!";
+			GameVars.ShowANotificationMessage(message);
+
+			checkedStarvingThirsty = true;
+			return true;
 		}
-		//now update the notification string with the message
-		if(!string.IsNullOrEmpty(notificationMessage)) {
-			// KD TODO: Need to revisit if i reimplemented this as robert had it
-			GameVars.ShowANotificationMessage(notificationMessage);
+		else {
+			string notificationMessage = "";
+
+			//Check food
+			if (lowFood) {
+				int crewDeathCount = CrewQuitsBecauseStarvingOrThirsty();
+				notificationMessage += crewDeathCount + " crewmember(s) quit because you left without a full store of Provisions";
+			}
+			
+			//Check water
+			if (lowWater) {
+				if (lowFood) {
+					notificationMessage += ", and ";
+				}
+				int crewDeathCount = CrewQuitsBecauseStarvingOrThirsty();
+				notificationMessage += crewDeathCount + " crewmember(s) quit because you left without a full store of water.";
+			}
+			//now update the notification string with the message
+			if (!string.IsNullOrEmpty(notificationMessage)) {
+				// KD TODO: Need to revisit if i reimplemented this as robert had it
+				GameVars.ShowANotificationMessage(notificationMessage);
+			}
 		}
+
+		if (lowFood || lowWater) {
+			return !checkedStarvingThirsty;
+		}
+		else {
+			return false;
+		}
+	}
+
+	int CrewQuitsBecauseStarvingOrThirsty() {
+		int deathCount = 0;
+		for (int i = 0; i < ship.crewRoster.Count; i++) {
+			float rollChance = 30 - (((GameVars.playerShipVariables.ship.playerClout - 50f) / 100) / 2);
+			if (Random.Range(0, 100) <= rollChance) {
+				KillCrewMember();
+				deathCount++;
+			}
+		}
+		return deathCount;
 	}
 
 	public void UpdateDayNightCycle(bool restartCycle) {
