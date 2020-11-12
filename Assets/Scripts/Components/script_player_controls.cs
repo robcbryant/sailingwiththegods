@@ -860,8 +860,7 @@ public class script_player_controls : MonoBehaviour
 			return result;
 		}
 	}
-
-
+		
 	public bool CheckIfShipLeftPortStarvingOrThirsty() {
 
 		//We need to check to see if there is enough Provisions for a single days journey for all the crew
@@ -871,18 +870,19 @@ public class script_player_controls : MonoBehaviour
 		bool lowWater = ship.cargo[0].amount_kg < dailyWaterKG * ship.crewRoster.Count;
 
 		if (!checkedStarvingThirsty && (lowFood || lowWater)) {
-			string message = "Hey so we don't have enough supplies to leave port safely.";
+			string message = "No ship sails on an empty stomach - our supplies are perilously low!";
 
 			if (lowFood) {
-				message += $"\n\nFor {ship.crewRoster.Count} crew members, we need about {Mathf.CeilToInt(dailyProvisionsKG * ship.crewRoster.Count)}kgs of provisions per day, " +
-					$"but we only have {Mathf.RoundToInt(ship.cargo[1].amount_kg)}kgs. ";
+				message += $"\n\nMen are nothing but bellies, as the Muses know - we must have enough food to supply them! For {ship.crewRoster.Count} crew members, we need about " +
+					$"{Mathf.CeilToInt(dailyProvisionsKG * ship.crewRoster.Count)}kgs of provisions per day, but we only have {Mathf.RoundToInt(ship.cargo[1].amount_kg)}kgs. ";
 			}
 			if (lowWater) {
-				message += $"\n\nFor {ship.crewRoster.Count} crew members, we need about {Mathf.CeilToInt(dailyWaterKG * ship.crewRoster.Count)}kgs of water per day," +
+				message += $"\n\n‘Water is best’, said the greatest of poets (Pindar) - and no ship can sail without it! We need to buy more water or Thirst itself will destroy our ship. " +
+					$"For {ship.crewRoster.Count} crew members, we need about {Mathf.CeilToInt(dailyWaterKG * ship.crewRoster.Count)}kgs of water per day," +
 					$" but we only have {Mathf.Round(ship.cargo[0].amount_kg)}kgs. ";
 			}
 
-			message += "\n\nIf you still try to leave without buying more supplies, some crew members will refuse to join us!";
+			message += "\n\nMen without food and water are mutinous creatures - they’ll sooner leave the voyage than follow a leader who does not care for them!";
 			GameVars.ShowANotificationMessage(message);
 
 			checkedStarvingThirsty = true;

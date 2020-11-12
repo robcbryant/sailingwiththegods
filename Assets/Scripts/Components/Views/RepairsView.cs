@@ -61,6 +61,7 @@ public class RepairsViewModel : Model
 	public void GUI_BuyNewShip() {
 		if(GameVars.playerShipVariables.ship.currency > costToBuyUpgrade) {
 			GameVars.UpgradeShip(costToBuyUpgrade);
+			GameVars.ShowANotificationMessage("	\We have a larger ship! More benches, more oars, more men and more bellies… We need more food and ample water to keep men at oars and mutiny at bay!");
 		}
 		else { 
 			GameVars.ShowANotificationMessage("Earn more drachma through trade to upgrade your ship!");
