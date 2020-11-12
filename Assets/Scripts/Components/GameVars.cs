@@ -288,6 +288,8 @@ public class GameVars : MonoBehaviour
 		CreateSettlementsFromList();
 		currentSettlementGameObject = settlement_masterList_parent.transform.GetChild(0).gameObject;
 		currentSettlement = currentSettlementGameObject.GetComponent<script_settlement_functions>().thisSettlement;
+		//The lights are on at the start, so turn them off or they'll be on during the first day and no other day
+		cityLightsParent.SetActive(false);
 
 		// wind and current init
 		BuildWindZoneGameObjects();

@@ -66,6 +66,7 @@ public class RandomizerForStorms : MonoBehaviour
 
 		damagePerSecond = h.MaxHealth / (timeLimit * 60);
 
+		Debug.Log("Set SunLight in Start");
 		sunLight = Globals.GameVars.skybox_sun;
 	}
 
@@ -77,10 +78,11 @@ public class RandomizerForStorms : MonoBehaviour
 		}
 
 		if (sunLight == null) {
-			sunLight = Globals.GameVars.skybox_sun.GetComponentInChildren<Light>().gameObject;
+			Debug.Log("Set SunLight in OnEnable");
+			sunLight = Globals.GameVars.skybox_sun;
 		}
 
-		sunLight.SetActive(false);
+		sunLight.gameObject.SetActive(false);
 		Globals.GameVars.FPVCamera.gameObject.SetActive(false);
 
 		stormLight.gameObject.SetActive(true);
@@ -93,7 +95,11 @@ public class RandomizerForStorms : MonoBehaviour
 
 	private void OnDisable() 
 	{
-		sunLight.SetActive(true);
+		if (sunLight == null) {
+			Debug.Log("Set SunLight in OnDisable");
+			sunLight = Globals.GameVars.skybox_sun;
+		}
+		sunLight.gameObject.SetActive(true);
 		Globals.GameVars.FPVCamera.gameObject.SetActive(true);
 		stormLight.gameObject.SetActive(false);
 
