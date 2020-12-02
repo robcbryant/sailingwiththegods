@@ -1200,6 +1200,8 @@ public class script_player_controls : MonoBehaviour
 		//	--rather than use Count-1 to get the last index of the line renderer, we can just use Count from the route log
 		if (isANewGame) {
 			GameVars.playerGhostRoute.GetComponent<LineRenderer>().positionCount = 1;
+
+			//TODO: find out why this is always setting you to Samothrace instead of your actual starting position
 			GameVars.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(0, transform.position - new Vector3(0, transform.position.y, 0)); //We subtract the y value so that the line sits on the surface of the water and not in the air
 																																			//TODO this is a quick and dirty fix to load games--the origin point is already established in a loaded game so if we add 1 to the index, it creates a 'blank' Vector.zero route index in the ghost trail
 		}

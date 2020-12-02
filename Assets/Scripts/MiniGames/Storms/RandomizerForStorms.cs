@@ -100,7 +100,11 @@ public class RandomizerForStorms : MonoBehaviour
 			sunLight = Globals.GameVars.skybox_sun;
 		}
 		sunLight.gameObject.SetActive(true);
-		Globals.GameVars.FPVCamera.gameObject.SetActive(true);
+		if (Globals.GameVars.FPVCamera.gameObject != null) 
+		{
+			Globals.GameVars.FPVCamera.gameObject.SetActive(true);
+		}
+
 		stormLight.gameObject.SetActive(false);
 
 		DestroyAllChildren(rockHolder);
