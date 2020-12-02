@@ -115,7 +115,7 @@ public class GameVars : MonoBehaviour
 	// TODO: unorganized variables
 	[HideInInspector] public GameObject mainCamera;
 	[HideInInspector] public GameObject playerTrajectory;
-	[HideInInspector] public GameObject playerGhostRoute;
+	[HideInInspector] public LineRenderer playerGhostRoute;
 	[HideInInspector] public WindRose[,] windrose_January = new WindRose[10, 8];
 	[HideInInspector] public GameObject windZoneParent;
 	[HideInInspector] public GameObject waterSurface;
@@ -261,7 +261,7 @@ public class GameVars : MonoBehaviour
 		playerShip = GameObject.FindGameObjectWithTag("playerShip");
 		camera_titleScreen = GameObject.FindGameObjectWithTag("camera_titleScreen");
 		waterSurface = GameObject.FindGameObjectWithTag("waterSurface");
-		playerGhostRoute = GameObject.FindGameObjectWithTag("playerGhostRoute");
+		playerGhostRoute = GameObject.FindGameObjectWithTag("playerGhostRoute").GetComponent<LineRenderer>();
 		playerTrajectory = GameObject.FindGameObjectWithTag("playerTrajectory");
 		mainLightSource = GameObject.FindGameObjectWithTag("main_light_source").GetComponent<Light>();
 
@@ -934,7 +934,7 @@ public class GameVars : MonoBehaviour
 		}
 		//now set the player ship to the origin city coordinate
 		//!TODO This is arbotrarily set to samothrace right now
-		playerShip.transform.position = new Vector3(1939.846f, .23f, 2313.506f);
+		playerShip.transform.position = new Vector3(1702.414f, .23f, 2168.358f);
 		//mainCamera.transform.position = new Vector3(originCity.transform.position.x, 30f, originCity.transform.position.z);
 	}
 
@@ -1098,10 +1098,10 @@ public class GameVars : MonoBehaviour
 
 	public void LoadSavedGhostRoute() {
 		//For the loadgame function--it just fills the ghost trail with the routes that exist
-		playerGhostRoute.GetComponent<LineRenderer>().positionCount = playerShipVariables.journey.routeLog.Count;
+		playerGhostRoute.positionCount = playerShipVariables.journey.routeLog.Count;
 		for (int routeIndex = 0; routeIndex < playerShipVariables.journey.routeLog.Count; routeIndex++) {
 			Debug.Log("GhostRoute Index: " + routeIndex);
-			playerGhostRoute.GetComponent<LineRenderer>().SetPosition(routeIndex, playerShipVariables.journey.routeLog[routeIndex].UnityXYZEndPoint - new Vector3(0, playerShip.transform.position.y, 0));
+			playerGhostRoute.SetPosition(routeIndex, playerShipVariables.journey.routeLog[routeIndex].UnityXYZEndPoint - new Vector3(0, playerShip.transform.position.y, 0));
 			//set player last origin point for next route add on
 			if (routeIndex == playerShipVariables.journey.routeLog.Count - 1) {
 				playerShipVariables.travel_lastOrigin = playerShipVariables.journey.routeLog[routeIndex].UnityXYZEndPoint - new Vector3(0, playerShip.transform.position.y);
