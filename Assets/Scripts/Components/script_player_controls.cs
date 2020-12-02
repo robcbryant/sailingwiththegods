@@ -666,13 +666,13 @@ public class script_player_controls : MonoBehaviour
 			}
 		}
 		if (trigger.transform.tag == "settlement") {
-			Debug.Log("Entering Area of: " + trigger.GetComponent<script_settlement_functions>().thisSettlement.name + ". And the current status of the ghost route is: " + GameVars.playerGhostRoute.activeSelf);
+			Debug.Log("Entering Area of: " + trigger.GetComponent<script_settlement_functions>().thisSettlement.name + ". And the current status of the ghost route is: " + GameVars.playerGhostRoute.gameObject.activeSelf);
 			//This zone is the larger zone of influence that triggers city specific messages to pop up in the captains log journal
 			GameVars.AddEntriesToCurrentLogPool(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
 			//We add the triggered settlement ID to the list of settlements to look for narrative bits from. In the OnTriggerExit() function, we remove them
 			GameVars.activeSettlementInfluenceSphereList.Add(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
 			//If the player got lost asea and the memory map ghost route is turned off--check to see if we're enteringg friendly waters
-			if (GameVars.playerGhostRoute.activeSelf == false) {
+			if (GameVars.playerGhostRoute.gameObject.activeSelf == false) {
 				CheckIfPlayerFoundKnownSettlementAndTurnGhostTrailBackOn(trigger.GetComponent<script_settlement_functions>().thisSettlement.settlementID);
 			}
 		}
@@ -1222,30 +1222,32 @@ public class script_player_controls : MonoBehaviour
 		//We have to take this offset into account later because the player route array will always have 1 less in the array because it doesn't have the origin position as a separate route index(it's not a route)
 		//	--rather than use Count-1 to get the last index of the line renderer, we can just use Count from the route log
 		if (isANewGame) {
-			GameVars.playerGhostRoute.GetComponent<LineRenderer>().positionCount = 1;
-			GameVars.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(0, transform.position - new Vector3(0, transform.position.y, 0)); //We subtract the y value so that the line sits on the surface of the water and not in the air
+			GameVars.playerGhostRoute.positionCount = 1;
+
+			//TODO: find out why this is always setting you to Samothrace instead of your actual starting position
+			GameVars.playerGhostRoute.SetPosition(0, transform.position - new Vector3(0, transform.position.y, 0)); //We subtract the y value so that the line sits on the surface of the water and not in the air
 																																			//TODO this is a quick and dirty fix to load games--the origin point is already established in a loaded game so if we add 1 to the index, it creates a 'blank' Vector.zero route index in the ghost trail
 		}
 		else if (GameVars.isLoadedGame) {
-			GameVars.playerGhostRoute.GetComponent<LineRenderer>().positionCount = journey.routeLog.Count;
+			GameVars.playerGhostRoute.positionCount = journey.routeLog.Count;
 			//TODO This is a quick fix--we use a 0,0,0 to designate the settlement as a stopping points rather than a normal one. This ruins the ghost trail however so we will just use position [0] instead --which just makes no visual diference in the trail
 			if (journey.routeLog[journey.routeLog.Count - 1].theRoute[1].x < 1)
-				GameVars.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count - 1, journey.routeLog[journey.routeLog.Count - 1].theRoute[0] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position			
+				GameVars.playerGhostRoute.SetPosition(journey.routeLog.Count - 1, journey.routeLog[journey.routeLog.Count - 1].theRoute[0] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position			
 			else
-				GameVars.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count - 1, journey.routeLog[journey.routeLog.Count - 1].theRoute[1] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
+				GameVars.playerGhostRoute.SetPosition(journey.routeLog.Count - 1, journey.routeLog[journey.routeLog.Count - 1].theRoute[1] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
 
 			//if it isn't a loaded game then do the original code
 		}
 		else {
-			GameVars.playerGhostRoute.GetComponent<LineRenderer>().positionCount = journey.routeLog.Count + 1;//we add one here because the route list never includes the origin position--so we add it manually for a new game
+			GameVars.playerGhostRoute.positionCount = journey.routeLog.Count + 1;//we add one here because the route list never includes the origin position--so we add it manually for a new game
 																										 //TODO This is a quick fix--we use a 0,0,0 to designate the settlement as a stopping points rather than a normal one. This ruins the ghost trail however so we will just use position [0] instead --which just makes no visual diference in the trail
 
 			if (journey.routeLog[journey.routeLog.Count - 1].theRoute[1].x < 1) {
-				GameVars.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count, journey.routeLog[journey.routeLog.Count - 1].theRoute[0] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
+				GameVars.playerGhostRoute.SetPosition(journey.routeLog.Count, journey.routeLog[journey.routeLog.Count - 1].theRoute[0] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
 
 			}
 			else {
-				GameVars.playerGhostRoute.GetComponent<LineRenderer>().SetPosition(journey.routeLog.Count, journey.routeLog[journey.routeLog.Count - 1].theRoute[1] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
+				GameVars.playerGhostRoute.SetPosition(journey.routeLog.Count, journey.routeLog[journey.routeLog.Count - 1].theRoute[1] - new Vector3(0, transform.position.y, 0));//we always use the destination coordinate of the route, because the origin point was already added the last time so [1] position		
 			}
 		}
 	}
@@ -1387,7 +1389,7 @@ public class script_player_controls : MonoBehaviour
 			if (id == ID) {
 				Debug.Log("Found match in memory lookup");
 				string settlementName = GameVars.GetSettlementFromID(id).name;
-				GameVars.playerGhostRoute.SetActive(true);
+				GameVars.playerGhostRoute.gameObject.SetActive(true);
 				GameVars.ShowANotificationMessage("After a long and difficult journey, you and your crew finally found your bearings in the great sea!" +
 										  " You and your crew recognize the waters surrounding " + settlementName + " and remember the sea routes," +
 										  " you are all familiar with!");
