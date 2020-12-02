@@ -55,17 +55,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 311967741090317527}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 048c8b2c83a7bcc4baa7b86f3b15107f, type: 3}
     m_FontSize: 14
@@ -89,7 +88,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 311967741090317527}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
@@ -151,17 +150,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2783282311566591635}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.8584906, g: 0.8584906, b: 0.8584906, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 1d50f33312c1efe4ea81cdd71a2d0d7a, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
@@ -171,6 +169,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &2580631821586625198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,7 +179,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2783282311566591635}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -194,25 +193,26 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
+    m_SelectedTrigger: Highlighted
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 2076922895948053993}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!1 &3119513630174055169
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,17 +313,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 3929657687226052168}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0.392}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
@@ -333,6 +332,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &7008280155486985397
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,17 +388,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280155486985397}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 048c8b2c83a7bcc4baa7b86f3b15107f, type: 3}
     m_FontSize: 14
@@ -424,7 +423,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280155486985397}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
@@ -484,17 +483,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280155647332746}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.5, g: 0.23904665, b: 0.19485295, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -504,6 +502,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &7008280155655826237
 GameObject:
   m_ObjectHideFlags: 0
@@ -560,17 +559,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280155655826237}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 1d50f33312c1efe4ea81cdd71a2d0d7a, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
@@ -580,6 +578,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &7008280155655826239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -589,7 +588,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280155655826237}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -603,25 +602,26 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
+    m_SelectedTrigger: Highlighted
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 7008280155655826232}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!1 &7008280155655833486
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,17 +677,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280155655833486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 048c8b2c83a7bcc4baa7b86f3b15107f, type: 3}
     m_FontSize: 14
@@ -713,7 +712,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280155655833486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
@@ -774,17 +773,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280155687583436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 22
@@ -799,72 +797,73 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "Dr. Sandra Blakely \u2013 Project Director, Emory University, Department
-    of Classics\r\nSandra Blakely is an Associate Professor of Classics at Emory University,
-    where her research integrates anthropological, archaeological and Classical approaches
-    to Greek religion and myth.  Her foci include mystery cults, the fragmentary Greek
-    historians Herodoros, Conon and Alexander Polyhistor, and the daimones associated
-    with metallurgy as well as with the Samothracian rites.  In her current book project,
-    The Anthropology of an Island Cult: Maritime Networks and the cult of the Great
-    Gods of Samothrace, she brings Social Network Analysis and Geographic Information
-    Systems to the epigraphic record of the Great Gods of Samothrace, to test the
-    hypothesis that the safety at sea the Samothracian rites promised was a social
-    reality as well as a mythic metaphor.\r\n\r\nRobert C. Bryant \u2013 Lead Programmer
-    and Simulation Designer, University of Pennsylvania\r\nRobert Bryant is the Lead
-    Programmer and Simulation Designer behind the Samothracian Networks game Sailing
-    with the Gods: Argonauts and Samothracians in an Ancient Sea. He completed his
-    Master\u2019s degree in Computer Science at Georgia State University, and has
-    worked on projects from 3D Atlanta to the ongoing archaeological field research
-    in Oglangala, Azerbaijan (Nax\xE7ivan). His work on the gamification of the Great
-    Gods of Samothrace is one among many contributions to gaming, history and digital
-    design. He\u2019s currently the Programmer for the UPenn Museum TARA project,
-    and a PhD Student in the UPenn Anthropology department.\r\n\r\nKevin Dressel \u2013
-    Programmer and Designer, Shiny Dolphin Games LLC\r\nKevin Dressel is another Programmer
-    developing Sailing with the Gods: Argonauts and Samothracians in an Ancient Sea.
-    Kevin founded Shiny Dolphin Games LLC in 2016. He is an independent programmer
-    who has previously worked at Zynga on games like CityVille, Ninja Kingdom, and
-    Puzzle Charms.\r\n\r\nDr. Joanna C. Mundy \u2013 Digital Projects Specialist,
-    Emory Center for Digital Scholarship\r\nJoanna Mundy is a Digital Projects Specialist
-    in the Emory Center for Digital Scholarship. She received her PhD from Emory University
-    in Art History, 2018. For her dissertation she explored the built domestic environment
-    in ancient urban houses, dom\u016Bs and insulae, in the city of Rome in the first
-    to fifth century CE and includes a social network analysis of households in the
-    fourth century city. Her work for Samothracian Networks includes mySQL database
-    design, so that the project database interacts with geospatial and network data.
-    She works with network analysis software, produces network visualizations, and
-    manages the website.\r\n\r\nSara E. Palmer \u2013 Digital Text Specialist, Emory
-    Center for Digital Scholarship\r\nSara Palmer received an MA in Film and Media
-    Studies from Emory University in 2012. At the Emory Center for Digital Scholarship,
-    she consults with researchers on creating online exhibits, designing databases,
-    generating network visualizations, and performing textual markup and analysis.\r\n\r\nCraig
-    Brasco \u2013 Visual Interface Collaborator, Kennesaw State University, Assistant
-    Professor of Art | Graphic Communications\r\nDr. Philip Kiernan \u2013 Outreach
-    and Consultant, Kennesaw State University, Assistant Professor of Art History\r\nLeigh
-    Cole Furrh \u2013 Research Assistant, Emory University\r\nLeigh (Cole) Furrh is
-    a post-baccalaureate student at Emory University studying Classics.  He researches,
-    prepares, and enters data from multiple Argonautica sources both for the Game
-    and the Social Network. He is a 2016 Jane C. Waldbaum Archaeological Field School
-    Scholarship recipient.\r\n\r\nAlex Jester \u2013 Research Assistant, Agnes Scott
-    College\r\nAlex Jester is pursuing a B.A. in Classical Languages and Literatures
-    at Agnes Scott College, where she also works at Information Technology Services.
-    She is especially interested in the intersection of Classics and technology, and
-    plans to pursue a career that incorporates this overlap. She researches numismatic
-    data for Samothracian Networks.\r\n\r\nJoe Fritsch \u2013 Digital Scholarship
-    Associate, Emory Center for Digital Scholarship\r\nIn his research Joe Fritsch,
-    PhD candidate in English, focuses on the intersection of global Anglophone poetry
-    and histories of technology. He supports Samothracian Networks in 3D modelling
-    for the Game. His interest in CAD and 3D design comes from first hand witness
-    of the importance of space to literacy while managing ILS databases in a New York
-    pubic library; he recently used CAD software to recreate the floor plan of the
-    Globe Theatre in order to teach students about Shakespeare\u2019s London and digital
-    methods.\r\n\r\nThe mapping functions of the network data utilize names and positions
-    provided by Pleiades where possible.  Some maps were made with Natural Earth.
-    Free vector and raster map data @ naturalearthdata.com.\r\n\r\nGame code: The
-    game code is available on Github at https://github.com/robcbryant/sailingwiththegods
-    licensed under a GNU Lesser General Public License v3.0.  If you would like to
-    contribute to the game, the game can be downloaded from Github and imported into
-    Unity 5.0.1.\r\n\r\nCreative Commons License The data presented here is made available
-    for sharing and reuse under the terms of the Creative Commons Attribution 3.0
-    License (cc-by).  This includes game visualizations and graphs.\r\n\r\n\r\nIllustrations:\r\n\r\nSome
+    of Classics\r\nSandra Blakely is an Associate Professor of Classics at Emory
+    University, where her research integrates anthropological, archaeological and
+    Classical approaches to Greek religion and myth.  Her foci include mystery cults,
+    the fragmentary Greek historians Herodoros, Conon and Alexander Polyhistor, and
+    the daimones associated with metallurgy as well as with the Samothracian rites. 
+    In her current book project, The Anthropology of an Island Cult: Maritime Networks
+    and the cult of the Great Gods of Samothrace, she brings Social Network Analysis
+    and Geographic Information Systems to the epigraphic record of the Great Gods
+    of Samothrace, to test the hypothesis that the safety at sea the Samothracian
+    rites promised was a social reality as well as a mythic metaphor.\r\n\r\nRobert
+    C. Bryant \u2013 Lead Programmer and Simulation Designer, University of Pennsylvania\r\nRobert
+    Bryant is the Lead Programmer and Simulation Designer behind the Samothracian
+    Networks game Sailing with the Gods: Argonauts and Samothracians in an Ancient
+    Sea. He completed his Master\u2019s degree in Computer Science at Georgia State
+    University, and has worked on projects from 3D Atlanta to the ongoing archaeological
+    field research in Oglangala, Azerbaijan (Nax\xE7ivan). His work on the gamification
+    of the Great Gods of Samothrace is one among many contributions to gaming, history
+    and digital design. He\u2019s currently the Programmer for the UPenn Museum TARA
+    project, and a PhD Student in the UPenn Anthropology department.\r\n\r\nKevin
+    Dressel \u2013 Programmer and Designer, Shiny Dolphin Games LLC\r\nKevin Dressel
+    is another Programmer developing Sailing with the Gods: Argonauts and Samothracians
+    in an Ancient Sea. Kevin founded Shiny Dolphin Games LLC in 2016. He is an independent
+    programmer who has previously worked at Zynga on games like CityVille, Ninja
+    Kingdom, and Puzzle Charms.\r\n\r\nDr. Joanna C. Mundy \u2013 Digital Projects
+    Specialist, Emory Center for Digital Scholarship\r\nJoanna Mundy is a Digital
+    Projects Specialist in the Emory Center for Digital Scholarship. She received
+    her PhD from Emory University in Art History, 2018. For her dissertation she
+    explored the built domestic environment in ancient urban houses, dom\u016Bs and
+    insulae, in the city of Rome in the first to fifth century CE and includes a
+    social network analysis of households in the fourth century city. Her work for
+    Samothracian Networks includes mySQL database design, so that the project database
+    interacts with geospatial and network data. She works with network analysis software,
+    produces network visualizations, and manages the website.\r\n\r\nSara E. Palmer
+    \u2013 Digital Text Specialist, Emory Center for Digital Scholarship\r\nSara
+    Palmer received an MA in Film and Media Studies from Emory University in 2012.
+    At the Emory Center for Digital Scholarship, she consults with researchers on
+    creating online exhibits, designing databases, generating network visualizations,
+    and performing textual markup and analysis.\r\n\r\nCraig Brasco \u2013 Visual
+    Interface Collaborator, Kennesaw State University, Assistant Professor of Art
+    | Graphic Communications\r\nDr. Philip Kiernan \u2013 Outreach and Consultant,
+    Kennesaw State University, Assistant Professor of Art History\r\nLeigh Cole Furrh
+    \u2013 Research Assistant, Emory University\r\nLeigh (Cole) Furrh is a post-baccalaureate
+    student at Emory University studying Classics.  He researches, prepares, and
+    enters data from multiple Argonautica sources both for the Game and the Social
+    Network. He is a 2016 Jane C. Waldbaum Archaeological Field School Scholarship
+    recipient.\r\n\r\nAlex Jester \u2013 Research Assistant, Agnes Scott College\r\nAlex
+    Jester is pursuing a B.A. in Classical Languages and Literatures at Agnes Scott
+    College, where she also works at Information Technology Services. She is especially
+    interested in the intersection of Classics and technology, and plans to pursue
+    a career that incorporates this overlap. She researches numismatic data for Samothracian
+    Networks.\r\n\r\nJoe Fritsch \u2013 Digital Scholarship Associate, Emory Center
+    for Digital Scholarship\r\nIn his research Joe Fritsch, PhD candidate in English,
+    focuses on the intersection of global Anglophone poetry and histories of technology.
+    He supports Samothracian Networks in 3D modelling for the Game. His interest
+    in CAD and 3D design comes from first hand witness of the importance of space
+    to literacy while managing ILS databases in a New York pubic library; he recently
+    used CAD software to recreate the floor plan of the Globe Theatre in order to
+    teach students about Shakespeare\u2019s London and digital methods.\r\n\r\nThe
+    mapping functions of the network data utilize names and positions provided by
+    Pleiades where possible.  Some maps were made with Natural Earth. Free vector
+    and raster map data @ naturalearthdata.com.\r\n\r\nGame code: The game code is
+    available on Github at https://github.com/robcbryant/sailingwiththegods licensed
+    under a GNU Lesser General Public License v3.0.  If you would like to contribute
+    to the game, the game can be downloaded from Github and imported into Unity 5.0.1.\r\n\r\nCreative
+    Commons License The data presented here is made available for sharing and reuse
+    under the terms of the Creative Commons Attribution 3.0 License (cc-by).  This
+    includes game visualizations and graphs.\r\n\r\n\r\nIllustrations:\r\n\r\nSome
     game illustrations are licensed by the artists. Individual licenses will be listed
     here. A Creative Commons Attribution Non-Commerical 4.0 License (cc-by-nc) is
     applicable to any illustrations for which a license is not specified.\r\n\r\nThe
@@ -873,34 +872,34 @@ MonoBehaviour:
     License. Copyright M. C. Mundy, 2017, some rights reserved.\r\n\r\nThe following
     illustrations are Copyright Emory University  Samothracian Networks, 2017, some
     rights reserved.\r\n\r\n    The game illustrations Acarnania Coin, Histiaia Coin,
-    Delos Coin, Apollonia Coin, and Aegiale Coin, created by Kelin Michael.\r\n    The
-    game illustration Jason, created by Christina Gilstrap.  Jason is in the version
-    alpha 4.4 of the game.\r\n    The game illustrations for the Port Goods Icons,
-    created by Seth Byrd, Kennesaw State University. The Port Goods Icons can be seen
-    in the port menu in version alpha 4.4 of the game.\r\n    The game illustrations
-    for the \u201CCrew\u201D, created by Kennesaw State University spring 2018 Illustration
-    students. The \u201CCrew\u201D can be seen in the first selection menu in version
-    alpha 5.0 of the game.\r\n\t\tJulee Davis illustrated: Hylas, Admetus, Eurytion,
-    Telamon, Antipatros son of Iatrokleios, Aitolian Warrior, and Seleucid Sailor.\r\n\t\tPaola
-    Paniagua illustrated: Canthus, Erginus, Herokles, Peleus, Polyphemus, Spartan
-    Warrior, and Zollos.\r\n\t\tJason Volk illustrated: Orpheus, Asterion, Iphitus,
-    Kallipos son of Eukleidos, Diodotos son of Zenon, and Macedonian Warrior.\r\n\t\tBrooke
-    Barrett illustrated: Ancaeus, Polydeuces/Castor, Butes, Palemonius, Nikomedes
-    son of Diodoros, Theokles son of Nymphodoros, and Phoenician sailor.\r\n\t\tEloisa
-    Gallegos illustrated: Aethalides, Egyptian Sailor, Eukleides son of Antigonos,
-    Idas, Idmon, and Lysias son of Lysias.\r\n\t\tErica Sause illustrated: Ancaeus,
-    Billaros son of Hermios, Etruscan Warrior, Iphiclus, and Theodoros son of Pilodoxos.\r\n\t\tRen
-    Nesper illustrated: Periclymenus, Rhodian Sailor, Theodotos son of Badromios,
-    Tiphys, and Eurydamas.\r\n\r\nHulot, M. \"La Grande Rue de Selinonte.\" in Foug\xE8res,
-    G, and J Hulot. 1910. S\xE9linonte: la ville, l'acropole et les temples ; [Colonie
-    dorienne en Sicile]. Paris: Massin. Digitized by Universitatsbibliothek Heidelberg.
-    https://digi.ub.uni-heidelberg.de/diglit/fougeres1910/0212 CC-BY-SA\r\n\r\nGreek
-    Ship - Turbosquid Royalty Free License\r\nLow poly boat sail off - Turbosquid
-    Royalty Free License\r\nKyrenia Ancient Trade Ship - Turbosquid Royalty Free License\r\n3D
-    model Small fishing boat 043 - Turbosquid Royalty Free License\r\nTree pack 1
-    - Turbosquid Royalty Free License\r\nCartoon trees - Turbosquid Royalty Free License\r\nLow
-    Poly Palms by Rusoski - CC Attribution - Sketchfab  https://sketchfab.com/Rusoski
-    \r\n"
+    Delos Coin, Apollonia Coin, and Aegiale Coin, created by Kelin Michael.\r\n   
+    The game illustration Jason, created by Christina Gilstrap.  Jason is in the
+    version alpha 4.4 of the game.\r\n    The game illustrations for the Port Goods
+    Icons, created by Seth Byrd, Kennesaw State University. The Port Goods Icons
+    can be seen in the port menu in version alpha 4.4 of the game.\r\n    The game
+    illustrations for the \u201CCrew\u201D, created by Kennesaw State University
+    spring 2018 Illustration students. The \u201CCrew\u201D can be seen in the first
+    selection menu in version alpha 5.0 of the game.\r\n\t\tJulee Davis illustrated:
+    Hylas, Admetus, Eurytion, Telamon, Antipatros son of Iatrokleios, Aitolian Warrior,
+    and Seleucid Sailor.\r\n\t\tPaola Paniagua illustrated: Canthus, Erginus, Herokles,
+    Peleus, Polyphemus, Spartan Warrior, and Zollos.\r\n\t\tJason Volk illustrated:
+    Orpheus, Asterion, Iphitus, Kallipos son of Eukleidos, Diodotos son of Zenon,
+    and Macedonian Warrior.\r\n\t\tBrooke Barrett illustrated: Ancaeus, Polydeuces/Castor,
+    Butes, Palemonius, Nikomedes son of Diodoros, Theokles son of Nymphodoros, and
+    Phoenician sailor.\r\n\t\tEloisa Gallegos illustrated: Aethalides, Egyptian Sailor,
+    Eukleides son of Antigonos, Idas, Idmon, and Lysias son of Lysias.\r\n\t\tErica
+    Sause illustrated: Ancaeus, Billaros son of Hermios, Etruscan Warrior, Iphiclus,
+    and Theodoros son of Pilodoxos.\r\n\t\tRen Nesper illustrated: Periclymenus,
+    Rhodian Sailor, Theodotos son of Badromios, Tiphys, and Eurydamas.\r\n\r\nHulot,
+    M. \"La Grande Rue de Selinonte.\" in Foug\xE8res, G, and J Hulot. 1910. S\xE9linonte:
+    la ville, l'acropole et les temples ; [Colonie dorienne en Sicile]. Paris: Massin.
+    Digitized by Universitatsbibliothek Heidelberg. https://digi.ub.uni-heidelberg.de/diglit/fougeres1910/0212
+    CC-BY-SA\r\n\r\nGreek Ship - Turbosquid Royalty Free License\r\nLow poly boat
+    sail off - Turbosquid Royalty Free License\r\nKyrenia Ancient Trade Ship - Turbosquid
+    Royalty Free License\r\n3D model Small fishing boat 043 - Turbosquid Royalty
+    Free License\r\nTree pack 1 - Turbosquid Royalty Free License\r\nCartoon trees
+    - Turbosquid Royalty Free License\r\nLow Poly Palms by Rusoski - CC Attribution
+    - Sketchfab  https://sketchfab.com/Rusoski \r\n"
 --- !u!114 &7008280155687583438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -910,7 +909,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280155687583436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
@@ -971,17 +970,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280155689427309}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 1d50f33312c1efe4ea81cdd71a2d0d7a, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
@@ -991,6 +989,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &7008280155689427311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1000,7 +999,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280155689427309}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -1014,25 +1013,26 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
+    m_SelectedTrigger: Highlighted
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 7008280155689427304}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!1 &7008280155777404907
 GameObject:
   m_ObjectHideFlags: 0
@@ -1089,17 +1089,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280155777404907}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 66762affc06ad3f4d92c37f70148e87d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
@@ -1109,6 +1108,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &7008280155777404917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1118,7 +1118,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280155777404907}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -1132,25 +1132,26 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
+    m_SelectedTrigger: Highlighted
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 7008280155777404918}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!1 &7008280155955849839
 GameObject:
   m_ObjectHideFlags: 0
@@ -1205,17 +1206,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280155955849839}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 2f9faff425fc2044e98e30d772818d36, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
@@ -1225,6 +1225,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &7008280155988262895
 GameObject:
   m_ObjectHideFlags: 0
@@ -1279,17 +1280,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280155988262895}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 048c8b2c83a7bcc4baa7b86f3b15107f, type: 3}
     m_FontSize: 14
@@ -1360,17 +1360,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280156020176875}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.9411765, g: 0.50752896, b: 0.40830448, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
@@ -1380,6 +1379,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &7008280156020176885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1389,7 +1389,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280156020176875}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -2061169968, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a4db7a114972834c8e4117be1d82ba3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -1403,17 +1403,20 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
+    m_SelectedTrigger: Highlighted
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 7008280155647332756}
@@ -1425,8 +1428,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.Scrollbar+ScrollEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!1 &7008280156020845194
 GameObject:
   m_ObjectHideFlags: 0
@@ -1482,17 +1483,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280156020845194}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 048c8b2c83a7bcc4baa7b86f3b15107f, type: 3}
     m_FontSize: 14
@@ -1516,7 +1516,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280156020845194}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
@@ -1587,9 +1587,30 @@ MonoBehaviour:
   title_credits_exit: {fileID: 7008280155777404917}
   title_credits_text: {fileID: 7008280155687583439}
   title_credits_screen: {fileID: 7008280156646255309}
-  resolutions_settings_button: {fileID: 0}
-  resolutions_settings_exit: {fileID: 0}
-  resolutions_settings_screen: {fileID: 0}
+  resolutions_settings_button: {fileID: 9106280308630234267}
+  resolutions_settings_exit: {fileID: 8432064966437982185}
+  resolutions_settings_screen: {fileID: 8432064965012767701}
+  default_full_resolution_button: {fileID: 4323211303698117341}
+  higher_full_resolution_button: {fileID: 6395138741971958946}
+  highest_full_resolution_button: {fileID: 7912954396800630687}
+  lower_full_resolution_button: {fileID: 5169184802478309363}
+  lowest_full_resolution_button: {fileID: 1099097683826634511}
+  default_windowed_resolution_button: {fileID: 6047062747406663586}
+  higher_windowed_resolution_button: {fileID: 6051189693243452235}
+  highest_windowed_resolution_button: {fileID: 8039962976778249527}
+  lower_windowed_resolution_button: {fileID: 2014655415589967374}
+  lowest_windowed_resolution_button: {fileID: 4967393487091379957}
+  fullResolutionButtons: []
+  windowedResolutionButtons: []
+  default_text: {fileID: 2316349509527888667}
+  higher_text: {fileID: 361406048121775845}
+  highest_text: {fileID: 7184944832715148223}
+  lower_text: {fileID: 4598277741217238421}
+  lowest_text: {fileID: 3941525379704319569}
+  Aetolian_Region_Zone: {fileID: 0}
+  Cretan_Region_Zone: {fileID: 0}
+  Etruscan_Pirate_Region_Zone: {fileID: 0}
+  Illyrian_Region_Zone: {fileID: 0}
 --- !u!1 &7008280156600232213
 GameObject:
   m_ObjectHideFlags: 0
@@ -1645,17 +1666,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280156600232213}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 048c8b2c83a7bcc4baa7b86f3b15107f, type: 3}
     m_FontSize: 14
@@ -1679,7 +1699,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280156600232213}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
@@ -1777,17 +1797,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280156690983827}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 048c8b2c83a7bcc4baa7b86f3b15107f, type: 3}
     m_FontSize: 14
@@ -1811,7 +1830,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280156690983827}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
@@ -1873,17 +1892,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280156768436522}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 1d50f33312c1efe4ea81cdd71a2d0d7a, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
@@ -1893,6 +1911,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &7008280156768436532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1902,7 +1921,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280156768436522}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -1916,25 +1935,26 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
+    m_SelectedTrigger: Highlighted
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 7008280156768436533}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!1 &7008280156778578057
 GameObject:
   m_ObjectHideFlags: 0
@@ -1990,17 +2010,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280156778578057}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 2ead7323885963646ad2969d3b6635e7, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
@@ -2010,6 +2029,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &7008280156790262786
 GameObject:
   m_ObjectHideFlags: 0
@@ -2067,7 +2087,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280156790262786}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1367256648, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 7008280155687583437}
@@ -2088,8 +2108,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.ScrollRect+ScrollRectEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!114 &7008280156790262796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2099,7 +2117,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280156790262786}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
@@ -2159,17 +2177,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280156974604700}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -2179,6 +2196,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &2966833834685926360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2188,7 +2206,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280156974604700}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7008280157045861641
@@ -2247,17 +2265,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280157045861641}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 1d50f33312c1efe4ea81cdd71a2d0d7a, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
@@ -2267,6 +2284,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &7008280157045861643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2276,7 +2294,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280157045861641}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -2290,25 +2308,26 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
+    m_SelectedTrigger: Highlighted
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 7008280157045861652}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!1 &7008280157177996596
 GameObject:
   m_ObjectHideFlags: 0
@@ -2365,17 +2384,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280157177996596}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 1d50f33312c1efe4ea81cdd71a2d0d7a, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
@@ -2385,6 +2403,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &7008280157177996598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2394,7 +2413,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7008280157177996596}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -2408,25 +2427,26 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
+    m_SelectedTrigger: Highlighted
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 7008280157177996599}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!1 &7008280157322540874
 GameObject:
   m_ObjectHideFlags: 0
@@ -2470,11 +2490,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7008280156569418319}
     m_Modifications:
-    - target: {fileID: 8331779268426149246, guid: 3f0101edbce696540bd2484e86c680e6,
-        type: 3}
-      propertyPath: m_Name
-      value: Resolutions Settings Button
-      objectReference: {fileID: 0}
     - target: {fileID: 8331779268426149245, guid: 3f0101edbce696540bd2484e86c680e6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2580,6 +2595,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 8331779268426149246, guid: 3f0101edbce696540bd2484e86c680e6,
+        type: 3}
+      propertyPath: m_Name
+      value: Resolutions Settings Button
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f0101edbce696540bd2484e86c680e6, type: 3}
 --- !u!224 &9106280308630234266 stripped
@@ -2588,6 +2608,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 990911388250212839}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9106280308630234267 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8331779268426149244, guid: 3f0101edbce696540bd2484e86c680e6,
+    type: 3}
+  m_PrefabInstance: {fileID: 990911388250212839}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5553307655754004769
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2712,9 +2744,207 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a212a271093c7ad4697f89058cb16563, type: 3}
+--- !u!1 &8432064965012767701 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4041410615077960436, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8432064965012767702 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4041410615077960439, guid: a212a271093c7ad4697f89058cb16563,
     type: 3}
   m_PrefabInstance: {fileID: 5553307655754004769}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &361406048121775845 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5193414535911137220, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7184944832715148223 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3361728909894709918, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4598277741217238421 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8268911134623036596, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3941525379704319569 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8908774894185666416, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4323211303698117341 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8569908248680696828, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6395138741971958946 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1572133601774863747, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7912954396800630687 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2360231427981051582, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5169184802478309363 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 769532603450361554, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1099097683826634511 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4778750654713452078, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6047062747406663586 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2232154170826638979, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6051189693243452235 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2227992177595339370, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8039962976778249527 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2486796617982958614, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2014655415589967374 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6261183871172357935, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4967393487091379957 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 720283388749486036, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8432064966437982185 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4041410614187390664, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2316349509527888667 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7868945754380032570, guid: a212a271093c7ad4697f89058cb16563,
+    type: 3}
+  m_PrefabInstance: {fileID: 5553307655754004769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
