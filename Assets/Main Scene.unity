@@ -22897,7 +22897,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4267e6d0236f1a94aaf75a7d0e2cace4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useDialog: 0
+  useDialog: 1
+  useDebugDialog: 0
+  debugDialogNode: Start_Debug
+  dialogNode: Start_Tax
   gameover_main: {fileID: 537742712}
   gameover_message: {fileID: 1335463517}
   gameover_restart: {fileID: 1001214362}
@@ -54924,6 +54927,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 80.771
       objectReference: {fileID: 0}
+    - target: {fileID: 2640307591239963291, guid: 585b20b052d2d944995ceb2669320f48,
+        type: 3}
+      propertyPath: gui
+      value: 
+      objectReference: {fileID: 946421299}
     - target: {fileID: 2651140799604295199, guid: 585b20b052d2d944995ceb2669320f48,
         type: 3}
       propertyPath: m_AnchorMin.y

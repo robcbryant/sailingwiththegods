@@ -47,6 +47,10 @@ public class script_GUI : MonoBehaviour
 	public enum Intention {Water, Trading, Tavern, All };
 
 	public bool useDialog = true;
+	public bool useDebugDialog = false;
+	public string debugDialogNode = "Start_Debug";
+	public string dialogNode = "Start_Tax";
+
 	//-----------------------------------------------------------
 	// Game Over Notification Variables
 	//-----------------------------------------------------------
@@ -380,7 +384,7 @@ public class script_GUI : MonoBehaviour
 
 		if (useDialog) {
 			port_dialog.SetActive(true);
-			port_dialog.GetComponent<DialogScreen>().StartDialog(GameVars.currentSettlement, "Start_Tax");
+			port_dialog.GetComponent<DialogScreen>().StartDialog(GameVars.currentSettlement, useDebugDialog ? debugDialogNode : dialogNode);
 		}
 		else {
 			//Show the port notification pop up
