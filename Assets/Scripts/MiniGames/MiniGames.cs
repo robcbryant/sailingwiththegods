@@ -19,6 +19,7 @@ public class MiniGames : MonoBehaviour
 	/// True if any minigame is active, whether it's an additive scene or a child game object
 	/// </summary>
 	public bool IsMiniGameActive { get; private set; }
+	public bool IsMiniGameSceneActive { get; private set; }
 
 	/// <summary>
 	/// Start a minigame that is in a separate scene which will be additively loaded on top of the current scene.
@@ -28,6 +29,8 @@ public class MiniGames : MonoBehaviour
 	/// </summary>
 	public void EnterScene(string additiveSceneName) {
 		EnterInternal(disableCamera: true);
+		IsMiniGameSceneActive = true;
+		RenderSettings.fog = false;
 
 		SceneManager.LoadScene(additiveSceneName, LoadSceneMode.Additive);
 		Scene = SceneManager.GetSceneByName(additiveSceneName);
@@ -78,6 +81,7 @@ public class MiniGames : MonoBehaviour
 
 		CutsceneMode.Exit();
 		IsMiniGameActive = false;
+		RenderSettings.fog = true;
 
 		Globals.GameVars.camera_Mapview.SetActive(true);
 		Globals.GameVars.FPVCamera.SetActive(true);
