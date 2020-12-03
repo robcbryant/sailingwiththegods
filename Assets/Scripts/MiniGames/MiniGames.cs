@@ -26,22 +26,22 @@ public class MiniGames : MonoBehaviour
 	/// Remember to add the scene to BuildSettings
 	/// Calling Exit will unload the additive scene.
 	/// </summary>
-	//public void Enter(string additiveSceneName) {
-	//	EnterInternal();
+	public void EnterScene(string additiveSceneName) {
+		EnterInternal(disableCamera: true);
 
-	//	SceneManager.LoadScene(additiveSceneName, LoadSceneMode.Additive);
-	//	Scene = SceneManager.GetSceneByName(additiveSceneName);
-	//}
+		SceneManager.LoadScene(additiveSceneName, LoadSceneMode.Additive);
+		Scene = SceneManager.GetSceneByName(additiveSceneName);
+	}
 
 	/// <summary>
-	/// Start a minigame that is a component on a game object that's a child of this MiniGames parent object.
-	/// The child object can act as the origin of the mini-game coordinate space so the mini-game can live anywhere in the world.
+	/// Start a minigame that is in a prefab. It's instantiated on Enter to ensure it starts fresh every time, as a child of this object.
+	/// The prefab can act as the origin of the mini-game coordinate space so the mini-game can live anywhere in the world.
 	/// The scene should have its own Camera since the main camera will be disabled.
-	/// Calling Exit will disable the child game object.
+	/// Calling Exit will destroy the child object.
 	/// </summary>
-	public void Enter(String miniGame){
-		EnterInternal();
-		Instantiate<GameObject>(Resources.Load<GameObject>(miniGame)).transform.SetParent(transform);
+	public void Enter(string prefabName){
+		EnterInternal(disableCamera: false);
+		Instantiate<GameObject>(Resources.Load<GameObject>(prefabName)).transform.SetParent(transform);
 	}
 
 	/// <summary>
@@ -57,12 +57,15 @@ public class MiniGames : MonoBehaviour
 		StartCoroutine(ExitInternal());
 	}
 
-	void EnterInternal() {
+	void EnterInternal(bool disableCamera) {
 		CutsceneMode.Enter();
 		IsMiniGameActive = true;
 
 		Globals.GameVars.camera_Mapview.SetActive(false);
-		//Globals.GameVars.FPVCamera.SetActive(false);
+
+		if(disableCamera) {
+			Globals.GameVars.FPVCamera.SetActive(false);
+		}
 	}
 
 	IEnumerator ExitInternal() {

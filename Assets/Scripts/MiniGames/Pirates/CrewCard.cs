@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CrewCard : MonoBehaviour
 {
@@ -12,9 +13,9 @@ public class CrewCard : MonoBehaviour
 	[SerializeField] ButtonView infoButton;
 #pragma warning restore 0649
 
-	public bool dragable = true;
-	public TMPro.TextMeshProUGUI nameText;
-	public TMPro.TextMeshProUGUI powerText;
+	public bool draggable = true;
+	public TextMeshProUGUI nameText;
+	public TextMeshProUGUI powerText;
 	public Image crewImage;
 
 	private RectTransform rect;
@@ -24,12 +25,10 @@ public class CrewCard : MonoBehaviour
 	private Vector2 dropPos;
 	private CrewMember crew;
 
-	public int power;
+	private int power;
 	private bool overStart = true;
 	private RandomSlotPopulator rsp;
-	public int cardIndex;
-
-	private Vector2 pos = new Vector2();
+	private int cardIndex;
 
 	private void Start() 
 	{
@@ -39,7 +38,7 @@ public class CrewCard : MonoBehaviour
 
 	private void Update() 
 	{
-		if (dragable && isDragging) 
+		if (draggable && isDragging) 
 		{
 			ToMousePos();
 		}
@@ -52,6 +51,11 @@ public class CrewCard : MonoBehaviour
 
 	public void Drag() 
 	{
+		//The origin crew parent has a mask on it for the scrolling crew list, so if you dragged the card it'd be invisible
+		//That's why we move it to a different parent, so it's not affected by the mask
+		//And if you drag it back to an origin slot, it goes back to that parent so it *will* properly be masked
+		//UI render order is controlled by the order, with the highest in the inspector rendering first and therefore behind everything else
+		//We want the card to display above every other card while you're dragging it, so we put it as the last child
 		transform.SetParent(rsp.crewParent);
 		transform.SetAsLastSibling();
 		isDragging = true;
@@ -66,6 +70,7 @@ public class CrewCard : MonoBehaviour
 			startPos = dropPos;
 			if (overStart) 
 			{
+				//Need to set the parent here because of the mask and the scrolling
 				transform.SetParent(rsp.crewParentInOrigin);
 			}
 		}
@@ -74,6 +79,7 @@ public class CrewCard : MonoBehaviour
 
 	private void ToMousePos() 
 	{
+		//Use .position here instead of .anchoredPosition or .localPosition so it works regardless of parents and anchors and such
 		rect.position = Input.mousePosition;
 	}
 
@@ -86,6 +92,8 @@ public class CrewCard : MonoBehaviour
 
 	public void LeaveDropSpot(Vector2 pos) 
 	{
+		//This check is if the card is hovering over two spots at once or goes immediately from one to another
+		//Without it, you just can't drop cards at all
 		if (pos.Equals(dropPos)) 
 		{
 			overSpot = false;
@@ -101,7 +109,7 @@ public class CrewCard : MonoBehaviour
 
 	private void SetPower() 
 	{
-		//Will eventually do some fun calculations in here to get the actual number
+		//Setting power for the beginning of the game
 		power = crew.clout;
 		powerText.text = power.ToString();
 	}
@@ -132,17 +140,26 @@ public class CrewCard : MonoBehaviour
 		}));
 	}
 
-	public Vector2 Position {
+	public void UpdateScroll(float scrollAmount) {
+		startPos += Vector2.up * scrollAmount;
+	}
+
+	public int Power {
 		get {
-			return pos;
+			return power;
 		}
 		set {
-			pos = value;
+			power = value;
 		}
 	}
 
-	public void UpdateScroll(float scrollAmount) {
-		startPos += Vector2.up * scrollAmount;
+	public int CardIndex {
+		get {
+			return cardIndex;
+		}
+		set {
+			cardIndex = value;
+		}
 	}
 
 #if UNITY_EDITOR

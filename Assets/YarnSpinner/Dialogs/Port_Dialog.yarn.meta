@@ -108,290 +108,300 @@ ScriptedImporter:
   - Port_Dialog-tax_short_1-94
   - Port_Dialog-enter_water-95
   - Port_Dialog-enter_water-96
-  - Port_Dialog-enter_trading-97
+  - Port_Dialog-enter_water-97
   - Port_Dialog-enter_trading-98
   - Port_Dialog-enter_trading-99
-  - Port_Dialog-enter_tavern-100
-  - Port_Dialog-enter_tavern-101
-  - Port_Dialog-enter_full-102
-  - Port_Dialog-enter_full-103
-  - Port_Dialog-enter_full-104
-  - Port_Dialog-herald_fee-105
-  - Port_Dialog-herald_fee-106
-  - Port_Dialog-herald_fee-107
-  - Port_Dialog-herald_pay-108
-  - Port_Dialog-herald_pay-109
-  - Port_Dialog-herald_no-110
-  - Port_Dialog-herald_no-111
-  - Port_Dialog-exit-112
-  - Port_Dialog-enter_cargo-113
-  - Port_Dialog-enter_cargo-114
-  - Port_Dialog-enter_cargo-115
-  - Port_Dialog-enter_cargo-116
-  - Port_Dialog-enter_cargo-117
-  - Port_Dialog-enter_cargo-118
+  - Port_Dialog-enter_trading-100
+  - Port_Dialog-enter_trading-101
+  - Port_Dialog-enter_tavern-102
+  - Port_Dialog-enter_tavern-103
+  - Port_Dialog-enter_tavern-104
+  - Port_Dialog-enter_full-105
+  - Port_Dialog-enter_full-106
+  - Port_Dialog-enter_full-107
+  - Port_Dialog-enter_full-108
+  - Port_Dialog-herald_fee-109
+  - Port_Dialog-herald_fee-110
+  - Port_Dialog-herald_fee-111
+  - Port_Dialog-herald_pay-112
+  - Port_Dialog-herald_pay-113
+  - Port_Dialog-herald_no-114
+  - Port_Dialog-herald_no-115
+  - Port_Dialog-exit-116
+  - Port_Dialog-enter_water_cargo-117
+  - Port_Dialog-enter_water_cargo-118
   - Port_Dialog-enter_cargo-119
   - Port_Dialog-enter_cargo-120
   - Port_Dialog-enter_cargo-121
-  - Port_Dialog-tax_short_2-122
-  - Port_Dialog-tax_short_2-123
-  - Port_Dialog-tax_short_2-124
-  - Port_Dialog-tax_short_2-125
-  - Port_Dialog-tax_short_2-126
-  - Port_Dialog-tax_short_2-127
-  - Port_Dialog-tax_short_2-128
+  - Port_Dialog-enter_cargo-122
+  - Port_Dialog-enter_cargo-123
+  - Port_Dialog-enter_cargo-124
+  - Port_Dialog-enter_cargo-125
+  - Port_Dialog-enter_cargo-126
+  - Port_Dialog-enter_cargo-127
+  - Port_Dialog-enter_cargo-128
   - Port_Dialog-tax_short_2-129
   - Port_Dialog-tax_short_2-130
   - Port_Dialog-tax_short_2-131
   - Port_Dialog-tax_short_2-132
   - Port_Dialog-tax_short_2-133
   - Port_Dialog-tax_short_2-134
-  - Port_Dialog-redo_intention-135
-  - Port_Dialog-redo_intention-136
-  - Port_Dialog-cant_afford-137
+  - Port_Dialog-tax_short_2-135
+  - Port_Dialog-tax_short_2-136
+  - Port_Dialog-tax_short_2-137
+  - Port_Dialog-tax_short_2-138
+  - Port_Dialog-tax_short_2-139
+  - Port_Dialog-tax_short_2-140
+  - Port_Dialog-tax_short_2-141
+  - Port_Dialog-redo_intention-142
+  - Port_Dialog-redo_intention-143
+  - Port_Dialog-cant_afford-144
   compilationStatus: 1
   isSuccesfullyCompiled: 1
-  compilationErrorMessage: "Error on line 403 at position 1:\nmismatched input '==='
-    expecting COMMAND_START\r\n===\r\n^^^\n\nTokens:\n1:0 ID \"title\"\n1:5 HEADER_DELIMITER
-    \": \"\n1:7 REST_OF_LINE \"Start\"\n2:0 HEADER_NEWLINE \"\n\"\n2:0 ID \"tags\"\n2:4
-    HEADER_DELIMITER \": \"\n3:0 HEADER_NEWLINE \"\n\"\n3:0 ID \"colorID\"\n3:7 HEADER_DELIMITER
-    \": \"\n3:9 REST_OF_LINE \"0\"\n4:0 HEADER_NEWLINE \"\n\"\n4:0 ID \"position\"\n4:8
-    HEADER_DELIMITER \": \"\n4:10 REST_OF_LINE \"661,-1148\"\n5:0 HEADER_NEWLINE \"\n\"\n5:0
-    '---' \"---\"\n6:0 COMMAND_START \"<<\"\n6:3 COMMAND_TEXT \"reset DialogScreen
-    \"\n6:22 COMMAND_TEXT_END \">>\"\n7:0 COMMAND_START \"<<\"\n7:3 COMMAND_TEXT \"setpartnername
-    DialogScreen Telones \"\n7:39 COMMAND_TEXT_END \">>\"\n8:0 COMMAND_START \"<<\"\n8:3
-    COMMAND_TEXT \"setconvotitle DialogScreen Docking_at_Port \"\n8:46 COMMAND_TEXT_END
-    \">>\"\n9:0 COMMAND_START \"<<\"\n9:3 COMMAND_TEXT \"setsprite Partner neutral
-    \"\n9:29 COMMAND_TEXT_END \">>\"\n11:0 COMMAND_START \"<<\"\n11:3 COMMAND_SET
-    \"set \"\n11:7 VAR_ID \"$asked_where\"\n11:20 OPERATOR_ASSIGNMENT \"to\"\n11:23
-    'false' \"false\"\n11:29 EXPRESSION_COMMAND_END \">>\"\n12:0 COMMAND_START \"<<\"\n12:3
-    COMMAND_SET \"set \"\n12:7 VAR_ID \"$asked_networks\"\n12:23 OPERATOR_ASSIGNMENT
+  compilationErrorMessage: "Error on line 641 at position 18:\nmismatched input 'to'
+    expecting '('\r\n<< set cargo_pay to true>> \r\n                 ^^\n\nTokens:\n1:0
+    ID \"title\"\n1:5 HEADER_DELIMITER \": \"\n1:7 REST_OF_LINE \"Start\"\n2:0 HEADER_NEWLINE
+    \"\n\"\n2:0 ID \"tags\"\n2:4 HEADER_DELIMITER \": \"\n3:0 HEADER_NEWLINE \"\n\"\n3:0
+    ID \"colorID\"\n3:7 HEADER_DELIMITER \": \"\n3:9 REST_OF_LINE \"2\"\n4:0 HEADER_NEWLINE
+    \"\n\"\n4:0 ID \"position\"\n4:8 HEADER_DELIMITER \": \"\n4:10 REST_OF_LINE \"654,-1183\"\n5:0
+    HEADER_NEWLINE \"\n\"\n5:0 '---' \"---\"\n6:0 COMMAND_START \"<<\"\n6:3 COMMAND_TEXT
+    \"reset DialogScreen \"\n6:22 COMMAND_TEXT_END \">>\"\n7:0 COMMAND_START \"<<\"\n7:3
+    COMMAND_TEXT \"setpartnername DialogScreen Telones \"\n7:39 COMMAND_TEXT_END \">>\"\n8:0
+    COMMAND_START \"<<\"\n8:3 COMMAND_TEXT \"setconvotitle DialogScreen Docking_at_Port
+    \"\n8:46 COMMAND_TEXT_END \">>\"\n9:0 COMMAND_START \"<<\"\n9:3 COMMAND_TEXT \"setsprite
+    Partner neutral \"\n9:29 COMMAND_TEXT_END \">>\"\n11:0 COMMAND_START \"<<\"\n11:3
+    COMMAND_SET \"set \"\n11:7 VAR_ID \"$asked_where\"\n11:20 OPERATOR_ASSIGNMENT
+    \"to\"\n11:23 'false' \"false\"\n11:29 EXPRESSION_COMMAND_END \">>\"\n12:0 COMMAND_START
+    \"<<\"\n12:3 COMMAND_SET \"set \"\n12:7 VAR_ID \"$asked_networks\"\n12:23 OPERATOR_ASSIGNMENT
     \"to\"\n12:26 'false' \"false\"\n12:32 EXPRESSION_COMMAND_END \">>\"\n13:0 COMMAND_START
     \"<<\"\n13:3 COMMAND_SET \"set \"\n13:7 VAR_ID \"$asked_who\"\n13:18 OPERATOR_ASSIGNMENT
     \"to\"\n13:21 'false' \"false\"\n13:27 EXPRESSION_COMMAND_END \">>\"\n14:0 COMMAND_START
     \"<<\"\n14:3 COMMAND_SET \"set \"\n14:7 VAR_ID \"$insulted\"\n14:17 OPERATOR_ASSIGNMENT
     \"to\"\n14:20 'false' \"false\"\n14:26 EXPRESSION_COMMAND_END \">>\"\n15:0 COMMAND_START
     \"<<\"\n15:3 COMMAND_SET \"set \"\n15:7 VAR_ID \"$asked_types\"\n15:20 OPERATOR_ASSIGNMENT
-    \"to\"\n15:23 'false' \"false\"\n15:29 EXPRESSION_COMMAND_END \">>\"\n17:0 COMMAND_START
-    \"<<\"\n17:3 COMMAND_TEXT \"citynetworks DialogScreen \"\n17:29 COMMAND_TEXT_END
-    \">>\"\n18:0 COMMAND_START \"<<\"\n18:3 COMMAND_TEXT \"networkconnections DialogScreen
-    \"\n18:35 COMMAND_TEXT_END \">>\"\n19:0 COMMAND_START \"<<\"\n19:3 COMMAND_TEXT
-    \"checkcitytaxes DialogScreen \"\n19:31 COMMAND_TEXT_END \">>\"\n21:0 COMMAND_START
-    \"<<\"\n21:3 COMMAND_TEXT \"setspeaker DialogScreen other \"\n21:33 COMMAND_TEXT_END
-    \">>\"\n22:0 TEXT \"I am the first and the last face you'll see here: no ordinary
+    \"to\"\n15:23 'false' \"false\"\n15:29 EXPRESSION_COMMAND_END \">>\"\n16:0 COMMAND_START
+    \"<<\"\n16:3 COMMAND_SET \"set \"\n16:7 VAR_ID \"$cargo_pay\"\n16:18 OPERATOR_ASSIGNMENT
+    \"to\"\n16:21 'false' \"false\"\n16:27 EXPRESSION_COMMAND_END \">>\"\n18:0 COMMAND_START
+    \"<<\"\n18:3 COMMAND_TEXT \"citynetworks DialogScreen \"\n18:29 COMMAND_TEXT_END
+    \">>\"\n19:0 COMMAND_START \"<<\"\n19:3 COMMAND_TEXT \"networkconnections DialogScreen
+    \"\n19:35 COMMAND_TEXT_END \">>\"\n20:0 COMMAND_START \"<<\"\n20:3 COMMAND_TEXT
+    \"checkcitytaxes DialogScreen \"\n20:31 COMMAND_TEXT_END \">>\"\n22:0 COMMAND_START
+    \"<<\"\n22:3 COMMAND_TEXT \"setspeaker DialogScreen other \"\n22:33 COMMAND_TEXT_END
+    \">>\"\n23:0 TEXT \"I am the first and the last face you'll see here: no ordinary
     citizen I! You may call me Telones, 'tax man' - I have paid the state for the
-    right to collect its taxes from you. Get set to dig deep into your pockets!\"\n23:0
-    TEXT_NEWLINE \"\n\"\n23:0 COMMAND_START \"<<\"\n23:3 COMMAND_TEXT \"randomtext
-    DialogScreen greeting any \"\n23:40 COMMAND_TEXT_END \">>\"\n24:0 COMMAND_START
-    \"<<\"\n24:3 COMMAND_TEXT \"setsprite Partner $emotion \"\n24:30 COMMAND_TEXT_END
-    \">>\"\n25:0 COMMAND_START \"<<\"\n25:3 COMMAND_TEXT \"setend DialogScreen \"\n25:23
-    COMMAND_TEXT_END \">>\"\n26:0 TEXT_EXPRESSION_START \"/{\"\n26:2 VAR_ID \"$random_text\"\n26:14
-    '}' \"}\"\n29:0 TEXT_NEWLINE \"\n\n\n\"\n29:0 '[[' \"[[\"\n29:2 OPTION_TEXT \"
-    What kind of place have I come to? \"\n29:38 '|' \"|\"\n29:39 OPTION_ID \"where\"\n29:44
-    ']]' \"]]\"\n30:0 '[[' \"[[\"\n30:2 OPTION_TEXT \" What are the networks in this
-    city? \"\n30:39 '|' \"|\"\n30:40 OPTION_ID \"networks\"\n30:48 ']]' \"]]\"\n31:0
-    '[[' \"[[\"\n31:2 OPTION_TEXT \" Can I enter the city? \"\n31:25 '|' \"|\"\n31:26
-    OPTION_ID \"tax_start\"\n31:35 ']]' \"]]\"\n32:0 '[[' \"[[\"\n32:2 OPTION_TEXT
-    \" TAXES SHORTCUT\"\n32:17 '|' \"|\"\n32:18 OPTION_ID \"tax_explain\"\n32:29 ']]'
-    \"]]\"\n33:0 '[[' \"[[\"\n33:2 OPTION_TEXT \" ENTER CITY SHORTCUT \"\n33:23 '|'
-    \"|\"\n33:24 OPTION_ID \"enter_water\"\n33:35 ']]' \"]]\"\n34:0 '[[' \"[[\"\n34:2
-    OPTION_TEXT \" LEAVE WITHOUT PAYING SHORTCUT \"\n34:33 '|' \"|\"\n34:34 OPTION_ID
-    \"exit\"\n34:38 ']]' \"]]\"\n35:0 '===' \"===\"\n36:0 ID \"title\"\n36:5 HEADER_DELIMITER
-    \": \"\n36:7 REST_OF_LINE \"where\"\n37:0 HEADER_NEWLINE \"\n\"\n37:0 ID \"tags\"\n37:4
-    HEADER_DELIMITER \": \"\n38:0 HEADER_NEWLINE \"\n\"\n38:0 ID \"colorID\"\n38:7
-    HEADER_DELIMITER \": \"\n38:9 REST_OF_LINE \"0\"\n39:0 HEADER_NEWLINE \"\n\"\n39:0
-    ID \"position\"\n39:8 HEADER_DELIMITER \": \"\n39:10 REST_OF_LINE \"314,-985\"\n40:0
-    HEADER_NEWLINE \"\n\"\n40:0 '---' \"---\"\n41:0 COMMAND_START \"<<\"\n41:3 COMMAND_SET
-    \"set \"\n41:7 VAR_ID \"$asked_where\"\n41:20 OPERATOR_ASSIGNMENT \"to\"\n41:23
-    'true' \"true\"\n41:28 EXPRESSION_COMMAND_END \">>\"\n43:0 COMMAND_START \"<<\"\n43:3
-    COMMAND_TEXT \"setspeaker DialogScreen Jason \"\n43:33 COMMAND_TEXT_END \">>\"\n44:0
-    COMMAND_START \"<<\"\n44:3 COMMAND_TEXT \"randomtext DialogScreen jasonwhere neutral
-    \"\n44:46 COMMAND_TEXT_END \">>\"\n45:0 TEXT_EXPRESSION_START \"/{\"\n45:2 VAR_ID
-    \"$random_text\"\n45:14 '}' \"}\"\n47:0 TEXT_NEWLINE \"\n\n\"\n47:0 COMMAND_START
-    \"<<\"\n47:3 COMMAND_TEXT \"setspeaker DialogScreen other \"\n47:33 COMMAND_TEXT_END
-    \">>\"\n48:0 COMMAND_START \"<<\"\n48:3 COMMAND_TEXT \"setsprite Partner bragging
-    \"\n48:30 COMMAND_TEXT_END \">>\"\n49:0 COMMAND_START \"<<\"\n49:3 COMMAND_TEXT
-    \"cityinfo DialogScreen \"\n49:25 COMMAND_TEXT_END \">>\"\n50:0 COMMAND_START
-    \"<<\"\n50:3 COMMAND_TEXT \"setend DialogScreen \"\n50:23 COMMAND_TEXT_END \">>\"\n51:0
-    TEXT \"No, it's \"\n51:9 TEXT_EXPRESSION_START \"{\"\n51:10 VAR_ID \"$city_name\"\n51:20
-    '}' \"}\"\n51:21 TEXT \". \"\n51:23 TEXT_EXPRESSION_START \"{\"\n51:24 VAR_ID
-    \"$city_description\"\n51:41 '}' \"}\"\n53:0 TEXT_NEWLINE \"\n\n\"\n53:0 COMMAND_START
-    \"<<\"\n53:3 COMMAND_IF \"if \"\n53:6 VAR_ID \"$asked_networks\"\n53:22 OPERATOR_LOGICAL_EQUALS
-    \"is\"\n53:25 'false' \"false\"\n53:31 EXPRESSION_COMMAND_END \">>\"\n54:4 INDENT
-    \"    \"\n54:4 '[[' \"[[\"\n54:6 OPTION_TEXT \"What are this city's networks?
-    \"\n54:37 '|' \"|\"\n54:38 OPTION_ID \"networks\"\n54:46 ']]' \"]]\"\n54:0 DEDENT
-    \"\n\"\n55:0 COMMAND_START \"<<\"\n55:3 'endif' \"endif\"\n55:9 COMMAND_END \">>\"\n56:0
-    '[[' \"[[\"\n56:2 OPTION_TEXT \" Can I come into your city? \"\n56:30 '|' \"|\"\n56:31
-    OPTION_ID \"tax_start\"\n56:40 ']]' \"]]\"\n57:0 '===' \"===\"\n58:0 ID \"title\"\n58:5
-    HEADER_DELIMITER \": \"\n58:7 REST_OF_LINE \"networks\"\n59:0 HEADER_NEWLINE \"\n\"\n59:0
-    ID \"tags\"\n59:4 HEADER_DELIMITER \": \"\n60:0 HEADER_NEWLINE \"\n\"\n60:0 ID
-    \"colorID\"\n60:7 HEADER_DELIMITER \": \"\n60:9 REST_OF_LINE \"0\"\n61:0 HEADER_NEWLINE
-    \"\n\"\n61:0 ID \"position\"\n61:8 HEADER_DELIMITER \": \"\n61:10 REST_OF_LINE
-    \"979,-990\"\n62:0 HEADER_NEWLINE \"\n\"\n62:0 '---' \"---\"\n63:0 COMMAND_START
-    \"<<\"\n63:3 COMMAND_SET \"set \"\n63:7 VAR_ID \"$asked_networks\"\n63:23 OPERATOR_ASSIGNMENT
-    \"to\"\n63:26 'true' \"true\"\n63:31 EXPRESSION_COMMAND_END \">>\"\n65:0 COMMAND_START
-    \"<<\"\n65:3 COMMAND_TEXT \"setspeaker DialogScreen Jason \"\n65:33 COMMAND_TEXT_END
-    \">>\"\n66:0 COMMAND_START \"<<\"\n66:3 COMMAND_TEXT \"randomtext DialogScreen
-    jasonnetworkquestion neutral \"\n66:56 COMMAND_TEXT_END \">>\"\n67:0 TEXT_EXPRESSION_START
-    \"/{\"\n67:2 VAR_ID \"$random_text\"\n67:14 '}' \"}\"\n69:0 TEXT_NEWLINE \"\n\n\"\n69:0
-    COMMAND_START \"<<\"\n69:3 COMMAND_TEXT \"setspeaker DialogScreen other \"\n69:33
-    COMMAND_TEXT_END \">>\"\n71:0 COMMAND_START \"<<\"\n71:3 COMMAND_IF \"if \"\n71:6
-    VAR_ID \"$city_networks\"\n71:21 OPERATOR_LOGICAL_GREATER \">\"\n71:23 NUMBER
-    \"1\"\n71:25 EXPRESSION_COMMAND_END \">>\"\n72:4 INDENT \"    \"\n72:4 COMMAND_START
-    \"<<\"\n72:7 COMMAND_TEXT \"randomtext DialogScreen networkhigh neutral \"\n72:51
-    COMMAND_TEXT_END \">>\"\n73:1 INDENT \"\t\"\n73:1 COMMAND_START \"<<\"\n73:4 COMMAND_TEXT
-    \"setsprite Partner bragging \"\n73:31 COMMAND_TEXT_END \">>\"\n73:0 DEDENT \"\n\"\n73:0
-    DEDENT \"\n\"\n74:0 COMMAND_START \"<<\"\n74:3 COMMAND_ELSEIF \"elseif \"\n74:10
-    VAR_ID \"$city_networks\"\n74:25 OPERATOR_LOGICAL_EQUALS \"==\"\n74:28 NUMBER
-    \"1\"\n74:30 EXPRESSION_COMMAND_END \">>\"\n75:4 INDENT \"    \"\n75:4 COMMAND_START
-    \"<<\"\n75:7 COMMAND_TEXT \"randomtext DialogScreen networkmid neutral \"\n75:50
-    COMMAND_TEXT_END \">>\"\n76:1 INDENT \"\t\"\n76:1 COMMAND_START \"<<\"\n76:4 COMMAND_TEXT
-    \"setsprite Partner happy \"\n76:28 COMMAND_TEXT_END \">>\"\n76:0 DEDENT \"\n\"\n76:0
-    DEDENT \"\n\"\n77:0 COMMAND_START \"<<\"\n77:3 COMMAND_ELSE \"else \"\n77:8 COMMAND_END
-    \">>\"\n78:4 INDENT \"    \"\n78:4 COMMAND_START \"<<\"\n78:7 COMMAND_TEXT \"randomtext
-    DialogScreen networklow neutral \"\n78:50 COMMAND_TEXT_END \">>\"\n79:1 INDENT
-    \"\t\"\n79:1 COMMAND_START \"<<\"\n79:4 COMMAND_TEXT \"setsprite Partner unhappy
-    \"\n79:30 COMMAND_TEXT_END \">>\"\n79:0 DEDENT \"\n\"\n79:0 DEDENT \"\n\"\n80:0
-    COMMAND_START \"<<\"\n80:3 'endif' \"endif\"\n80:9 COMMAND_END \">>\"\n82:0 TEXT_EXPRESSION_START
-    \"/{\"\n82:2 VAR_ID \"$random_text\"\n82:14 '}' \"}\"\n84:0 TEXT_NEWLINE \"\n\n\"\n84:0
-    COMMAND_START \"<<\"\n84:3 COMMAND_TEXT \"setspeaker DialogScreen Jason \"\n84:33
-    COMMAND_TEXT_END \">>\"\n86:0 COMMAND_START \"<<\"\n86:3 COMMAND_IF \"if \"\n86:6
-    VAR_ID \"$connections_number\"\n86:26 OPERATOR_LOGICAL_GREATER \">\"\n86:28 NUMBER
-    \"1\"\n86:30 EXPRESSION_COMMAND_END \">>\"\n87:4 INDENT \"    \"\n87:4 COMMAND_START
-    \"<<\"\n87:7 COMMAND_TEXT \"randomtext DialogScreen jasonnetworkhigh neutral \"\n87:56
-    COMMAND_TEXT_END \">>\"\n87:0 DEDENT \"\n\"\n88:0 COMMAND_START \"<<\"\n88:3 COMMAND_ELSEIF
-    \"elseif \"\n88:10 VAR_ID \"$connections_number\"\n88:30 OPERATOR_LOGICAL_EQUALS
-    \"==\"\n88:33 NUMBER \"1\"\n88:35 EXPRESSION_COMMAND_END \">>\"\n89:4 INDENT \"
-    \   \"\n89:4 COMMAND_START \"<<\"\n89:7 COMMAND_TEXT \"randomtext DialogScreen
-    jasonnetworkmid neutral \"\n89:55 COMMAND_TEXT_END \">>\"\n89:0 DEDENT \"\n\"\n90:0
-    COMMAND_START \"<<\"\n90:3 COMMAND_ELSE \"else \"\n90:8 COMMAND_END \">>\"\n91:4
-    INDENT \"    \"\n91:4 COMMAND_START \"<<\"\n91:7 COMMAND_TEXT \"randomtext DialogScreen
-    jasonnetworklow neutral \"\n91:55 COMMAND_TEXT_END \">>\"\n91:0 DEDENT \"\n\"\n92:0
-    COMMAND_START \"<<\"\n92:3 'endif' \"endif\"\n92:9 COMMAND_END \">>\"\n94:0 COMMAND_START
-    \"<<\"\n94:3 COMMAND_IF \"if \"\n94:6 VAR_ID \"$connections_number\"\n94:26 OPERATOR_LOGICAL_GREATER_THAN_EQUALS
-    \">=\"\n94:29 NUMBER \"1\"\n94:31 EXPRESSION_COMMAND_END \">>\"\n95:1 INDENT \"\t\"\n95:1
-    COMMAND_START \"<<\"\n95:4 COMMAND_TEXT \"setend DialogScreen \"\n95:24 COMMAND_TEXT_END
-    \">>\"\n95:0 DEDENT \"\n\"\n96:0 COMMAND_START \"<<\"\n96:3 'endif' \"endif\"\n96:9
-    COMMAND_END \">>\"\n97:4 INDENT \"    \"\n97:4 TEXT_EXPRESSION_START \"/{\"\n97:6
-    VAR_ID \"$random_text\"\n97:18 '}' \"}\"\n99:0 TEXT_NEWLINE \"\n\n\"\n97:0 DEDENT
-    \"\n\"\n99:0 COMMAND_START \"<<\"\n99:3 COMMAND_IF \"if \"\n99:6 VAR_ID \"$connections_number\"\n99:26
-    OPERATOR_LOGICAL_LESS \"<\"\n99:28 NUMBER \"1\"\n99:29 EXPRESSION_COMMAND_END
-    \">>\"\n100:4 INDENT \"    \"\n100:4 COMMAND_START \"<<\"\n100:7 COMMAND_TEXT
-    \"setspeaker DialogScreen other \"\n100:37 COMMAND_TEXT_END \">>\"\n101:4 COMMAND_START
-    \"<<\"\n101:7 COMMAND_TEXT \"setsprite Partner bragging \"\n101:34 COMMAND_TEXT_END
-    \">>\"\n102:4 COMMAND_START \"<<\"\n102:7 COMMAND_TEXT \"setend DialogScreen \"\n102:27
-    COMMAND_TEXT_END \">>\"\n103:4 TEXT \"I do not know you or your people, stranger.
-    You will pay full taxes at this port!\"\n104:0 TEXT_NEWLINE \"\n\"\n103:0 DEDENT
-    \"\n\"\n104:0 COMMAND_START \"<<\"\n104:3 'endif' \"endif\"\n104:9 COMMAND_END
-    \">>\"\n106:0 COMMAND_START \"<<\"\n106:4 COMMAND_IF \"if \"\n106:7 VAR_ID \"$connections_number\"\n106:27
-    OPERATOR_LOGICAL_GREATER_THAN_EQUALS \">=\"\n106:30 NUMBER \"1\"\n106:32 EXPRESSION_COMMAND_END
-    \">>\"\n107:4 INDENT \"    \"\n107:4 '[[' \"[[\"\n107:6 OPTION_TEXT \" We share
-    a connection. Do I not therefore get a discount?\"\n107:64 '|' \"|\"\n107:65 OPTION_ID
-    \"tax_network\"\n107:76 ']]' \"]]\"\n107:0 DEDENT \"\n\"\n108:0 COMMAND_START
-    \"<<\"\n108:3 'endif' \"endif\"\n108:9 COMMAND_END \">>\"\n110:0 COMMAND_START
-    \"<<\"\n110:3 COMMAND_IF \"if \"\n110:6 VAR_ID \"$asked_where\"\n110:19 OPERATOR_LOGICAL_EQUALS
-    \"is\"\n110:22 'false' \"false\"\n110:28 EXPRESSION_COMMAND_END \">>\"\n111:4
-    INDENT \"    \"\n111:4 '[[' \"[[\"\n111:6 OPTION_TEXT \" Where is this? \"\n111:22
-    '|' \"|\"\n111:23 OPTION_ID \"where\"\n111:28 ']]' \"]]\"\n111:0 DEDENT \"\n\"\n112:0
-    COMMAND_START \"<<\"\n112:3 'endif' \"endif\"\n112:9 COMMAND_END \">>\"\n113:0
-    '[[' \"[[\"\n113:2 OPTION_TEXT \"Can I come into the city? \"\n113:28 '|' \"|\"\n113:29
-    OPTION_ID \"tax_start\"\n113:38 ']]' \"]]\"\n114:0 '===' \"===\"\n115:0 ID \"title\"\n115:5
-    HEADER_DELIMITER \": \"\n115:7 REST_OF_LINE \"tax_network\"\n116:0 HEADER_NEWLINE
-    \"\n\"\n116:0 ID \"tags\"\n116:4 HEADER_DELIMITER \": \"\n117:0 HEADER_NEWLINE
-    \"\n\"\n117:0 ID \"colorID\"\n117:7 HEADER_DELIMITER \": \"\n117:9 REST_OF_LINE
-    \"0\"\n118:0 HEADER_NEWLINE \"\n\"\n118:0 ID \"position\"\n118:8 HEADER_DELIMITER
-    \": \"\n118:10 REST_OF_LINE \"983,-743\"\n119:0 HEADER_NEWLINE \"\n\"\n119:0 '---'
-    \"---\"\n120:0 COMMAND_START \"<<\"\n120:3 COMMAND_TEXT \"setspeaker DialogScreen
-    Jason \"\n120:33 COMMAND_TEXT_END \">>\"\n121:0 TEXT \"We share connections. Does
-    this not mean we get discounted taxes? \"\n123:0 TEXT_NEWLINE \"\n\n\"\n123:0
-    COMMAND_START \"<<\"\n123:3 COMMAND_TEXT \"setspeaker DialogScreen other \"\n123:33
-    COMMAND_TEXT_END \">>\"\n124:0 COMMAND_START \"<<\"\n124:3 COMMAND_TEXT \"setsprite
-    DialogScreen distrustful \"\n124:38 COMMAND_TEXT_END \">>\"\n125:0 TEXT \"Harumph!
+    right to collect its taxes from you. Get set to dig deep into your pockets!\"\n24:0
+    TEXT_NEWLINE \"\n\"\n24:0 COMMAND_START \"<<\"\n24:3 COMMAND_TEXT \"randomtext
+    DialogScreen greeting any \"\n24:40 COMMAND_TEXT_END \">>\"\n25:0 COMMAND_START
+    \"<<\"\n25:3 COMMAND_TEXT \"setsprite Partner $emotion \"\n25:30 COMMAND_TEXT_END
+    \">>\"\n26:0 COMMAND_START \"<<\"\n26:3 COMMAND_TEXT \"setend DialogScreen \"\n26:23
+    COMMAND_TEXT_END \">>\"\n27:0 TEXT_EXPRESSION_START \"/{\"\n27:2 VAR_ID \"$random_text\"\n27:14
+    '}' \"}\"\n30:0 TEXT_NEWLINE \"\n\n\n\"\n30:0 '[[' \"[[\"\n30:2 OPTION_TEXT \"
+    What kind of place have I come to? \"\n30:38 '|' \"|\"\n30:39 OPTION_ID \"where\"\n30:44
+    ']]' \"]]\"\n31:0 '[[' \"[[\"\n31:2 OPTION_TEXT \" What are the networks in this
+    city? \"\n31:39 '|' \"|\"\n31:40 OPTION_ID \"networks\"\n31:48 ']]' \"]]\"\n32:0
+    '[[' \"[[\"\n32:2 OPTION_TEXT \" Can I enter the city? \"\n32:25 '|' \"|\"\n32:26
+    OPTION_ID \"tax_start\"\n32:35 ']]' \"]]\"\n33:0 '[[' \"[[\"\n33:2 OPTION_TEXT
+    \" TAXES SHORTCUT BUT THE TEXT HERE IS SUPER SUPER LONG FOR TESTING PURPOSES\"\n33:76
+    '|' \"|\"\n33:77 OPTION_ID \"tax_explain\"\n33:88 ']]' \"]]\"\n34:0 '[[' \"[[\"\n34:2
+    OPTION_TEXT \" ENTER CITY SHORTCUT \"\n34:23 '|' \"|\"\n34:24 OPTION_ID \"enter_water\"\n34:35
+    ']]' \"]]\"\n35:0 '[[' \"[[\"\n35:2 OPTION_TEXT \" LEAVE WITHOUT PAYING SHORTCUT
+    \"\n35:33 '|' \"|\"\n35:34 OPTION_ID \"exit\"\n35:38 ']]' \"]]\"\n36:0 '===' \"===\"\n37:0
+    ID \"title\"\n37:5 HEADER_DELIMITER \": \"\n37:7 REST_OF_LINE \"where\"\n38:0
+    HEADER_NEWLINE \"\n\"\n38:0 ID \"tags\"\n38:4 HEADER_DELIMITER \": \"\n39:0 HEADER_NEWLINE
+    \"\n\"\n39:0 ID \"colorID\"\n39:7 HEADER_DELIMITER \": \"\n39:9 REST_OF_LINE \"2\"\n40:0
+    HEADER_NEWLINE \"\n\"\n40:0 ID \"position\"\n40:8 HEADER_DELIMITER \": \"\n40:10
+    REST_OF_LINE \"307,-1020\"\n41:0 HEADER_NEWLINE \"\n\"\n41:0 '---' \"---\"\n42:0
+    COMMAND_START \"<<\"\n42:3 COMMAND_SET \"set \"\n42:7 VAR_ID \"$asked_where\"\n42:20
+    OPERATOR_ASSIGNMENT \"to\"\n42:23 'true' \"true\"\n42:28 EXPRESSION_COMMAND_END
+    \">>\"\n44:0 COMMAND_START \"<<\"\n44:3 COMMAND_TEXT \"setspeaker DialogScreen
+    Jason \"\n44:33 COMMAND_TEXT_END \">>\"\n45:0 COMMAND_START \"<<\"\n45:3 COMMAND_TEXT
+    \"randomtext DialogScreen jasonwhere neutral \"\n45:46 COMMAND_TEXT_END \">>\"\n46:0
+    TEXT_EXPRESSION_START \"/{\"\n46:2 VAR_ID \"$random_text\"\n46:14 '}' \"}\"\n48:0
+    TEXT_NEWLINE \"\n\n\"\n48:0 COMMAND_START \"<<\"\n48:3 COMMAND_TEXT \"setspeaker
+    DialogScreen other \"\n48:33 COMMAND_TEXT_END \">>\"\n49:0 COMMAND_START \"<<\"\n49:3
+    COMMAND_TEXT \"setsprite Partner bragging \"\n49:30 COMMAND_TEXT_END \">>\"\n50:0
+    COMMAND_START \"<<\"\n50:3 COMMAND_TEXT \"cityinfo DialogScreen \"\n50:25 COMMAND_TEXT_END
+    \">>\"\n51:0 COMMAND_START \"<<\"\n51:3 COMMAND_TEXT \"setend DialogScreen \"\n51:23
+    COMMAND_TEXT_END \">>\"\n52:0 TEXT \"No, it's \"\n52:9 TEXT_EXPRESSION_START \"{\"\n52:10
+    VAR_ID \"$city_name\"\n52:20 '}' \"}\"\n52:21 TEXT \". \"\n52:23 TEXT_EXPRESSION_START
+    \"{\"\n52:24 VAR_ID \"$city_description\"\n52:41 '}' \"}\"\n54:0 TEXT_NEWLINE
+    \"\n\n\"\n54:0 COMMAND_START \"<<\"\n54:3 COMMAND_IF \"if \"\n54:6 VAR_ID \"$asked_networks\"\n54:22
+    OPERATOR_LOGICAL_EQUALS \"is\"\n54:25 'false' \"false\"\n54:31 EXPRESSION_COMMAND_END
+    \">>\"\n55:4 INDENT \"    \"\n55:4 '[[' \"[[\"\n55:6 OPTION_TEXT \"What are this
+    city's networks? \"\n55:37 '|' \"|\"\n55:38 OPTION_ID \"networks\"\n55:46 ']]'
+    \"]]\"\n55:0 DEDENT \"\n\"\n56:0 COMMAND_START \"<<\"\n56:3 'endif' \"endif\"\n56:9
+    COMMAND_END \">>\"\n57:0 '[[' \"[[\"\n57:2 OPTION_TEXT \" Can I come into your
+    city? \"\n57:30 '|' \"|\"\n57:31 OPTION_ID \"tax_start\"\n57:40 ']]' \"]]\"\n58:0
+    '===' \"===\"\n59:0 ID \"title\"\n59:5 HEADER_DELIMITER \": \"\n59:7 REST_OF_LINE
+    \"networks\"\n60:0 HEADER_NEWLINE \"\n\"\n60:0 ID \"tags\"\n60:4 HEADER_DELIMITER
+    \": \"\n61:0 HEADER_NEWLINE \"\n\"\n61:0 ID \"colorID\"\n61:7 HEADER_DELIMITER
+    \": \"\n61:9 REST_OF_LINE \"2\"\n62:0 HEADER_NEWLINE \"\n\"\n62:0 ID \"position\"\n62:8
+    HEADER_DELIMITER \": \"\n62:10 REST_OF_LINE \"972,-1025\"\n63:0 HEADER_NEWLINE
+    \"\n\"\n63:0 '---' \"---\"\n64:0 COMMAND_START \"<<\"\n64:3 COMMAND_SET \"set
+    \"\n64:7 VAR_ID \"$asked_networks\"\n64:23 OPERATOR_ASSIGNMENT \"to\"\n64:26 'true'
+    \"true\"\n64:31 EXPRESSION_COMMAND_END \">>\"\n66:0 COMMAND_START \"<<\"\n66:3
+    COMMAND_TEXT \"setspeaker DialogScreen Jason \"\n66:33 COMMAND_TEXT_END \">>\"\n67:0
+    COMMAND_START \"<<\"\n67:3 COMMAND_TEXT \"randomtext DialogScreen jasonnetworkquestion
+    neutral \"\n67:56 COMMAND_TEXT_END \">>\"\n68:0 TEXT_EXPRESSION_START \"/{\"\n68:2
+    VAR_ID \"$random_text\"\n68:14 '}' \"}\"\n70:0 TEXT_NEWLINE \"\n\n\"\n70:0 COMMAND_START
+    \"<<\"\n70:3 COMMAND_TEXT \"setspeaker DialogScreen other \"\n70:33 COMMAND_TEXT_END
+    \">>\"\n72:0 COMMAND_START \"<<\"\n72:3 COMMAND_IF \"if \"\n72:6 VAR_ID \"$city_networks\"\n72:21
+    OPERATOR_LOGICAL_GREATER \">\"\n72:23 NUMBER \"1\"\n72:25 EXPRESSION_COMMAND_END
+    \">>\"\n73:4 INDENT \"    \"\n73:4 COMMAND_START \"<<\"\n73:7 COMMAND_TEXT \"randomtext
+    DialogScreen networkhigh neutral \"\n73:51 COMMAND_TEXT_END \">>\"\n74:1 INDENT
+    \"\t\"\n74:1 COMMAND_START \"<<\"\n74:4 COMMAND_TEXT \"setsprite Partner bragging
+    \"\n74:31 COMMAND_TEXT_END \">>\"\n74:0 DEDENT \"\n\"\n74:0 DEDENT \"\n\"\n75:0
+    COMMAND_START \"<<\"\n75:3 COMMAND_ELSEIF \"elseif \"\n75:10 VAR_ID \"$city_networks\"\n75:25
+    OPERATOR_LOGICAL_EQUALS \"==\"\n75:28 NUMBER \"1\"\n75:30 EXPRESSION_COMMAND_END
+    \">>\"\n76:4 INDENT \"    \"\n76:4 COMMAND_START \"<<\"\n76:7 COMMAND_TEXT \"randomtext
+    DialogScreen networkmid neutral \"\n76:50 COMMAND_TEXT_END \">>\"\n77:1 INDENT
+    \"\t\"\n77:1 COMMAND_START \"<<\"\n77:4 COMMAND_TEXT \"setsprite Partner happy
+    \"\n77:28 COMMAND_TEXT_END \">>\"\n77:0 DEDENT \"\n\"\n77:0 DEDENT \"\n\"\n78:0
+    COMMAND_START \"<<\"\n78:3 COMMAND_ELSE \"else \"\n78:8 COMMAND_END \">>\"\n79:4
+    INDENT \"    \"\n79:4 COMMAND_START \"<<\"\n79:7 COMMAND_TEXT \"randomtext DialogScreen
+    networklow neutral \"\n79:50 COMMAND_TEXT_END \">>\"\n80:1 INDENT \"\t\"\n80:1
+    COMMAND_START \"<<\"\n80:4 COMMAND_TEXT \"setsprite Partner unhappy \"\n80:30
+    COMMAND_TEXT_END \">>\"\n80:0 DEDENT \"\n\"\n80:0 DEDENT \"\n\"\n81:0 COMMAND_START
+    \"<<\"\n81:3 'endif' \"endif\"\n81:9 COMMAND_END \">>\"\n83:0 TEXT_EXPRESSION_START
+    \"/{\"\n83:2 VAR_ID \"$random_text\"\n83:14 '}' \"}\"\n85:0 TEXT_NEWLINE \"\n\n\"\n85:0
+    COMMAND_START \"<<\"\n85:3 COMMAND_TEXT \"setspeaker DialogScreen Jason \"\n85:33
+    COMMAND_TEXT_END \">>\"\n87:0 COMMAND_START \"<<\"\n87:3 COMMAND_IF \"if \"\n87:6
+    VAR_ID \"$connections_number\"\n87:26 OPERATOR_LOGICAL_GREATER \">\"\n87:28 NUMBER
+    \"1\"\n87:30 EXPRESSION_COMMAND_END \">>\"\n88:4 INDENT \"    \"\n88:4 COMMAND_START
+    \"<<\"\n88:7 COMMAND_TEXT \"randomtext DialogScreen jasonnetworkhigh neutral \"\n88:56
+    COMMAND_TEXT_END \">>\"\n88:0 DEDENT \"\n\"\n89:0 COMMAND_START \"<<\"\n89:3 COMMAND_ELSEIF
+    \"elseif \"\n89:10 VAR_ID \"$connections_number\"\n89:30 OPERATOR_LOGICAL_EQUALS
+    \"==\"\n89:33 NUMBER \"1\"\n89:35 EXPRESSION_COMMAND_END \">>\"\n90:4 INDENT \"
+    \   \"\n90:4 COMMAND_START \"<<\"\n90:7 COMMAND_TEXT \"randomtext DialogScreen
+    jasonnetworkmid neutral \"\n90:55 COMMAND_TEXT_END \">>\"\n90:0 DEDENT \"\n\"\n91:0
+    COMMAND_START \"<<\"\n91:3 COMMAND_ELSE \"else \"\n91:8 COMMAND_END \">>\"\n92:4
+    INDENT \"    \"\n92:4 COMMAND_START \"<<\"\n92:7 COMMAND_TEXT \"randomtext DialogScreen
+    jasonnetworklow neutral \"\n92:55 COMMAND_TEXT_END \">>\"\n92:0 DEDENT \"\n\"\n93:0
+    COMMAND_START \"<<\"\n93:3 'endif' \"endif\"\n93:9 COMMAND_END \">>\"\n95:0 COMMAND_START
+    \"<<\"\n95:3 COMMAND_IF \"if \"\n95:6 VAR_ID \"$connections_number\"\n95:26 OPERATOR_LOGICAL_GREATER_THAN_EQUALS
+    \">=\"\n95:29 NUMBER \"1\"\n95:31 EXPRESSION_COMMAND_END \">>\"\n96:1 INDENT \"\t\"\n96:1
+    COMMAND_START \"<<\"\n96:4 COMMAND_TEXT \"setend DialogScreen \"\n96:24 COMMAND_TEXT_END
+    \">>\"\n96:0 DEDENT \"\n\"\n97:0 COMMAND_START \"<<\"\n97:3 'endif' \"endif\"\n97:9
+    COMMAND_END \">>\"\n98:4 INDENT \"    \"\n98:4 TEXT_EXPRESSION_START \"/{\"\n98:6
+    VAR_ID \"$random_text\"\n98:18 '}' \"}\"\n100:0 TEXT_NEWLINE \"\n\n\"\n98:0 DEDENT
+    \"\n\"\n100:0 COMMAND_START \"<<\"\n100:3 COMMAND_IF \"if \"\n100:6 VAR_ID \"$connections_number\"\n100:26
+    OPERATOR_LOGICAL_LESS \"<\"\n100:28 NUMBER \"1\"\n100:29 EXPRESSION_COMMAND_END
+    \">>\"\n101:4 INDENT \"    \"\n101:4 COMMAND_START \"<<\"\n101:7 COMMAND_TEXT
+    \"setspeaker DialogScreen other \"\n101:37 COMMAND_TEXT_END \">>\"\n102:4 COMMAND_START
+    \"<<\"\n102:7 COMMAND_TEXT \"setsprite Partner bragging \"\n102:34 COMMAND_TEXT_END
+    \">>\"\n103:4 COMMAND_START \"<<\"\n103:7 COMMAND_TEXT \"setend DialogScreen \"\n103:27
+    COMMAND_TEXT_END \">>\"\n104:4 TEXT \"I do not know you or your people, stranger.
+    You will pay full taxes at this port!\"\n105:0 TEXT_NEWLINE \"\n\"\n104:0 DEDENT
+    \"\n\"\n105:0 COMMAND_START \"<<\"\n105:3 'endif' \"endif\"\n105:9 COMMAND_END
+    \">>\"\n107:0 COMMAND_START \"<<\"\n107:4 COMMAND_IF \"if \"\n107:7 VAR_ID \"$connections_number\"\n107:27
+    OPERATOR_LOGICAL_GREATER_THAN_EQUALS \">=\"\n107:30 NUMBER \"1\"\n107:32 EXPRESSION_COMMAND_END
+    \">>\"\n108:4 INDENT \"    \"\n108:4 '[[' \"[[\"\n108:6 OPTION_TEXT \" We share
+    a connection. Do I not therefore get a discount?\"\n108:64 '|' \"|\"\n108:65 OPTION_ID
+    \"tax_network\"\n108:76 ']]' \"]]\"\n108:0 DEDENT \"\n\"\n109:0 COMMAND_START
+    \"<<\"\n109:3 'endif' \"endif\"\n109:9 COMMAND_END \">>\"\n111:0 COMMAND_START
+    \"<<\"\n111:3 COMMAND_IF \"if \"\n111:6 VAR_ID \"$asked_where\"\n111:19 OPERATOR_LOGICAL_EQUALS
+    \"is\"\n111:22 'false' \"false\"\n111:28 EXPRESSION_COMMAND_END \">>\"\n112:4
+    INDENT \"    \"\n112:4 '[[' \"[[\"\n112:6 OPTION_TEXT \" Where is this? \"\n112:22
+    '|' \"|\"\n112:23 OPTION_ID \"where\"\n112:28 ']]' \"]]\"\n112:0 DEDENT \"\n\"\n113:0
+    COMMAND_START \"<<\"\n113:3 'endif' \"endif\"\n113:9 COMMAND_END \">>\"\n114:0
+    '[[' \"[[\"\n114:2 OPTION_TEXT \"Can I come into the city? \"\n114:28 '|' \"|\"\n114:29
+    OPTION_ID \"tax_start\"\n114:38 ']]' \"]]\"\n115:0 '===' \"===\"\n116:0 ID \"title\"\n116:5
+    HEADER_DELIMITER \": \"\n116:7 REST_OF_LINE \"tax_network\"\n117:0 HEADER_NEWLINE
+    \"\n\"\n117:0 ID \"tags\"\n117:4 HEADER_DELIMITER \": \"\n118:0 HEADER_NEWLINE
+    \"\n\"\n118:0 ID \"colorID\"\n118:7 HEADER_DELIMITER \": \"\n118:9 REST_OF_LINE
+    \"2\"\n119:0 HEADER_NEWLINE \"\n\"\n119:0 ID \"position\"\n119:8 HEADER_DELIMITER
+    \": \"\n119:10 REST_OF_LINE \"976,-778\"\n120:0 HEADER_NEWLINE \"\n\"\n120:0 '---'
+    \"---\"\n121:0 COMMAND_START \"<<\"\n121:3 COMMAND_TEXT \"setspeaker DialogScreen
+    Jason \"\n121:33 COMMAND_TEXT_END \">>\"\n122:0 TEXT \"We share connections. Does
+    this not mean we get discounted taxes? \"\n124:0 TEXT_NEWLINE \"\n\n\"\n124:0
+    COMMAND_START \"<<\"\n124:3 COMMAND_TEXT \"setspeaker DialogScreen other \"\n124:33
+    COMMAND_TEXT_END \">>\"\n125:0 COMMAND_START \"<<\"\n125:3 COMMAND_TEXT \"setsprite
+    DialogScreen distrustful \"\n125:38 COMMAND_TEXT_END \">>\"\n126:0 TEXT \"Harumph!
     Why should I believe you? You could just be making this up in order to reap the
-    benefits of the network affiliation!\"\n127:0 TEXT_NEWLINE \"\n\n\"\n127:0 COMMAND_START
-    \"<<\"\n127:3 COMMAND_TEXT \"setspeaker DialogScreen Jason \"\n127:33 COMMAND_TEXT_END
-    \">>\"\n128:0 COMMAND_START \"<<\"\n128:3 COMMAND_TEXT \"connectedcrew DialogScreen
-    \"\n128:30 COMMAND_TEXT_END \">>\"\n129:0 TEXT \"Ah, but you should meet \"\n129:24
-    TEXT_EXPRESSION_START \"{\"\n129:25 VAR_ID \"$crew_name_1\"\n129:37 '}' \"}\"\n129:38
-    TEXT \"! \"\n129:40 TEXT_EXPRESSION_START \"{\"\n129:41 VAR_ID \"$crew_description\"\n129:58
-    '}' \"}\"\n129:59 TEXT \" \"\n129:60 TEXT_EXPRESSION_START \"{\"\n129:61 VAR_ID
-    \"$crew_name_2\"\n129:73 '}' \"}\"\n129:74 TEXT \" \"\n129:75 TEXT_FORMAT_FUNCTION_START
-    \"[\"\n129:76 FORMAT_FUNCTION_ID \"select\"\n129:83 FORMAT_FUNCTION_EXPRESSION_START
-    \"{\"\n129:84 VAR_ID \"$jason_connected\"\n129:100 '}' \"}\"\n129:102 FORMAT_FUNCTION_ID
-    \"True\"\n129:106 '=' \"=\"\n129:107 FORMAT_FUNCTION_STRING \"\"hail\"\"\n129:114
-    FORMAT_FUNCTION_ID \"False\"\n129:119 '=' \"=\"\n129:120 FORMAT_FUNCTION_STRING
-    \"\"hails\"\"\n129:127 ']' \"]\"\n129:128 TEXT \" from \"\n129:134 TEXT_EXPRESSION_START
-    \"{\"\n129:135 VAR_ID \"$crew_home\"\n129:145 '}' \"}\"\n129:146 TEXT \", which
-    shares in your network.\"\n131:0 TEXT_NEWLINE \"\n\n\"\n131:0 COMMAND_START \"<<\"\n131:3
-    COMMAND_TEXT \"setspeaker DialogScreen other \"\n131:33 COMMAND_TEXT_END \">>\"\n132:0
-    TEXT \"I don't believe you. \"\n132:21 TEXT_EXPRESSION_START \"{\"\n132:22 VAR_ID
-    \"$crew_name_3\"\n132:34 '}' \"}\"\n132:35 TEXT \" must produce some proof!\"\n134:0
-    TEXT_NEWLINE \"\n\n\"\n134:0 COMMAND_START \"<<\"\n134:3 COMMAND_TEXT \"setspeaker
-    DialogScreen Jason \"\n134:33 COMMAND_TEXT_END \">>\"\n135:0 '->' \"->\"\n135:2
-    TEXT \"I offer you the desired documentation.\"\n136:4 TEXT_NEWLINE \" \"\n136:4
-    INDENT \"    \"\n136:4 COMMAND_START \"<<\"\n136:7 COMMAND_TEXT \"randomtext DialogScreen
-    jasondocumentation neutral \"\n136:58 COMMAND_TEXT_END \">>\"\n137:4 TEXT \"I
-    offer you the desired documentation. Here is \"\n137:51 TEXT_EXPRESSION_START
-    \"{\"\n137:52 VAR_ID \"$random_text\"\n137:64 '}' \"}\"\n138:0 TEXT_NEWLINE \"\n\"\n137:0
-    DEDENT \"\n\"\n138:0 '->' \"->\"\n138:2 TEXT \"I'll produce a witness!\"\n139:4
-    TEXT_NEWLINE \" \"\n139:4 INDENT \"    \"\n139:4 COMMAND_START \"<<\"\n139:7 COMMAND_TEXT
-    \"randombool DialogScreen .8 \"\n139:34 COMMAND_TEXT_END \">>\"\n140:4 COMMAND_START
-    \"<<\"\n140:7 COMMAND_IF \"if \"\n140:10 VAR_ID \"$random_bool\"\n140:23 OPERATOR_LOGICAL_EQUALS
-    \"is\"\n140:26 'true' \"true\"\n140:31 EXPRESSION_COMMAND_END \">>\"\n141:8 INDENT
-    \"        \"\n141:8 COMMAND_START \"<<\"\n141:11 COMMAND_TEXT \"randomtext DialogScreen
-    jasonwitness neutral \"\n141:56 COMMAND_TEXT_END \">>\"\n142:8 TEXT \"Producing
+    benefits of the network affiliation!\"\n128:0 TEXT_NEWLINE \"\n\n\"\n128:0 COMMAND_START
+    \"<<\"\n128:3 COMMAND_TEXT \"setspeaker DialogScreen Jason \"\n128:33 COMMAND_TEXT_END
+    \">>\"\n129:0 COMMAND_START \"<<\"\n129:3 COMMAND_TEXT \"connectedcrew DialogScreen
+    \"\n129:30 COMMAND_TEXT_END \">>\"\n130:0 TEXT \"Ah, but you should meet \"\n130:24
+    TEXT_EXPRESSION_START \"{\"\n130:25 VAR_ID \"$crew_name_1\"\n130:37 '}' \"}\"\n130:38
+    TEXT \"! \"\n130:40 TEXT_EXPRESSION_START \"{\"\n130:41 VAR_ID \"$crew_description\"\n130:58
+    '}' \"}\"\n130:59 TEXT \" \"\n130:60 TEXT_EXPRESSION_START \"{\"\n130:61 VAR_ID
+    \"$crew_name_2\"\n130:73 '}' \"}\"\n130:74 TEXT \" \"\n130:75 TEXT_FORMAT_FUNCTION_START
+    \"[\"\n130:76 FORMAT_FUNCTION_ID \"select\"\n130:83 FORMAT_FUNCTION_EXPRESSION_START
+    \"{\"\n130:84 VAR_ID \"$jason_connected\"\n130:100 '}' \"}\"\n130:102 FORMAT_FUNCTION_ID
+    \"True\"\n130:106 '=' \"=\"\n130:107 FORMAT_FUNCTION_STRING \"\"hail\"\"\n130:114
+    FORMAT_FUNCTION_ID \"False\"\n130:119 '=' \"=\"\n130:120 FORMAT_FUNCTION_STRING
+    \"\"hails\"\"\n130:127 ']' \"]\"\n130:128 TEXT \" from \"\n130:134 TEXT_EXPRESSION_START
+    \"{\"\n130:135 VAR_ID \"$crew_home\"\n130:145 '}' \"}\"\n130:146 TEXT \", which
+    shares in your network.\"\n132:0 TEXT_NEWLINE \"\n\n\"\n132:0 COMMAND_START \"<<\"\n132:3
+    COMMAND_TEXT \"setspeaker DialogScreen other \"\n132:33 COMMAND_TEXT_END \">>\"\n133:0
+    TEXT \"I don't believe you. \"\n133:21 TEXT_EXPRESSION_START \"{\"\n133:22 VAR_ID
+    \"$crew_name_3\"\n133:34 '}' \"}\"\n133:35 TEXT \" must produce some proof!\"\n135:0
+    TEXT_NEWLINE \"\n\n\"\n135:0 COMMAND_START \"<<\"\n135:3 COMMAND_TEXT \"setspeaker
+    DialogScreen Jason \"\n135:33 COMMAND_TEXT_END \">>\"\n136:0 '->' \"->\"\n136:2
+    TEXT \"I offer you the desired documentation.\"\n137:4 TEXT_NEWLINE \" \"\n137:4
+    INDENT \"    \"\n137:4 COMMAND_START \"<<\"\n137:7 COMMAND_TEXT \"randomtext DialogScreen
+    jasondocumentation neutral \"\n137:58 COMMAND_TEXT_END \">>\"\n138:4 TEXT \"I
+    offer you the desired documentation. Here is \"\n138:51 TEXT_EXPRESSION_START
+    \"{\"\n138:52 VAR_ID \"$random_text\"\n138:64 '}' \"}\"\n139:0 TEXT_NEWLINE \"\n\"\n138:0
+    DEDENT \"\n\"\n139:0 '->' \"->\"\n139:2 TEXT \"I'll produce a witness!\"\n140:4
+    TEXT_NEWLINE \" \"\n140:4 INDENT \"    \"\n140:4 COMMAND_START \"<<\"\n140:7 COMMAND_TEXT
+    \"randombool DialogScreen .8 \"\n140:34 COMMAND_TEXT_END \">>\"\n141:4 COMMAND_START
+    \"<<\"\n141:7 COMMAND_IF \"if \"\n141:10 VAR_ID \"$random_bool\"\n141:23 OPERATOR_LOGICAL_EQUALS
+    \"is\"\n141:26 'true' \"true\"\n141:31 EXPRESSION_COMMAND_END \">>\"\n142:8 INDENT
+    \"        \"\n142:8 COMMAND_START \"<<\"\n142:11 COMMAND_TEXT \"randomtext DialogScreen
+    jasonwitness neutral \"\n142:56 COMMAND_TEXT_END \">>\"\n143:8 TEXT \"Producing
     a witness will be an easy task: in this town resides a proxenos from my country,
-    who lives here as an honored and well-connected businessman! \"\n142:160 TEXT_EXPRESSION_START
-    \"{\"\n142:161 VAR_ID \"$random_text\"\n142:173 '}' \"}\"\n143:4 TEXT_NEWLINE
-    \" \"\n142:4 DEDENT \" \"\n143:4 COMMAND_START \"<<\"\n143:7 COMMAND_ELSE \"else
-    \"\n143:12 COMMAND_END \">>\"\n144:8 INDENT \"        \"\n144:8 TEXT \"What a
+    who lives here as an honored and well-connected businessman! \"\n143:160 TEXT_EXPRESSION_START
+    \"{\"\n143:161 VAR_ID \"$random_text\"\n143:173 '}' \"}\"\n144:4 TEXT_NEWLINE
+    \" \"\n143:4 DEDENT \" \"\n144:4 COMMAND_START \"<<\"\n144:7 COMMAND_ELSE \"else
+    \"\n144:12 COMMAND_END \">>\"\n145:8 INDENT \"        \"\n145:8 TEXT \"What a
     simple task you set me! The people of my country know the wine of Dionysos, the
     honey of Hyblaean bees, and the songs the Muses sing - and all of them can be
     found in the great associations of this town! Come, we will find the club of traders,
     where men from many lands but one occupation - sailing for the sake of gain -
-    meet face to face.\"\n145:4 TEXT_NEWLINE \" \"\n144:4 DEDENT \" \"\n145:4 COMMAND_START
-    \"<<\"\n145:7 'endif' \"endif\"\n145:13 COMMAND_END \">>\"\n145:0 DEDENT \"\n\"\n146:0
-    '->' \"->\"\n146:2 TEXT \"I'll take you to court!\"\n147:4 TEXT_NEWLINE \" \"\n147:4
-    INDENT \"    \"\n147:4 COMMAND_START \"<<\"\n147:7 COMMAND_TEXT \"randomtext DialogScreen
-    jasoncourt neutral \"\n147:50 COMMAND_TEXT_END \">>\"\n148:4 TEXT \"These are
+    meet face to face.\"\n146:4 TEXT_NEWLINE \" \"\n145:4 DEDENT \" \"\n146:4 COMMAND_START
+    \"<<\"\n146:7 'endif' \"endif\"\n146:13 COMMAND_END \">>\"\n146:0 DEDENT \"\n\"\n147:0
+    '->' \"->\"\n147:2 TEXT \"I'll take you to court!\"\n148:4 TEXT_NEWLINE \" \"\n148:4
+    INDENT \"    \"\n148:4 COMMAND_START \"<<\"\n148:7 COMMAND_TEXT \"randomtext DialogScreen
+    jasoncourt neutral \"\n148:50 COMMAND_TEXT_END \">>\"\n149:4 TEXT \"These are
     the risks you face if you fail to honor the freedom from taxes that comes from
-    our network: \"\n148:106 TEXT_EXPRESSION_START \"{\"\n148:107 VAR_ID \"$random_text\"\n148:119
-    '}' \"}\"\n150:0 TEXT_NEWLINE \"\n\n\"\n148:0 DEDENT \"\n\"\n150:0 COMMAND_START
-    \"<<\"\n150:3 COMMAND_TEXT \"setspeaker DialogScreen other \"\n150:33 COMMAND_TEXT_END
-    \">>\"\n151:0 COMMAND_START \"<<\"\n151:3 COMMAND_IF \"if \"\n151:6 VAR_ID \"$connections_number\"\n151:26
-    OPERATOR_LOGICAL_GREATER \">\"\n151:28 NUMBER \"1\"\n151:30 EXPRESSION_COMMAND_END
-    \">>\"\n152:4 INDENT \"    \"\n152:4 COMMAND_START \"<<\"\n152:7 COMMAND_TEXT
-    \"setsprite Partner happy \"\n152:31 COMMAND_TEXT_END \">>\"\n153:4 TEXT \"Alright,
-    you share in our social network!\"\n154:0 TEXT_NEWLINE \"\n\"\n153:0 DEDENT \"\n\"\n154:0
-    COMMAND_START \"<<\"\n154:3 COMMAND_ELSE \"else \"\n154:8 COMMAND_END \">>\"\n155:4
-    INDENT \"    \"\n155:4 COMMAND_START \"<<\"\n155:7 COMMAND_TEXT \"setsprite Partner
-    happy \"\n155:31 COMMAND_TEXT_END \">>\"\n156:1 INDENT \"\t\"\n156:1 TEXT \"It
-    seems you are not a stranger to our social network!\"\n157:0 TEXT_NEWLINE \"\n\"\n156:0
-    DEDENT \"\n\"\n156:0 DEDENT \"\n\"\n157:0 COMMAND_START \"<<\"\n157:3 'endif'
-    \"endif\"\n157:9 COMMAND_END \">>\"\n159:0 COMMAND_START \"<<\"\n159:3 COMMAND_IF
-    \"if \"\n159:6 VAR_ID \"$asked_where\"\n159:19 OPERATOR_LOGICAL_EQUALS \"is\"\n159:22
-    'false' \"false\"\n159:28 EXPRESSION_COMMAND_END \">>\"\n160:4 INDENT \"    \"\n160:4
-    '[[' \"[[\"\n160:6 OPTION_TEXT \" Where is this? \"\n160:22 '|' \"|\"\n160:23
-    OPTION_ID \"where\"\n160:28 ']]' \"]]\"\n160:0 DEDENT \"\n\"\n161:0 COMMAND_START
-    \"<<\"\n161:3 'endif' \"endif\"\n161:9 COMMAND_END \">>\"\n162:0 '[[' \"[[\"\n162:2
-    OPTION_TEXT \" Can I come into the city? \"\n162:29 '|' \"|\"\n162:30 OPTION_ID
-    \"tax_start\"\n162:39 ']]' \"]]\"\n163:0 '===' \"===\"\n164:0 ID \"title\"\n164:5
-    HEADER_DELIMITER \": \"\n164:7 REST_OF_LINE \"tax_start\"\n165:0 HEADER_NEWLINE
-    \"\n\"\n165:0 ID \"tags\"\n165:4 HEADER_DELIMITER \": \"\n166:0 HEADER_NEWLINE
-    \"\n\"\n166:0 ID \"colorID\"\n166:7 HEADER_DELIMITER \": \"\n166:9 REST_OF_LINE
-    \"0\"\n167:0 HEADER_NEWLINE \"\n\"\n167:0 ID \"position\"\n167:8 HEADER_DELIMITER
-    \": \"\n167:10 REST_OF_LINE \"669,-548\"\n168:0 HEADER_NEWLINE \"\n\"\n168:0 '---'
-    \"---\"\n169:0 COMMAND_START \"<<\"\n169:3 COMMAND_TEXT \"setspeaker DialogScreen
-    Jason \"\n169:33 COMMAND_TEXT_END \">>\"\n170:0 TEXT \"Can I come into the city?
-    What are my fees?\"\n172:0 TEXT_NEWLINE \"\n\n\"\n172:0 COMMAND_START \"<<\"\n172:3
-    COMMAND_TEXT \"setspeaker DialogScreen other \"\n172:33 COMMAND_TEXT_END \">>\"\n173:0
-    COMMAND_START \"<<\"\n173:3 COMMAND_TEXT \"randombool DialogScreen .15 \"\n173:31
-    COMMAND_TEXT_END \">>\"\n175:0 COMMAND_START \"<<\"\n175:3 COMMAND_IF \"if \"\n175:6
-    VAR_ID \"$random_bool\"\n175:19 OPERATOR_LOGICAL_EQUALS \"is\"\n175:22 'true'
-    \"true\"\n175:27 EXPRESSION_COMMAND_END \">>\"\n176:4 INDENT \"    \"\n176:4 TEXT
+    our network: \"\n149:106 TEXT_EXPRESSION_START \"{\"\n149:107 VAR_ID \"$random_text\"\n149:119
+    '}' \"}\"\n151:0 TEXT_NEWLINE \"\n\n\"\n149:0 DEDENT \"\n\"\n151:0 COMMAND_START
+    \"<<\"\n151:3 COMMAND_TEXT \"setspeaker DialogScreen other \"\n151:33 COMMAND_TEXT_END
+    \">>\"\n152:0 COMMAND_START \"<<\"\n152:3 COMMAND_IF \"if \"\n152:6 VAR_ID \"$connections_number\"\n152:26
+    OPERATOR_LOGICAL_GREATER \">\"\n152:28 NUMBER \"1\"\n152:30 EXPRESSION_COMMAND_END
+    \">>\"\n153:4 INDENT \"    \"\n153:4 COMMAND_START \"<<\"\n153:7 COMMAND_TEXT
+    \"setsprite Partner happy \"\n153:31 COMMAND_TEXT_END \">>\"\n154:4 TEXT \"Alright,
+    you share in our social network!\"\n155:0 TEXT_NEWLINE \"\n\"\n154:0 DEDENT \"\n\"\n155:0
+    COMMAND_START \"<<\"\n155:3 COMMAND_ELSE \"else \"\n155:8 COMMAND_END \">>\"\n156:4
+    INDENT \"    \"\n156:4 COMMAND_START \"<<\"\n156:7 COMMAND_TEXT \"setsprite Partner
+    happy \"\n156:31 COMMAND_TEXT_END \">>\"\n157:1 INDENT \"\t\"\n157:1 TEXT \"It
+    seems you are not a stranger to our social network!\"\n158:0 TEXT_NEWLINE \"\n\"\n157:0
+    DEDENT \"\n\"\n157:0 DEDENT \"\n\"\n158:0 COMMAND_START \"<<\"\n158:3 'endif'
+    \"endif\"\n158:9 COMMAND_END \">>\"\n160:0 COMMAND_START \"<<\"\n160:3 COMMAND_IF
+    \"if \"\n160:6 VAR_ID \"$asked_where\"\n160:19 OPERATOR_LOGICAL_EQUALS \"is\"\n160:22
+    'false' \"false\"\n160:28 EXPRESSION_COMMAND_END \">>\"\n161:4 INDENT \"    \"\n161:4
+    '[[' \"[[\"\n161:6 OPTION_TEXT \" Where is this? \"\n161:22 '|' \"|\"\n161:23
+    OPTION_ID \"where\"\n161:28 ']]' \"]]\"\n161:0 DEDENT \"\n\"\n162:0 COMMAND_START
+    \"<<\"\n162:3 'endif' \"endif\"\n162:9 COMMAND_END \">>\"\n163:0 '[[' \"[[\"\n163:2
+    OPTION_TEXT \" Can I come into the city? \"\n163:29 '|' \"|\"\n163:30 OPTION_ID
+    \"tax_start\"\n163:39 ']]' \"]]\"\n164:0 '===' \"===\"\n165:0 ID \"title\"\n165:5
+    HEADER_DELIMITER \": \"\n165:7 REST_OF_LINE \"tax_start\"\n166:0 HEADER_NEWLINE
+    \"\n\"\n166:0 ID \"tags\"\n166:4 HEADER_DELIMITER \": \"\n167:0 HEADER_NEWLINE
+    \"\n\"\n167:0 ID \"colorID\"\n167:7 HEADER_DELIMITER \": \"\n167:9 REST_OF_LINE
+    \"2\"\n168:0 HEADER_NEWLINE \"\n\"\n168:0 ID \"position\"\n168:8 HEADER_DELIMITER
+    \": \"\n168:10 REST_OF_LINE \"662,-583\"\n169:0 HEADER_NEWLINE \"\n\"\n169:0 '---'
+    \"---\"\n170:0 COMMAND_START \"<<\"\n170:3 COMMAND_TEXT \"setspeaker DialogScreen
+    Jason \"\n170:33 COMMAND_TEXT_END \">>\"\n171:0 TEXT \"Can I come into the city?
+    What are my fees?\"\n173:0 TEXT_NEWLINE \"\n\n\"\n173:0 COMMAND_START \"<<\"\n173:3
+    COMMAND_TEXT \"setspeaker DialogScreen other \"\n173:33 COMMAND_TEXT_END \">>\"\n174:0
+    COMMAND_START \"<<\"\n174:3 COMMAND_TEXT \"randombool DialogScreen .15 \"\n174:31
+    COMMAND_TEXT_END \">>\"\n176:0 COMMAND_START \"<<\"\n176:3 COMMAND_IF \"if \"\n176:6
+    VAR_ID \"$random_bool\"\n176:19 OPERATOR_LOGICAL_EQUALS \"is\"\n176:22 'true'
+    \"true\"\n176:27 EXPRESSION_COMMAND_END \">>\"\n177:4 INDENT \"    \"\n177:4 TEXT
     \"This is a civilized place, and in no civilized place does the state not play
     a role in trade. Not at our docks will you trade like the barbarians Herodotus
-    described:\"\n177:4 TEXT_NEWLINE \" \"\n177:4 TEXT \"'There is a place in Libya,
+    described:\"\n178:4 TEXT_NEWLINE \" \"\n178:4 TEXT \"'There is a place in Libya,
     they say, where men live beyond the Pillars of Heracles; they come here and unload
     their cargo; then, having laid it in order along the beach, they go aboard their
     ships and light a smoking fire. The people of the country see the smoke, and,
@@ -402,389 +412,692 @@ ScriptedImporter:
     sailors are satisfied. In this transaction, it is said, neither party defrauds
     the other: the Carthaginians do not touch the gold until it equals the value of
     their cargo, nor do the people touch the cargo until the sailors have taken the
-    gold.' (4.196)\"\n178:0 TEXT_NEWLINE \"\n\"\n177:0 DEDENT \"\n\"\n178:0 COMMAND_START
-    \"<<\"\n178:3 COMMAND_ELSE \"else \"\n178:8 COMMAND_END \">>\"\n179:4 INDENT \"
-    \   \"\n179:4 TEXT \"Paying taxes in an honor! To do so defines our best citizens,
-    who know that running a city is not free.\"\n180:4 TEXT_NEWLINE \" \"\n180:4 COMMAND_START
-    \"<<\"\n180:7 COMMAND_TEXT \"randomtext DialogScreen taxesintro neutral \"\n180:50
-    COMMAND_TEXT_END \">>\"\n181:4 TEXT_EXPRESSION_START \"/{\"\n181:6 VAR_ID \"$random_text\"\n181:18
-    '}' \"}\"\n182:0 TEXT_NEWLINE \"\n\"\n181:0 DEDENT \"\n\"\n182:0 COMMAND_START
-    \"<<\"\n182:3 'endif' \"endif\"\n182:9 COMMAND_END \">>\"\n184:0 '[[' \"[[\"\n184:2
-    OPTION_TEXT \" Why do I pay you? \"\n184:21 '|' \"|\"\n184:22 OPTION_ID \"tax_why\"\n184:29
-    ']]' \"]]\"\n185:0 '[[' \"[[\"\n185:2 OPTION_TEXT \" What a risky way to make
-    a living. \"\n185:38 '|' \"|\"\n185:39 OPTION_ID \"tax_insult\"\n185:49 ']]' \"]]\"\n186:0
-    '[[' \"[[\"\n186:2 OPTION_TEXT \" This sounds serious! How much do I owe? \"\n186:43
-    '|' \"|\"\n186:44 OPTION_ID \"tax_explain\"\n186:55 ']]' \"]]\"\n187:0 '===' \"===\"\n188:0
-    ID \"title\"\n188:5 HEADER_DELIMITER \": \"\n188:7 REST_OF_LINE \"tax_why\"\n189:0
-    HEADER_NEWLINE \"\n\"\n189:0 ID \"tags\"\n189:4 HEADER_DELIMITER \": \"\n190:0
-    HEADER_NEWLINE \"\n\"\n190:0 ID \"colorID\"\n190:7 HEADER_DELIMITER \": \"\n190:9
-    REST_OF_LINE \"0\"\n191:0 HEADER_NEWLINE \"\n\"\n191:0 ID \"position\"\n191:8
-    HEADER_DELIMITER \": \"\n191:10 REST_OF_LINE \"349,-331\"\n192:0 HEADER_NEWLINE
-    \"\n\"\n192:0 '---' \"---\"\n193:0 COMMAND_START \"<<\"\n193:3 COMMAND_SET \"set
-    \"\n193:7 VAR_ID \"$asked_who\"\n193:18 OPERATOR_ASSIGNMENT \"to\"\n193:21 'true'
-    \"true\"\n193:26 EXPRESSION_COMMAND_END \">>\"\n195:0 COMMAND_START \"<<\"\n195:3
-    COMMAND_TEXT \"setspeaker DialogScreen Jason \"\n195:33 COMMAND_TEXT_END \">>\"\n196:0
-    TEXT \"Why do I have to pay you? What makes you special?\"\n198:0 TEXT_NEWLINE
-    \"\n\n\"\n198:0 COMMAND_START \"<<\"\n198:3 COMMAND_TEXT \"setspeaker DialogScreen
-    other \"\n198:33 COMMAND_TEXT_END \">>\"\n199:0 COMMAND_START \"<<\"\n199:3 COMMAND_TEXT
-    \"randomtext DialogScreen employment neutral \"\n199:46 COMMAND_TEXT_END \">>\"\n200:0
-    COMMAND_START \"<<\"\n200:3 COMMAND_TEXT \"setend DialogScreen \"\n200:23 COMMAND_TEXT_END
-    \">>\"\n201:0 TEXT_EXPRESSION_START \"/{\"\n201:2 VAR_ID \"$random_text\"\n201:14
-    '}' \"}\"\n203:0 TEXT_NEWLINE \"\n\n\"\n203:0 COMMAND_START \"<<\"\n203:3 COMMAND_IF
-    \"if \"\n203:6 VAR_ID \"$insulted\"\n203:16 OPERATOR_LOGICAL_EQUALS \"is\"\n203:19
-    'false' \"false\"\n203:25 EXPRESSION_COMMAND_END \">>\"\n204:4 INDENT \"    \"\n204:4
-    '[[' \"[[\"\n204:6 OPTION_TEXT \" What a risky way to make a living. \"\n204:42
-    '|' \"|\"\n204:43 OPTION_ID \"tax_insult\"\n204:53 ']]' \"]]\"\n204:0 DEDENT \"\n\"\n205:0
-    COMMAND_START \"<<\"\n205:3 'endif' \"endif\"\n205:9 COMMAND_END \">>\"\n206:0
-    '[[' \"[[\"\n206:2 OPTION_TEXT \" How much do I owe? \"\n206:22 '|' \"|\"\n206:23
-    OPTION_ID \"tax_explain\"\n206:34 ']]' \"]]\"\n207:0 '===' \"===\"\n208:0 ID \"title\"\n208:5
-    HEADER_DELIMITER \": \"\n208:7 REST_OF_LINE \"tax_insult\"\n209:0 HEADER_NEWLINE
-    \"\n\"\n209:0 ID \"tags\"\n209:4 HEADER_DELIMITER \": \"\n210:0 HEADER_NEWLINE
-    \"\n\"\n210:0 ID \"colorID\"\n210:7 HEADER_DELIMITER \": \"\n210:9 REST_OF_LINE
-    \"0\"\n211:0 HEADER_NEWLINE \"\n\"\n211:0 ID \"position\"\n211:8 HEADER_DELIMITER
-    \": \"\n211:10 REST_OF_LINE \"990,-322\"\n212:0 HEADER_NEWLINE \"\n\"\n212:0 '---'
-    \"---\"\n213:0 COMMAND_START \"<<\"\n213:3 COMMAND_SET \"set \"\n213:7 VAR_ID
-    \"$insulted\"\n213:17 OPERATOR_ASSIGNMENT \"to\"\n213:20 'true' \"true\"\n213:25
-    EXPRESSION_COMMAND_END \">>\"\n215:0 COMMAND_START \"<<\"\n215:3 COMMAND_TEXT
-    \"setspeaker DialogScreen Jason \"\n215:33 COMMAND_TEXT_END \">>\"\n216:0 TEXT
+    gold.' (4.196)\"\n179:0 TEXT_NEWLINE \"\n\"\n178:0 DEDENT \"\n\"\n179:0 COMMAND_START
+    \"<<\"\n179:3 COMMAND_ELSE \"else \"\n179:8 COMMAND_END \">>\"\n180:4 INDENT \"
+    \   \"\n180:4 TEXT \"Paying taxes in an honor! To do so defines our best citizens,
+    who know that running a city is not free.\"\n181:4 TEXT_NEWLINE \" \"\n181:4 COMMAND_START
+    \"<<\"\n181:7 COMMAND_TEXT \"randomtext DialogScreen taxesintro neutral \"\n181:50
+    COMMAND_TEXT_END \">>\"\n182:4 TEXT_EXPRESSION_START \"/{\"\n182:6 VAR_ID \"$random_text\"\n182:18
+    '}' \"}\"\n183:0 TEXT_NEWLINE \"\n\"\n182:0 DEDENT \"\n\"\n183:0 COMMAND_START
+    \"<<\"\n183:3 'endif' \"endif\"\n183:9 COMMAND_END \">>\"\n185:0 '[[' \"[[\"\n185:2
+    OPTION_TEXT \" Why do I pay you? \"\n185:21 '|' \"|\"\n185:22 OPTION_ID \"tax_why\"\n185:29
+    ']]' \"]]\"\n186:0 '[[' \"[[\"\n186:2 OPTION_TEXT \" What a risky way to make
+    a living. \"\n186:38 '|' \"|\"\n186:39 OPTION_ID \"tax_insult\"\n186:49 ']]' \"]]\"\n187:0
+    '[[' \"[[\"\n187:2 OPTION_TEXT \" This sounds serious! How much do I owe? \"\n187:43
+    '|' \"|\"\n187:44 OPTION_ID \"tax_explain\"\n187:55 ']]' \"]]\"\n188:0 '===' \"===\"\n189:0
+    ID \"title\"\n189:5 HEADER_DELIMITER \": \"\n189:7 REST_OF_LINE \"tax_why\"\n190:0
+    HEADER_NEWLINE \"\n\"\n190:0 ID \"tags\"\n190:4 HEADER_DELIMITER \": \"\n191:0
+    HEADER_NEWLINE \"\n\"\n191:0 ID \"colorID\"\n191:7 HEADER_DELIMITER \": \"\n191:9
+    REST_OF_LINE \"1\"\n192:0 HEADER_NEWLINE \"\n\"\n192:0 ID \"position\"\n192:8
+    HEADER_DELIMITER \": \"\n192:10 REST_OF_LINE \"349,-331\"\n193:0 HEADER_NEWLINE
+    \"\n\"\n193:0 '---' \"---\"\n194:0 COMMAND_START \"<<\"\n194:3 COMMAND_SET \"set
+    \"\n194:7 VAR_ID \"$asked_who\"\n194:18 OPERATOR_ASSIGNMENT \"to\"\n194:21 'true'
+    \"true\"\n194:26 EXPRESSION_COMMAND_END \">>\"\n196:0 COMMAND_START \"<<\"\n196:3
+    COMMAND_TEXT \"setspeaker DialogScreen Jason \"\n196:33 COMMAND_TEXT_END \">>\"\n197:0
+    TEXT \"Why do I have to pay you? What makes you special?\"\n199:0 TEXT_NEWLINE
+    \"\n\n\"\n199:0 COMMAND_START \"<<\"\n199:3 COMMAND_TEXT \"setspeaker DialogScreen
+    other \"\n199:33 COMMAND_TEXT_END \">>\"\n200:0 COMMAND_START \"<<\"\n200:3 COMMAND_TEXT
+    \"randomtext DialogScreen employment neutral \"\n200:46 COMMAND_TEXT_END \">>\"\n201:0
+    COMMAND_START \"<<\"\n201:3 COMMAND_TEXT \"setend DialogScreen \"\n201:23 COMMAND_TEXT_END
+    \">>\"\n202:0 TEXT_EXPRESSION_START \"/{\"\n202:2 VAR_ID \"$random_text\"\n202:14
+    '}' \"}\"\n204:0 TEXT_NEWLINE \"\n\n\"\n204:0 COMMAND_START \"<<\"\n204:3 COMMAND_IF
+    \"if \"\n204:6 VAR_ID \"$insulted\"\n204:16 OPERATOR_LOGICAL_EQUALS \"is\"\n204:19
+    'false' \"false\"\n204:25 EXPRESSION_COMMAND_END \">>\"\n205:4 INDENT \"    \"\n205:4
+    '[[' \"[[\"\n205:6 OPTION_TEXT \" What a risky way to make a living. \"\n205:42
+    '|' \"|\"\n205:43 OPTION_ID \"tax_insult\"\n205:53 ']]' \"]]\"\n205:0 DEDENT \"\n\"\n206:0
+    COMMAND_START \"<<\"\n206:3 'endif' \"endif\"\n206:9 COMMAND_END \">>\"\n207:0
+    '[[' \"[[\"\n207:2 OPTION_TEXT \" How much do I owe? \"\n207:22 '|' \"|\"\n207:23
+    OPTION_ID \"tax_explain\"\n207:34 ']]' \"]]\"\n208:0 '===' \"===\"\n209:0 ID \"title\"\n209:5
+    HEADER_DELIMITER \": \"\n209:7 REST_OF_LINE \"tax_insult\"\n210:0 HEADER_NEWLINE
+    \"\n\"\n210:0 ID \"tags\"\n210:4 HEADER_DELIMITER \": \"\n211:0 HEADER_NEWLINE
+    \"\n\"\n211:0 ID \"colorID\"\n211:7 HEADER_DELIMITER \": \"\n211:9 REST_OF_LINE
+    \"1\"\n212:0 HEADER_NEWLINE \"\n\"\n212:0 ID \"position\"\n212:8 HEADER_DELIMITER
+    \": \"\n212:10 REST_OF_LINE \"990,-322\"\n213:0 HEADER_NEWLINE \"\n\"\n213:0 '---'
+    \"---\"\n214:0 COMMAND_START \"<<\"\n214:3 COMMAND_SET \"set \"\n214:7 VAR_ID
+    \"$insulted\"\n214:17 OPERATOR_ASSIGNMENT \"to\"\n214:20 'true' \"true\"\n214:25
+    EXPRESSION_COMMAND_END \">>\"\n216:0 COMMAND_START \"<<\"\n216:3 COMMAND_TEXT
+    \"setspeaker DialogScreen Jason \"\n216:33 COMMAND_TEXT_END \">>\"\n217:0 TEXT
     \"What a risky way to make a living - and what an unpleasant kind of fellow you
-    must be!\"\n217:0 TEXT_NEWLINE \"\n\"\n217:0 COMMAND_START \"<<\"\n217:3 COMMAND_TEXT
-    \"randomtext DialogScreen jasoninsults neutral \"\n217:48 COMMAND_TEXT_END \">>\"\n218:0
-    TEXT_EXPRESSION_START \"/{\"\n218:2 VAR_ID \"$random_text\"\n218:14 '}' \"}\"\n220:0
-    TEXT_NEWLINE \"\n\n\"\n220:0 COMMAND_START \"<<\"\n220:3 COMMAND_TEXT \"setspeaker
-    DialogScreen other \"\n220:33 COMMAND_TEXT_END \">>\"\n221:0 TEXT \"Say what you
+    must be!\"\n218:0 TEXT_NEWLINE \"\n\"\n218:0 COMMAND_START \"<<\"\n218:3 COMMAND_TEXT
+    \"randomtext DialogScreen jasoninsults neutral \"\n218:48 COMMAND_TEXT_END \">>\"\n219:0
+    TEXT_EXPRESSION_START \"/{\"\n219:2 VAR_ID \"$random_text\"\n219:14 '}' \"}\"\n221:0
+    TEXT_NEWLINE \"\n\n\"\n221:0 COMMAND_START \"<<\"\n221:3 COMMAND_TEXT \"setspeaker
+    DialogScreen other \"\n221:33 COMMAND_TEXT_END \">>\"\n222:0 TEXT \"Say what you
     will, it's down to business. Quick quick then, let's get this done with, so I
     can get on to the next customer! If I'm going to make a profit, I need to be speedy
     and process as many ships as I can - because I can't charge more than the law
     allows, or charge you twice - if I did, I'd be taken to court, face the board
     of apodektai ('receivers') - a man did that once, for no more than 10 drachma!
-    \"\n222:0 TEXT_NEWLINE \"\n\"\n222:0 COMMAND_START \"<<\"\n222:3 COMMAND_TEXT
-    \"setend DialogScreen \"\n222:23 COMMAND_TEXT_END \">>\"\n223:0 TEXT \"The poorest
+    \"\n223:0 TEXT_NEWLINE \"\n\"\n223:0 COMMAND_START \"<<\"\n223:3 COMMAND_TEXT
+    \"setend DialogScreen \"\n223:23 COMMAND_TEXT_END \">>\"\n224:0 TEXT \"The poorest
     man in the smallest boat can haul me before the magistrates! They could put me
     in prison, dishonor me as a public debtor, confiscate my property. That's why
     the city has made it easy for me to extract your taxes: all commercial transactions
     happen here or in the agora, and I'm not alone in keeping my eye on you: we have
-    agoranomoi to back me up.\"\n225:0 TEXT_NEWLINE \"\n\n\"\n225:0 COMMAND_START
-    \"<<\"\n225:3 COMMAND_IF \"if \"\n225:6 VAR_ID \"$asked_who\"\n225:17 OPERATOR_LOGICAL_EQUALS
-    \"is\"\n225:20 'false' \"false\"\n225:26 EXPRESSION_COMMAND_END \">>\"\n226:4
-    INDENT \"    \"\n226:4 '[[' \"[[\"\n226:6 OPTION_TEXT \" Why do I pay you? \"\n226:25
-    '|' \"|\"\n226:26 OPTION_ID \"tax_why\"\n226:33 ']]' \"]]\"\n226:0 DEDENT \"\n\"\n227:0
-    COMMAND_START \"<<\"\n227:3 'endif' \"endif\"\n227:9 COMMAND_END \">>\"\n228:0
-    '[[' \"[[\"\n228:2 OPTION_TEXT \" How much do I owe? \"\n228:22 '|' \"|\"\n228:23
-    OPTION_ID \"tax_explain\"\n228:34 ']]' \"]]\"\n229:0 '===' \"===\"\n230:0 ID \"title\"\n230:5
-    HEADER_DELIMITER \": \"\n230:7 REST_OF_LINE \"tax_explain\"\n231:0 HEADER_NEWLINE
-    \"\n\"\n231:0 ID \"tags\"\n231:4 HEADER_DELIMITER \": \"\n232:0 HEADER_NEWLINE
-    \"\n\"\n232:0 ID \"colorID\"\n232:7 HEADER_DELIMITER \": \"\n232:9 REST_OF_LINE
-    \"0\"\n233:0 HEADER_NEWLINE \"\n\"\n233:0 ID \"position\"\n233:8 HEADER_DELIMITER
-    \": \"\n233:10 REST_OF_LINE \"661,-103\"\n234:0 HEADER_NEWLINE \"\n\"\n234:0 '---'
-    \"---\"\n235:0 COMMAND_START \"<<\"\n235:3 COMMAND_TEXT \"setspeaker DialogScreen
-    Jason \"\n235:33 COMMAND_TEXT_END \">>\"\n236:0 TEXT \"By the gods, this sounds
-    serious. What kind of money are we talking about?\"\n238:0 TEXT_NEWLINE \"\n\n\"\n238:0
-    COMMAND_START \"<<\"\n238:3 COMMAND_TEXT \"setspeaker DialogScreen other \"\n238:33
-    COMMAND_TEXT_END \">>\"\n239:0 COMMAND_START \"<<\"\n239:3 COMMAND_TEXT \"randomtext
-    DialogScreen taxesflavor neutral \"\n239:47 COMMAND_TEXT_END \">>\"\n240:0 COMMAND_START
-    \"<<\"\n240:3 COMMAND_TEXT \"setend DialogScreen \"\n240:23 COMMAND_TEXT_END \">>\"\n241:0
-    TEXT_EXPRESSION_START \"/{\"\n241:2 VAR_ID \"$random_text\"\n241:14 '}' \"}\"\n243:0
-    TEXT_NEWLINE \"\n\n\"\n243:0 '[[' \"[[\"\n243:2 OPTION_TEXT \"What types of taxes
-    do you charge here? \"\n243:42 '|' \"|\"\n243:43 OPTION_ID \"tax_types\"\n243:52
-    ']]' \"]]\"\n244:0 '[[' \"[[\"\n244:2 OPTION_TEXT \"How much will I have to pay?
-    \"\n244:31 '|' \"|\"\n244:32 OPTION_ID \"tax_breakdown\"\n244:45 ']]' \"]]\"\n245:0
-    '[[' \"[[\"\n245:2 OPTION_TEXT \"I already know what I want to do. \"\n245:36
-    '|' \"|\"\n245:37 OPTION_ID \"tax_short_1\"\n245:48 ']]' \"]]\"\n246:0 '===' \"===\"\n247:0
-    ID \"title\"\n247:5 HEADER_DELIMITER \": \"\n247:7 REST_OF_LINE \"tax_types\"\n248:0
-    HEADER_NEWLINE \"\n\"\n248:0 ID \"tags\"\n248:4 HEADER_DELIMITER \": \"\n249:0
-    HEADER_NEWLINE \"\n\"\n249:0 ID \"colorID\"\n249:7 HEADER_DELIMITER \": \"\n249:9
-    REST_OF_LINE \"0\"\n250:0 HEADER_NEWLINE \"\n\"\n250:0 ID \"position\"\n250:8
-    HEADER_DELIMITER \": \"\n250:10 REST_OF_LINE \"44,120\"\n251:0 HEADER_NEWLINE
-    \"\n\"\n251:0 '---' \"---\"\n252:0 COMMAND_START \"<<\"\n252:3 COMMAND_SET \"set
-    \"\n252:7 VAR_ID \"$asked_types\"\n252:20 OPERATOR_ASSIGNMENT \"to\"\n252:23 'true'
-    \"true\"\n252:28 EXPRESSION_COMMAND_END \">>\"\n254:0 COMMAND_START \"<<\"\n254:3
-    COMMAND_TEXT \"setspeaker DialogScreen Jason \"\n254:33 COMMAND_TEXT_END \">>\"\n255:0
+    agoranomoi to back me up.\"\n226:0 TEXT_NEWLINE \"\n\n\"\n226:0 COMMAND_START
+    \"<<\"\n226:3 COMMAND_IF \"if \"\n226:6 VAR_ID \"$asked_who\"\n226:17 OPERATOR_LOGICAL_EQUALS
+    \"is\"\n226:20 'false' \"false\"\n226:26 EXPRESSION_COMMAND_END \">>\"\n227:4
+    INDENT \"    \"\n227:4 '[[' \"[[\"\n227:6 OPTION_TEXT \" Why do I pay you? \"\n227:25
+    '|' \"|\"\n227:26 OPTION_ID \"tax_why\"\n227:33 ']]' \"]]\"\n227:0 DEDENT \"\n\"\n228:0
+    COMMAND_START \"<<\"\n228:3 'endif' \"endif\"\n228:9 COMMAND_END \">>\"\n229:0
+    '[[' \"[[\"\n229:2 OPTION_TEXT \" How much do I owe? \"\n229:22 '|' \"|\"\n229:23
+    OPTION_ID \"tax_explain\"\n229:34 ']]' \"]]\"\n230:0 '===' \"===\"\n231:0 ID \"title\"\n231:5
+    HEADER_DELIMITER \": \"\n231:7 REST_OF_LINE \"tax_explain\"\n232:0 HEADER_NEWLINE
+    \"\n\"\n232:0 ID \"tags\"\n232:4 HEADER_DELIMITER \": \"\n233:0 HEADER_NEWLINE
+    \"\n\"\n233:0 ID \"colorID\"\n233:7 HEADER_DELIMITER \": \"\n233:9 REST_OF_LINE
+    \"1\"\n234:0 HEADER_NEWLINE \"\n\"\n234:0 ID \"position\"\n234:8 HEADER_DELIMITER
+    \": \"\n234:10 REST_OF_LINE \"661,-103\"\n235:0 HEADER_NEWLINE \"\n\"\n235:0 '---'
+    \"---\"\n236:0 COMMAND_START \"<<\"\n236:3 COMMAND_TEXT \"setspeaker DialogScreen
+    Jason \"\n236:33 COMMAND_TEXT_END \">>\"\n237:0 TEXT \"By the gods, this sounds
+    serious. What kind of money are we talking about?\"\n239:0 TEXT_NEWLINE \"\n\n\"\n239:0
+    COMMAND_START \"<<\"\n239:3 COMMAND_TEXT \"setspeaker DialogScreen other \"\n239:33
+    COMMAND_TEXT_END \">>\"\n240:0 COMMAND_START \"<<\"\n240:3 COMMAND_TEXT \"randomtext
+    DialogScreen taxesflavor neutral \"\n240:47 COMMAND_TEXT_END \">>\"\n241:0 COMMAND_START
+    \"<<\"\n241:3 COMMAND_TEXT \"setend DialogScreen \"\n241:23 COMMAND_TEXT_END \">>\"\n242:0
+    TEXT_EXPRESSION_START \"/{\"\n242:2 VAR_ID \"$random_text\"\n242:14 '}' \"}\"\n244:0
+    TEXT_NEWLINE \"\n\n\"\n244:0 '[[' \"[[\"\n244:2 OPTION_TEXT \"What types of taxes
+    do you charge here? \"\n244:42 '|' \"|\"\n244:43 OPTION_ID \"tax_types\"\n244:52
+    ']]' \"]]\"\n245:0 '[[' \"[[\"\n245:2 OPTION_TEXT \"How much will I have to pay?
+    \"\n245:31 '|' \"|\"\n245:32 OPTION_ID \"tax_breakdown\"\n245:45 ']]' \"]]\"\n246:0
+    '[[' \"[[\"\n246:2 OPTION_TEXT \"I already know what I want to do. \"\n246:36
+    '|' \"|\"\n246:37 OPTION_ID \"tax_short_1\"\n246:48 ']]' \"]]\"\n247:0 '===' \"===\"\n248:0
+    ID \"title\"\n248:5 HEADER_DELIMITER \": \"\n248:7 REST_OF_LINE \"tax_types\"\n249:0
+    HEADER_NEWLINE \"\n\"\n249:0 ID \"tags\"\n249:4 HEADER_DELIMITER \": \"\n250:0
+    HEADER_NEWLINE \"\n\"\n250:0 ID \"colorID\"\n250:7 HEADER_DELIMITER \": \"\n250:9
+    REST_OF_LINE \"1\"\n251:0 HEADER_NEWLINE \"\n\"\n251:0 ID \"position\"\n251:8
+    HEADER_DELIMITER \": \"\n251:10 REST_OF_LINE \"168,257\"\n252:0 HEADER_NEWLINE
+    \"\n\"\n252:0 '---' \"---\"\n253:0 COMMAND_START \"<<\"\n253:3 COMMAND_SET \"set
+    \"\n253:7 VAR_ID \"$asked_types\"\n253:20 OPERATOR_ASSIGNMENT \"to\"\n253:23 'true'
+    \"true\"\n253:28 EXPRESSION_COMMAND_END \">>\"\n255:0 COMMAND_START \"<<\"\n255:3
+    COMMAND_TEXT \"setspeaker DialogScreen Jason \"\n255:33 COMMAND_TEXT_END \">>\"\n256:0
     TEXT \"What types of taxes do you charge here? I must decide if it is worth it
-    to enter your city!\"\n257:0 TEXT_NEWLINE \"\n\n\"\n257:0 COMMAND_START \"<<\"\n257:3
-    COMMAND_TEXT \"setspeaker DialogScreen other \"\n257:33 COMMAND_TEXT_END \">>\"\n258:0
-    COMMAND_START \"<<\"\n258:3 COMMAND_TEXT \"setsprite Partner happy \"\n258:27
-    COMMAND_TEXT_END \">>\"\n259:0 TEXT \"As in all cities, we charge an ellimenion
+    to enter your city!\"\n258:0 TEXT_NEWLINE \"\n\n\"\n258:0 COMMAND_START \"<<\"\n258:3
+    COMMAND_TEXT \"setspeaker DialogScreen other \"\n258:33 COMMAND_TEXT_END \">>\"\n259:0
+    COMMAND_START \"<<\"\n259:3 COMMAND_TEXT \"setsprite Partner happy \"\n259:27
+    COMMAND_TEXT_END \">>\"\n260:0 TEXT \"As in all cities, we charge an ellimenion
     to pay for the harbor: its fine guard houses, its places for unloading, the streets
     that lead to the agora, the shrine where you can thank the gods you made it here!
-    Network connections can influence how much you pay.\"\n261:0 TEXT_NEWLINE \"\n\n\"\n261:0
-    COMMAND_START \"<<\"\n261:3 COMMAND_IF \"if \"\n261:6 VAR_ID \"$no_taxes\"\n261:16
-    OPERATOR_LOGICAL_EQUALS \"is\"\n261:19 'false' \"false\"\n261:25 EXPRESSION_COMMAND_END
-    \">>\"\n262:1 INDENT \"\t\"\n262:1 COMMAND_START \"<<\"\n262:4 COMMAND_TEXT \"setsprite
-    Partner bragging \"\n262:31 COMMAND_TEXT_END \">>\"\n263:1 TEXT \"Here we also
-    charge the following taxes:\"\n265:1 TEXT_NEWLINE \"\n\t\"\n265:1 COMMAND_START
-    \"<<\"\n265:4 COMMAND_IF \"if \"\n265:7 VAR_ID \"$god_tax\"\n265:16 OPERATOR_LOGICAL_EQUALS
-    \"is\"\n265:19 'true' \"true\"\n265:24 EXPRESSION_COMMAND_END \">>\"\n266:2 INDENT
-    \"\t\t\"\n266:2 TEXT \"The god tax: the gods who watch over us, whom we praise
+    Network connections can influence how much you pay.\"\n262:0 TEXT_NEWLINE \"\n\n\"\n262:0
+    COMMAND_START \"<<\"\n262:3 COMMAND_IF \"if \"\n262:6 VAR_ID \"$no_taxes\"\n262:16
+    OPERATOR_LOGICAL_EQUALS \"is\"\n262:19 'false' \"false\"\n262:25 EXPRESSION_COMMAND_END
+    \">>\"\n263:1 INDENT \"\t\"\n263:1 COMMAND_START \"<<\"\n263:4 COMMAND_TEXT \"setsprite
+    Partner bragging \"\n263:31 COMMAND_TEXT_END \">>\"\n264:1 TEXT \"Here we also
+    charge the following taxes:\"\n266:1 TEXT_NEWLINE \"\n\t\"\n266:1 COMMAND_START
+    \"<<\"\n266:4 COMMAND_IF \"if \"\n266:7 VAR_ID \"$god_tax\"\n266:16 OPERATOR_LOGICAL_EQUALS
+    \"is\"\n266:19 'true' \"true\"\n266:24 EXPRESSION_COMMAND_END \">>\"\n267:2 INDENT
+    \"\t\t\"\n267:2 TEXT \"The god tax: the gods who watch over us, whom we praise
     and dance for in our festivals, whom our fathers and grandfathers and great grandfathers
     knew - they need funds! The roofs of their shrines are leaky, their sacrificial
     implements are getting rusty, and you should see the state of the costumes for
-    the priests...\"\n267:1 TEXT_NEWLINE \"\t\"\n266:1 DEDENT \"\t\"\n267:1 COMMAND_START
-    \"<<\"\n267:4 'endif' \"endif\"\n267:10 COMMAND_END \">>\"\n269:1 COMMAND_START
-    \"<<\"\n269:4 COMMAND_IF \"if \"\n269:7 VAR_ID \"$transit_tax\"\n269:20 OPERATOR_LOGICAL_EQUALS
-    \"is\"\n269:23 'true' \"true\"\n269:28 EXPRESSION_COMMAND_END \">>\"\n270:2 INDENT
-    \"\t\t\"\n270:2 TEXT \"The transit tax: founded as we are at the meeting point
+    the priests...\"\n268:1 TEXT_NEWLINE \"\t\"\n267:1 DEDENT \"\t\"\n268:1 COMMAND_START
+    \"<<\"\n268:4 'endif' \"endif\"\n268:10 COMMAND_END \">>\"\n270:1 COMMAND_START
+    \"<<\"\n270:4 COMMAND_IF \"if \"\n270:7 VAR_ID \"$transit_tax\"\n270:20 OPERATOR_LOGICAL_EQUALS
+    \"is\"\n270:23 'true' \"true\"\n270:28 EXPRESSION_COMMAND_END \">>\"\n271:2 INDENT
+    \"\t\t\"\n271:2 TEXT \"The transit tax: founded as we are at the meeting point
     of river and shore, of overland highways, and indeed of paths where Hermes guards
     every righteous traveler - we have a special tax, so you can show us how grateful
     you are for these benefits! Our friends at Tisaia and Calchedon have used these:
     every ship, whether full of traders, of heroes, of scoundrels or priests, must
-    pay!\"\n271:1 TEXT_NEWLINE \"\t\"\n270:1 DEDENT \"\t\"\n271:1 COMMAND_START \"<<\"\n271:4
-    'endif' \"endif\"\n271:10 COMMAND_END \">>\"\n273:1 COMMAND_START \"<<\"\n273:4
-    COMMAND_IF \"if \"\n273:7 VAR_ID \"$foreigner_tax\"\n273:22 OPERATOR_LOGICAL_EQUALS
-    \"is\"\n273:25 'true' \"true\"\n273:30 EXPRESSION_COMMAND_END \">>\"\n274:2 INDENT
-    \"\t\t\"\n274:2 TEXT \"The foreigner's fee: guest friendship is a noble institution,
+    pay!\"\n272:1 TEXT_NEWLINE \"\t\"\n271:1 DEDENT \"\t\"\n272:1 COMMAND_START \"<<\"\n272:4
+    'endif' \"endif\"\n272:10 COMMAND_END \">>\"\n274:1 COMMAND_START \"<<\"\n274:4
+    COMMAND_IF \"if \"\n274:7 VAR_ID \"$foreigner_tax\"\n274:22 OPERATOR_LOGICAL_EQUALS
+    \"is\"\n274:25 'true' \"true\"\n274:30 EXPRESSION_COMMAND_END \">>\"\n275:2 INDENT
+    \"\t\t\"\n275:2 TEXT \"The foreigner's fee: guest friendship is a noble institution,
     but too many guests can impoverish a city. Our wise founding fathers have made
     provision against such a loss: foreigners in this town pay an additional fee for
-    access to our markets, our shrines, our banks, and our marketplace.\"\n275:1 TEXT_NEWLINE
-    \"\t\"\n274:1 DEDENT \"\t\"\n275:1 COMMAND_START \"<<\"\n275:4 'endif' \"endif\"\n275:10
-    COMMAND_END \">>\"\n275:0 DEDENT \"\n\"\n276:0 COMMAND_START \"<<\"\n276:3 'endif'
-    \"endif\"\n276:9 COMMAND_END \">>\"\n278:0 COMMAND_START \"<<\"\n278:3 COMMAND_IF
-    \"if \"\n278:6 VAR_ID \"$wealth_tax\"\n278:18 OPERATOR_LOGICAL_EQUALS \"is\"\n278:21
-    'true' \"true\"\n278:26 EXPRESSION_COMMAND_END \">>\"\n279:1 INDENT \"\t\"\n279:1
-    COMMAND_START \"<<\"\n279:4 COMMAND_TEXT \"setsprite Partner flattering \"\n279:33
-    COMMAND_TEXT_END \">>\"\n280:1 TEXT \"And for you, a wealth tax! Democracy is
+    access to our markets, our shrines, our banks, and our marketplace.\"\n276:1 TEXT_NEWLINE
+    \"\t\"\n275:1 DEDENT \"\t\"\n276:1 COMMAND_START \"<<\"\n276:4 'endif' \"endif\"\n276:10
+    COMMAND_END \">>\"\n276:0 DEDENT \"\n\"\n277:0 COMMAND_START \"<<\"\n277:3 'endif'
+    \"endif\"\n277:9 COMMAND_END \">>\"\n279:0 COMMAND_START \"<<\"\n279:3 COMMAND_IF
+    \"if \"\n279:6 VAR_ID \"$wealth_tax\"\n279:18 OPERATOR_LOGICAL_EQUALS \"is\"\n279:21
+    'true' \"true\"\n279:26 EXPRESSION_COMMAND_END \">>\"\n280:1 INDENT \"\t\"\n280:1
+    COMMAND_START \"<<\"\n280:4 COMMAND_TEXT \"setsprite Partner flattering \"\n280:33
+    COMMAND_TEXT_END \">>\"\n281:1 TEXT \"And for you, a wealth tax! Democracy is
     founded on the noblest of notions - equality! And you, dear stranger, are far
-    too rich.\"\n281:0 TEXT_NEWLINE \"\n\"\n280:0 DEDENT \"\n\"\n281:0 COMMAND_START
-    \"<<\"\n281:3 'endif' \"endif\"\n281:9 COMMAND_END \">>\"\n283:0 COMMAND_START
-    \"<<\"\n283:3 COMMAND_TEXT \"setsprite Partner happy \"\n283:27 COMMAND_TEXT_END
-    \">>\"\n284:0 TEXT \"Lastly, you must pay the intent tax! What are your purposes
-    in our dear city? The more you wish to partake in our services, the more you pay!\"\n285:0
-    TEXT_NEWLINE \"\n\"\n285:0 TEXT \"Will you come through but briefly, and only
+    too rich.\"\n282:0 TEXT_NEWLINE \"\n\"\n281:0 DEDENT \"\n\"\n282:0 COMMAND_START
+    \"<<\"\n282:3 'endif' \"endif\"\n282:9 COMMAND_END \">>\"\n284:0 COMMAND_START
+    \"<<\"\n284:3 COMMAND_TEXT \"setsprite Partner happy \"\n284:27 COMMAND_TEXT_END
+    \">>\"\n285:0 TEXT \"Lastly, you must pay the intent tax! What are your purposes
+    in our dear city? The more you wish to partake in our services, the more you pay!\"\n286:0
+    TEXT_NEWLINE \"\n\"\n286:0 TEXT \"Will you come through but briefly, and only
     to restock your water? That requires a minimum of what we offer. This is a 1%
-    tax.\"\n286:0 TEXT_NEWLINE \"\n\"\n286:0 TEXT \"Wise men take advantage of opportunities!
+    tax.\"\n287:0 TEXT_NEWLINE \"\n\"\n287:0 TEXT \"Wise men take advantage of opportunities!
     If you are among them, here to sell and buy, we'll need a 2% offering from your
-    ship's stores.\"\n287:0 TEXT_NEWLINE \"\n\"\n287:0 TEXT \"Have the seas made you
+    ship's stores.\"\n288:0 TEXT_NEWLINE \"\n\"\n288:0 TEXT \"Have the seas made you
     spring a leak, will you be seeking tar, rope, fresh sails, and skilled workers?
     Plus your men look a bit too lean and hungry - food and water are the only important
-    items on your shopping list? This is a 3% tax.\"\n288:0 TEXT_NEWLINE \"\n\"\n288:0
-    COMMAND_START \"<<\"\n288:3 COMMAND_TEXT \"setend DialogScreen \"\n288:23 COMMAND_TEXT_END
-    \">>\"\n289:0 TEXT \"Or if you are in great need of our great stores! You'll be
+    items on your shopping list? This is a 3% tax.\"\n289:0 TEXT_NEWLINE \"\n\"\n289:0
+    COMMAND_START \"<<\"\n289:3 COMMAND_TEXT \"setend DialogScreen \"\n289:23 COMMAND_TEXT_END
+    \">>\"\n290:0 TEXT \"Or if you are in great need of our great stores! You'll be
     hiring, seeking repairs, seeking to trade, stocking up with water, and imploring
     our local gods for help on the way? You can make full use of anything we offer
-    - but of course, you'll be taxed accordingly at 5%!\"\n291:0 TEXT_NEWLINE \"\n\n\"\n291:0
-    '[[' \"[[\"\n291:2 OPTION_TEXT \"What exactly will each of these taxes cost me?
-    \"\n291:49 '|' \"|\"\n291:50 OPTION_ID \"tax_breakdown\"\n291:63 ']]' \"]]\"\n292:0
-    '[[' \"[[\"\n292:2 OPTION_TEXT \"Alright, I understand. I know what I want to
-    do. \"\n292:51 '|' \"|\"\n292:52 OPTION_ID \"tax_short_1\"\n292:63 ']]' \"]]\"\n293:0
-    '[[' \"[[\"\n293:2 OPTION_TEXT \"That's far too many taxes! (leave without paying)
-    \"\n293:52 '|' \"|\"\n293:53 OPTION_ID \"exit\"\n293:57 ']]' \"]]\"\n294:0 '==='
-    \"===\"\n295:0 ID \"title\"\n295:5 HEADER_DELIMITER \": \"\n295:7 REST_OF_LINE
-    \"tax_breakdown\"\n296:0 HEADER_NEWLINE \"\n\"\n296:0 ID \"tags\"\n296:4 HEADER_DELIMITER
-    \": \"\n297:0 HEADER_NEWLINE \"\n\"\n297:0 ID \"colorID\"\n297:7 HEADER_DELIMITER
-    \": \"\n297:9 REST_OF_LINE \"0\"\n298:0 HEADER_NEWLINE \"\n\"\n298:0 ID \"position\"\n298:8
-    HEADER_DELIMITER \": \"\n298:10 REST_OF_LINE \"655,295\"\n299:0 HEADER_NEWLINE
-    \"\n\"\n299:0 '---' \"---\"\n300:0 COMMAND_START \"<<\"\n300:3 COMMAND_TEXT \"setspeaker
-    DialogScreen Jason \"\n300:33 COMMAND_TEXT_END \">>\"\n301:0 TEXT \"Okay then,
-    what are the exact charges? I must know if you are charging me fairly!\"\n303:0
-    TEXT_NEWLINE \"\n\n\"\n303:0 COMMAND_START \"<<\"\n303:3 COMMAND_TEXT \"setspeaker
-    DialogScreen other \"\n303:33 COMMAND_TEXT_END \">>\"\n305:0 COMMAND_START \"<<\"\n305:3
-    COMMAND_IF \"if \"\n305:6 VAR_ID \"$god_tax\"\n305:15 OPERATOR_LOGICAL_EQUALS
-    \"is\"\n305:18 'true' \"true\"\n305:23 EXPRESSION_COMMAND_END \">>\"\n306:4 INDENT
-    \"    \"\n306:4 COMMAND_START \"<<\"\n306:7 COMMAND_TEXT \"setsprite Partner happy
-    \"\n306:31 COMMAND_TEXT_END \">>\"\n307:4 TEXT \"Lucky you, noble strangers, for
-    the god tax you get to pay \"\n307:63 TEXT_EXPRESSION_START \"{\"\n307:64 VAR_ID
-    \"$god_tax_amount\"\n307:79 '}' \"}\"\n307:80 TEXT \" drachma.\"\n308:0 TEXT_NEWLINE
-    \"\n\"\n307:0 DEDENT \"\n\"\n308:0 COMMAND_START \"<<\"\n308:3 'endif' \"endif\"\n308:9
-    COMMAND_END \">>\"\n309:0 COMMAND_START \"<<\"\n309:3 COMMAND_IF \"if \"\n309:6
-    VAR_ID \"$transit_tax\"\n309:19 OPERATOR_LOGICAL_EQUALS \"is\"\n309:22 'true'
-    \"true\"\n309:27 EXPRESSION_COMMAND_END \">>\"\n310:4 INDENT \"    \"\n310:4 COMMAND_START
-    \"<<\"\n310:7 COMMAND_TEXT \"setsprite Partner happy \"\n310:31 COMMAND_TEXT_END
-    \">>\"\n311:4 TEXT \"For transit here \"\n311:21 TEXT_EXPRESSION_START \"{\"\n311:22
-    VAR_ID \"$transit_tax_amount\"\n311:42 '*' \"*\"\n311:44 NUMBER \"100\"\n311:47
-    '}' \"}\"\n311:48 TEXT \"% of your cargo value: \"\n311:71 TEXT_EXPRESSION_START
-    \"{\"\n311:72 VAR_ID \"$transit_tax_amount\"\n311:92 '*' \"*\"\n311:94 VAR_ID
-    \"$cargo_value\"\n311:106 '}' \"}\"\n311:107 TEXT \" dr.\"\n312:0 TEXT_NEWLINE
-    \"\n\"\n311:0 DEDENT \"\n\"\n312:0 COMMAND_START \"<<\"\n312:3 'endif' \"endif\"\n312:9
-    COMMAND_END \">>\"\n314:0 COMMAND_START \"<<\"\n314:3 COMMAND_IF \"if \"\n314:6
-    VAR_ID \"$foreigner_tax\"\n314:21 OPERATOR_LOGICAL_EQUALS \"is\"\n314:24 'true'
-    \"true\"\n314:29 EXPRESSION_COMMAND_END \">>\"\n315:4 INDENT \"    \"\n315:4 COMMAND_START
-    \"<<\"\n315:7 COMMAND_TEXT \"setsprite Partner happy \"\n315:31 COMMAND_TEXT_END
-    \">>\"\n316:4 TEXT \"As a foreigner here you pay \"\n316:32 TEXT_EXPRESSION_START
-    \"{\"\n316:33 VAR_ID \"$foreigner_tax_amount\"\n316:55 '*' \"*\"\n316:57 NUMBER
-    \"100\"\n316:60 '}' \"}\"\n316:61 TEXT \"% of your cargo to use the market: \"\n316:96
-    TEXT_EXPRESSION_START \"{\"\n316:97 VAR_ID \"$foreigner_tax_amount\"\n316:119
-    '*' \"*\"\n316:121 VAR_ID \"$cargo_value\"\n316:133 '}' \"}\"\n316:134 TEXT \"
-    dr.\"\n317:0 TEXT_NEWLINE \"\n\"\n316:0 DEDENT \"\n\"\n317:0 COMMAND_START \"<<\"\n317:3
-    'endif' \"endif\"\n317:9 COMMAND_END \">>\"\n318:0 COMMAND_START \"<<\"\n318:3
-    COMMAND_IF \"if \"\n318:6 VAR_ID \"$wealth_tax\"\n318:18 OPERATOR_LOGICAL_EQUALS
-    \"is\"\n318:21 'true' \"true\"\n318:26 EXPRESSION_COMMAND_END \">>\"\n319:4 INDENT
-    \"    \"\n319:4 COMMAND_START \"<<\"\n319:7 COMMAND_TEXT \"setsprite Partner happy
-    \"\n319:31 COMMAND_TEXT_END \">>\"\n320:4 TEXT \"Due to your great wealth, for
-    you, \"\n320:39 TEXT_EXPRESSION_START \"{\"\n320:40 VAR_ID \"$wealth_tax_amount\"\n320:59
-    '*' \"*\"\n320:61 NUMBER \"100\"\n320:64 '}' \"}\"\n320:65 TEXT \"% of your cargo
-    needs to be paid before you leave: \"\n320:116 TEXT_EXPRESSION_START \"{\"\n320:117
-    VAR_ID \"$wealth_tax\"\n320:129 '*' \"*\"\n320:131 VAR_ID \"$cargo_value\"\n320:143
-    '}' \"}\"\n320:144 TEXT \" dr!\"\n321:0 TEXT_NEWLINE \"\n\"\n320:0 DEDENT \"\n\"\n321:0
-    COMMAND_START \"<<\"\n321:3 'endif' \"endif\"\n321:9 COMMAND_END \">>\"\n322:0
-    COMMAND_START \"<<\"\n322:3 COMMAND_IF \"if \"\n322:6 VAR_ID \"$no_taxes\"\n322:16
-    OPERATOR_LOGICAL_EQUALS \"is\"\n322:19 'true' \"true\"\n322:24 OPERATOR_LOGICAL_AND
-    \"and\"\n322:28 VAR_ID \"$wealth_tax\"\n322:40 OPERATOR_LOGICAL_EQUALS \"is\"\n322:43
-    'false' \"false\"\n322:49 EXPRESSION_COMMAND_END \">>\"\n323:4 INDENT \"    \"\n323:4
-    COMMAND_START \"<<\"\n323:7 COMMAND_TEXT \"setsprite Partner unhappy \"\n323:33
-    COMMAND_TEXT_END \">>\"\n324:4 TEXT \"Lucky you! Only the ellimenion and intent
-    fee apply in this port.\"\n325:0 TEXT_NEWLINE \"\n\"\n324:0 DEDENT \"\n\"\n325:0
-    COMMAND_START \"<<\"\n325:3 'endif' \"endif\"\n325:9 COMMAND_END \">>\"\n327:0
-    COMMAND_START \"<<\"\n327:3 COMMAND_TEXT \"calculatetaxes DialogScreen \"\n327:31
-    COMMAND_TEXT_END \">>\"\n328:0 COMMAND_START \"<<\"\n328:3 COMMAND_TEXT \"calculatepercents
-    DialogScreen \"\n328:34 COMMAND_TEXT_END \">>\"\n330:0 COMMAND_START \"<<\"\n330:3
-    COMMAND_IF \"if \"\n330:6 VAR_ID \"$asked_networks\"\n330:22 OPERATOR_LOGICAL_EQUALS
-    \"is\"\n330:25 'true' \"true\"\n330:30 OPERATOR_LOGICAL_AND \"and\"\n330:34 VAR_ID
-    \"$connections_number\"\n330:54 OPERATOR_LOGICAL_GREATER_THAN_EQUALS \">=\"\n330:57
-    NUMBER \"1\"\n330:59 EXPRESSION_COMMAND_END \">>\"\n331:4 INDENT \"    \"\n331:4
-    COMMAND_START \"<<\"\n331:7 COMMAND_IF \"if \"\n331:10 VAR_ID \"$connections_number\"\n331:30
-    OPERATOR_LOGICAL_GREATER \">\"\n331:32 NUMBER \"1\"\n331:34 EXPRESSION_COMMAND_END
-    \">>\"\n332:8 INDENT \"        \"\n332:8 COMMAND_START \"<<\"\n332:11 COMMAND_TEXT
-    \"setsprite Partner unhappy \"\n332:37 COMMAND_TEXT_END \">>\"\n333:8 COMMAND_START
-    \"<<\"\n333:11 COMMAND_SET \"set \"\n333:15 VAR_ID \"$ellimenion_percent\"\n333:35
-    OPERATOR_ASSIGNMENT \"to\"\n333:38 NUMBER \"0\"\n333:40 EXPRESSION_COMMAND_END
-    \">>\"\n334:8 COMMAND_START \"<<\"\n334:11 COMMAND_IF \"if \"\n334:14 VAR_ID \"$no_taxes\"\n334:24
-    OPERATOR_LOGICAL_EQUALS \"is\"\n334:27 'true' \"true\"\n334:32 OPERATOR_LOGICAL_AND
-    \"and\"\n334:36 VAR_ID \"$wealth_tax\"\n334:48 OPERATOR_LOGICAL_EQUALS \"is\"\n334:51
-    'false' \"false\"\n334:57 EXPRESSION_COMMAND_END \">>\"\n335:12 INDENT \"            \"\n335:12
+    - but of course, you'll be taxed accordingly at 5%!\"\n292:0 TEXT_NEWLINE \"\n\n\"\n292:0
+    '[[' \"[[\"\n292:2 OPTION_TEXT \"What exactly will each of these taxes cost me?
+    \"\n292:49 '|' \"|\"\n292:50 OPTION_ID \"tax_breakdown\"\n292:63 ']]' \"]]\"\n293:0
+    '[[' \"[[\"\n293:2 OPTION_TEXT \"Alright, I understand. I know what I want to
+    do. \"\n293:51 '|' \"|\"\n293:52 OPTION_ID \"tax_short_1\"\n293:63 ']]' \"]]\"\n294:0
+    '[[' \"[[\"\n294:2 OPTION_TEXT \"That's far too many taxes! (leave without paying)
+    \"\n294:52 '|' \"|\"\n294:53 OPTION_ID \"exit\"\n294:57 ']]' \"]]\"\n295:0 '==='
+    \"===\"\n296:0 ID \"title\"\n296:5 HEADER_DELIMITER \": \"\n296:7 REST_OF_LINE
+    \"tax_breakdown\"\n297:0 HEADER_NEWLINE \"\n\"\n297:0 ID \"tags\"\n297:4 HEADER_DELIMITER
+    \": \"\n298:0 HEADER_NEWLINE \"\n\"\n298:0 ID \"colorID\"\n298:7 HEADER_DELIMITER
+    \": \"\n298:9 REST_OF_LINE \"6\"\n299:0 HEADER_NEWLINE \"\n\"\n299:0 ID \"position\"\n299:8
+    HEADER_DELIMITER \": \"\n299:10 REST_OF_LINE \"653,295\"\n300:0 HEADER_NEWLINE
+    \"\n\"\n300:0 '---' \"---\"\n301:0 COMMAND_START \"<<\"\n301:3 COMMAND_TEXT \"setspeaker
+    DialogScreen Jason \"\n301:33 COMMAND_TEXT_END \">>\"\n302:0 TEXT \"Okay then,
+    what are the exact charges? I must know if you are charging me fairly!\"\n304:0
+    TEXT_NEWLINE \"\n\n\"\n304:0 COMMAND_START \"<<\"\n304:3 COMMAND_TEXT \"setspeaker
+    DialogScreen other \"\n304:33 COMMAND_TEXT_END \">>\"\n306:0 COMMAND_START \"<<\"\n306:3
+    COMMAND_IF \"if \"\n306:6 VAR_ID \"$god_tax\"\n306:15 OPERATOR_LOGICAL_EQUALS
+    \"is\"\n306:18 'true' \"true\"\n306:23 EXPRESSION_COMMAND_END \">>\"\n307:4 INDENT
+    \"    \"\n307:4 COMMAND_START \"<<\"\n307:7 COMMAND_TEXT \"setsprite Partner happy
+    \"\n307:31 COMMAND_TEXT_END \">>\"\n308:4 TEXT \"Lucky you, noble strangers, for
+    the god tax you get to pay \"\n308:63 TEXT_EXPRESSION_START \"{\"\n308:64 VAR_ID
+    \"$god_tax_amount\"\n308:79 '}' \"}\"\n308:80 TEXT \" drachma.\"\n309:0 TEXT_NEWLINE
+    \"\n\"\n308:0 DEDENT \"\n\"\n309:0 COMMAND_START \"<<\"\n309:3 'endif' \"endif\"\n309:9
+    COMMAND_END \">>\"\n310:0 COMMAND_START \"<<\"\n310:3 COMMAND_IF \"if \"\n310:6
+    VAR_ID \"$transit_tax\"\n310:19 OPERATOR_LOGICAL_EQUALS \"is\"\n310:22 'true'
+    \"true\"\n310:27 EXPRESSION_COMMAND_END \">>\"\n311:4 INDENT \"    \"\n311:4 COMMAND_START
+    \"<<\"\n311:7 COMMAND_TEXT \"setsprite Partner happy \"\n311:31 COMMAND_TEXT_END
+    \">>\"\n312:4 TEXT \"For transit here \"\n312:21 TEXT_EXPRESSION_START \"{\"\n312:22
+    VAR_ID \"$transit_tax_amount\"\n312:42 '*' \"*\"\n312:44 NUMBER \"100\"\n312:47
+    '}' \"}\"\n312:48 TEXT \"% of your cargo value: \"\n312:71 TEXT_EXPRESSION_START
+    \"{\"\n312:72 VAR_ID \"$transit_tax_amount\"\n312:92 '*' \"*\"\n312:94 VAR_ID
+    \"$cargo_value\"\n312:106 '}' \"}\"\n312:107 TEXT \" dr.\"\n313:0 TEXT_NEWLINE
+    \"\n\"\n312:0 DEDENT \"\n\"\n313:0 COMMAND_START \"<<\"\n313:3 'endif' \"endif\"\n313:9
+    COMMAND_END \">>\"\n315:0 COMMAND_START \"<<\"\n315:3 COMMAND_IF \"if \"\n315:6
+    VAR_ID \"$foreigner_tax\"\n315:21 OPERATOR_LOGICAL_EQUALS \"is\"\n315:24 'true'
+    \"true\"\n315:29 EXPRESSION_COMMAND_END \">>\"\n316:4 INDENT \"    \"\n316:4 COMMAND_START
+    \"<<\"\n316:7 COMMAND_TEXT \"setsprite Partner happy \"\n316:31 COMMAND_TEXT_END
+    \">>\"\n317:4 TEXT \"As a foreigner here you pay \"\n317:32 TEXT_EXPRESSION_START
+    \"{\"\n317:33 VAR_ID \"$foreigner_tax_amount\"\n317:55 '*' \"*\"\n317:57 NUMBER
+    \"100\"\n317:60 '}' \"}\"\n317:61 TEXT \"% of your cargo to use the market: \"\n317:96
+    TEXT_EXPRESSION_START \"{\"\n317:97 VAR_ID \"$foreigner_tax_amount\"\n317:119
+    '*' \"*\"\n317:121 VAR_ID \"$cargo_value\"\n317:133 '}' \"}\"\n317:134 TEXT \"
+    dr.\"\n318:0 TEXT_NEWLINE \"\n\"\n317:0 DEDENT \"\n\"\n318:0 COMMAND_START \"<<\"\n318:3
+    'endif' \"endif\"\n318:9 COMMAND_END \">>\"\n319:0 COMMAND_START \"<<\"\n319:3
+    COMMAND_IF \"if \"\n319:6 VAR_ID \"$wealth_tax\"\n319:18 OPERATOR_LOGICAL_EQUALS
+    \"is\"\n319:21 'true' \"true\"\n319:26 EXPRESSION_COMMAND_END \">>\"\n320:4 INDENT
+    \"    \"\n320:4 COMMAND_START \"<<\"\n320:7 COMMAND_TEXT \"setsprite Partner happy
+    \"\n320:31 COMMAND_TEXT_END \">>\"\n321:4 TEXT \"Due to your great wealth, for
+    you, \"\n321:39 TEXT_EXPRESSION_START \"{\"\n321:40 VAR_ID \"$wealth_tax_amount\"\n321:59
+    '*' \"*\"\n321:61 NUMBER \"100\"\n321:64 '}' \"}\"\n321:65 TEXT \"% of your cargo
+    needs to be paid before you leave: \"\n321:116 TEXT_EXPRESSION_START \"{\"\n321:117
+    VAR_ID \"$wealth_tax\"\n321:129 '*' \"*\"\n321:131 VAR_ID \"$cargo_value\"\n321:143
+    '}' \"}\"\n321:144 TEXT \" dr!\"\n322:0 TEXT_NEWLINE \"\n\"\n321:0 DEDENT \"\n\"\n322:0
+    COMMAND_START \"<<\"\n322:3 'endif' \"endif\"\n322:9 COMMAND_END \">>\"\n323:0
+    COMMAND_START \"<<\"\n323:3 COMMAND_IF \"if \"\n323:6 VAR_ID \"$no_taxes\"\n323:16
+    OPERATOR_LOGICAL_EQUALS \"is\"\n323:19 'true' \"true\"\n323:24 OPERATOR_LOGICAL_AND
+    \"and\"\n323:28 VAR_ID \"$wealth_tax\"\n323:40 OPERATOR_LOGICAL_EQUALS \"is\"\n323:43
+    'false' \"false\"\n323:49 EXPRESSION_COMMAND_END \">>\"\n324:4 INDENT \"    \"\n324:4
+    COMMAND_START \"<<\"\n324:7 COMMAND_TEXT \"setsprite Partner unhappy \"\n324:33
+    COMMAND_TEXT_END \">>\"\n325:4 TEXT \"Lucky you! Only the ellimenion and intent
+    fee apply in this port.\"\n326:0 TEXT_NEWLINE \"\n\"\n325:0 DEDENT \"\n\"\n326:0
+    COMMAND_START \"<<\"\n326:3 'endif' \"endif\"\n326:9 COMMAND_END \">>\"\n328:0
+    COMMAND_START \"<<\"\n328:3 COMMAND_TEXT \"calculatetaxes DialogScreen \"\n328:31
+    COMMAND_TEXT_END \">>\"\n329:0 COMMAND_START \"<<\"\n329:3 COMMAND_TEXT \"calculatepercents
+    DialogScreen \"\n329:34 COMMAND_TEXT_END \">>\"\n331:0 COMMAND_START \"<<\"\n331:3
+    COMMAND_IF \"if \"\n331:6 VAR_ID \"$asked_networks\"\n331:22 OPERATOR_LOGICAL_EQUALS
+    \"is\"\n331:25 'true' \"true\"\n331:30 OPERATOR_LOGICAL_AND \"and\"\n331:34 VAR_ID
+    \"$connections_number\"\n331:54 OPERATOR_LOGICAL_GREATER_THAN_EQUALS \">=\"\n331:57
+    NUMBER \"1\"\n331:59 EXPRESSION_COMMAND_END \">>\"\n332:4 INDENT \"    \"\n332:4
+    COMMAND_START \"<<\"\n332:7 COMMAND_IF \"if \"\n332:10 VAR_ID \"$connections_number\"\n332:30
+    OPERATOR_LOGICAL_GREATER \">\"\n332:32 NUMBER \"1\"\n332:34 EXPRESSION_COMMAND_END
+    \">>\"\n333:8 INDENT \"        \"\n333:8 COMMAND_START \"<<\"\n333:11 COMMAND_TEXT
+    \"setsprite Partner unhappy \"\n333:37 COMMAND_TEXT_END \">>\"\n334:8 COMMAND_START
+    \"<<\"\n334:11 COMMAND_SET \"set \"\n334:15 VAR_ID \"$ellimenion_percent\"\n334:35
+    OPERATOR_ASSIGNMENT \"to\"\n334:38 NUMBER \"0\"\n334:40 EXPRESSION_COMMAND_END
+    \">>\"\n335:8 COMMAND_START \"<<\"\n335:11 COMMAND_IF \"if \"\n335:14 VAR_ID \"$no_taxes\"\n335:24
+    OPERATOR_LOGICAL_EQUALS \"is\"\n335:27 'true' \"true\"\n335:32 OPERATOR_LOGICAL_AND
+    \"and\"\n335:36 VAR_ID \"$wealth_tax\"\n335:48 OPERATOR_LOGICAL_EQUALS \"is\"\n335:51
+    'false' \"false\"\n335:57 EXPRESSION_COMMAND_END \">>\"\n336:12 INDENT \"            \"\n336:12
     TEXT \"Your ellimenion taxes are waived, which means you only owe us the fee for
-    your intent. \"\n336:8 TEXT_NEWLINE \" \"\n335:8 DEDENT \" \"\n336:8 COMMAND_START
-    \"<<\"\n336:11 COMMAND_ELSE \"else \"\n336:16 COMMAND_END \">>\"\n337:12 INDENT
-    \"            \"\n337:12 TEXT \"Your ellimenion taxes are waived! You only have
-    to pay \"\n337:67 TEXT_EXPRESSION_START \"{\"\n337:68 VAR_ID \"$tax_subtotal\"\n337:81
-    '}' \"}\"\n337:82 TEXT \" Drachma in addition to your intent.\"\n338:8 TEXT_NEWLINE
-    \" \"\n337:8 DEDENT \" \"\n338:8 COMMAND_START \"<<\"\n338:11 'endif' \"endif\"\n338:17
-    COMMAND_END \">>\"\n338:4 DEDENT \" \"\n339:4 COMMAND_START \"<<\"\n339:7 COMMAND_ELSE
-    \"else \"\n339:12 COMMAND_END \">>\"\n340:8 INDENT \"        \"\n340:8 COMMAND_START
-    \"<<\"\n340:11 COMMAND_TEXT \"setsprite Partner happy \"\n340:35 COMMAND_TEXT_END
-    \">>\"\n341:8 COMMAND_START \"<<\"\n341:11 COMMAND_SET \"set \"\n341:15 VAR_ID
-    \"$ellimenion_percent\"\n341:35 OPERATOR_ASSIGNMENT \"to\"\n341:38 '(' \"(\"\n341:39
-    VAR_ID \"$ellimenion_percent\"\n341:59 '/' \"/\"\n341:61 NUMBER \"2\"\n341:62
-    ')' \")\"\n341:63 EXPRESSION_COMMAND_END \">>\"\n342:8 TEXT \"Your ellimenion
-    taxes are reduced by half to only \"\n342:58 TEXT_EXPRESSION_START \"{\"\n342:59
-    VAR_ID \"$ellimenion_percent\"\n342:79 '*' \"*\"\n342:81 NUMBER \"100\"\n342:84
-    '}' \"}\"\n342:85 TEXT \"% of your cargo's value - a mere \"\n342:118 TEXT_EXPRESSION_START
-    \"{\"\n342:119 VAR_ID \"$ellimenion_percent\"\n342:139 '*' \"*\"\n342:141 VAR_ID
-    \"$cargo_value\"\n342:153 '}' \"}\"\n342:154 TEXT \" Drachma! You only have to
-    pay \"\n342:185 TEXT_EXPRESSION_START \"{\"\n342:186 VAR_ID \"$ellimenion_percent\"\n342:206
-    '*' \"*\"\n342:208 VAR_ID \"$cargo_value\"\n342:221 '+' \"+\"\n342:223 VAR_ID
-    \"$tax_subtotal\"\n342:236 '}' \"}\"\n342:237 TEXT \" dr in addition to your intent.\"\n343:4
-    TEXT_NEWLINE \" \"\n342:4 DEDENT \" \"\n343:4 COMMAND_START \"<<\"\n343:7 'endif'
-    \"endif\"\n343:13 COMMAND_END \">>\"\n343:0 DEDENT \"\n\"\n345:0 COMMAND_START
-    \"<<\"\n345:3 COMMAND_ELSE \"else \"\n345:8 COMMAND_END \">>\"\n346:4 INDENT \"
-    \   \"\n346:4 COMMAND_START \"<<\"\n346:7 COMMAND_TEXT \"setsprite Partner bragging
-    \"\n346:34 COMMAND_TEXT_END \">>\"\n347:4 TEXT \"You pay all port taxes! Our ellimenion
-    is \"\n347:46 TEXT_EXPRESSION_START \"{\"\n347:47 VAR_ID \"$ellimenion_percent\"\n347:67
-    '*' \"*\"\n347:69 NUMBER \"100\"\n347:72 '}' \"}\"\n347:73 TEXT \"% of your cargo
-    value, which for you is \"\n347:113 TEXT_EXPRESSION_START \"{\"\n347:114 VAR_ID
-    \"$ellimenion_percent\"\n347:134 '*' \"*\"\n347:136 VAR_ID \"$cargo_value\"\n347:148
-    '}' \"}\"\n347:149 TEXT \" Drachma. In total, you owe \"\n347:177 TEXT_EXPRESSION_START
-    \"{\"\n347:178 VAR_ID \"$ellimenion_percent\"\n347:198 '*' \"*\"\n347:200 VAR_ID
-    \"$cargo_value\"\n347:213 '+' \"+\"\n347:215 VAR_ID \"$tax_subtotal\"\n347:228
-    '}' \"}\"\n347:229 TEXT \" dr in addition to your intent!\"\n348:0 TEXT_NEWLINE
-    \"\n\"\n347:0 DEDENT \"\n\"\n348:0 COMMAND_START \"<<\"\n348:3 'endif' \"endif\"\n348:9
-    COMMAND_END \">>\"\n350:0 COMMAND_START \"<<\"\n350:3 COMMAND_SET \"set \"\n350:7
-    VAR_ID \"$updated_subtotal\"\n350:25 OPERATOR_ASSIGNMENT \"to\"\n350:28 '(' \"(\"\n350:29
-    VAR_ID \"$ellimenion_percent\"\n350:49 '*' \"*\"\n350:51 VAR_ID \"$cargo_value\"\n350:64
-    '+' \"+\"\n350:66 VAR_ID \"$tax_subtotal\"\n350:79 ')' \")\"\n350:81 EXPRESSION_COMMAND_END
-    \">>\"\n351:0 COMMAND_START \"<<\"\n351:3 COMMAND_TEXT \"roundup DialogScreen
-    $updated_subtotal \"\n351:42 COMMAND_TEXT_END \">>\"\n352:0 COMMAND_START \"<<\"\n352:3
-    COMMAND_SET \"set \"\n352:7 VAR_ID \"$updated_subtotal\"\n352:25 OPERATOR_ASSIGNMENT
-    \"to\"\n352:28 VAR_ID \"$rounded_num\"\n352:41 EXPRESSION_COMMAND_END \">>\"\n354:0
-    COMMAND_START \"<<\"\n354:3 COMMAND_TEXT \"setend DialogScreen \"\n354:23 COMMAND_TEXT_END
-    \">>\"\n355:0 TEXT \"If you want only water and brief rest, you owe \"\n355:47
-    TEXT_EXPRESSION_START \"{\"\n355:48 VAR_ID \"$updated_subtotal\"\n355:66 '+' \"+\"\n355:68
-    VAR_ID \"$water_intent\"\n355:81 '}' \"}\"\n355:82 TEXT \" Drachma. If you are
-    here to trade, your total will be \"\n355:137 TEXT_EXPRESSION_START \"{\"\n355:138
-    VAR_ID \"$updated_subtotal\"\n355:156 '+' \"+\"\n355:158 VAR_ID \"$trade_intent\"\n355:171
-    '}' \"}\"\n355:172 TEXT \" Drachma. If you need long rest, new crew, and repairs,
-    you have to pay \"\n355:244 TEXT_EXPRESSION_START \"{\"\n355:245 VAR_ID \"$updated_subtotal\"\n355:263
-    '+' \"+\"\n355:265 VAR_ID \"$tavern_intent\"\n355:279 '}' \"}\"\n355:280 TEXT
+    your intent. \"\n337:8 TEXT_NEWLINE \" \"\n336:8 DEDENT \" \"\n337:8 COMMAND_START
+    \"<<\"\n337:11 COMMAND_ELSE \"else \"\n337:16 COMMAND_END \">>\"\n338:12 INDENT
+    \"            \"\n338:12 TEXT \"Your ellimenion taxes are waived! You only have
+    to pay \"\n338:67 TEXT_EXPRESSION_START \"{\"\n338:68 VAR_ID \"$tax_subtotal\"\n338:81
+    '}' \"}\"\n338:82 TEXT \" Drachma in addition to your intent.\"\n339:8 TEXT_NEWLINE
+    \" \"\n338:8 DEDENT \" \"\n339:8 COMMAND_START \"<<\"\n339:11 'endif' \"endif\"\n339:17
+    COMMAND_END \">>\"\n339:4 DEDENT \" \"\n340:4 COMMAND_START \"<<\"\n340:7 COMMAND_ELSE
+    \"else \"\n340:12 COMMAND_END \">>\"\n341:8 INDENT \"        \"\n341:8 COMMAND_START
+    \"<<\"\n341:11 COMMAND_TEXT \"setsprite Partner happy \"\n341:35 COMMAND_TEXT_END
+    \">>\"\n342:8 COMMAND_START \"<<\"\n342:11 COMMAND_SET \"set \"\n342:15 VAR_ID
+    \"$ellimenion_percent\"\n342:35 OPERATOR_ASSIGNMENT \"to\"\n342:38 '(' \"(\"\n342:39
+    VAR_ID \"$ellimenion_percent\"\n342:59 '/' \"/\"\n342:61 NUMBER \"2\"\n342:62
+    ')' \")\"\n342:63 EXPRESSION_COMMAND_END \">>\"\n343:8 TEXT \"Your ellimenion
+    taxes are reduced by half to only \"\n343:58 TEXT_EXPRESSION_START \"{\"\n343:59
+    VAR_ID \"$ellimenion_percent\"\n343:79 '*' \"*\"\n343:81 NUMBER \"100\"\n343:84
+    '}' \"}\"\n343:85 TEXT \"% of your cargo's value - a mere \"\n343:118 TEXT_EXPRESSION_START
+    \"{\"\n343:119 VAR_ID \"$ellimenion_percent\"\n343:139 '*' \"*\"\n343:141 VAR_ID
+    \"$cargo_value\"\n343:153 '}' \"}\"\n343:154 TEXT \" Drachma! You only have to
+    pay \"\n343:185 TEXT_EXPRESSION_START \"{\"\n343:186 VAR_ID \"$ellimenion_percent\"\n343:206
+    '*' \"*\"\n343:208 VAR_ID \"$cargo_value\"\n343:221 '+' \"+\"\n343:223 VAR_ID
+    \"$tax_subtotal\"\n343:236 '}' \"}\"\n343:237 TEXT \" dr in addition to your intent.\"\n344:4
+    TEXT_NEWLINE \" \"\n343:4 DEDENT \" \"\n344:4 COMMAND_START \"<<\"\n344:7 'endif'
+    \"endif\"\n344:13 COMMAND_END \">>\"\n344:0 DEDENT \"\n\"\n346:0 COMMAND_START
+    \"<<\"\n346:3 COMMAND_ELSE \"else \"\n346:8 COMMAND_END \">>\"\n347:4 INDENT \"
+    \   \"\n347:4 COMMAND_START \"<<\"\n347:7 COMMAND_TEXT \"setsprite Partner bragging
+    \"\n347:34 COMMAND_TEXT_END \">>\"\n348:4 TEXT \"You pay all port taxes! Our ellimenion
+    is \"\n348:46 TEXT_EXPRESSION_START \"{\"\n348:47 VAR_ID \"$ellimenion_percent\"\n348:67
+    '*' \"*\"\n348:69 NUMBER \"100\"\n348:72 '}' \"}\"\n348:73 TEXT \"% of your cargo
+    value, which for you is \"\n348:113 TEXT_EXPRESSION_START \"{\"\n348:114 VAR_ID
+    \"$ellimenion_percent\"\n348:134 '*' \"*\"\n348:136 VAR_ID \"$cargo_value\"\n348:148
+    '}' \"}\"\n348:149 TEXT \" Drachma. In total, you owe \"\n348:177 TEXT_EXPRESSION_START
+    \"{\"\n348:178 VAR_ID \"$ellimenion_percent\"\n348:198 '*' \"*\"\n348:200 VAR_ID
+    \"$cargo_value\"\n348:213 '+' \"+\"\n348:215 VAR_ID \"$tax_subtotal\"\n348:228
+    '}' \"}\"\n348:229 TEXT \" dr in addition to your intent!\"\n349:0 TEXT_NEWLINE
+    \"\n\"\n348:0 DEDENT \"\n\"\n349:0 COMMAND_START \"<<\"\n349:3 'endif' \"endif\"\n349:9
+    COMMAND_END \">>\"\n351:0 COMMAND_START \"<<\"\n351:3 COMMAND_SET \"set \"\n351:7
+    VAR_ID \"$updated_subtotal\"\n351:25 OPERATOR_ASSIGNMENT \"to\"\n351:28 '(' \"(\"\n351:29
+    VAR_ID \"$ellimenion_percent\"\n351:49 '*' \"*\"\n351:51 VAR_ID \"$cargo_value\"\n351:64
+    '+' \"+\"\n351:66 VAR_ID \"$tax_subtotal\"\n351:79 ')' \")\"\n351:81 EXPRESSION_COMMAND_END
+    \">>\"\n352:0 COMMAND_START \"<<\"\n352:3 COMMAND_TEXT \"roundup DialogScreen
+    $updated_subtotal \"\n352:42 COMMAND_TEXT_END \">>\"\n353:0 COMMAND_START \"<<\"\n353:3
+    COMMAND_SET \"set \"\n353:7 VAR_ID \"$updated_subtotal\"\n353:25 OPERATOR_ASSIGNMENT
+    \"to\"\n353:28 VAR_ID \"$rounded_num\"\n353:41 EXPRESSION_COMMAND_END \">>\"\n355:0
+    COMMAND_START \"<<\"\n355:3 COMMAND_TEXT \"setend DialogScreen \"\n355:23 COMMAND_TEXT_END
+    \">>\"\n356:0 TEXT \"If you want only water and brief rest, you owe \"\n356:47
+    TEXT_EXPRESSION_START \"{\"\n356:48 VAR_ID \"$updated_subtotal\"\n356:66 '+' \"+\"\n356:68
+    VAR_ID \"$water_intent\"\n356:81 '}' \"}\"\n356:82 TEXT \" Drachma. If you are
+    here to trade, your total will be \"\n356:137 TEXT_EXPRESSION_START \"{\"\n356:138
+    VAR_ID \"$updated_subtotal\"\n356:156 '+' \"+\"\n356:158 VAR_ID \"$trade_intent\"\n356:171
+    '}' \"}\"\n356:172 TEXT \" Drachma. If you need long rest, new crew, and repairs,
+    you have to pay \"\n356:244 TEXT_EXPRESSION_START \"{\"\n356:245 VAR_ID \"$updated_subtotal\"\n356:263
+    '+' \"+\"\n356:265 VAR_ID \"$tavern_intent\"\n356:279 '}' \"}\"\n356:280 TEXT
     \" Drachma. Or if you want to take full advantage of our port, it comes out to
-    \"\n355:357 TEXT_EXPRESSION_START \"{\"\n355:358 VAR_ID \"$updated_subtotal\"\n355:376
-    '+' \"+\"\n355:378 VAR_ID \"$all_intent\"\n355:389 '}' \"}\"\n355:390 TEXT \"
-    Drachma.\"\n357:0 TEXT_NEWLINE \"\n\n\"\n357:0 COMMAND_START \"<<\"\n357:3 COMMAND_SET
-    \"set \"\n357:7 VAR_ID \"$total_cargos\"\n357:21 OPERATOR_ASSIGNMENT \"to\"\n357:24
-    NUMBER \"0\"\n357:26 EXPRESSION_COMMAND_END \">>\"\n358:0 COMMAND_START \"<<\"\n358:3
-    COMMAND_SET \"set \"\n358:7 VAR_ID \"$water_total\"\n358:20 OPERATOR_ASSIGNMENT
-    \"to\"\n358:23 '(' \"(\"\n358:24 VAR_ID \"$updated_subtotal\"\n358:42 '+' \"+\"\n358:44
-    VAR_ID \"$water_intent\"\n358:57 ')' \")\"\n358:59 EXPRESSION_COMMAND_END \">>\"\n359:0
-    COMMAND_START \"<<\"\n359:3 COMMAND_TEXT \"checkafford DialogScreen $water_total
-    \"\n359:41 COMMAND_TEXT_END \">>\"\n361:0 COMMAND_START \"<<\"\n361:3 COMMAND_IF
-    \"if \"\n361:6 VAR_ID \"$can_afford\"\n361:18 OPERATOR_LOGICAL_EQUALS \"==\"\n361:21
-    'true' \"true\"\n361:26 EXPRESSION_COMMAND_END \">>\"\n362:4 INDENT \"    \"\n362:4
-    '[[' \"[[\"\n362:6 OPTION_TEXT \"I would like to rest and buy water. (pay \"\n362:47
-    OPTION_EXPRESSION_START \"{\"\n362:48 VAR_ID \"$water_total\"\n362:60 '}' \"}\"\n362:61
-    OPTION_TEXT \" dr) \"\n362:66 '|' \"|\"\n362:67 OPTION_ID \"enter_water\"\n362:78
-    ']]' \"]]\"\n362:0 DEDENT \"\n\"\n363:0 COMMAND_START \"<<\"\n363:3 COMMAND_ELSE
-    \"else \"\n363:8 COMMAND_END \">>\"\n364:4 INDENT \"    \"\n364:4 COMMAND_START
-    \"<<\"\n364:7 COMMAND_SET \"set \"\n364:11 VAR_ID \"$total_cargos\"\n364:25 OPERATOR_ASSIGNMENT
-    \"to\"\n364:28 VAR_ID \"$total_cargos\"\n364:42 '+' \"+\"\n364:44 NUMBER \"1\"\n364:46
-    EXPRESSION_COMMAND_END \">>\"\n365:4 '[[' \"[[\"\n365:6 OPTION_TEXT \"I would
-    like to rest and buy water. (pay \"\n365:47 OPTION_EXPRESSION_START \"{\"\n365:48
-    VAR_ID \"$water_total\"\n365:60 '}' \"}\"\n365:61 OPTION_TEXT \" worth of cargo)
-    \"\n365:78 '|' \"|\"\n365:79 OPTION_ID \"enter_water_cargo\"\n365:96 ']]' \"]]\"\n365:0
-    DEDENT \"\n\"\n366:0 COMMAND_START \"<<\"\n366:3 'endif' \"endif\"\n366:9 COMMAND_END
-    \">>\"\n368:0 COMMAND_START \"<<\"\n368:3 COMMAND_SET \"set \"\n368:7 VAR_ID \"$trading_total\"\n368:22
-    OPERATOR_ASSIGNMENT \"to\"\n368:25 '(' \"(\"\n368:26 VAR_ID \"$updated_subtotal\"\n368:44
-    '+' \"+\"\n368:46 VAR_ID \"$trade_intent\"\n368:59 ')' \")\"\n368:61 EXPRESSION_COMMAND_END
-    \">>\"\n369:0 COMMAND_START \"<<\"\n369:3 COMMAND_TEXT \"checkafford DialogScreen
-    $trading_total \"\n369:43 COMMAND_TEXT_END \">>\"\n371:0 COMMAND_START \"<<\"\n371:3
-    COMMAND_IF \"if \"\n371:6 VAR_ID \"$can_afford\"\n371:18 OPERATOR_LOGICAL_EQUALS
-    \"==\"\n371:21 'true' \"true\"\n371:26 EXPRESSION_COMMAND_END \">>\"\n372:4 INDENT
-    \"    \"\n372:4 '[[' \"[[\"\n372:6 OPTION_TEXT \"I would like to trade my cargo.
-    (pay \"\n372:43 OPTION_EXPRESSION_START \"{\"\n372:44 VAR_ID \"$trading_total\"\n372:58
-    '}' \"}\"\n372:59 OPTION_TEXT \" dr) \"\n372:64 '|' \"|\"\n372:65 OPTION_ID \"enter_trading\"\n372:78
-    ']]' \"]]\"\n372:0 DEDENT \"\n\"\n373:0 COMMAND_START \"<<\"\n373:3 COMMAND_ELSE
-    \"else \"\n373:8 COMMAND_END \">>\"\n374:4 INDENT \"    \"\n374:4 COMMAND_START
-    \"<<\"\n374:7 COMMAND_SET \"set \"\n374:11 VAR_ID \"$total_cargos\"\n374:25 OPERATOR_ASSIGNMENT
-    \"to\"\n374:28 VAR_ID \"$total_cargos\"\n374:42 '+' \"+\"\n374:44 NUMBER \"1\"\n374:46
-    EXPRESSION_COMMAND_END \">>\"\n375:4 '[[' \"[[\"\n375:6 OPTION_TEXT \"I would
-    like to trade my cargo. (pay \"\n375:43 OPTION_EXPRESSION_START \"{\"\n375:44
-    VAR_ID \"$trading_total\"\n375:58 '}' \"}\"\n375:59 OPTION_TEXT \" worth of cargo)
-    \"\n375:76 '|' \"|\"\n375:77 OPTION_ID \"enter_trading_cargo\"\n375:96 ']]' \"]]\"\n375:0
-    DEDENT \"\n\"\n376:0 COMMAND_START \"<<\"\n376:3 'endif' \"endif\"\n376:9 COMMAND_END
-    \">>\"\n378:0 COMMAND_START \"<<\"\n378:3 COMMAND_SET \"set \"\n378:7 VAR_ID \"$tavern_total\"\n378:21
-    OPERATOR_ASSIGNMENT \"to\"\n378:24 '(' \"(\"\n378:25 VAR_ID \"$updated_subtotal\"\n378:43
-    '+' \"+\"\n378:45 VAR_ID \"$tavern_intent\"\n378:59 ')' \")\"\n378:61 EXPRESSION_COMMAND_END
-    \">>\"\n379:0 COMMAND_START \"<<\"\n379:3 COMMAND_TEXT \"checkafford DialogScreen
-    $tavern_total \"\n379:42 COMMAND_TEXT_END \">>\"\n381:0 COMMAND_START \"<<\"\n381:3
-    COMMAND_IF \"if \"\n381:6 VAR_ID \"$can_afford\"\n381:18 OPERATOR_LOGICAL_EQUALS
-    \"==\"\n381:21 'true' \"true\"\n381:26 EXPRESSION_COMMAND_END \">>\"\n382:4 INDENT
-    \"    \"\n382:4 '[[' \"[[\"\n382:6 OPTION_TEXT \"I would like a long rest and
-    to manage my crew. (pay \"\n382:59 OPTION_EXPRESSION_START \"{\"\n382:60 VAR_ID
-    \"$tavern_total\"\n382:73 '}' \"}\"\n382:74 OPTION_TEXT \" dr) \"\n382:79 '|'
-    \"|\"\n382:80 OPTION_ID \"enter_tavern\"\n382:92 ']]' \"]]\"\n382:0 DEDENT \"\n\"\n383:0
-    COMMAND_START \"<<\"\n383:3 COMMAND_ELSE \"else \"\n383:8 COMMAND_END \">>\"\n384:4
-    INDENT \"    \"\n384:4 COMMAND_START \"<<\"\n384:7 COMMAND_SET \"set \"\n384:11
-    VAR_ID \"$total_cargos\"\n384:25 OPERATOR_ASSIGNMENT \"to\"\n384:28 VAR_ID \"$total_cargos\"\n384:42
-    '+' \"+\"\n384:44 NUMBER \"1\"\n384:46 EXPRESSION_COMMAND_END \">>\"\n385:4 '[['
-    \"[[\"\n385:6 OPTION_TEXT \"I would like a long rest and to manage my crew. (pay
-    \"\n385:59 OPTION_EXPRESSION_START \"{\"\n385:60 VAR_ID \"$tavern_total\"\n385:73
-    '}' \"}\"\n385:74 OPTION_TEXT \" worth of cargo) \"\n385:91 '|' \"|\"\n385:92
-    OPTION_ID \"enter_tavern_cargo\"\n385:110 ']]' \"]]\"\n385:0 DEDENT \"\n\"\n386:0
-    COMMAND_START \"<<\"\n386:3 'endif' \"endif\"\n386:9 COMMAND_END \">>\"\n388:0
-    COMMAND_START \"<<\"\n388:3 COMMAND_SET \"set \"\n388:7 VAR_ID \"$all_total\"\n388:18
-    OPERATOR_ASSIGNMENT \"to\"\n388:21 '(' \"(\"\n388:22 VAR_ID \"$updated_subtotal\"\n388:40
-    '+' \"+\"\n388:42 VAR_ID \"$all_intent\"\n388:53 ')' \")\"\n388:55 EXPRESSION_COMMAND_END
-    \">>\"\n389:0 COMMAND_START \"<<\"\n389:3 COMMAND_TEXT \"checkafford DialogScreen
-    $all_total \"\n389:39 COMMAND_TEXT_END \">>\"\n391:0 COMMAND_START \"<<\"\n391:3
-    COMMAND_IF \"if \"\n391:6 VAR_ID \"$can_afford\"\n391:18 OPERATOR_LOGICAL_EQUALS
-    \"==\"\n391:21 'true' \"true\"\n391:26 EXPRESSION_COMMAND_END \">>\"\n392:4 INDENT
-    \"    \"\n392:4 '[[' \"[[\"\n392:6 OPTION_TEXT \"I would like to take full advantage
-    of this port. (pay \"\n392:61 OPTION_EXPRESSION_START \"{\"\n392:62 VAR_ID \"$all_total\"\n392:72
-    '}' \"}\"\n392:73 OPTION_TEXT \" dr) \"\n392:78 '|' \"|\"\n392:79 OPTION_ID \"enter_full\"\n392:89
-    ']]' \"]]\"\n392:0 DEDENT \"\n\"\n393:0 COMMAND_START \"<<\"\n393:3 COMMAND_ELSE
-    \"else \"\n393:8 COMMAND_END \">>\"\n394:4 INDENT \"    \"\n394:4 COMMAND_START
-    \"<<\"\n394:7 COMMAND_SET \"set \"\n394:11 VAR_ID \"$total_cargos\"\n394:25 OPERATOR_ASSIGNMENT
-    \"to\"\n394:28 VAR_ID \"$total_cargos\"\n394:42 '+' \"+\"\n394:44 NUMBER \"1\"\n394:46
-    EXPRESSION_COMMAND_END \">>\"\n395:4 '[[' \"[[\"\n395:6 OPTION_TEXT \"I would
-    like to take full advantage of this port. (pay \"\n395:61 OPTION_EXPRESSION_START
-    \"{\"\n395:62 VAR_ID \"$all_total\"\n395:72 '}' \"}\"\n395:73 OPTION_TEXT \" worth
-    of cargo) \"\n395:90 '|' \"|\"\n395:91 OPTION_ID \"enter_full_cargo\"\n395:107
-    ']]' \"]]\"\n395:0 DEDENT \"\n\"\n396:0 COMMAND_START \"<<\"\n396:3 'endif' \"endif\"\n396:9
-    COMMAND_END \">>\"\n398:0 COMMAND_START \"<<\"\n398:3 COMMAND_IF \"if \"\n398:6
-    VAR_ID \"$total_cargos\"\n398:20 OPERATOR_LOGICAL_GREATER_THAN_EQUALS \">=\"\n398:23
-    NUMBER \"1\"\n398:25 EXPRESSION_COMMAND_END \">>\"\n399:0 TEXT \"Your stores of
+    \"\n356:357 TEXT_EXPRESSION_START \"{\"\n356:358 VAR_ID \"$updated_subtotal\"\n356:376
+    '+' \"+\"\n356:378 VAR_ID \"$all_intent\"\n356:389 '}' \"}\"\n356:390 TEXT \"
+    Drachma.\"\n358:0 TEXT_NEWLINE \"\n\n\"\n358:0 COMMAND_START \"<<\"\n358:3 COMMAND_SET
+    \"set \"\n358:7 VAR_ID \"$total_cargos\"\n358:21 OPERATOR_ASSIGNMENT \"to\"\n358:24
+    NUMBER \"0\"\n358:26 EXPRESSION_COMMAND_END \">>\"\n359:0 COMMAND_START \"<<\"\n359:3
+    COMMAND_SET \"set \"\n359:7 VAR_ID \"$water_total\"\n359:20 OPERATOR_ASSIGNMENT
+    \"to\"\n359:23 '(' \"(\"\n359:24 VAR_ID \"$updated_subtotal\"\n359:42 '+' \"+\"\n359:44
+    VAR_ID \"$water_intent\"\n359:57 ')' \")\"\n359:59 EXPRESSION_COMMAND_END \">>\"\n360:0
+    COMMAND_START \"<<\"\n360:3 COMMAND_TEXT \"checkafford DialogScreen $water_total
+    \"\n360:41 COMMAND_TEXT_END \">>\"\n362:0 COMMAND_START \"<<\"\n362:3 COMMAND_IF
+    \"if \"\n362:6 VAR_ID \"$can_afford\"\n362:18 OPERATOR_LOGICAL_EQUALS \"==\"\n362:21
+    'true' \"true\"\n362:26 EXPRESSION_COMMAND_END \">>\"\n363:4 INDENT \"    \"\n363:4
+    '[[' \"[[\"\n363:6 OPTION_TEXT \"I would like to rest and buy water. (pay \"\n363:47
+    OPTION_EXPRESSION_START \"{\"\n363:48 VAR_ID \"$water_total\"\n363:60 '}' \"}\"\n363:61
+    OPTION_TEXT \" dr) \"\n363:66 '|' \"|\"\n363:67 OPTION_ID \"enter_water\"\n363:78
+    ']]' \"]]\"\n363:0 DEDENT \"\n\"\n364:0 COMMAND_START \"<<\"\n364:3 COMMAND_ELSE
+    \"else \"\n364:8 COMMAND_END \">>\"\n365:4 INDENT \"    \"\n365:4 COMMAND_START
+    \"<<\"\n365:7 COMMAND_SET \"set \"\n365:11 VAR_ID \"$total_cargos\"\n365:25 OPERATOR_ASSIGNMENT
+    \"to\"\n365:28 VAR_ID \"$total_cargos\"\n365:42 '+' \"+\"\n365:44 NUMBER \"1\"\n365:46
+    EXPRESSION_COMMAND_END \">>\"\n366:4 '[[' \"[[\"\n366:6 OPTION_TEXT \"I would
+    like to rest and buy water. (pay \"\n366:47 OPTION_EXPRESSION_START \"{\"\n366:48
+    VAR_ID \"$water_total\"\n366:60 '}' \"}\"\n366:61 OPTION_TEXT \" worth of cargo)
+    \"\n366:78 '|' \"|\"\n366:79 OPTION_ID \"enter_water_cargo\"\n366:96 ']]' \"]]\"\n366:0
+    DEDENT \"\n\"\n367:0 COMMAND_START \"<<\"\n367:3 'endif' \"endif\"\n367:9 COMMAND_END
+    \">>\"\n369:0 COMMAND_START \"<<\"\n369:3 COMMAND_SET \"set \"\n369:7 VAR_ID \"$trading_total\"\n369:22
+    OPERATOR_ASSIGNMENT \"to\"\n369:25 '(' \"(\"\n369:26 VAR_ID \"$updated_subtotal\"\n369:44
+    '+' \"+\"\n369:46 VAR_ID \"$trade_intent\"\n369:59 ')' \")\"\n369:61 EXPRESSION_COMMAND_END
+    \">>\"\n370:0 COMMAND_START \"<<\"\n370:3 COMMAND_TEXT \"checkafford DialogScreen
+    $trading_total \"\n370:43 COMMAND_TEXT_END \">>\"\n372:0 COMMAND_START \"<<\"\n372:3
+    COMMAND_IF \"if \"\n372:6 VAR_ID \"$can_afford\"\n372:18 OPERATOR_LOGICAL_EQUALS
+    \"==\"\n372:21 'true' \"true\"\n372:26 EXPRESSION_COMMAND_END \">>\"\n373:4 INDENT
+    \"    \"\n373:4 '[[' \"[[\"\n373:6 OPTION_TEXT \"I would like to trade my cargo.
+    (pay \"\n373:43 OPTION_EXPRESSION_START \"{\"\n373:44 VAR_ID \"$trading_total\"\n373:58
+    '}' \"}\"\n373:59 OPTION_TEXT \" dr) \"\n373:64 '|' \"|\"\n373:65 OPTION_ID \"enter_trading\"\n373:78
+    ']]' \"]]\"\n373:0 DEDENT \"\n\"\n374:0 COMMAND_START \"<<\"\n374:3 COMMAND_ELSE
+    \"else \"\n374:8 COMMAND_END \">>\"\n375:4 INDENT \"    \"\n375:4 COMMAND_START
+    \"<<\"\n375:7 COMMAND_SET \"set \"\n375:11 VAR_ID \"$total_cargos\"\n375:25 OPERATOR_ASSIGNMENT
+    \"to\"\n375:28 VAR_ID \"$total_cargos\"\n375:42 '+' \"+\"\n375:44 NUMBER \"1\"\n375:46
+    EXPRESSION_COMMAND_END \">>\"\n376:4 '[[' \"[[\"\n376:6 OPTION_TEXT \"I would
+    like to trade my cargo. (pay \"\n376:43 OPTION_EXPRESSION_START \"{\"\n376:44
+    VAR_ID \"$trading_total\"\n376:58 '}' \"}\"\n376:59 OPTION_TEXT \" worth of cargo)
+    \"\n376:76 '|' \"|\"\n376:77 OPTION_ID \"enter_trading_cargo\"\n376:96 ']]' \"]]\"\n376:0
+    DEDENT \"\n\"\n377:0 COMMAND_START \"<<\"\n377:3 'endif' \"endif\"\n377:9 COMMAND_END
+    \">>\"\n379:0 COMMAND_START \"<<\"\n379:3 COMMAND_SET \"set \"\n379:7 VAR_ID \"$tavern_total\"\n379:21
+    OPERATOR_ASSIGNMENT \"to\"\n379:24 '(' \"(\"\n379:25 VAR_ID \"$updated_subtotal\"\n379:43
+    '+' \"+\"\n379:45 VAR_ID \"$tavern_intent\"\n379:59 ')' \")\"\n379:61 EXPRESSION_COMMAND_END
+    \">>\"\n380:0 COMMAND_START \"<<\"\n380:3 COMMAND_TEXT \"checkafford DialogScreen
+    $tavern_total \"\n380:42 COMMAND_TEXT_END \">>\"\n382:0 COMMAND_START \"<<\"\n382:3
+    COMMAND_IF \"if \"\n382:6 VAR_ID \"$can_afford\"\n382:18 OPERATOR_LOGICAL_EQUALS
+    \"==\"\n382:21 'true' \"true\"\n382:26 EXPRESSION_COMMAND_END \">>\"\n383:4 INDENT
+    \"    \"\n383:4 '[[' \"[[\"\n383:6 OPTION_TEXT \"I would like a long rest and
+    to manage my crew. (pay \"\n383:59 OPTION_EXPRESSION_START \"{\"\n383:60 VAR_ID
+    \"$tavern_total\"\n383:73 '}' \"}\"\n383:74 OPTION_TEXT \" dr) \"\n383:79 '|'
+    \"|\"\n383:80 OPTION_ID \"enter_tavern\"\n383:92 ']]' \"]]\"\n383:0 DEDENT \"\n\"\n384:0
+    COMMAND_START \"<<\"\n384:3 COMMAND_ELSE \"else \"\n384:8 COMMAND_END \">>\"\n385:4
+    INDENT \"    \"\n385:4 COMMAND_START \"<<\"\n385:7 COMMAND_SET \"set \"\n385:11
+    VAR_ID \"$total_cargos\"\n385:25 OPERATOR_ASSIGNMENT \"to\"\n385:28 VAR_ID \"$total_cargos\"\n385:42
+    '+' \"+\"\n385:44 NUMBER \"1\"\n385:46 EXPRESSION_COMMAND_END \">>\"\n386:4 '[['
+    \"[[\"\n386:6 OPTION_TEXT \"I would like a long rest and to manage my crew. (pay
+    \"\n386:59 OPTION_EXPRESSION_START \"{\"\n386:60 VAR_ID \"$tavern_total\"\n386:73
+    '}' \"}\"\n386:74 OPTION_TEXT \" worth of cargo) \"\n386:91 '|' \"|\"\n386:92
+    OPTION_ID \"enter_tavern_cargo\"\n386:110 ']]' \"]]\"\n386:0 DEDENT \"\n\"\n387:0
+    COMMAND_START \"<<\"\n387:3 'endif' \"endif\"\n387:9 COMMAND_END \">>\"\n389:0
+    COMMAND_START \"<<\"\n389:3 COMMAND_SET \"set \"\n389:7 VAR_ID \"$all_total\"\n389:18
+    OPERATOR_ASSIGNMENT \"to\"\n389:21 '(' \"(\"\n389:22 VAR_ID \"$updated_subtotal\"\n389:40
+    '+' \"+\"\n389:42 VAR_ID \"$all_intent\"\n389:53 ')' \")\"\n389:55 EXPRESSION_COMMAND_END
+    \">>\"\n390:0 COMMAND_START \"<<\"\n390:3 COMMAND_TEXT \"checkafford DialogScreen
+    $all_total \"\n390:39 COMMAND_TEXT_END \">>\"\n392:0 COMMAND_START \"<<\"\n392:3
+    COMMAND_IF \"if \"\n392:6 VAR_ID \"$can_afford\"\n392:18 OPERATOR_LOGICAL_EQUALS
+    \"==\"\n392:21 'true' \"true\"\n392:26 EXPRESSION_COMMAND_END \">>\"\n393:4 INDENT
+    \"    \"\n393:4 '[[' \"[[\"\n393:6 OPTION_TEXT \"I would like to take full advantage
+    of this port. (pay \"\n393:61 OPTION_EXPRESSION_START \"{\"\n393:62 VAR_ID \"$all_total\"\n393:72
+    '}' \"}\"\n393:73 OPTION_TEXT \" dr) \"\n393:78 '|' \"|\"\n393:79 OPTION_ID \"enter_full\"\n393:89
+    ']]' \"]]\"\n393:0 DEDENT \"\n\"\n394:0 COMMAND_START \"<<\"\n394:3 COMMAND_ELSE
+    \"else \"\n394:8 COMMAND_END \">>\"\n395:4 INDENT \"    \"\n395:4 COMMAND_START
+    \"<<\"\n395:7 COMMAND_SET \"set \"\n395:11 VAR_ID \"$total_cargos\"\n395:25 OPERATOR_ASSIGNMENT
+    \"to\"\n395:28 VAR_ID \"$total_cargos\"\n395:42 '+' \"+\"\n395:44 NUMBER \"1\"\n395:46
+    EXPRESSION_COMMAND_END \">>\"\n396:4 '[[' \"[[\"\n396:6 OPTION_TEXT \"I would
+    like to take full advantage of this port. (pay \"\n396:61 OPTION_EXPRESSION_START
+    \"{\"\n396:62 VAR_ID \"$all_total\"\n396:72 '}' \"}\"\n396:73 OPTION_TEXT \" worth
+    of cargo) \"\n396:90 '|' \"|\"\n396:91 OPTION_ID \"enter_full_cargo\"\n396:107
+    ']]' \"]]\"\n396:0 DEDENT \"\n\"\n397:0 COMMAND_START \"<<\"\n397:3 'endif' \"endif\"\n397:9
+    COMMAND_END \">>\"\n399:0 COMMAND_START \"<<\"\n399:3 COMMAND_IF \"if \"\n399:6
+    VAR_ID \"$total_cargos\"\n399:20 OPERATOR_LOGICAL_GREATER_THAN_EQUALS \">=\"\n399:23
+    NUMBER \"1\"\n399:25 EXPRESSION_COMMAND_END \">>\"\n400:0 TEXT \"Your stores of
     cash are depleted! You must pay us in cargo - for you may not refuse to pay us
-    just because you lack coins.\"\n401:0 TEXT_NEWLINE \"\n\n\"\n401:0 '[[' \"[[\"\n401:2
-    OPTION_TEXT \"That's far too much! (exit without paying) \"\n401:45 '|' \"|\"\n401:46
-    OPTION_ID \"exit\"\n401:50 ']]' \"]]\"\n402:0 '[[' \"[[\"\n402:2 OPTION_TEXT \"That's
-    far too much! (exit without paying) \"\n402:45 '|' \"|\"\n402:46 OPTION_ID \"exit\"\n402:50
-    ']]' \"]]\"\n403:0 '===' \"===\"\n404:0 ID \"title\""
+    just because you lack coins.\"\n401:0 TEXT_NEWLINE \"\n\"\n401:0 COMMAND_START
+    \"<<\"\n401:3 'endif' \"endif\"\n401:9 COMMAND_END \">>\"\n403:0 '[[' \"[[\"\n403:2
+    OPTION_TEXT \"That's far too much! (exit without paying) \"\n403:45 '|' \"|\"\n403:46
+    OPTION_ID \"exit\"\n403:50 ']]' \"]]\"\n404:0 '===' \"===\"\n405:0 ID \"title\"\n405:5
+    HEADER_DELIMITER \": \"\n405:7 REST_OF_LINE \"tax_short_1\"\n406:0 HEADER_NEWLINE
+    \"\n\"\n406:0 ID \"tags\"\n406:4 HEADER_DELIMITER \": \"\n407:0 HEADER_NEWLINE
+    \"\n\"\n407:0 ID \"colorID\"\n407:7 HEADER_DELIMITER \": \"\n407:9 REST_OF_LINE
+    \"6\"\n408:0 HEADER_NEWLINE \"\n\"\n408:0 ID \"position\"\n408:8 HEADER_DELIMITER
+    \": \"\n408:10 REST_OF_LINE \"1112,-15\"\n409:0 HEADER_NEWLINE \"\n\"\n409:0 '---'
+    \"---\"\n410:0 COMMAND_START \"<<\"\n410:3 COMMAND_TEXT \"setspeaker DialogScreen
+    Jason \"\n410:33 COMMAND_TEXT_END \">>\"\n411:0 COMMAND_START \"<<\"\n411:3 COMMAND_TEXT
+    \"setend DialogScreen \"\n411:23 COMMAND_TEXT_END \">>\"\n412:0 TEXT \"I already
+    know what I want to do.\"\n414:0 TEXT_NEWLINE \"\n\n\"\n414:0 COMMAND_START \"<<\"\n414:3
+    COMMAND_TEXT \"calculatetaxes DialogScreen \"\n414:31 COMMAND_TEXT_END \">>\"\n415:0
+    COMMAND_START \"<<\"\n415:3 COMMAND_TEXT \"calculatepercents DialogScreen \"\n415:34
+    COMMAND_TEXT_END \">>\"\n417:0 COMMAND_START \"<<\"\n417:3 COMMAND_IF \"if \"\n417:6
+    VAR_ID \"$asked_networks\"\n417:22 OPERATOR_LOGICAL_EQUALS \"is\"\n417:25 'true'
+    \"true\"\n417:30 EXPRESSION_COMMAND_END \">>\"\n418:4 INDENT \"    \"\n418:4 COMMAND_START
+    \"<<\"\n418:7 COMMAND_IF \"if \"\n418:10 VAR_ID \"$connections_number\"\n418:30
+    OPERATOR_LOGICAL_GREATER \">\"\n418:32 NUMBER \"1\"\n418:34 EXPRESSION_COMMAND_END
+    \">>\"\n419:8 INDENT \"        \"\n419:8 COMMAND_START \"<<\"\n419:11 COMMAND_SET
+    \"set \"\n419:15 VAR_ID \"$ellimenion_percent\"\n419:35 OPERATOR_ASSIGNMENT \"to\"\n419:38
+    NUMBER \"0\"\n419:40 EXPRESSION_COMMAND_END \">>\"\n419:4 DEDENT \" \"\n420:4
+    COMMAND_START \"<<\"\n420:7 COMMAND_ELSEIF \"elseif \"\n420:14 VAR_ID \"$connections_number\"\n420:34
+    OPERATOR_LOGICAL_EQUALS \"==\"\n420:37 NUMBER \"1\"\n420:39 EXPRESSION_COMMAND_END
+    \">>\"\n421:8 INDENT \"        \"\n421:8 COMMAND_START \"<<\"\n421:11 COMMAND_SET
+    \"set \"\n421:15 VAR_ID \"$ellimenion_percent\"\n421:35 OPERATOR_ASSIGNMENT \"to\"\n421:38
+    '(' \"(\"\n421:39 VAR_ID \"$ellimenion_percent\"\n421:59 '/' \"/\"\n421:61 NUMBER
+    \"2\"\n421:62 ')' \")\"\n421:63 EXPRESSION_COMMAND_END \">>\"\n421:4 DEDENT \"
+    \"\n422:4 COMMAND_START \"<<\"\n422:7 'endif' \"endif\"\n422:13 COMMAND_END \">>\"\n422:0
+    DEDENT \"\n\"\n423:0 COMMAND_START \"<<\"\n423:3 'endif' \"endif\"\n423:9 COMMAND_END
+    \">>\"\n425:0 COMMAND_START \"<<\"\n425:3 COMMAND_SET \"set \"\n425:7 VAR_ID \"$updated_subtotal\"\n425:25
+    OPERATOR_ASSIGNMENT \"to\"\n425:28 '(' \"(\"\n425:29 VAR_ID \"$ellimenion_percent\"\n425:49
+    '*' \"*\"\n425:51 VAR_ID \"$cargo_value\"\n425:64 '+' \"+\"\n425:66 VAR_ID \"$tax_subtotal\"\n425:79
+    ')' \")\"\n425:81 EXPRESSION_COMMAND_END \">>\"\n426:0 COMMAND_START \"<<\"\n426:3
+    COMMAND_TEXT \"roundup DialogScreen $updated_subtotal \"\n426:42 COMMAND_TEXT_END
+    \">>\"\n427:0 COMMAND_START \"<<\"\n427:3 COMMAND_SET \"set \"\n427:7 VAR_ID \"$updated_subtotal\"\n427:25
+    OPERATOR_ASSIGNMENT \"to\"\n427:28 VAR_ID \"$rounded_num\"\n427:41 EXPRESSION_COMMAND_END
+    \">>\"\n429:0 '[[' \"[[\"\n429:2 OPTION_TEXT \"Continue \"\n429:11 '|' \"|\"\n429:12
+    OPTION_ID \"tax_short_2\"\n429:23 ']]' \"]]\"\n430:0 '===' \"===\"\n431:0 ID \"title\"\n431:5
+    HEADER_DELIMITER \": \"\n431:7 REST_OF_LINE \"enter_water\"\n432:0 HEADER_NEWLINE
+    \"\n\"\n432:0 ID \"tags\"\n432:4 HEADER_DELIMITER \": \"\n433:0 HEADER_NEWLINE
+    \"\n\"\n433:0 ID \"colorID\"\n433:7 HEADER_DELIMITER \": \"\n433:9 REST_OF_LINE
+    \"3\"\n434:0 HEADER_NEWLINE \"\n\"\n434:0 ID \"position\"\n434:8 HEADER_DELIMITER
+    \": \"\n434:10 REST_OF_LINE \"473,1531\"\n435:0 HEADER_NEWLINE \"\n\"\n435:0 '---'
+    \"---\"\n436:0 COMMAND_START \"<<\"\n436:3 COMMAND_TEXT \"setspeaker DialogScreen
+    Jason \"\n436:33 COMMAND_TEXT_END \">>\"\n437:0 TEXT \"Nymphs are generous, water
+    falls from the sky - and yet we must pay you! But pay we will, for we cannot proceed
+    without water for our crew.\"\n439:0 TEXT_NEWLINE \"\n\n\"\n439:0 COMMAND_START
+    \"<<\"\n439:3 COMMAND_TEXT \"setspeaker DialogScreen other \"\n439:33 COMMAND_TEXT_END
+    \">>\"\n440:0 COMMAND_START \"<<\"\n440:3 COMMAND_TEXT \"setsprite Partner happy
+    \"\n440:27 COMMAND_TEXT_END \">>\"\n442:0 COMMAND_START \"<<\"\n442:3 COMMAND_SET
+    \"set \"\n442:7 VAR_ID \"$final_cost\"\n442:19 OPERATOR_ASSIGNMENT \"to\"\n442:22
+    '(' \"(\"\n442:23 VAR_ID \"$updated_subtotal\"\n442:41 '+' \"+\"\n442:43 VAR_ID
+    \"$water_intent\"\n442:56 ')' \")\"\n442:57 EXPRESSION_COMMAND_END \">>\"\n443:0
+    COMMAND_START \"<<\"\n443:3 COMMAND_SET \"set \"\n443:7 VAR_ID \"$entering_city\"\n443:22
+    OPERATOR_ASSIGNMENT \"to\"\n443:25 'true' \"true\"\n443:30 EXPRESSION_COMMAND_END
+    \">>\"\n445:0 COMMAND_START \"<<\"\n445:3 COMMAND_IF \"if \"\n445:6 VAR_ID \"$cargo_pay\"\n445:17
+    OPERATOR_LOGICAL_EQUALS \"is\"\n445:20 'false' \"false\"\n445:26 EXPRESSION_COMMAND_END
+    \">>\"\n446:4 INDENT \"    \"\n446:4 COMMAND_START \"<<\"\n446:7 COMMAND_TEXT
+    \"pay DialogScreen $final_cost \"\n446:36 COMMAND_TEXT_END \">>\"\n447:4 TEXT
+    \"Thank you for your business! That's \"\n447:40 TEXT_EXPRESSION_START \"{\"\n447:41
+    VAR_ID \"$final_cost\"\n447:52 '}' \"}\"\n447:53 TEXT \" Drachma exactly! Enjoy
+    your time in our fair city!\"\n448:0 TEXT_NEWLINE \"\n\"\n447:0 DEDENT \"\n\"\n448:0
+    COMMAND_START \"<<\"\n448:3 COMMAND_ELSE \"else \"\n448:8 COMMAND_END \">>\"\n449:4
+    INDENT \"    \"\n449:4 COMMAND_START \"<<\"\n449:7 COMMAND_TEXT \"cargopay DialogScreen
+    $final_cost \"\n449:41 COMMAND_TEXT_END \">>\"\n450:4 TEXT \"Thank you for your
+    business! That's \"\n450:40 TEXT_EXPRESSION_START \"{\"\n450:41 VAR_ID \"$demanded_resources_value\"\n450:66
+    '}' \"}\"\n450:67 TEXT \" altogether - rounded up, of course.\"\n451:0 TEXT_NEWLINE
+    \"\n\"\n450:0 DEDENT \"\n\"\n451:0 COMMAND_START \"<<\"\n451:3 'endif' \"endif\"\n451:9
+    COMMAND_END \">>\"\n452:0 '===' \"===\"\n453:0 ID \"title\"\n453:5 HEADER_DELIMITER
+    \": \"\n453:7 REST_OF_LINE \"enter_trading\"\n454:0 HEADER_NEWLINE \"\n\"\n454:0
+    ID \"tags\"\n454:4 HEADER_DELIMITER \": \"\n455:0 HEADER_NEWLINE \"\n\"\n455:0
+    ID \"colorID\"\n455:7 HEADER_DELIMITER \": \"\n455:9 REST_OF_LINE \"3\"\n456:0
+    HEADER_NEWLINE \"\n\"\n456:0 ID \"position\"\n456:8 HEADER_DELIMITER \": \"\n456:10
+    REST_OF_LINE \"822,1540\"\n457:0 HEADER_NEWLINE \"\n\"\n457:0 '---' \"---\"\n458:0
+    COMMAND_START \"<<\"\n458:3 COMMAND_TEXT \"setspeaker DialogScreen Jason \"\n458:33
+    COMMAND_TEXT_END \">>\"\n459:0 TEXT \"Too great is the lure of your market for
+    us to resist - even at those rates! Accept our money and let us in!\"\n461:0 TEXT_NEWLINE
+    \"\n\n\"\n461:0 COMMAND_START \"<<\"\n461:3 COMMAND_TEXT \"setspeaker DialogScreen
+    other \"\n461:33 COMMAND_TEXT_END \">>\"\n462:0 COMMAND_START \"<<\"\n462:3 COMMAND_TEXT
+    \"setsprite Partner happy \"\n462:27 COMMAND_TEXT_END \">>\"\n463:0 COMMAND_START
+    \"<<\"\n463:3 COMMAND_TEXT \"setend DialogScreen \"\n463:23 COMMAND_TEXT_END \">>\"\n465:0
+    COMMAND_START \"<<\"\n465:3 COMMAND_SET \"set \"\n465:7 VAR_ID \"$final_cost\"\n465:19
+    OPERATOR_ASSIGNMENT \"to\"\n465:22 '(' \"(\"\n465:23 VAR_ID \"$updated_subtotal\"\n465:41
+    '+' \"+\"\n465:43 VAR_ID \"$trade_intent\"\n465:56 ')' \")\"\n465:57 EXPRESSION_COMMAND_END
+    \">>\"\n467:0 COMMAND_START \"<<\"\n467:3 COMMAND_IF \"if \"\n467:6 VAR_ID \"$cargo_pay\"\n467:17
+    OPERATOR_LOGICAL_EQUALS \"is\"\n467:20 'false' \"false\"\n467:26 EXPRESSION_COMMAND_END
+    \">>\"\n468:4 INDENT \"    \"\n468:4 COMMAND_START \"<<\"\n468:7 COMMAND_TEXT
+    \"pay DialogScreen $final_cost \"\n468:36 COMMAND_TEXT_END \">>\"\n469:4 TEXT
+    \"Thank you for your business! That's \"\n469:40 TEXT_EXPRESSION_START \"{\"\n469:41
+    VAR_ID \"$final_cost\"\n469:52 '}' \"}\"\n469:53 TEXT \" Drachma exactly! Enjoy
+    your time in our fair city!\"\n470:0 TEXT_NEWLINE \"\n\"\n469:0 DEDENT \"\n\"\n470:0
+    COMMAND_START \"<<\"\n470:3 COMMAND_ELSE \"else \"\n470:8 COMMAND_END \">>\"\n471:4
+    INDENT \"    \"\n471:4 COMMAND_START \"<<\"\n471:7 COMMAND_TEXT \"cargopay DialogScreen
+    $final_cost \"\n471:41 COMMAND_TEXT_END \">>\"\n472:4 TEXT \"Thank you for your
+    business! That's \"\n472:40 TEXT_EXPRESSION_START \"{\"\n472:41 VAR_ID \"$demanded_resources_value\"\n472:66
+    '}' \"}\"\n472:67 TEXT \" altogether - rounded up, of course.\"\n473:0 TEXT_NEWLINE
+    \"\n\"\n472:0 DEDENT \"\n\"\n473:0 COMMAND_START \"<<\"\n473:3 'endif' \"endif\"\n473:9
+    COMMAND_END \">>\"\n475:0 '[[' \"[[\"\n475:2 OPTION_TEXT \"Continue \"\n475:11
+    '|' \"|\"\n475:12 OPTION_ID \"herald_fee\"\n475:22 ']]' \"]]\"\n476:0 '===' \"===\"\n477:0
+    ID \"title\"\n477:5 HEADER_DELIMITER \": \"\n477:7 REST_OF_LINE \"enter_tavern\"\n478:0
+    HEADER_NEWLINE \"\n\"\n478:0 ID \"tags\"\n478:4 HEADER_DELIMITER \": \"\n479:0
+    HEADER_NEWLINE \"\n\"\n479:0 ID \"colorID\"\n479:7 HEADER_DELIMITER \": \"\n479:9
+    REST_OF_LINE \"3\"\n480:0 HEADER_NEWLINE \"\n\"\n480:0 ID \"position\"\n480:8
+    HEADER_DELIMITER \": \"\n480:10 REST_OF_LINE \"1457,1535\"\n481:0 HEADER_NEWLINE
+    \"\n\"\n481:0 '---' \"---\"\n482:0 COMMAND_START \"<<\"\n482:3 COMMAND_TEXT \"setspeaker
+    DialogScreen Jason \"\n482:33 COMMAND_TEXT_END \">>\"\n483:0 TEXT \"A weary ship,
+    a thirsty crew, growling stomachs and empty seats - what choice do we have? We'll
+    pay your fees, say a prayer to Ploutos the god of wealth, and come in.\"\n485:0
+    TEXT_NEWLINE \"\n\n\"\n485:0 COMMAND_START \"<<\"\n485:3 COMMAND_TEXT \"setspeaker
+    DialogScreen other \"\n485:33 COMMAND_TEXT_END \">>\"\n486:0 COMMAND_START \"<<\"\n486:3
+    COMMAND_TEXT \"setsprite Partner happy \"\n486:27 COMMAND_TEXT_END \">>\"\n488:0
+    COMMAND_START \"<<\"\n488:3 COMMAND_SET \"set \"\n488:7 VAR_ID \"$final_cost\"\n488:19
+    OPERATOR_ASSIGNMENT \"to\"\n488:22 '(' \"(\"\n488:23 VAR_ID \"$updated_subtotal\"\n488:41
+    '+' \"+\"\n488:43 VAR_ID \"$tavern_intent\"\n488:57 ')' \")\"\n488:58 EXPRESSION_COMMAND_END
+    \">>\"\n489:0 COMMAND_START \"<<\"\n489:3 COMMAND_SET \"set \"\n489:7 VAR_ID \"$entering_city\"\n489:22
+    OPERATOR_ASSIGNMENT \"to\"\n489:25 'true' \"true\"\n489:30 EXPRESSION_COMMAND_END
+    \">>\"\n491:0 COMMAND_START \"<<\"\n491:3 COMMAND_IF \"if \"\n491:6 VAR_ID \"$cargo_pay\"\n491:17
+    OPERATOR_LOGICAL_EQUALS \"is\"\n491:20 'false' \"false\"\n491:26 EXPRESSION_COMMAND_END
+    \">>\"\n492:4 INDENT \"    \"\n492:4 COMMAND_START \"<<\"\n492:7 COMMAND_TEXT
+    \"pay DialogScreen $final_cost \"\n492:36 COMMAND_TEXT_END \">>\"\n493:4 TEXT
+    \"Thank you for your business! That's \"\n493:40 TEXT_EXPRESSION_START \"{\"\n493:41
+    VAR_ID \"$final_cost\"\n493:52 '}' \"}\"\n493:53 TEXT \" Drachma exactly! Enjoy
+    your time in our fair city!\"\n494:0 TEXT_NEWLINE \"\n\"\n493:0 DEDENT \"\n\"\n494:0
+    COMMAND_START \"<<\"\n494:3 COMMAND_ELSE \"else \"\n494:8 COMMAND_END \">>\"\n495:4
+    INDENT \"    \"\n495:4 COMMAND_START \"<<\"\n495:7 COMMAND_TEXT \"cargopay DialogScreen
+    $final_cost \"\n495:41 COMMAND_TEXT_END \">>\"\n496:4 TEXT \"Thank you for your
+    business! That's \"\n496:40 TEXT_EXPRESSION_START \"{\"\n496:41 VAR_ID \"$demanded_resources_value\"\n496:66
+    '}' \"}\"\n496:67 TEXT \" altogether - rounded up, of course.\"\n497:0 TEXT_NEWLINE
+    \"\n\"\n496:0 DEDENT \"\n\"\n497:0 COMMAND_START \"<<\"\n497:3 'endif' \"endif\"\n497:9
+    COMMAND_END \">>\"\n498:0 '===' \"===\"\n499:0 ID \"title\"\n499:5 HEADER_DELIMITER
+    \": \"\n499:7 REST_OF_LINE \"enter_full\"\n500:0 HEADER_NEWLINE \"\n\"\n500:0
+    ID \"tags\"\n500:4 HEADER_DELIMITER \": \"\n501:0 HEADER_NEWLINE \"\n\"\n501:0
+    ID \"colorID\"\n501:7 HEADER_DELIMITER \": \"\n501:9 REST_OF_LINE \"3\"\n502:0
+    HEADER_NEWLINE \"\n\"\n502:0 ID \"position\"\n502:8 HEADER_DELIMITER \": \"\n502:10
+    REST_OF_LINE \"1790,1526\"\n503:0 HEADER_NEWLINE \"\n\"\n503:0 '---' \"---\"\n504:0
+    COMMAND_START \"<<\"\n504:3 COMMAND_TEXT \"setspeaker DialogScreen Jason \"\n504:33
+    COMMAND_TEXT_END \">>\"\n505:0 TEXT \"We have much to accomplish in your town
+    - you're a lucky man today! Take our drachmae and let us in.\"\n507:0 TEXT_NEWLINE
+    \"\n\n\"\n507:0 COMMAND_START \"<<\"\n507:3 COMMAND_TEXT \"setspeaker DialogScreen
+    other \"\n507:33 COMMAND_TEXT_END \">>\"\n508:0 COMMAND_START \"<<\"\n508:3 COMMAND_TEXT
+    \"setsprite Partner bragging \"\n508:30 COMMAND_TEXT_END \">>\"\n509:0 COMMAND_START
+    \"<<\"\n509:3 COMMAND_TEXT \"setend DialogScreen \"\n509:23 COMMAND_TEXT_END \">>\"\n511:0
+    COMMAND_START \"<<\"\n511:3 COMMAND_SET \"set \"\n511:7 VAR_ID \"$final_cost\"\n511:19
+    OPERATOR_ASSIGNMENT \"to\"\n511:22 '(' \"(\"\n511:23 VAR_ID \"$updated_subtotal\"\n511:41
+    '+' \"+\"\n511:43 VAR_ID \"$all_intent\"\n511:54 ')' \")\"\n511:55 EXPRESSION_COMMAND_END
+    \">>\"\n513:0 COMMAND_START \"<<\"\n513:3 COMMAND_IF \"if \"\n513:6 VAR_ID \"$cargo_pay\"\n513:17
+    OPERATOR_LOGICAL_EQUALS \"is\"\n513:20 'false' \"false\"\n513:26 EXPRESSION_COMMAND_END
+    \">>\"\n514:4 INDENT \"    \"\n514:4 COMMAND_START \"<<\"\n514:7 COMMAND_TEXT
+    \"pay DialogScreen $final_cost \"\n514:36 COMMAND_TEXT_END \">>\"\n515:4 TEXT
+    \"Thank you for your business! That's \"\n515:40 TEXT_EXPRESSION_START \"{\"\n515:41
+    VAR_ID \"$final_cost\"\n515:52 '}' \"}\"\n515:53 TEXT \" Drachma exactly! Enjoy
+    your time in our fair city!\"\n516:0 TEXT_NEWLINE \"\n\"\n515:0 DEDENT \"\n\"\n516:0
+    COMMAND_START \"<<\"\n516:3 COMMAND_ELSE \"else \"\n516:8 COMMAND_END \">>\"\n517:4
+    INDENT \"    \"\n517:4 COMMAND_START \"<<\"\n517:7 COMMAND_TEXT \"cargopay DialogScreen
+    $final_cost \"\n517:41 COMMAND_TEXT_END \">>\"\n518:4 TEXT \"Thank you for your
+    business! That's \"\n518:40 TEXT_EXPRESSION_START \"{\"\n518:41 VAR_ID \"$demanded_resources_value\"\n518:66
+    '}' \"}\"\n518:67 TEXT \" altogether - rounded up, of course.\"\n519:0 TEXT_NEWLINE
+    \"\n\"\n518:0 DEDENT \"\n\"\n519:0 COMMAND_START \"<<\"\n519:3 'endif' \"endif\"\n519:9
+    COMMAND_END \">>\"\n521:0 '[[' \"[[\"\n521:2 OPTION_TEXT \"Continue \"\n521:11
+    '|' \"|\"\n521:12 OPTION_ID \"herald_fee\"\n521:22 ']]' \"]]\"\n522:0 '===' \"===\"\n523:0
+    ID \"title\"\n523:5 HEADER_DELIMITER \": \"\n523:7 REST_OF_LINE \"herald_fee\"\n524:0
+    HEADER_NEWLINE \"\n\"\n524:0 ID \"tags\"\n524:4 HEADER_DELIMITER \": \"\n525:0
+    HEADER_NEWLINE \"\n\"\n525:0 ID \"colorID\"\n525:7 HEADER_DELIMITER \": \"\n525:9
+    REST_OF_LINE \"0\"\n526:0 HEADER_NEWLINE \"\n\"\n526:0 ID \"position\"\n526:8
+    HEADER_DELIMITER \": \"\n526:10 REST_OF_LINE \"1147,2107\"\n527:0 HEADER_NEWLINE
+    \"\n\"\n527:0 '---' \"---\"\n528:0 COMMAND_START \"<<\"\n528:3 COMMAND_TEXT \"setspeaker
+    DialogScreen other \"\n528:33 COMMAND_TEXT_END \">>\"\n529:0 COMMAND_START \"<<\"\n529:3
+    COMMAND_TEXT \"setsprite DialogScreen happy \"\n529:32 COMMAND_TEXT_END \">>\"\n530:0
+    COMMAND_START \"<<\"\n530:3 COMMAND_TEXT \"setend DialogScreen \"\n530:23 COMMAND_TEXT_END
+    \">>\"\n531:0 TEXT \"If you wish to sell your goods, surely you will need to advertise
+    them! Hire a herald, with a voice like honey, lungs like the North Wind, and a
+    face like Hermes himself. That will cost you - but you will profit from your expense!\"\n533:0
+    TEXT_NEWLINE \"\n\n\"\n533:0 COMMAND_START \"<<\"\n533:3 COMMAND_TEXT \"checkafford
+    DialogScreen 2 \"\n533:30 COMMAND_TEXT_END \">>\"\n534:0 COMMAND_START \"<<\"\n534:3
+    COMMAND_IF \"if \"\n534:6 VAR_ID \"$can_afford\"\n534:18 OPERATOR_LOGICAL_EQUALS
+    \"is\"\n534:21 'true' \"true\"\n534:26 EXPRESSION_COMMAND_END \">>\"\n535:4 INDENT
+    \"    \"\n535:4 '[[' \"[[\"\n535:6 OPTION_TEXT \"I will pay for a herald. (2 dr)
+    \"\n535:38 '|' \"|\"\n535:39 OPTION_ID \"herald_pay\"\n535:49 ']]' \"]]\"\n535:0
+    DEDENT \"\n\"\n536:0 COMMAND_START \"<<\"\n536:3 'endif' \"endif\"\n536:9 COMMAND_END
+    \">>\"\n538:0 '[[' \"[[\"\n538:2 OPTION_TEXT \"I do not need a herald. \"\n538:26
+    '|' \"|\"\n538:27 OPTION_ID \"herald_no\"\n538:36 ']]' \"]]\"\n539:0 '===' \"===\"\n540:0
+    ID \"title\"\n540:5 HEADER_DELIMITER \": \"\n540:7 REST_OF_LINE \"herald_pay\"\n541:0
+    HEADER_NEWLINE \"\n\"\n541:0 ID \"tags\"\n541:4 HEADER_DELIMITER \": \"\n542:0
+    HEADER_NEWLINE \"\n\"\n542:0 ID \"colorID\"\n542:7 HEADER_DELIMITER \": \"\n542:9
+    REST_OF_LINE \"3\"\n543:0 HEADER_NEWLINE \"\n\"\n543:0 ID \"position\"\n543:8
+    HEADER_DELIMITER \": \"\n543:10 REST_OF_LINE \"1130,2487\"\n544:0 HEADER_NEWLINE
+    \"\n\"\n544:0 '---' \"---\"\n545:0 COMMAND_START \"<<\"\n545:3 COMMAND_TEXT \"setspeaker
+    DialogScreen Jason \"\n545:33 COMMAND_TEXT_END \">>\"\n546:0 COMMAND_START \"<<\"\n546:3
+    COMMAND_TEXT \"pay DialogScreen 2 \"\n546:22 COMMAND_TEXT_END \">>\"\n547:0 TEXT
+    \"Indeed I'll pay! Heralds are a noble profession and I'm wise in matters of the
+    market.\"\n549:0 TEXT_NEWLINE \"\n\n\"\n549:0 COMMAND_START \"<<\"\n549:3 COMMAND_TEXT
+    \"setspeaker DialogScreen other \"\n549:33 COMMAND_TEXT_END \">>\"\n550:0 COMMAND_START
+    \"<<\"\n550:3 COMMAND_TEXT \"setsprite Partner happy \"\n550:27 COMMAND_TEXT_END
+    \">>\"\n551:0 COMMAND_START \"<<\"\n551:3 COMMAND_SET \"set \"\n551:7 VAR_ID \"$entering_city\"\n551:22
+    OPERATOR_ASSIGNMENT \"to\"\n551:25 'true' \"true\"\n551:30 EXPRESSION_COMMAND_END
+    \">>\"\n552:0 TEXT \"A wise decision! Enjoy your time in our fair city!\"\n553:0
+    TEXT_NEWLINE \"\n\"\n553:0 '===' \"===\"\n554:0 ID \"title\"\n554:5 HEADER_DELIMITER
+    \": \"\n554:7 REST_OF_LINE \"herald_no\"\n555:0 HEADER_NEWLINE \"\n\"\n555:0 ID
+    \"tags\"\n555:4 HEADER_DELIMITER \": \"\n556:0 HEADER_NEWLINE \"\n\"\n556:0 ID
+    \"colorID\"\n556:7 HEADER_DELIMITER \": \"\n556:9 REST_OF_LINE \"3\"\n557:0 HEADER_NEWLINE
+    \"\n\"\n557:0 ID \"position\"\n557:8 HEADER_DELIMITER \": \"\n557:10 REST_OF_LINE
+    \"1406,2335\"\n558:0 HEADER_NEWLINE \"\n\"\n558:0 '---' \"---\"\n559:0 COMMAND_START
+    \"<<\"\n559:3 COMMAND_TEXT \"setspeaker DialogScreen Jason \"\n559:33 COMMAND_TEXT_END
+    \">>\"\n560:0 TEXT \"My goods speak for themselves! I'll let rumors of our arrival
+    do the work - and keep the fee in my own pocket.\"\n562:0 TEXT_NEWLINE \"\n\n\"\n562:0
+    COMMAND_START \"<<\"\n562:3 COMMAND_TEXT \"setspeaker DialogScreen other \"\n562:33
+    COMMAND_TEXT_END \">>\"\n563:0 COMMAND_START \"<<\"\n563:3 COMMAND_TEXT \"setsprite
+    Partner unhappy \"\n563:29 COMMAND_TEXT_END \">>\"\n564:0 COMMAND_START \"<<\"\n564:3
+    COMMAND_SET \"set \"\n564:7 VAR_ID \"$entering_city\"\n564:22 OPERATOR_ASSIGNMENT
+    \"to\"\n564:25 'true' \"true\"\n564:30 EXPRESSION_COMMAND_END \">>\"\n565:0 TEXT
+    \"Your loss, my friend! Still, enjoy your time in our fair city.\"\n567:0 TEXT_NEWLINE
+    \"\n\n\"\n567:0 '===' \"===\"\n568:0 ID \"title\"\n568:5 HEADER_DELIMITER \":
+    \"\n568:7 REST_OF_LINE \"exit\"\n569:0 HEADER_NEWLINE \"\n\"\n569:0 ID \"tags\"\n569:4
+    HEADER_DELIMITER \": \"\n570:0 HEADER_NEWLINE \"\n\"\n570:0 ID \"colorID\"\n570:7
+    HEADER_DELIMITER \": \"\n570:9 REST_OF_LINE \"4\"\n571:0 HEADER_NEWLINE \"\n\"\n571:0
+    ID \"position\"\n571:8 HEADER_DELIMITER \": \"\n571:10 REST_OF_LINE \"-599,1263\"\n572:0
+    HEADER_NEWLINE \"\n\"\n572:0 '---' \"---\"\n573:0 COMMAND_START \"<<\"\n573:3
+    COMMAND_TEXT \"setspeaker DialogScreen Jason \"\n573:33 COMMAND_TEXT_END \">>\"\n574:0
+    COMMAND_START \"<<\"\n574:3 COMMAND_TEXT \"setsprite Partner unhappy \"\n574:29
+    COMMAND_TEXT_END \">>\"\n575:0 COMMAND_START \"<<\"\n575:3 COMMAND_SET \"set \"\n575:7
+    VAR_ID \"$entering_city\"\n575:22 OPERATOR_ASSIGNMENT \"to\"\n575:25 'false' \"false\"\n575:31
+    EXPRESSION_COMMAND_END \">>\"\n576:0 TEXT \"Your fees are steep and your town
+    disappoints: we'll take our profit and our chances to the next port.\"\n577:0
+    TEXT_NEWLINE \"\n\"\n577:0 '===' \"===\"\n578:0 ID \"title\"\n578:5 HEADER_DELIMITER
+    \": \"\n578:7 REST_OF_LINE \"enter_water_cargo\"\n579:0 HEADER_NEWLINE \"\n\"\n579:0
+    ID \"tags\"\n579:4 HEADER_DELIMITER \": \"\n580:0 HEADER_NEWLINE \"\n\"\n580:0
+    ID \"colorID\"\n580:7 HEADER_DELIMITER \": \"\n580:9 REST_OF_LINE \"7\"\n581:0
+    HEADER_NEWLINE \"\n\"\n581:0 ID \"position\"\n581:8 HEADER_DELIMITER \": \"\n581:10
+    REST_OF_LINE \"465,959\"\n582:0 HEADER_NEWLINE \"\n\"\n582:0 '---' \"---\"\n583:0
+    COMMAND_START \"<<\"\n583:3 COMMAND_SET \"set \"\n583:7 VAR_ID \"$intent\"\n583:15
+    OPERATOR_ASSIGNMENT \"to\"\n583:18 STRING \"\"water\"\"\n583:26 EXPRESSION_COMMAND_END
+    \">>\"\n584:0 COMMAND_START \"<<\"\n584:3 COMMAND_SET \"set \"\n584:7 VAR_ID \"$final_cost\"\n584:19
+    OPERATOR_ASSIGNMENT \"to\"\n584:22 VAR_ID \"$water_total\"\n584:35 EXPRESSION_COMMAND_END
+    \">>\"\n586:0 COMMAND_START \"<<\"\n586:3 COMMAND_IF \"if \"\n586:6 VAR_ID \"$final_cost\"\n586:18
+    OPERATOR_LOGICAL_GREATER \">\"\n586:20 VAR_ID \"$cargo_value\"\n586:33 EXPRESSION_COMMAND_END
+    \">>\"\n587:0 TEXT \"You have \"\n587:9 TEXT_EXPRESSION_START \"{\"\n587:10 VAR_ID
+    \"$cargo_value\"\n587:22 '}' \"}\"\n587:23 TEXT \" value but owe \"\n587:38 TEXT_EXPRESSION_START
+    \"{\"\n587:39 VAR_ID \"$final_cost\"\n587:50 '}' \"}\"\n587:51 TEXT \"!\"\n588:4
+    TEXT_NEWLINE \" \"\n588:4 INDENT \"    \"\n588:4 '[[' \"[[\"\n588:6 OPTION_TEXT
+    \" cant_afford \"\n588:19 ']]' \"]]\"\n588:0 DEDENT \"\n\"\n589:0 COMMAND_START
+    \"<<\"\n589:3 COMMAND_ELSE \"else \"\n589:8 COMMAND_END \">>\"\n590:0 TEXT \"You
+    have \"\n590:9 TEXT_EXPRESSION_START \"{\"\n590:10 VAR_ID \"$cargo_value\"\n590:22
+    '}' \"}\"\n590:23 TEXT \" value and only owe \"\n590:43 TEXT_EXPRESSION_START
+    \"{\"\n590:44 VAR_ID \"$final_cost\"\n590:55 '}' \"}\"\n591:4 TEXT_NEWLINE \"
+    \"\n591:4 INDENT \"    \"\n591:4 '[[' \"[[\"\n591:6 OPTION_TEXT \" enter_cargo
+    \"\n591:19 ']]' \"]]\"\n591:0 DEDENT \"\n\"\n592:0 COMMAND_START \"<<\"\n592:3
+    'endif' \"endif\"\n592:9 COMMAND_END \">>\"\n593:0 '===' \"===\"\n594:0 ID \"title\"\n594:5
+    HEADER_DELIMITER \": \"\n594:7 REST_OF_LINE \"enter_trading_cargo\"\n595:0 HEADER_NEWLINE
+    \"\n\"\n595:0 ID \"tags\"\n595:4 HEADER_DELIMITER \": \"\n596:0 HEADER_NEWLINE
+    \"\n\"\n596:0 ID \"colorID\"\n596:7 HEADER_DELIMITER \": \"\n596:9 REST_OF_LINE
+    \"7\"\n597:0 HEADER_NEWLINE \"\n\"\n597:0 ID \"position\"\n597:8 HEADER_DELIMITER
+    \": \"\n597:10 REST_OF_LINE \"833,961\"\n598:0 HEADER_NEWLINE \"\n\"\n598:0 '---'
+    \"---\"\n599:0 COMMAND_START \"<<\"\n599:3 COMMAND_SET \"set \"\n599:7 VAR_ID
+    \"$intent\"\n599:15 OPERATOR_ASSIGNMENT \"to\"\n599:18 STRING \"\"trading\"\"\n599:28
+    EXPRESSION_COMMAND_END \">>\"\n600:0 COMMAND_START \"<<\"\n600:3 COMMAND_SET \"set
+    \"\n600:7 VAR_ID \"$final_cost\"\n600:19 OPERATOR_ASSIGNMENT \"to\"\n600:22 VAR_ID
+    \"$trading_total\"\n600:37 EXPRESSION_COMMAND_END \">>\"\n602:0 COMMAND_START
+    \"<<\"\n602:3 COMMAND_IF \"if \"\n602:6 VAR_ID \"$final_cost\"\n602:18 OPERATOR_LOGICAL_GREATER
+    \">\"\n602:20 VAR_ID \"$cargo_value\"\n602:33 EXPRESSION_COMMAND_END \">>\"\n603:4
+    INDENT \"    \"\n603:4 '[[' \"[[\"\n603:6 OPTION_TEXT \" cant_afford \"\n603:19
+    ']]' \"]]\"\n603:0 DEDENT \"\n\"\n604:0 COMMAND_START \"<<\"\n604:3 COMMAND_ELSE
+    \"else \"\n604:8 COMMAND_END \">>\"\n605:4 INDENT \"    \"\n605:4 '[[' \"[[\"\n605:6
+    OPTION_TEXT \" enter_cargo \"\n605:19 ']]' \"]]\"\n605:0 DEDENT \"\n\"\n606:0
+    COMMAND_START \"<<\"\n606:3 'endif' \"endif\"\n606:9 COMMAND_END \">>\"\n607:0
+    '===' \"===\"\n608:0 ID \"title\"\n608:5 HEADER_DELIMITER \": \"\n608:7 REST_OF_LINE
+    \"enter_tavern_cargo\"\n609:0 HEADER_NEWLINE \"\n\"\n609:0 ID \"tags\"\n609:4
+    HEADER_DELIMITER \": \"\n610:0 HEADER_NEWLINE \"\n\"\n610:0 ID \"colorID\"\n610:7
+    HEADER_DELIMITER \": \"\n610:9 REST_OF_LINE \"7\"\n611:0 HEADER_NEWLINE \"\n\"\n611:0
+    ID \"position\"\n611:8 HEADER_DELIMITER \": \"\n611:10 REST_OF_LINE \"1439,947\"\n612:0
+    HEADER_NEWLINE \"\n\"\n612:0 '---' \"---\"\n613:0 COMMAND_START \"<<\"\n613:3
+    COMMAND_SET \"set \"\n613:7 VAR_ID \"$intent\"\n613:15 OPERATOR_ASSIGNMENT \"to\"\n613:18
+    STRING \"\"tavern\"\"\n613:27 EXPRESSION_COMMAND_END \">>\"\n614:0 COMMAND_START
+    \"<<\"\n614:3 COMMAND_SET \"set \"\n614:7 VAR_ID \"$final_cost\"\n614:19 OPERATOR_ASSIGNMENT
+    \"to\"\n614:22 VAR_ID \"$tavern_total\"\n614:36 EXPRESSION_COMMAND_END \">>\"\n616:0
+    COMMAND_START \"<<\"\n616:3 COMMAND_IF \"if \"\n616:6 VAR_ID \"$final_cost\"\n616:18
+    OPERATOR_LOGICAL_GREATER \">\"\n616:20 VAR_ID \"$cargo_value\"\n616:33 EXPRESSION_COMMAND_END
+    \">>\"\n617:4 INDENT \"    \"\n617:4 '[[' \"[[\"\n617:6 OPTION_TEXT \" cant_afford
+    \"\n617:19 ']]' \"]]\"\n617:0 DEDENT \"\n\"\n618:0 COMMAND_START \"<<\"\n618:3
+    COMMAND_ELSE \"else \"\n618:8 COMMAND_END \">>\"\n619:4 INDENT \"    \"\n619:4
+    '[[' \"[[\"\n619:6 OPTION_TEXT \" enter_cargo \"\n619:19 ']]' \"]]\"\n619:0 DEDENT
+    \"\n\"\n620:0 COMMAND_START \"<<\"\n620:3 'endif' \"endif\"\n620:9 COMMAND_END
+    \">>\"\n621:0 '===' \"===\"\n622:0 ID \"title\"\n622:5 HEADER_DELIMITER \": \"\n622:7
+    REST_OF_LINE \"enter_full_cargo\"\n623:0 HEADER_NEWLINE \"\n\"\n623:0 ID \"tags\"\n623:4
+    HEADER_DELIMITER \": \"\n624:0 HEADER_NEWLINE \"\n\"\n624:0 ID \"colorID\"\n624:7
+    HEADER_DELIMITER \": \"\n624:9 REST_OF_LINE \"7\"\n625:0 HEADER_NEWLINE \"\n\"\n625:0
+    ID \"position\"\n625:8 HEADER_DELIMITER \": \"\n625:10 REST_OF_LINE \"1752,947\"\n626:0
+    HEADER_NEWLINE \"\n\"\n626:0 '---' \"---\"\n627:0 COMMAND_START \"<<\"\n627:3
+    COMMAND_SET \"set \"\n627:7 VAR_ID \"$intent\"\n627:15 OPERATOR_ASSIGNMENT \"to\"\n627:18
+    STRING \"\"all\"\"\n627:24 EXPRESSION_COMMAND_END \">>\"\n628:0 COMMAND_START
+    \"<<\"\n628:3 COMMAND_SET \"set \"\n628:7 VAR_ID \"$final_cost\"\n628:19 OPERATOR_ASSIGNMENT
+    \"to\"\n628:22 VAR_ID \"$all_total\"\n628:33 EXPRESSION_COMMAND_END \">>\"\n630:0
+    COMMAND_START \"<<\"\n630:3 COMMAND_IF \"if \"\n630:6 VAR_ID \"$final_cost\"\n630:18
+    OPERATOR_LOGICAL_GREATER \">\"\n630:20 VAR_ID \"$cargo_value\"\n630:33 EXPRESSION_COMMAND_END
+    \">>\"\n631:4 INDENT \"    \"\n631:4 '[[' \"[[\"\n631:6 OPTION_TEXT \" cant_afford
+    \"\n631:19 ']]' \"]]\"\n631:0 DEDENT \"\n\"\n632:0 COMMAND_START \"<<\"\n632:3
+    COMMAND_ELSE \"else \"\n632:8 COMMAND_END \">>\"\n633:4 INDENT \"    \"\n633:4
+    '[[' \"[[\"\n633:6 OPTION_TEXT \" enter_cargo \"\n633:19 ']]' \"]]\"\n633:0 DEDENT
+    \"\n\"\n634:0 COMMAND_START \"<<\"\n634:3 'endif' \"endif\"\n634:9 COMMAND_END
+    \">>\"\n635:0 '===' \"===\"\n636:0 ID \"title\"\n636:5 HEADER_DELIMITER \": \"\n636:7
+    REST_OF_LINE \"enter_cargo\"\n637:0 HEADER_NEWLINE \"\n\"\n637:0 ID \"tags\"\n637:4
+    HEADER_DELIMITER \": \"\n638:0 HEADER_NEWLINE \"\n\"\n638:0 ID \"colorID\"\n638:7
+    HEADER_DELIMITER \": \"\n638:9 REST_OF_LINE \"0\"\n639:0 HEADER_NEWLINE \"\n\"\n639:0
+    ID \"position\"\n639:8 HEADER_DELIMITER \": \"\n639:10 REST_OF_LINE \"1124,1232\"\n640:0
+    HEADER_NEWLINE \"\n\"\n640:0 '---' \"---\"\n641:0 COMMAND_START \"<<\"\n641:3
+    COMMAND_SET \"set \"\n641:7 FUNC_ID \"cargo_pay\"\n641:17 OPERATOR_ASSIGNMENT
+    \"to\"\n641:20 'true' \"true\""
   baseLanguage: {instanceID: 0}
   localizations: []

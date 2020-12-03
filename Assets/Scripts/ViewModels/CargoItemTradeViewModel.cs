@@ -54,17 +54,23 @@ public class CargoItemTradeViewModel : Model
 
 	public bool IsSelected => Parent.Selected == this;
 
+	public bool AllowSelection { get; set; }
+
 	public CargoItemTradeViewModel(TradeAction action, Resource resource, TradeViewModel parentModel) {
 		Resource = resource;
 		Parent = parentModel;
 		TradeAction = action;
+		AllowSelection = true;
 
 		var iconFilename = Globals.GameVars.masterResourceList.FirstOrDefault(r => r.name == Name).icon;
 		Icon = Resources.Load<Sprite>(ResourcePath + "/" + iconFilename);
 	}
 
 	public void Select() {
-		Parent.TradeAction = TradeAction;
-		Parent.Selected = this;
+		if (AllowSelection) {
+			Parent.TradeAction = TradeAction;
+			Parent.Selected = this;
+		}
+		
 	}
 }

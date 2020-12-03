@@ -18,6 +18,7 @@ public class CargoItemTradeView : ViewBehaviour<CargoItemTradeViewModel>
 	[SerializeField] ImageView Icon = null;
 
 	[SerializeField] Image SelectedOverlay = null;
+	[SerializeField] Image DisabledOverlay = null;
 
 	DelegateHandle SelectedHandle;
 
@@ -41,6 +42,9 @@ public class CargoItemTradeView : ViewBehaviour<CargoItemTradeViewModel>
 		if(SelectedHandle != null) {
 			Unsubscribe(SelectedHandle);
 		}
+
+		DisabledOverlay.gameObject.SetActive(!Model.AllowSelection);
+
 		SelectedHandle = Subscribe(() => model.Parent.PropertyChanged += OnSelectedChanged, () => model.Parent.PropertyChanged -= OnSelectedChanged);
 		RefreshSelection();
 	}
@@ -54,6 +58,8 @@ public class CargoItemTradeView : ViewBehaviour<CargoItemTradeViewModel>
 	}
 
 	void Clicked() {
-		Model.Select();
+		if (Model.AllowSelection) {
+			Model.Select();
+		}
 	}
 }
