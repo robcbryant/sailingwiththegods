@@ -350,6 +350,13 @@ public class script_GUI : MonoBehaviour
 	public void GUI_ShowPortDockingNotification() {
 		GameVars.controlsLocked = true;
 
+		if(GameVars.crewBeacon.Target == GameVars.currentSettlement) {
+			GameVars.DeactivateNavigatorBeacon(GameVars.crewBeacon);
+		}
+		if (GameVars.navigatorBeacon.Target == GameVars.currentSettlement) {
+			GameVars.DeactivateNavigatorBeacon(GameVars.navigatorBeacon);
+		}
+
 		if (useDialog) {
 			port_dialog.SetActive(true);
 			port_dialog.GetComponent<DialogScreen>().StartDialog(GameVars.currentSettlement, useExample ? "Start_Example" : "Start_Tax");

@@ -97,8 +97,8 @@ public class MiniGames : MonoBehaviour
 
 	// scene minigames usually live at the origin, so this disables things that get in the way of the additively loaded minigames
 	void SetMainSceneObjectsEnabled(bool enabled) {
-		Globals.GameVars.crewBeacon.GetComponent<Renderer>().enabled = enabled;
-		Globals.GameVars.navigatorBeacon.GetComponent<Renderer>().enabled = enabled;
+		Globals.GameVars.crewBeacon.IsTemporarilyHidden = !enabled;
+		Globals.GameVars.navigatorBeacon.IsTemporarilyHidden = !enabled;
 		Globals.GameVars.terrain.GetComponent<Terrain>().drawHeightmap = enabled;
 		GameObject.FindGameObjectWithTag("main_light_source").GetComponent<Light>().enabled = enabled;
 	}

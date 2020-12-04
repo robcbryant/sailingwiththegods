@@ -1296,7 +1296,7 @@ public class script_player_controls : MonoBehaviour
 
 	}
 
-	public void UpdateNavigatorBeaconAppearenceBasedOnDistance(GameObject beacon) {
+	public void UpdateNavigatorBeaconAppearenceBasedOnDistance(Beacon beacon) {
 		//Get position of player and beacon
 		Vector3 playerPos = transform.position;
 		Vector3 beaconPos = beacon.transform.position;
