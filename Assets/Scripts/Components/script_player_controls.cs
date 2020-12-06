@@ -175,10 +175,19 @@ public class script_player_controls : MonoBehaviour
 			if (Input.GetKeyUp(KeyCode.N)) {
 				Globals.MiniGames.Enter("Storm MG/Storm Game");
 			}
-			if (Input.GetKeyUp(KeyCode.S)) {
-				Globals.MiniGames.EnterScene("TestSceneMiniGame");
-			}
-			if (Input.GetKeyUp(KeyCode.M)) {
+            if (Input.GetKeyUp(KeyCode.S))
+            {
+                Globals.MiniGames.EnterScene("TestSceneMiniGame");
+            }
+            if (Input.GetKeyUp(KeyCode.R))
+            {
+                Globals.MiniGames.EnterScene("SongCompMainMenu");
+            }
+            if (Input.GetKeyUp(KeyCode.T))
+             {
+              Globals.MiniGames.EnterScene("MiniGameMainMenu");
+             }
+                if (Input.GetKeyUp(KeyCode.M)) {
 				Globals.MiniGames.Exit();
 			}
 		}
