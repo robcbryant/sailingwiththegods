@@ -21,7 +21,7 @@ public class LyricsController : MonoBehaviour
     {
         lyricsColor = lyricsText.color;  //  sets color to object
         lyricsColor.a = 0.0f;// changes the color of alpha
-        //lyricsText.color.a = 0.0f;
+        lyricsText.color = lyricsColor;
 
         // Create a temporary reference to the current scene.
         Scene currentScene = SceneManager.GetActiveScene();
