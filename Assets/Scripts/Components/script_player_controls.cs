@@ -183,7 +183,7 @@ public class script_player_controls : MonoBehaviour
             {
                 Globals.MiniGames.EnterScene("SongCompMainMenu");
             }
-            if (Input.GetKeyUp(KeyCode.E))
+            if (Input.GetKeyUp(KeyCode.T))
              {
               Globals.MiniGames.EnterScene("MiniGameMainMenu");
              }
