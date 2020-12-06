@@ -3,6 +3,7 @@ using System.Collections;
 
 public class script_cameraHideFog : MonoBehaviour
 {
+	public static bool FogActive => !Globals.MiniGames.IsMiniGameSceneActive;
 
 	[SerializeField] bool enableFog = true;
 	public bool revertFogState = false;
@@ -10,7 +11,7 @@ public class script_cameraHideFog : MonoBehaviour
 
 	void OnPreRender() {
 		revertFogState = RenderSettings.fog;
-		RenderSettings.fog = enableFog;
+		RenderSettings.fog = enableFog && FogActive;
 	}
 
 	void OnPostRender() {

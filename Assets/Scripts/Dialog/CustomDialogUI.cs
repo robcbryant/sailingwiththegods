@@ -194,13 +194,13 @@ public class CustomDialogUI : Yarn.Unity.DialogueUIBehaviour
 		return Dialogue.HandlerExecutionType.PauseExecution;
 	}
 
-	/// Show a line of dialogue, gradually        
+	/// EDITED FOR SAILING WITH THE GODS
+	/// Designed for our dialog system to fill in a dialog object
 	private IEnumerator DoRunLine(Yarn.Line line, ILineLocalisationProvider localisationProvider, System.Action onComplete) {
 		onLineStart?.Invoke();
 
 		userRequestedNextLine = false;
-
-		// The final text we'll be showing for this line.
+		
 		string text = localisationProvider.GetLocalisedTextForLine(line);
 
 		if (text == null) {
@@ -208,9 +208,11 @@ public class CustomDialogUI : Yarn.Unity.DialogueUIBehaviour
 			text = line.ID;
 		}
 
-
+		//Split one block of text into multiple sections
 		string[] split = text.Split('^');
 
+		//If we need to end after the split, we have to save that for later
+		//Otherwise, we'll end between the split, which isn't right
 		bool eventualEnd = end;
 		end = false;
 
@@ -222,7 +224,7 @@ public class CustomDialogUI : Yarn.Unity.DialogueUIBehaviour
 				ds.AddToDialogText(currentSpeakerName, split[i], textAlign);
 			}
 
-
+			//If this is the final part of the split text, remember if this is the end or not
 			if (i == split.Length - 1) {
 				end = eventualEnd;
 			}
@@ -238,7 +240,6 @@ public class CustomDialogUI : Yarn.Unity.DialogueUIBehaviour
 			}
 		}
 		
-		// Hide the text and prompt
 		onLineEnd?.Invoke();
 
 		onComplete();

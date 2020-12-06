@@ -70,6 +70,10 @@ public class DialogText
 		get { return text; }
 	}
 
+	/// <summary>
+	/// Returns a random emotion other than neutral
+	/// </summary>
+	/// <returns></returns>
 	public static Emotion RandomEmotion() {
 		int rand = Random.Range(1, System.Enum.GetNames(typeof(Emotion)).Length);
 		return (Emotion)rand;
