@@ -9,6 +9,7 @@
         Tags {"Queue"="Transparent+4" "IgnoreProjector"="True"}
         ZWrite Off
         Blend SrcAlpha OneMinusSrcAlpha
+        Fog {Mode Off}
      
         SubShader {Pass {
             GLSLPROGRAM

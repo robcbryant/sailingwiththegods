@@ -57,7 +57,7 @@ public class TavernCityViewModel : CityViewModel
 			for (int x = 0; x < GameVars.settlement_masterList_parent.transform.childCount; x++)
 				if (GameVars.settlement_masterList_parent.transform.GetChild(x).GetComponent<script_settlement_functions>().thisSettlement.settlementID == City.settlementID)
 					location = GameVars.settlement_masterList_parent.transform.GetChild(x).position;
-			GameVars.MoveNavigatorBeacon(GameVars.navigatorBeacon, location);
+			GameVars.ActivateNavigatorBeacon(GameVars.navigatorBeacon, location);
 			GameVars.playerShipVariables.ship.currentNavigatorTarget = City.settlementID;
 			GameVars.ShowANotificationMessage("You hired a navigator to " + City.name + " for " + CostToHire + " drachma.");
 			//If not enough money, then let the player know
