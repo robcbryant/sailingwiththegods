@@ -17,6 +17,10 @@ public class PetteiaGameController : MonoBehaviour
 	public enemyAI en;
 	public GameObject menucanvas;
 	public int lastPieceMoved;
+
+	[TextArea(40, 10)]
+	public string boardText = "This text will appear in a text area that automatically expands";
+
 	//public MovePiece mp;
 
 	//Some variables are public for debugging and being able to be viewed in the inspector 
@@ -58,6 +62,7 @@ public class PetteiaGameController : MonoBehaviour
 						//Debug.Log("enemyturn");
 						//mp.isMoving = true;
 						yourturn = false;
+						PrintBoard();
 						
 					} else {
 						//mp.isMoving = false;
@@ -284,6 +289,7 @@ public class PetteiaGameController : MonoBehaviour
 
 	IEnumerator CapturePiece(int i, int j) {
 		positions[i, j] = 0;
+		PrintBoard();
 		colliders[i, j].GetComponent<colliderMover>().destory = true;
 		colliders[i, j].SetActive(true);
 		//Collider needs time to check for collisions
@@ -317,10 +323,11 @@ public class PetteiaGameController : MonoBehaviour
 		}
 
 		Debug.Log(s);
+		boardText = s;
 	}
 	public Vector3 MovePiece(Transform g, string dir, Vector3 startPos, string tag) {
 
-
+		PrintBoard();
 
 		moveDir = dir;
 		if (updateOld == true) {

@@ -63,7 +63,7 @@ public static class Utils
 		new Color(r ?? self.r, g ?? self.g, b ?? self.b, a ?? self.a);
 
 	public static T RandomElement<T>(this IEnumerable<T> list) {
-		return list.ElementAtOrDefault(UnityEngine.Random.Range(0, list.Count() - 1));
+		return list.ElementAtOrDefault(UnityEngine.Random.Range(0, list.Count()));
 	}
 
 	// Based on: https://stackoverflow.com/questions/11883469/takewhile-but-get-the-element-that-stopped-it-also

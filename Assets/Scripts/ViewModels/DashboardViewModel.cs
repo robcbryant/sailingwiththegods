@@ -50,9 +50,16 @@ public class DashboardViewModel : Model
 			Globals.UI.Hide<CityView>();
 		}
 
-		Globals.GameVars.MoveNavigatorBeacon(Globals.GameVars.crewBeacon, city.City.theGameObject.transform.position);
-		Globals.GameVars.RotateCameraTowards(city.City.theGameObject.transform.position);
-		Globals.UI.Show<CityView, CityViewModel>(new CityDetailsViewModel(city.City, null));
+		var beacon = Globals.GameVars.crewBeacon;
+		if (city.City != beacon.Target) {
+			beacon.Target = city.City;
+			Globals.GameVars.ActivateNavigatorBeacon(Globals.GameVars.crewBeacon, city.City.theGameObject.transform.position);
+			Globals.GameVars.RotateCameraTowards(city.City.theGameObject.transform.position);
+			Globals.UI.Show<CityView, CityViewModel>(new CityDetailsViewModel(city.City, null));
+		}
+		else {
+			beacon.IsBeaconActive = false;
+		}
 	}
 
 	public void OnCrewClicked(CrewManagementMemberViewModel crew) {

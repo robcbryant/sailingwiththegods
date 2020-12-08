@@ -42,6 +42,7 @@ public class PortScreen : ViewBehaviour<PortViewModel>
 			Label = "Town",
 			OnClick = model.GoToTown
 		}));
+		Town.Interactable = model.allowTownAccess;
 
 		Info?.Bind(ValueModel.New(new ButtonViewModel {
 			OnClick = () => Globals.UI.Show<InfoScreen, InfoScreenModel>(new InfoScreenModel {

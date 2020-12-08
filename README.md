@@ -1,7 +1,7 @@
 sailingwiththegods
 ===================
 
-[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](LICENSE) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ba9a42007847465d8bb80df93ad3dd77)](https://app.codacy.com/manual/kddressel/sailingwiththegods?utm_source=github.com&utm_medium=referral&utm_content=kddressel/sailingwiththegods&utm_campaign=Badge_Grade_Dashboard) ![CI](https://github.com/kddressel/sailingwiththegods/workflows/CI/badge.svg?branch=master)
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](LICENSE) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ba9a42007847465d8bb80df93ad3dd77)](https://app.codacy.com/manual/kddressel/sailingwiththegods?utm_source=github.com&utm_medium=referral&utm_content=kddressel/sailingwiththegods&utm_campaign=Badge_Grade_Dashboard) ![CI](https://github.com/kddressel/sailingwiththegods/workflows/CI/badge.svg?branch=develop)
 
 ![](docs/images/screenshot.png)
 
