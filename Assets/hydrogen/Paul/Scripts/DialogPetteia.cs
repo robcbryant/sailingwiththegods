@@ -20,9 +20,12 @@ public class DialogPetteia : MonoBehaviour
 		EnemyCanvas.SetActive(false);
 		//enemyName.text = Globals.GameVars.currentSettlement.availableCrew.RandomElement<CrewMember>().name;
 		//enemyName.text = Globals.GameVars.GetSettlementFromID(0).availableCrew.RandomElement<CrewMember>().name;
-		//enemyName.text = Globals.GameVars.newGameAvailableCrew.RandomElement<CrewMember>().name;
+		//enemyFaces = Globals.GameVars.newGameAvailableCrew.RandomElement<CrewMember>()
+		//Debug.Log(Globals.GameVars.newGameAvailableCrew.RandomElement<CrewMember>().name);
+		enemyName.text = Globals.GameVars.currentSettlement.availableCrew.RandomElement<CrewMember>().name;
 
 
+		
 
 	}
 

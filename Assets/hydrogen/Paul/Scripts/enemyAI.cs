@@ -557,10 +557,11 @@ public class enemyAI : MonoBehaviour
 		//find out which piece we want to move AND why and where it needs to go 
 
 
-
-
+		p.moveSound.pitch = Random.Range(0.7f, 1.1f);
+		p.moveSound.Play();
 		yield return new WaitForSeconds(1f);
 		p.yourturn = true;
+		
 		isMoving = false;
 	}
 	IEnumerator MovePiece(GameObject piece, string dir, int dist) 
