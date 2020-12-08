@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class StormMGmovement : MonoBehaviour
 {
-	//the bpat the player identifies as in the MG
-	[HideInInspector]
-	public GameObject playerBoat;
 	public float speed;
+	public float reverseSpeed;
 	public float rotSpeed;
+	public float sizeMod = 0.16f;
 
 	private bool move;
 
@@ -26,15 +25,10 @@ public class StormMGmovement : MonoBehaviour
 	//left and right turns the boat 
 	private void MoveBoat() 
 	{
-		if (playerBoat != null) {
-			float movement = Input.GetAxisRaw("Vertical");
-			float rotation = Input.GetAxisRaw("Horizontal");
-			
-			playerBoat.transform.position += playerBoat.transform.right * speed * movement;
-			//playerBoat.transform.Rotate(0, speed * 2 * rotation, 0);
-			playerBoat.transform.localEulerAngles += Vector3.up * rotSpeed * rotation;
-		}
-
+		float movement = Input.GetAxis("Vertical");
+		float rotation = Input.GetAxis("Horizontal");
+		transform.position += transform.right.normalized * sizeMod * movement * (movement > 0 ? speed : reverseSpeed);
+		transform.localEulerAngles += Vector3.up * rotSpeed * rotation;
 	}
 
 	public void ToggleMovement(bool toggle) 

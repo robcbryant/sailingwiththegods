@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1550463696753465106}
   - component: {fileID: 503520807284919846}
   - component: {fileID: 4171488924384322784}
+  - component: {fileID: -1615843145819614821}
   m_Layer: 0
   m_Name: Upgraded Storm Ship
   m_TagString: Untagged
@@ -63,6 +64,22 @@ CapsuleCollider:
   m_Height: 16.951542
   m_Direction: 0
   m_Center: {x: 1.0744038, y: 0.82, z: 0}
+--- !u!114 &-1615843145819614821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1550463696753465107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e567bd7ca3fa53c478b4af84b02a8444, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1.4
+  reverseSpeed: 0.6
+  rotSpeed: 0.9
+  sizeMod: 0.4
 --- !u!1001 &9204283780762626271
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -120,15 +137,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400012, guid: fc0e6f1a8932ea14598c2ab8a62cedd0, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.50526
+      value: 0.68
       objectReference: {fileID: 0}
     - target: {fileID: 400012, guid: fc0e6f1a8932ea14598c2ab8a62cedd0, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.50526
+      value: 0.68
       objectReference: {fileID: 0}
     - target: {fileID: 400012, guid: fc0e6f1a8932ea14598c2ab8a62cedd0, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.50526
+      value: 0.685
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc0e6f1a8932ea14598c2ab8a62cedd0, type: 3}

@@ -185,7 +185,7 @@ public class QuestSystem : MonoBehaviour
 		playerShipVariables.ship.cargo[1].amount_kg = Ship.StartingFood;
 
 		// now we start on quest 0 at the beginning of the game, with an upgradeship trigger assumed.
-		Debug.Log(quest.currentQuestSegment);
+		Debug.Log("Current quest segment " + quest.currentQuestSegment);
 
 		var segment = quest.questSegments[quest.currentQuestSegment];
 
@@ -241,7 +241,7 @@ public class QuestSystem : MonoBehaviour
 		}
 
 		Globals.Quests.StartQuestSegment(0);
-		Debug.Log(quest.currentQuestSegment);
+		Debug.Log("Current quest segment " + quest.currentQuestSegment);
 
 		//Flag the main GUI scripts to turn on
 		gameVars.runningMainGameGUI = true;

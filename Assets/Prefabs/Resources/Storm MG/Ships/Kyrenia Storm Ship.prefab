@@ -183,6 +183,7 @@ GameObject:
   - component: {fileID: 1738434674703247103}
   - component: {fileID: 3684172921319899428}
   - component: {fileID: 221400279231890338}
+  - component: {fileID: 641693112039408592}
   m_Layer: 0
   m_Name: Kyrenia Storm Ship
   m_TagString: Untagged
@@ -258,6 +259,22 @@ CapsuleCollider:
   m_Height: 11.553309
   m_Direction: 0
   m_Center: {x: 0.66320336, y: 0.27957162, z: 0}
+--- !u!114 &641693112039408592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794280630024534100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e567bd7ca3fa53c478b4af84b02a8444, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1.4
+  reverseSpeed: 0.6
+  rotSpeed: 1
+  sizeMod: 0.185
 --- !u!1 &1794280630024534102
 GameObject:
   m_ObjectHideFlags: 0

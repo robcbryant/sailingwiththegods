@@ -59,14 +59,18 @@ public class RandomizerForStorms : MonoBehaviour
 	private bool countingDown;
 
 	private GameObject sunLight;
+	[HideInInspector]
+	public StormMGmovement move;
+
+	private float timer = 0.0f;
+	private float waterSize;
 
 	private void Start() 
 	{
 		h = GetComponent<ShipHealth>();
 
 		damagePerSecond = h.MaxHealth / (timeLimit * 60);
-
-		Debug.Log("Set SunLight in Start");
+		
 		sunLight = Globals.GameVars.skybox_sun;
 	}
 
@@ -78,7 +82,6 @@ public class RandomizerForStorms : MonoBehaviour
 		}
 
 		if (sunLight == null) {
-			Debug.Log("Set SunLight in OnEnable");
 			sunLight = Globals.GameVars.skybox_sun;
 		}
 
@@ -96,10 +99,11 @@ public class RandomizerForStorms : MonoBehaviour
 	private void OnDisable() 
 	{
 		if (sunLight == null) {
-			Debug.Log("Set SunLight in OnDisable");
 			sunLight = Globals.GameVars.skybox_sun;
 		}
-		sunLight.gameObject.SetActive(true);
+		if (sunLight.gameObject != null) {
+			sunLight.gameObject.SetActive(true);
+		}
 		if (Globals.GameVars.FPVCamera.gameObject != null) 
 		{
 			Globals.GameVars.FPVCamera.gameObject.SetActive(true);
@@ -121,12 +125,11 @@ public class RandomizerForStorms : MonoBehaviour
 		ship = Instantiate(shipModels[Globals.GameVars.playerShipVariables.ship.upgradeLevel]);
 		ship.tag = "StormShip";
 		ship.transform.SetParent(transform);
-		cam.transform.SetParent(ship.transform);
 		cam.transform.position = ship.transform.position + camOffset;
 		ship.transform.position = shipStartPoint.position;
 		hintArrow.transform.SetParent(ship.transform);
-		
-		GetComponent<StormMGmovement>().playerBoat = ship;
+		move = ship.GetComponent<StormMGmovement>();
+		move.ToggleMovement(false);
 	}
 
 	/// <summary>
@@ -136,12 +139,12 @@ public class RandomizerForStorms : MonoBehaviour
 	public void SetDifficulty(StormDifficulty difficulty) 
 	{
 		//Get random numbers for stuff
-		float waterSize = Random.Range(waterSizeBounds.x, waterSizeBounds.y);
+		/*float*/ waterSize = Random.Range(waterSizeBounds.x, waterSizeBounds.y);
 
 		//Modify those random numbers via clout and difficulty
 		float mod = cloutModifiers[cloutBracket] * difficultyModifiers[(int)difficulty];
 
-		waterSize *= mod;
+		//waterSize *= mod;
 		//Calculates the size of the water in square units, then uses that along with the obstacle density to get the number to spawn
 		float sqWater = waterSize * waterSize;
 		int rockNum = Mathf.FloorToInt(Random.Range(rockPerSqM.x, rockPerSqM.y) * sqWater * mod);
@@ -154,12 +157,12 @@ public class RandomizerForStorms : MonoBehaviour
 		PopulateWithObstacles(rockNum, stormRocks, rockHolder, rockScaleBounds, currentSpacing);
 		PopulateWithObstacles(cloudNum, stormClouds, cloudHolder, cloudScaleBounds, currentSpacing);
 
-		LineEdges(currentSpacing);
+		//LineEdges(currentSpacing);
 
 		//Turn on/off the hint arrow
 		if (difficulty == StormDifficulty.Easy) {
-			hintArrow.SetActive(true);
-			arrowTarget.transform.position = gaps[Random.Range(0, gaps.Count)];
+			//hintArrow.SetActive(true);
+			//arrowTarget.transform.position = gaps[Random.Range(0, gaps.Count)];
 		}
 		else {
 			hintArrow.SetActive(false);
@@ -169,12 +172,14 @@ public class RandomizerForStorms : MonoBehaviour
 	public void StartDamageTimer() 
 	{
 		countingDown = true;
+		timer = 0.0f;
 		StartCoroutine(DamageOverTime());
 	}
 
 	public void StopDamageTimer() 
 	{
 		countingDown = false;
+		Debug.Log($"Time: {timer}s | Dist: {waterSize / 2f}u | Speed: {(waterSize/2f)/timer}u/s");
 		StopCoroutine(DamageOverTime());
 	}
 
@@ -186,6 +191,13 @@ public class RandomizerForStorms : MonoBehaviour
 			h.TakeDamage(damagePerSecond);
 		}
 
+	}
+
+	private void Update() {
+		cam.transform.position = ship.transform.position + camOffset;
+		if (countingDown) {
+			timer += Time.deltaTime;
+		}
 	}
 
 	/// <summary>
@@ -318,8 +330,6 @@ public class RandomizerForStorms : MonoBehaviour
 	{
 		for (int i = brackets.Length - 1; i >= 0; i--) {
 			if (find.CompareTo(brackets[i]) >= 0) {
-				string s = i + 1 < brackets.Length ? brackets[i + 1].ToString() : "maximum";
-				Debug.Log($"{find} is larger than or equal to {brackets[i]} but smaller than {s}");
 				return i;
 			}
 		}
