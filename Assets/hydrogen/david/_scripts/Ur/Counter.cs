@@ -11,7 +11,7 @@ public class Counter : MonoBehaviour
 	public GameObject ikTarget;
 	public float increment;
 	public bool onTheMove = false;
-	public ArmIKHandler armIK;
+	public DavidArmIKHandler armIK;
 	public UrGameController UR;
 	public Vector3 initPosit;
 	public bool pointScored = false;
