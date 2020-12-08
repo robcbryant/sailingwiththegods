@@ -177,7 +177,7 @@ public class script_player_controls : MonoBehaviour
 			}
             if (Input.GetKeyUp(KeyCode.S))
             {
-                Globals.MiniGames.EnterScene("TestSceneMiniGame");
+                Globals.MiniGames.EnterScene("Petteia");
             }
             if (Input.GetKeyUp(KeyCode.R))
             {

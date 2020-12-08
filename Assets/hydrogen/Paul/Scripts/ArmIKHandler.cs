@@ -9,7 +9,7 @@ public class ArmIKHandler : MonoBehaviour
 	public bool ikActive = false;
 	public Transform rightHandObj = null;
 	public Transform lookObj = null;
-//	public Counter counterOnTheMove;
+	public Counter counterOnTheMove;
 	private bool useIk = false;
 	private float ikValue = 0.0f;
 
