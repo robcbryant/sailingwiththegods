@@ -62,9 +62,6 @@ public class RandomizerForStorms : MonoBehaviour
 	[HideInInspector]
 	public StormMGmovement move;
 
-	private float timer = 0.0f;
-	private float waterSize;
-
 	private void Start() 
 	{
 		h = GetComponent<ShipHealth>();
@@ -139,12 +136,12 @@ public class RandomizerForStorms : MonoBehaviour
 	public void SetDifficulty(StormDifficulty difficulty) 
 	{
 		//Get random numbers for stuff
-		/*float*/ waterSize = Random.Range(waterSizeBounds.x, waterSizeBounds.y);
+		float waterSize = Random.Range(waterSizeBounds.x, waterSizeBounds.y);
 
 		//Modify those random numbers via clout and difficulty
 		float mod = cloutModifiers[cloutBracket] * difficultyModifiers[(int)difficulty];
 
-		//waterSize *= mod;
+		waterSize *= mod;
 		//Calculates the size of the water in square units, then uses that along with the obstacle density to get the number to spawn
 		float sqWater = waterSize * waterSize;
 		int rockNum = Mathf.FloorToInt(Random.Range(rockPerSqM.x, rockPerSqM.y) * sqWater * mod);
@@ -157,7 +154,7 @@ public class RandomizerForStorms : MonoBehaviour
 		PopulateWithObstacles(rockNum, stormRocks, rockHolder, rockScaleBounds, currentSpacing);
 		PopulateWithObstacles(cloudNum, stormClouds, cloudHolder, cloudScaleBounds, currentSpacing);
 
-		//LineEdges(currentSpacing);
+		LineEdges(currentSpacing);
 
 		//Turn on/off the hint arrow
 		if (difficulty == StormDifficulty.Easy) {
@@ -172,14 +169,12 @@ public class RandomizerForStorms : MonoBehaviour
 	public void StartDamageTimer() 
 	{
 		countingDown = true;
-		timer = 0.0f;
 		StartCoroutine(DamageOverTime());
 	}
 
 	public void StopDamageTimer() 
 	{
 		countingDown = false;
-		Debug.Log($"Time: {timer}s | Dist: {waterSize / 2f}u | Speed: {(waterSize/2f)/timer}u/s");
 		StopCoroutine(DamageOverTime());
 	}
 
@@ -195,9 +190,6 @@ public class RandomizerForStorms : MonoBehaviour
 
 	private void Update() {
 		cam.transform.position = ship.transform.position + camOffset;
-		if (countingDown) {
-			timer += Time.deltaTime;
-		}
 	}
 
 	/// <summary>
