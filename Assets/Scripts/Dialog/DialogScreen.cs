@@ -18,6 +18,7 @@ public class DialogScreen : MonoBehaviour
 	public Scrollbar conversationScroll;
 	public Transform conversationHolder;
 	public Yarn.Unity.Example.SpriteSwitcher[] convoPartners;
+	public Yarn.Unity.Example.SpriteSwitcher[] backgrounds;
 
 	[Header("Choices")]
 	public RectTransform choiceScroll;

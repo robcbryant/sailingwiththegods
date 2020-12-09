@@ -202,6 +202,20 @@ public class GameVars : MonoBehaviour
 
 	[HideInInspector] public List<DialogText> portDialogText = new List<DialogText>();
 
+	//Mylo's Addition
+	[HideInInspector] public List<DialogText> networkDialogText = new List<DialogText>();
+	[HideInInspector] public List<DialogText> pirateDialogText = new List<DialogText>();
+	[HideInInspector] public List<DialogText> mythDialogText = new List<DialogText>();
+	[HideInInspector] public List<DialogText> guideDialogText = new List<DialogText>(); 
+	[HideInInspector] public List<DialogText> tradingDialogText = new List<DialogText>(); // Perhaps
+	[HideInInspector] public List<FoodText> foodItemText= new List<FoodText>();
+	[HideInInspector] public List<FoodText> wineInfoText = new List<FoodText>();
+	[HideInInspector] public List<FoodText> foodDialogueText = new List<FoodText>();
+
+
+
+	// End Mylo's Addition
+
 	// high level game systems
 	public Trade Trade { get; private set; }
 	public Network Network { get; private set; }
@@ -281,6 +295,19 @@ public class GameVars : MonoBehaviour
 		CSVLoader.LoadPirateText(out pirateTitles, out pirateSubtitles, out pirateStartText, out pirateTypeIntroText, out pirateNegotiateText,
 			out pirateRunSuccessText, out pirateRunFailText, out pirateSuccessText, out pirateFailureText);
 		portDialogText = CSVLoader.LoadPortDialog();
+
+		// Mylo's Addition
+		networkDialogText = CSVLoader.LoadNetworkDialog();
+		pirateDialogText = CSVLoader.LoadPirateDialog();
+		mythDialogText = CSVLoader.LoadMythDialog();
+		guideDialogText = CSVLoader.LoadHireGuideDialog();
+		// trading goods here
+		foodItemText = CSVLoader.LoadFoodItemsList();
+		foodDialogueText = CSVLoader.LoadFoodDialogueList();
+		wineInfoText = CSVLoader.LoadWineInfoList();
+
+
+		// end Mylo's Addition
 
 		region_masterList = CSVLoader.LoadRegionList();
 		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list, region list, and crew list

@@ -352,7 +352,7 @@ public class script_GUI : MonoBehaviour
 
 		if (useDialog) {
 			port_dialog.SetActive(true);
-			port_dialog.GetComponent<DialogScreen>().StartDialog(GameVars.currentSettlement, useExample ? "Start_Example" : "Start_Tax");
+			port_dialog.GetComponent<DialogScreen>().StartDialog(GameVars.currentSettlement, useExample ? "Start_Example" : "Start_Taverna");
 		}
 		else {
 			//Show the port notification pop up

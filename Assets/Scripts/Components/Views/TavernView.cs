@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class TavernCityViewModel : CityViewModel
 {
+	private DialogScreen ds;
 	public int CostForHint {
 		get {
 			float initialCost = CoordinateUtil.GetDistanceBetweenTwoLatLongCoordinates(GameVars.currentSettlement.location_longXlatY, City.location_longXlatY) / 10000f;
@@ -22,8 +23,15 @@ public class TavernCityViewModel : CityViewModel
 			return Mathf.RoundToInt(initialCost - (initialCost * GameVars.GetOverallCloutModifier(City.settlementID)));
 		}
 	}
+	
+	public DialogScreen GetDS {
+		get { return ds; }
+	}
 
-	public TavernCityViewModel(Settlement city) : base(city, null) { }
+	public TavernCityViewModel(Settlement city, DialogScreen d) : base(city, null) 
+	{
+		ds = d;
+	}
 
 	public string GetInfoOnNetworkedSettlementResource(Resource resource) {
 		if (resource.amount_kg < 100)
@@ -35,6 +43,7 @@ public class TavernCityViewModel : CityViewModel
 
 	}
 
+	// User for Trading Goods. This is getting resource from city.
 	public void GUI_BuyHint() {
 
 		if (GameVars.playerShipVariables.ship.currency < CostForHint) {
@@ -46,6 +55,7 @@ public class TavernCityViewModel : CityViewModel
 		}
 
 	}
+	// NOT USED. Navigator currently set in YarnTavern.cs
 	public void GUI_HireANavigator() {
 		//Do this if button pressed
 		//Check to see if player has enough money to hire
@@ -74,10 +84,10 @@ public class TavernViewModel : Model
 
 	public ICollectionModel<CityViewModel> Cities { get; private set; }
 
-	public TavernViewModel() {
+	public TavernViewModel(DialogScreen d) {
 		Cities = ValueModel.Wrap(GameVars.playerShipVariables.ship.playerJournal.knownSettlements)
-			.Where(id => id != GameVars.currentSettlement.settlementID)
-			.Select(id => new TavernCityViewModel(GameVars.GetSettlementFromID(id)) as CityViewModel);
+			//.Where(id => id != GameVars.currentSettlement.settlementID)
+			.Select(id => new TavernCityViewModel(GameVars.GetSettlementFromID(id), d) as CityViewModel);
 	}
 }
 

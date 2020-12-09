@@ -1,0 +1,269 @@
+title: Start_Taverna
+tags: 
+colorID: 0
+position: -671,-1562
+---
+<< reset DialogScreen>>
+<< set $first_time  to false >> 
+
+<< setpartner DialogScreen Telones>>
+<< setbg DialogScreen Backgrounds>> 
+<< setpartnername DialogScreen Oineus >>
+<< setconvotitle DialogScreen Taverna>> 
+<< setsprite Backgrounds tavern >> 
+<< setsprite Telones neutral >>
+<< setspeaker DialogScreen other>> 
+
+
+
+<< cityinfo DialogScreen>> 
+
+Khaire (hello, welcome)!
+How may I help you?
+<< setend DialogScreen >> 
+[[I want to ask about a city. |City_Setup]]
+[[ Never mind! |exit]]
+===
+title: networks
+tags: 
+colorID: 0
+position: -1248,-315
+---
+<< randomcost DialogScreen 50 100>> 
+<< randomFood DialogScreen>> 
+
+<< setspeaker DialogScreen Jason>> 
+<< randomQA DialogScreen network>>
+/{$question}
+
+<< setspeaker DialogScreen other>> 
+I could tell you, but would be happier with {$random_food} (Cost: {$drachma_cost} dr).
+<< setend DialogScreen>> 
+<< set $first_time to true >> 
+
+
+<< checkafford DialogScreen $drachma_cost>> 
+
+<< if $can_afford>> 
+    [[ Pay {$drachma_cost} |Network_Response]]
+<<endif>> 
+[[ How greedy! Walk away |City_Questions]]
+===
+title: pirates
+tags: 
+colorID: 0
+position: -255,36
+---
+<< randomcost DialogScreen 30 120>>
+<< randomFood DialogScreen>> 
+
+<< setspeaker DialogScreen Jason>> 
+<< randomQA DialogScreen pirate>> 
+
+<< setspeaker DialogScreen other>> 
+It's risky to speak of pirates, I would talk more easily if I had {$random_food} (Cost: {$drachma_cost} dr).
+<< setend DialogScreen>> 
+
+<< checkafford DialogScreen $drachma_cost>> 
+<< set $first_time to true >> 
+
+<< if $can_afford>> 
+    [[ Pay {$drachma_cost} |Pirate_Response]]
+<<endif>> 
+[[ What a lush! Walk away |City_Questions]]
+===
+title: myths
+tags: 
+colorID: 0
+position: -69,-217
+---
+<< randomcost DialogScreen 20 50>>
+<< randomFood DialogScreen>> 
+
+<< setspeaker DialogScreen Jason>> 
+<< randomQA DialogScreen myth>>
+
+<< setspeaker DialogScreen other>>
+"I know many things, but {$random_food} would loosen my tongue. (Cost: {$drachma_cost} dr).
+
+<< checkafford DialogScreen $drachma_cost>>
+<< setend DialogScreen>> 
+
+<< set $first_time to true >> 
+
+<< if $can_afford>> 
+    [[ Pay {$drachma_cost} |Myth_Response]]
+<<endif>> 
+[[ What a lush! Walk away |City_Questions]]
+===
+title: trading_goods
+tags: 
+colorID: 0
+position: -1166,-1071
+---
+Trading Goods Node!
+We will now exit.
+===
+title: hire_guide
+tags: 
+colorID: 0
+position: -369,495
+---
+<< randomcost DialogScreen 120 150>> 
+<< randomFood DialogScreen>> 
+<< randomGuide DialogScreen>> 
+
+
+<< setspeaker DialogScreen Jason>> 
+I’m eager to sail to {$city_name}, but need to find the way!
+<< setspeaker DialogScreen other>>
+A guide is what you want! {$flavor_text1}. I can get you one if you buy me {$random_food} (Cost: {$drachma_cost} dr).
+<< setend DialogScreen>> 
+
+<< checkafford DialogScreen $drachma_cost>> 
+<< set $first_time to true >> 
+
+
+<< if $can_afford>> 
+    [[ Pay {$drachma_cost} |Guide_Set]]
+<<endif>> 
+    [[What a lush! |City_Questions]]
+===
+title: Network_Response
+tags: 
+colorID: 0
+position: -1255,-637
+---
+<< pay DialogScreen $drachma_cost >> 
+<< setspeaker DialogScreen other>> 
+/{$food_quote}
+<< setspeaker DialogScreen Jason>> 
+/{$question}
+
+<< setspeaker DialogScreen other>> 
+/{$response}
+<< set $first_time to true >> 
+[[City_Questions]]
+===
+title: Pirate_Response
+tags: 
+colorID: 0
+position: -1152,37
+---
+<< pay DialogScreen $drachma_cost >> 
+
+<< setspeaker DialogScreen other>> 
+/{$food_quote}
+<< setspeaker DialogScreen Jason>> 
+/{$question}
+
+<< setspeaker DialogScreen other>> 
+<< set $first_time to true >> 
+
+/{$response}
+[[City_Questions]]
+===
+title: Myth_Response
+tags: 
+colorID: 0
+position: -77,-596
+---
+<< pay DialogScreen $drachma_cost >> 
+<< setspeaker DialogScreen other>> 
+/{$food_quote}
+<< setspeaker DialogScreen Jason>> 
+/{$question}
+
+<< setspeaker DialogScreen other>> 
+/{$response}
+<< setend DialogScreen>> 
+<< set $first_time to true >> 
+
+[[Tell me more! |Myth_Response_2]]
+[[That is all. Thank you! |City_Questions]]
+===
+title: exit
+tags: 
+colorID: 0
+position: -241,-1209
+---
+<< setspeaker DialogScreen other>> 
+Good bye!
+===
+title: Myth_Response_2
+tags: 
+colorID: 0
+position: -82,-927
+---
+<< randomQA DialogScreen myth>>
+/{$response}
+<< setend DialogScreen>> 
+<< set $first_time to true >> 
+
+<< if $check_myth>> 
+    [[Tell me more! |Myth_Response_2]]
+    [[That is all. Thank you! |City_Questions]]
+<< else >>
+    [[ Thank you for tales! |City_Questions]]
+<< endif >>
+===
+title: Guide_Set
+tags: 
+colorID: 0
+position: -930,498
+---
+<< setspeaker DialogScreen Jason>> 
+Local knowledge, tired ears: a worthy balance. I will hire one! {$flavor_text2}
+
+<< setspeaker DialogScreen other>>
+It is true, they are often given to too much chatter: {$flavor_text3}
+<< set $first_time to true >> 
+
+<< setbeacon DialogScreen >> 
+
+[[City_Questions]]
+===
+title: City_Questions
+tags: 
+colorID: 0
+position: -678,-375
+---
+<< if $first_time is true >>
+    << setspeaker DialogScreen other >>
+    How else could I assist you?
+    << setend DialogScreen>> 
+<< else >> 
+    Certainly! What would you like to know about {$known_city}?
+<< endif >> 
+<< setend DialogScreen>> 
+
+
+[[What can you tell me about {$known_city}? |networks]]
+[[What can you tell me about pirates? |pirates]]
+[[What tales and myths are told here? |myths]]
+[[Ask about trading goods. |trading_goods]]
+[[Hire a guide |hire_guide]]
+[[Ask about a different city |City_Setup]]
+[[That is all! I'll take my leave |exit]]
+===
+title: City_Setup
+tags: 
+colorID: 0
+position: -673,-1152
+---
+<< if $first_time is false >> 
+    << setspeaker DialogScreen Jason >>
+    I want to ask about a city I've visited!
+    << setspeaker DialogScreen other >>
+    Of course! Which city do you want to ask about?
+    << displayKnownSettlements DialogScreen >>
+    [[City_Questions]]
+<< else >>
+     << setspeaker DialogScreen Jason >>
+    I want to ask about another city?
+    << setspeaker DialogScreen other >>
+    Certainly! Where does your curiousity take you?
+    << displayKnownSettlements DialogScreen >> 
+    [[City_Questions]]
+<< endif >>
+===
