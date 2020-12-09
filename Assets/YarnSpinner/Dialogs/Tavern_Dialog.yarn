@@ -16,15 +16,15 @@ position: -671,-1562
 
 
 
-<< cityinfo DialogScreen>> 
+//<< cityinfo DialogScreen>> 
 
 Khaire (hello, welcome)!
 How may I help you?
 << setend DialogScreen >> 
 [[I want to ask about a city. |City_Setup]]
-[[ Never mind! |exit]]
+[[ Never mind! |Exit_Taverna]]
 ===
-title: networks
+title: Networks_QA
 tags: 
 colorID: 0
 position: -1248,-315
@@ -115,7 +115,7 @@ position: -369,495
 
 
 << setspeaker DialogScreen Jason>> 
-I’m eager to sail to {$city_name}, but need to find the way!
+I’m eager to sail to {$known_city}, but need to find the way!
 << setspeaker DialogScreen other>>
 A guide is what you want! {$flavor_text1}. I can get you one if you buy me {$random_food} (Cost: {$drachma_cost} dr).
 << setend DialogScreen>> 
@@ -182,7 +182,7 @@ position: -77,-596
 [[Tell me more! |Myth_Response_2]]
 [[That is all. Thank you! |City_Questions]]
 ===
-title: exit
+title: Exit_Taverna
 tags: 
 colorID: 0
 position: -241,-1209
@@ -238,13 +238,13 @@ position: -678,-375
 << setend DialogScreen>> 
 
 
-[[What can you tell me about {$known_city}? |networks]]
+[[What can you tell me about {$known_city}? |Networks_QA]]
 [[What can you tell me about pirates? |pirates]]
 [[What tales and myths are told here? |myths]]
 [[Ask about trading goods. |trading_goods]]
 [[Hire a guide |hire_guide]]
 [[Ask about a different city |City_Setup]]
-[[That is all! I'll take my leave |exit]]
+[[That is all! I'll take my leave |Exit_Taverna]]
 ===
 title: City_Setup
 tags: 

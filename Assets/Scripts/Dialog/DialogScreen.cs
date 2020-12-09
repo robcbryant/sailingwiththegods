@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using Yarn.Unity;
 
-public class DialogScreen : MonoBehaviour
+public class DialogScreen : ViewBehaviour
 {
 	private const string ResourcePath = "dialog_images";
 

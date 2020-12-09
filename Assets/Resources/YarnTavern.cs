@@ -60,7 +60,7 @@ public class YarnTavern : MonoBehaviour
 		for (int x = 0; x < Globals.GameVars.settlement_masterList_parent.transform.childCount; x++)
 			if (Globals.GameVars.settlement_masterList_parent.transform.GetChild(x).GetComponent<script_settlement_functions>().thisSettlement.settlementID == cityID)
 				location = Globals.GameVars.settlement_masterList_parent.transform.GetChild(x).position;
-		Globals.GameVars.MoveNavigatorBeacon(Globals.GameVars.navigatorBeacon, location);
+		Globals.GameVars.ActivateNavigatorBeacon(Globals.GameVars.navigatorBeacon, location);
 		Globals.GameVars.playerShipVariables.ship.currentNavigatorTarget = cityID;
 		//Globals.GameVars.ShowANotificationMessage("You hired a navigator to " + City.name + " for " + CostToHire + " drachma.");
 		
