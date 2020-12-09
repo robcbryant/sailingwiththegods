@@ -107,6 +107,45 @@ public class YarnGeneral : MonoBehaviour
 	}
 	#endregion
 
+	[YarnCommand("checkafford")]
+	public void CheckAffordability(string cost) {
+		int itemCost = 0;
+		if (cost[0] == '$') {
+			itemCost = YarnGeneral.IntFromVariableName(cost, ds.Storage);
+		}
+		else {
+			itemCost = Mathf.CeilToInt(float.Parse(cost));
+		}
+		ds.Storage.SetValue("$can_afford", Globals.GameVars.playerShipVariables.ship.currency >= itemCost);
+	}
+
+	[YarnCommand("roundup")]
+	public void RoundToInt(string cost) {
+		int itemCost = 0;
+		if (cost[0] == '$') {
+			itemCost = YarnGeneral.IntFromVariableName(cost, ds.Storage);
+		}
+		else {
+			itemCost = Mathf.CeilToInt(float.Parse(cost));
+		}
+		ds.Storage.SetValue("$rounded_num", itemCost);
+	}
+
+
+	[YarnCommand("pay")]
+	public void PayAmount(string cost) {
+		int itemCost = 0;
+		if (cost[0] == '$') {
+			itemCost = YarnGeneral.IntFromVariableName(cost, ds.Storage);
+		}
+		else {
+			itemCost = Mathf.RoundToInt(float.Parse(cost));
+		}
+
+		Globals.GameVars.playerShipVariables.ship.currency -= itemCost;
+		ds.UpdateMoney();
+	}
+
 	#region Yarn Helpers
 	public static int IntFromVariableName(string name, InMemoryVariableStorage storage) 
 	{

@@ -175,7 +175,19 @@ public class script_player_controls : MonoBehaviour
 			if (Input.GetKeyUp(KeyCode.N)) {
 				Globals.MiniGames.Enter("Storm MG/Storm Game");
 			}
-			if (Input.GetKeyUp(KeyCode.M)) {
+            if (Input.GetKeyUp(KeyCode.S))
+            {
+                Globals.MiniGames.EnterScene("Petteia");
+            }
+            if (Input.GetKeyUp(KeyCode.R))
+            {
+                Globals.MiniGames.EnterScene("SongCompMainMenu");
+            }
+            if (Input.GetKeyUp(KeyCode.T))
+             {
+              Globals.MiniGames.EnterScene("MiniGameMainMenu");
+             }
+                if (Input.GetKeyUp(KeyCode.M)) {
 				Globals.MiniGames.Exit();
 			}
 		}
@@ -1293,7 +1305,7 @@ public class script_player_controls : MonoBehaviour
 
 	}
 
-	public void UpdateNavigatorBeaconAppearenceBasedOnDistance(GameObject beacon) {
+	public void UpdateNavigatorBeaconAppearenceBasedOnDistance(Beacon beacon) {
 		//Get position of player and beacon
 		Vector3 playerPos = transform.position;
 		Vector3 beaconPos = beacon.transform.position;
