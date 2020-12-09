@@ -172,6 +172,9 @@ public class script_player_controls : MonoBehaviour
 			if (Input.GetKeyUp(KeyCode.B)) {
 				Globals.MiniGames.Enter("Pirate Game/Pirate Game");
 			}
+			if (Input.GetKeyUp(KeyCode.L)) {
+				Globals.UI.Show<DialogScreen>().StartDialog("Start_Taverna");
+			}
 			if (Input.GetKeyUp(KeyCode.N)) {
 				Globals.MiniGames.Enter("Storm MG/Storm Game");
 			}

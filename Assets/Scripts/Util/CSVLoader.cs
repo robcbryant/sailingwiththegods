@@ -364,6 +364,8 @@ public static class CSVLoader
 		return masterResourceList;
 	}
 
+
+	// Kylie's Stuff!
 	public static List<Ritual> LoadRituals() 
 	{
 		List<Ritual> rituals = new List<Ritual>();
@@ -518,6 +520,189 @@ public static class CSVLoader
 		return textList;
 	}
 
+	//Mylo's Addition
+	public static List<DialogText> LoadNetworkDialog() 
+	{
+		List<DialogText> textList = new List<DialogText>();
+
+		char[] lineDelimeter = new char[] { '@' };
+		char newline = '%';
+		string filename = "network_qa_list";
+
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		for (int i = 1; i < fileByLine.Length; i++) 
+		{
+			string[] texts = fileByLine[i].Split(lineDelimeter);
+			string content = StripAndAddNewlines(texts[2], newline);
+			DialogText t = new DialogText(texts[0], new string[] { texts[1], content });
+			textList.Add(t);
+		}
+
+		Debug.Log("CITY: " + textList[2].CityType);
+		Debug.Log("Q " + textList[2].TextQA[0]);
+		Debug.Log("A " + textList[2].TextQA[1]);
+
+		return textList;
+
+	}
+
+	public static List<DialogText> LoadPirateDialog() {
+		List<DialogText> textList = new List<DialogText>();
+
+		char[] lineDelimeter = new char[] { '@' };
+		char newline = '%';
+		string filename = "pirate_qa_list";
+
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		for (int i = 1; i < fileByLine.Length; i++) {
+			string[] texts = fileByLine[i].Split(lineDelimeter);
+			string content = StripAndAddNewlines(texts[2], newline);
+			DialogText t = new DialogText(texts[0], new string[] { texts[1], content });
+			textList.Add(t);
+		}
+
+		Debug.Log("Pirate: " + textList[2].CityType);
+		Debug.Log("Q " + textList[2].TextQA[0]);
+		Debug.Log("A " + textList[2].TextQA[1]);
+
+		return textList;
+
+	}
+
+	public static List<DialogText> LoadMythDialog() {
+		List<DialogText> textList = new List<DialogText>();
+
+		char[] lineDelimeter = new char[] { '@' };
+		char newline = '%';
+		string filename = "myth_qa_list";
+
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		for (int i = 1; i < fileByLine.Length; i++) {
+			string[] texts = fileByLine[i].Split(lineDelimeter);
+			string content = StripAndAddNewlines(texts[2], newline);
+			DialogText t = new DialogText(texts[0], new string[] { texts[1], content });
+			textList.Add(t);
+		}
+
+		Debug.Log("Myth: " + textList[2].CityType);
+		Debug.Log("Q " + textList[2].TextQA[0]);
+		Debug.Log("A " + textList[2].TextQA[1]);
+
+		return textList;
+
+	}
+
+	public static List<DialogText> LoadHireGuideDialog() {
+		List<DialogText> textList = new List<DialogText>();
+
+		char[] lineDelimeter = new char[] { '@' };
+		char newline = '%';
+		string filename = "hire_guide_text";
+
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		for (int i = 1; i < fileByLine.Length; i++) {
+			string[] texts = fileByLine[i].Split(lineDelimeter);
+			string content = StripAndAddNewlines(texts[0], newline);
+			DialogText t = new DialogText(content, new string[] { texts[1], texts[2] });
+			textList.Add(t);
+		}
+
+		return textList;
+
+	}
+
+	// Food Items load
+	public static List<FoodText> LoadFoodItemsList() {
+		List<FoodText> foodList = new List<FoodText>();
+
+		char[] lineDelimeter = new char[] { '@' };
+		char newline = '%';
+		string filename = "food_list";
+
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		for (int i = 2; i < fileByLine.Length-1; i++)
+		{
+			string[] texts = fileByLine[i].Split(lineDelimeter);
+			string content = StripAndAddNewlines(texts[3], newline);
+			FoodText f = new FoodText();
+
+			f.Source = texts[0];
+			f.Chapter = texts[1];
+			f.Item = texts[2];
+			f.Quote = content;
+			f.Speaker = texts[4];
+
+
+			foodList.Add(f);
+		}
+
+		return foodList;
+
+	}
+
+	// Food Dialogue load
+	public static List<FoodText> LoadFoodDialogueList() {
+		List<FoodText> foodList = new List<FoodText>();
+
+		char[] lineDelimeter = new char[] { '@' };
+		char newline = '%';
+		string filename = "food_dialogue_list";
+
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		for (int i = 2; i < fileByLine.Length - 1 ; i++) 
+		{
+			string[] texts = fileByLine[i].Split(lineDelimeter);
+			string content = StripAndAddNewlines(texts[2], newline);
+			FoodText f = new FoodText();
+
+			f.Source = texts[0];
+			f.Chapter = texts[1];
+			f.Quote = content;
+			f.Speaker = texts[3];
+			f.Scenario = texts[4];
+
+
+			foodList.Add(f);
+		}
+
+		return foodList;
+
+	}
+
+	// Wine Info load
+	public static List<FoodText> LoadWineInfoList() {
+		List<FoodText> foodList = new List<FoodText>();
+
+		char[] lineDelimeter = new char[] { '@' };
+		char newline = '%';
+		string filename = "wine_list";
+
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		for (int i = 1; i < fileByLine.Length-1; i++) 
+		{
+			string[] texts = fileByLine[i].Split(lineDelimeter);
+			string content = StripAndAddNewlines(texts[3], newline);
+			FoodText f = new FoodText();
+
+			f.Source = texts[0];
+			f.Chapter = texts[1];
+			f.Item = texts[2];
+			f.Quote = content;
+
+			foodList.Add(f);
+		}
+
+		return foodList;
+
+	}
+	// End Mylo's Addition
 
 
 	static string TryLoadFromGameFolder(string filename) {

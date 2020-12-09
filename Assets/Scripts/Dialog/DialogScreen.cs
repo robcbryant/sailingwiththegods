@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using Yarn.Unity;
 
-public class DialogScreen : MonoBehaviour
+public class DialogScreen : ViewBehaviour
 {
 	private const string ResourcePath = "dialog_images";
 
@@ -18,6 +18,7 @@ public class DialogScreen : MonoBehaviour
 	public Scrollbar conversationScroll;
 	public Transform conversationHolder;
 	public Yarn.Unity.Example.SpriteSwitcher[] convoPartners;
+	public Yarn.Unity.Example.SpriteSwitcher[] backgrounds;
 
 	[Header("Choices")]
 	public RectTransform choiceScroll;

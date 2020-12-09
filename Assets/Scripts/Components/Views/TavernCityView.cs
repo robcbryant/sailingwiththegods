@@ -11,25 +11,35 @@ public class TavernCityView : ViewBehaviour<CityViewModel>
 {
 	[SerializeField] StringView Name = null;
 	[SerializeField] ButtonView Ask = null;
-	[SerializeField] ButtonView Hire = null;
+
+	private DialogScreen ds;
+	// [SerializeField] ButtonView Hire = null;
 
 	// convenience so we don't have to make a separate CityListView just for taverns
 	TavernCityViewModel CityModel => Model as TavernCityViewModel;
 
+
 	public override void Bind(CityViewModel model) {
 		base.Bind(model);
-
+		ds = CityModel.GetDS;
 		Name?.Bind(new BoundModel<string>(Model, nameof(Model.PortName)));
 
 		Ask?.Bind(ValueModel.New(new ButtonViewModel {
-			Label = CityModel.CostForHint + " dr",
-			OnClick = CityModel.GUI_BuyHint
-		}));
+			Label = "Select",
+			OnClick = () => 
+			{
+				//CityModel.GUI_BuyHint
+				ds.Storage.SetValue("$known_city", Model.PortName);
+				ds.Storage.SetValue("$known_city_ID", Model.City.settlementID);
+				Debug.Log("We have clicked on button.");
+				Globals.UI.Hide<TavernView>();
+			}
+		})) ;
 
-		Hire?.Bind(ValueModel.New(new ButtonViewModel {
+		/*Hire?.Bind(ValueModel.New(new ButtonViewModel {
 			Label = CityModel.CostToHire + " dr",
 			OnClick = CityModel.GUI_HireANavigator
-		}));
+		}));*/
 	}
 
 	protected override void Refresh(object sender, string propertyChanged) {
