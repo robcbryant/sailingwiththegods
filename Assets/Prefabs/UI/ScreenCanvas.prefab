@@ -1,22 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &1682405119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1634407375591044160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!223 &1682405118
 Canvas:
   m_ObjectHideFlags: 0
@@ -38,6 +21,23 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 2
   m_TargetDisplay: 0
+--- !u!114 &1682405119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634407375591044160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &2677379091462311702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2999,17 +2999,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2941274828213728858}
     m_Modifications:
-    - target: {fileID: 3504769730347088719, guid: 279925e90389e7c4e8e585184a0486dc,
-        type: 3}
-      propertyPath: yarnScripts.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 54c13cbf91d24c04fb4983b76d3ff5d8,
-        type: 3}
-    - target: {fileID: 3504769730347088719, guid: 279925e90389e7c4e8e585184a0486dc,
-        type: 3}
-      propertyPath: startNode
-      value: Start_Tax
-      objectReference: {fileID: 0}
     - target: {fileID: 8098593011703922344, guid: 279925e90389e7c4e8e585184a0486dc,
         type: 3}
       propertyPath: m_LocalPosition.x
