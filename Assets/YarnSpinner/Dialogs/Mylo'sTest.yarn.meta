@@ -1,0 +1,56 @@
+fileFormatVersion: 2
+guid: 283ec051a6576cd4dbef08629f8b9eed
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 94073015eacc34c1d8fc6786e43d60ca, type: 3}
+  baseLanguageID: en-US
+  stringIDs: []
+  compilationStatus: 1
+  isSuccesfullyCompiled: 0
+  compilationErrorMessage: "Error on line 36 at position 16:\nextraneous input '
+    u' expecting ']]'\r\n    [[ No U |no u]]\r\n               ^^\n\nTokens:\n1:0
+    ID \"title\"\n1:5 HEADER_DELIMITER \": \"\n1:7 REST_OF_LINE \"Start_Test\"\n2:0
+    HEADER_NEWLINE \"\n\"\n2:0 ID \"tags\"\n2:4 HEADER_DELIMITER \": \"\n3:0 HEADER_NEWLINE
+    \"\n\"\n3:0 ID \"colorID\"\n3:7 HEADER_DELIMITER \": \"\n3:9 REST_OF_LINE \"0\"\n4:0
+    HEADER_NEWLINE \"\n\"\n4:0 ID \"position\"\n4:8 HEADER_DELIMITER \": \"\n4:10
+    REST_OF_LINE \"411,-461\"\n5:0 HEADER_NEWLINE \"\n\"\n5:0 '---' \"---\"\n6:0
+    COMMAND_START \"<<\"\n6:3 COMMAND_TEXT \"reset DialogScreen\"\n6:21 COMMAND_TEXT_END
+    \">>\"\n7:0 COMMAND_START \"<<\"\n7:3 COMMAND_TEXT \"setparner DialogScreen Tax_Collector_Bob_III\"\n7:47
+    COMMAND_TEXT_END \">>\"\n8:0 COMMAND_START \"<<\"\n8:3 COMMAND_TEXT \"setconvotitle
+    DialogScreen Example_Port_Conversation\"\n8:55 COMMAND_TEXT_END \">>\"\n9:0 COMMAND_START
+    \"<<\"\n9:3 COMMAND_TEXT \"setsprite Partner neutral \"\n9:29 COMMAND_TEXT_END
+    \">>\"\n10:0 COMMAND_START \"<<\"\n10:3 COMMAND_TEXT \"setspeaker DialogScreen
+    other\"\n10:32 COMMAND_TEXT_END \">>\"\n12:0 COMMAND_START \"<<\"\n12:3 COMMAND_SET
+    \"set \"\n12:7 VAR_ID \"$checkBools\"\n12:19 OPERATOR_ASSIGNMENT \"to\"\n12:22
+    'false' \"false\"\n12:28 EXPRESSION_COMMAND_END \">>\"\n13:0 TEXT \"Greetings!
+    Welcome to Mylo's test! You are now a part of the system whether you like it
+    or not! Shall we begin testing some options for you?\"\n15:0 TEXT_NEWLINE \"\n\n\"\n15:0
+    '[[' \"[[\"\n15:2 OPTION_TEXT \" Wait, what? How?! \"\n15:21 '|' \"|\"\n15:22
+    OPTION_ID \"confused\"\n15:30 ']]' \"]]\"\n16:0 '[[' \"[[\"\n16:2 OPTION_TEXT
+    \" As if I have a choice... \"\n16:28 '|' \"|\"\n16:29 OPTION_ID \"ok\"\n16:31
+    ']]' \"]]\"\n17:0 '[[' \"[[\"\n17:2 OPTION_TEXT \" Bugger off! Can't you see
+    I'm late for my meeting?! \"\n17:55 '|' \"|\"\n17:56 OPTION_ID \"angery\"\n17:62
+    ']]' \"]]\"\n18:0 '===' \"===\"\n19:0 ID \"title\"\n19:5 HEADER_DELIMITER \":
+    \"\n19:7 REST_OF_LINE \"confused\"\n20:0 HEADER_NEWLINE \"\n\"\n20:0 ID \"tags\"\n20:4
+    HEADER_DELIMITER \": \"\n21:0 HEADER_NEWLINE \"\n\"\n21:0 ID \"colorID\"\n21:7
+    HEADER_DELIMITER \": \"\n21:9 REST_OF_LINE \"0\"\n22:0 HEADER_NEWLINE \"\n\"\n22:0
+    ID \"position\"\n22:8 HEADER_DELIMITER \": \"\n22:10 REST_OF_LINE \"-39,-36\"\n23:0
+    HEADER_NEWLINE \"\n\"\n23:0 '---' \"---\"\n24:0 TEXT \"Muahahahahha!!\"\n26:0
+    TEXT_NEWLINE \"\n\n\"\n26:0 '[[' \"[[\"\n26:2 OPTION_TEXT \" what \"\n26:8 '|'
+    \"|\"\n26:9 OPTION_ID \"Start_Test\"\n26:19 ']]' \"]]\"\n27:0 '===' \"===\"\n28:0
+    ID \"title\"\n28:5 HEADER_DELIMITER \": \"\n28:7 REST_OF_LINE \"ok\"\n29:0 HEADER_NEWLINE
+    \"\n\"\n29:0 ID \"tags\"\n29:4 HEADER_DELIMITER \": \"\n30:0 HEADER_NEWLINE \"\n\"\n30:0
+    ID \"colorID\"\n30:7 HEADER_DELIMITER \": \"\n30:9 REST_OF_LINE \"0\"\n31:0 HEADER_NEWLINE
+    \"\n\"\n31:0 ID \"position\"\n31:8 HEADER_DELIMITER \": \"\n31:10 REST_OF_LINE
+    \"391,-33\"\n32:0 HEADER_NEWLINE \"\n\"\n32:0 '---' \"---\"\n33:0 TEXT \"Atta'boy!\"\n35:0
+    TEXT_NEWLINE \"\n\n\"\n35:0 COMMAND_START \"<<\"\n35:3 COMMAND_IF \"if \"\n35:6
+    VAR_ID \"$checkBools\"\n35:17 EXPRESSION_COMMAND_END \">>\"\n36:4 INDENT \"   
+    \"\n36:4 '[[' \"[[\"\n36:6 OPTION_TEXT \" No U \"\n36:12 '|' \"|\"\n36:13 OPTION_ID
+    \"no\"\n36:15 OPTION_TEXT \" u\"\n36:17 ']]' \"]]\""
+  baseLanguage: {instanceID: 0}
+  localizations: []

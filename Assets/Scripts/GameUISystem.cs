@@ -27,6 +27,7 @@ public class GameUISystem : UISystem
 	[SerializeField] QuizScreen QuizScreen = null;
 	[SerializeField] QuestScreen QuestScreen = null;
 	[SerializeField] TimePassingView TimePassingView = null;
+	[SerializeField] DialogScreen DialogScreen = null;
 
 	void AddViews() {
 		Add(Dashboard);
@@ -44,6 +45,7 @@ public class GameUISystem : UISystem
 		Add(TimePassingView);
 		Add(QuizScreen);
 		Add(QuestScreen);
+		Add(DialogScreen);
 	}
 
 	void Start() {

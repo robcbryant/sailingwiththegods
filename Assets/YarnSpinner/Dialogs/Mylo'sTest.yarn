@@ -1,0 +1,67 @@
+title: Start_Test
+tags: 
+colorID: 0
+position: 411,-461
+---
+<< reset DialogScreen>>
+<< setparner DialogScreen Tax_Collector_Bob_III>>
+<< setconvotitle DialogScreen Example_Port_Conversation>> 
+<< setsprite Partner neutral >>
+<< setspeaker DialogScreen other>>
+
+<< set $check_bool to false >>
+
+
+Greetings! Welcome to Mylo's test! You are now a part of the system whether you like it or not! Shall we begin testing some options for you?
+
+[[ Wait, what? How?! |confused]]
+[[ As if I have a choice... |ok]]
+[[ Bugger off! Can't you see I'm late for my meeting?! |angery]]
+===
+title: confused
+tags: 
+colorID: 0
+position: -39,-36
+---
+Muahahahahha!!
+
+[[ what |Start_Test]]
+===
+title: ok
+tags: 
+colorID: 0
+position: 393,-33
+---
+Atta'boy!
+
+<< if $check_bool is true>>
+    [[ No U |no_u]]
+<< else >>
+    [[ Who are you attaboying?! |quip]]
+<<endif>>
+===
+title: angery
+tags: 
+colorID: 0
+position: 1192,-161
+---
+Too bad! We're making you late AGAIN!
+===
+title: quip
+tags: 
+colorID: 0
+position: 866,40
+---
+You silly!
+
+<< set $check_bool to true>>
+
+[[ Let's start again... |ok]]
+===
+title: no_u
+tags: 
+colorID: 0
+position: 423,274
+---
+OH NO!!!
+===
