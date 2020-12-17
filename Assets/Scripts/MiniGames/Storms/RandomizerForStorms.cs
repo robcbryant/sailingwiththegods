@@ -158,8 +158,8 @@ public class RandomizerForStorms : MonoBehaviour
 
 		//Turn on/off the hint arrow
 		if (difficulty == StormDifficulty.Easy) {
-			//hintArrow.SetActive(true);
-			//arrowTarget.transform.position = gaps[Random.Range(0, gaps.Count)];
+			hintArrow.SetActive(true);
+			arrowTarget.transform.position = gaps[Random.Range(0, gaps.Count)];
 		}
 		else {
 			hintArrow.SetActive(false);

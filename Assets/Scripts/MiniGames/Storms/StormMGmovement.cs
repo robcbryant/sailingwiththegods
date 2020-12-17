@@ -11,6 +11,7 @@ public class StormMGmovement : MonoBehaviour
 
 	private bool move;
 	private ParticleSystem[] ps;
+	private bool particlesPlaying = false;
 
 	private void Start() {
 		ps = GetComponentsInChildren<ParticleSystem>();
@@ -37,17 +38,24 @@ public class StormMGmovement : MonoBehaviour
 		transform.localEulerAngles += Vector3.up * rotSpeed * rotation;
 
 		if (Mathf.Approximately(0.0f, movement)) {
-			foreach (ParticleSystem p in ps) {
-				if (p.isPlaying) {
+			if (particlesPlaying) 
+			{
+				foreach (ParticleSystem p in ps) 
+				{
 					p.Stop();
 				}
+				particlesPlaying = false;
 			}
+
 		}
 		else {
-			foreach (ParticleSystem p in ps) {
-				if (p.isStopped) {
+			if (!particlesPlaying) 
+			{
+				foreach (ParticleSystem p in ps) 
+				{
 					p.Play();
 				}
+				particlesPlaying = true;
 			}
 		}
 
