@@ -744,7 +744,6 @@ GameObject:
   - component: {fileID: 3696558123618646742}
   - component: {fileID: 3696558123618646741}
   - component: {fileID: 3696558123618646740}
-  - component: {fileID: 3696558123618646738}
   - component: {fileID: 3696558123618646739}
   m_Layer: 0
   m_Name: Storm Game
@@ -836,6 +835,7 @@ MonoBehaviour:
   - 1
   - 1.6
   arrowTarget: {fileID: 3696558123291366912}
+  move: {fileID: 0}
 --- !u!114 &3696558123618646740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -886,21 +886,6 @@ MonoBehaviour:
   finishButton: {fileID: 2694154157728066946}
   winFinishText: You escaped!
   loseFinishText: Game over!
---- !u!114 &3696558123618646738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3696558123618646743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e567bd7ca3fa53c478b4af84b02a8444, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerBoat: {fileID: 0}
-  speed: 0.7
-  rotSpeed: 0.8
 --- !u!114 &3696558123618646739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1367,7 +1352,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3696558124727819313}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 10.00002, z: 5.23}
+  m_LocalPosition: {x: 0, y: 25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3696558123188781902}
@@ -1567,6 +1552,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90.00001
       objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: d91b6a6e2401a69428b09dd52e708bf4, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -1659,7 +1656,7 @@ PrefabInstance:
     - target: {fileID: 3465200470315775411, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
         type: 3}
       propertyPath: m_Size
-      value: 1
+      value: 0.97347385
       objectReference: {fileID: 0}
     - target: {fileID: 3539417612562168561, guid: 1c1c0ae557afe6d4bb6833198718f9d4,
         type: 3}

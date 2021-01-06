@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class StormMGmovement : MonoBehaviour
 {
-	//the bpat the player identifies as in the MG
-	[HideInInspector]
-	public GameObject playerBoat;
 	public float speed;
+	public float reverseSpeed;
 	public float rotSpeed;
+	public float sizeMod = 0.16f;
 
 	private bool move;
+	private ParticleSystem[] ps;
+	private bool particlesPlaying = false;
+
+	private void Start() {
+		ps = GetComponentsInChildren<ParticleSystem>();
+	}
 
 	void Update() 
 	{
@@ -26,13 +31,32 @@ public class StormMGmovement : MonoBehaviour
 	//left and right turns the boat 
 	private void MoveBoat() 
 	{
-		if (playerBoat != null) {
-			float movement = Input.GetAxisRaw("Vertical");
-			float rotation = Input.GetAxisRaw("Horizontal");
-			
-			playerBoat.transform.position += playerBoat.transform.right * speed * movement;
-			//playerBoat.transform.Rotate(0, speed * 2 * rotation, 0);
-			playerBoat.transform.localEulerAngles += Vector3.up * rotSpeed * rotation;
+		float movement = Input.GetAxis("Vertical");
+		float rotation = Input.GetAxis("Horizontal");
+
+		transform.position += transform.right.normalized * sizeMod * movement * (movement > 0 ? speed : reverseSpeed);
+		transform.localEulerAngles += Vector3.up * rotSpeed * rotation;
+
+		if (Mathf.Approximately(0.0f, movement)) {
+			if (particlesPlaying) 
+			{
+				foreach (ParticleSystem p in ps) 
+				{
+					p.Stop();
+				}
+				particlesPlaying = false;
+			}
+
+		}
+		else {
+			if (!particlesPlaying) 
+			{
+				foreach (ParticleSystem p in ps) 
+				{
+					p.Play();
+				}
+				particlesPlaying = true;
+			}
 		}
 
 	}

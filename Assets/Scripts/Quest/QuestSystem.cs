@@ -100,7 +100,7 @@ public class QuestSystem : MonoBehaviour
 
 		//Now add the mentioned places attached to this quest leg
 		foreach (int i in nextSegment.mentionedPlaces) {
-			Debug.Log("mentioning places attached to quest log: " + i);
+			Debug.Log("mentioning: " + i);
 			//Make sure we don't add any null values--a -1 represents no mentions of any settlements
 			if (i != -1)
 				playerShipVariables.ship.playerJournal.AddNewSettlementToLog(i);
@@ -185,7 +185,7 @@ public class QuestSystem : MonoBehaviour
 		playerShipVariables.ship.cargo[1].amount_kg = Ship.StartingFood;
 
 		// now we start on quest 0 at the beginning of the game, with an upgradeship trigger assumed.
-		Debug.Log("Current quest segment: " + quest.currentQuestSegment);
+		Debug.Log("Current quest segment " + quest.currentQuestSegment);
 
 		var segment = quest.questSegments[quest.currentQuestSegment];
 
@@ -241,7 +241,7 @@ public class QuestSystem : MonoBehaviour
 		}
 
 		Globals.Quests.StartQuestSegment(0);
-		Debug.Log("current quest segment: " + quest.currentQuestSegment);
+		Debug.Log("Current quest segment " + quest.currentQuestSegment);
 
 		//Flag the main GUI scripts to turn on
 		gameVars.runningMainGameGUI = true;

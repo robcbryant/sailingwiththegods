@@ -1194,7 +1194,7 @@ public class GameVars : MonoBehaviour
 		//if the player's clout is reduced below 0 after the adjustment, then increase it to 0 again
 		if (playerShipVariables.ship.playerClout < 0)
 			playerShipVariables.ship.playerClout = 0;
-		Debug.Log(playerShipVariables.ship.playerClout);
+		Debug.Log("Clout " + playerShipVariables.ship.playerClout);
 		//First check if a player reaches a new clout level
 		//If the titles don't match after adjustment then we have a change!
 		if (GetCloutTitleEquivalency(clout) != GetCloutTitleEquivalency((int)playerShipVariables.ship.playerClout)) {
