@@ -6,6 +6,13 @@ using Yarn.Unity;
 
 public class YarnTaxes : MonoBehaviour
 {
+	[Range(0f, 1f)]
+	public float heraldChance = 0.1f;
+	[Range(0f, 1f)]
+	public float heraldEffect = 0.01f;
+	public Sprite heraldIcon;
+	public Sprite noHeraldIcon;
+
 	private DialogScreen ds;
 	private Settlement city;
 	private List<Resource> owedResources = new List<Resource>();
@@ -41,7 +48,16 @@ public class YarnTaxes : MonoBehaviour
 		}
 
 		if (city) {
-			ds.gui.GUI_EnterPort(intent);
+			float heraldMod = 1.0f;
+			if (ds.Storage.GetValue("$have_herald").AsBool) {
+				float chance = Random.Range(0f, 1f);
+				if (chance < heraldChance) {
+					Debug.Log("Herald in effect");
+					heraldMod += heraldEffect;
+				}
+			}
+
+			ds.gui.GUI_EnterPort(heraldIcon, noHeraldIcon, intent, heraldMod);
 		}
 		else {
 			ds.gui.GUI_ExitPortNotification();

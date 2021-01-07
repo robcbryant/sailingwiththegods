@@ -136,7 +136,8 @@ public class RandomSlotPopulator : MonoBehaviour
 
 			CrewMember randomPirate = possiblePirates.RandomElement();
 			pCard.SetCrew(randomPirate);
-			p.Bind();
+			pCard.name = "Pirate " + i;
+			pCard.Bind();
 			//after you've used a pirate, remove it from the list of possibilities to avoid duplicates
 			possiblePirates.Remove(randomPirate);
 			Transform row = i < slotsPerRow ? enemyZones[0] : enemyZones[1];
@@ -253,16 +254,17 @@ public class RandomSlotPopulator : MonoBehaviour
 				//Spawns a new crew member if there's another one to spawn
 				//We need to check this because if you don't have an even number of crew members compared to slots per row, there'll be empty slots
 				if (spawnedSlots < crewNum) {
-					CrewCard newCrew = Instantiate(crewCard);
-					newCrew.SetRSP(this);
-					newCrew.Bind();
-					newCrew.transform.SetParent(crewParentInOrigin);
-					newCrew.name = "Card " + r + ", " + c;
+					CrewCard newCrewCard = Instantiate(crewCard);
+					newCrewCard.SetRSP(this);
+					newCrewCard.name = "Card " + r + ", " + c;
+					newCrewCard.SetCrew(Globals.GameVars.playerShipVariables.ship.crewRoster[spawnedSlots]);
+					newCrewCard.Bind();
+					newCrewCard.transform.SetParent(crewParentInOrigin);
 					CardDropZone cdz = spawnedCrewSlots[r, c];
 					//scaling crew cards
-					newCrew.transform.localScale = Vector3.one;
-					newCrew.GetComponent<RectTransform>().anchoredPosition = new Vector2(xPos, yPos);
-					newCrew.SetCrew(Globals.GameVars.playerShipVariables.ship.crewRoster[spawnedSlots]);
+					newCrewCard.transform.localScale = Vector3.one;
+					newCrewCard.GetComponent<RectTransform>().anchoredPosition = new Vector2(xPos, yPos);
+					
 					cdz.SetOccupied(true);
 					spawnedSlots++;
 					xPos += width;

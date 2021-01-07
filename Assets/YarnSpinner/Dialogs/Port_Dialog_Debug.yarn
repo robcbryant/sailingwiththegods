@@ -1,4 +1,4 @@
-title: Start_Tax
+title: Start_Debug
 tags: 
 colorID: 2
 position: 654,-1183
@@ -16,6 +16,8 @@ position: 654,-1183
 << set $asked_types to false >>
 << set $cargo_pay to false >> 
 
+<< set $have_herald to false >> 
+
 << citynetworks DialogScreen >>
 << networkconnections DialogScreen >> 
 << checkcitytaxes DialogScreen >> 
@@ -28,11 +30,17 @@ I am the first and the last face you'll see here: no ordinary citizen I! You may
 /{$random_text}
 
 
-[[ What kind of place have I come to? |where]]
-[[ What are the networks in this city? |networks]]
-[[ Can I enter the city? |tax_intro]]
+[[ What kind of place have I come to? |where_debug]]
+[[ What are the networks in this city? |networks_debug]]
+[[ Can I enter the city? |tax_intro_debug]]
+[[ (TESTING) TAXES SHORTCUT BUT THE TEXT HERE IS SUPER SUPER LONG FOR TESTING PURPOSES|tax_short_1_debug]]
+[[ (TESTING) ENTER WATER SHORTCUT |enter_water_debug]]
+[[ (TESTING) ENTER TRADING SHORTCUT |enter_trading_debug]]
+[[ (TESTING) ENTER TAVERN SHORTCUT |enter_tavern_debug]]
+[[ (TESTING) ENTER FULL SHORTCUT |enter_full_debug]]
+[[ (TESTING) LEAVE WITHOUT PAYING SHORTCUT |exit_debug]]
 ===
-title: where
+title: where_debug
 tags: 
 colorID: 2
 position: 307,-1020
@@ -50,11 +58,11 @@ position: 307,-1020
 No, it's {$city_name}. {$city_description}
 
 << if $asked_networks is false >>
-    [[What are this city's networks? |networks]]    
+    [[What are this city's networks? |networks_debug]]    
 << endif >> 
-[[ Can I come into your city? |tax_intro]]
+[[ Can I come into your city? |tax_intro_debug]]
 ===
-title: networks
+title: networks_debug
 tags: 
 colorID: 2
 position: 972,-1025
@@ -103,15 +111,15 @@ position: 972,-1025
 << endif >> 
 
 <<  if $connections_number >= 1 >>
-    [[ We share a connection. Do I not therefore get a discount?|tax_network]]
+    [[ We share a connection. Do I not therefore get a discount?|tax_network_debug]]
 << endif >>
 
 << if $asked_where is false >>
-    [[ Where is this? |where]]
+    [[ Where is this? |where_debug]]
 << endif >> 
-[[Can I come into the city? |tax_intro]]
+[[Can I come into the city? |tax_intro_debug]]
 ===
-title: tax_network
+title: tax_network_debug
 tags: 
 colorID: 2
 position: 976,-778
@@ -156,14 +164,14 @@ I don't believe you. {$crew_name_3} must produce some proof!
 << endif >>
 
 << if $asked_where is false >>
-    [[ Where is this? |where]]
+    [[ Where is this? |where_debug]]
 << endif >> 
-[[ Can I come into the city? |tax_intro]]
+[[ Can I come into the city? |tax_intro_debug]]
 ===
-title: tax_intro
+title: tax_intro_debug
 tags: 
 colorID: 2
-position: 662,-583
+position: 662,-584
 ---
 << setspeaker DialogScreen Jason >>
 Can I come into the city? What are my fees?
@@ -180,14 +188,14 @@ Can I come into the city? What are my fees?
     /{$random_text}
 << endif >> 
 
-[[ Why do I pay you? |tax_why]] 
-[[ What a risky way to make a living. |tax_insult]]
-[[ This sounds serious! How much do I owe? |tax_explain]]
+[[ Why do I pay you? |tax_why_debug]] 
+[[ What a risky way to make a living. |tax_insult_debug]]
+[[ This sounds serious! How much do I owe? |tax_explain_debug]]
 ===
-title: tax_why
+title: tax_why_debug
 tags: 
 colorID: 1
-position: 349,-332
+position: 349,-331
 ---
 << set $asked_who to true >> 
 
@@ -200,11 +208,11 @@ Why do I have to pay you? What makes you special?
 /{$random_text}
 
 << if $insulted is false >>
-    [[ What a risky way to make a living. |tax_insult]]
+    [[ What a risky way to make a living. |tax_insult_debug]]
 << endif >>
-[[ How much do I owe? |tax_explain]]
+[[ How much do I owe? |tax_explain_debug]]
 ===
-title: tax_insult
+title: tax_insult_debug
 tags: 
 colorID: 1
 position: 990,-322
@@ -222,11 +230,11 @@ Say what you will, it's down to business. Quick quick then, let's get this done 
 The poorest man in the smallest boat can haul me before the magistrates! They could put me in prison, dishonor me as a public debtor, confiscate my property. That's why the city has made it easy for me to extract your taxes: all commercial transactions happen here or in the agora, and I'm not alone in keeping my eye on you: we have agoranomoi to back me up.
 
 << if $asked_who is false >>
-    [[ Why do I pay you? |tax_why]]
+    [[ Why do I pay you? |tax_why_debug]]
 << endif >>
-[[ How much do I owe? |tax_explain]]
+[[ How much do I owe? |tax_explain_debug]]
 ===
-title: tax_explain
+title: tax_explain_debug
 tags: 
 colorID: 1
 position: 661,-103
@@ -239,11 +247,11 @@ By the gods, this sounds serious. What kind of money are we talking about?
 << setend DialogScreen >> 
 /{$random_text}
 
-[[What types of taxes do you charge here? |tax_types]]
-[[How much will I have to pay? |tax_breakdown]]
-[[I already know what I want to do. |tax_short_1]]
+[[What types of taxes do you charge here? |tax_types_debug]]
+[[How much will I have to pay? |tax_breakdown_debug]]
+[[I already know what I want to do. |tax_short_1_debug]]
 ===
-title: tax_types
+title: tax_types_debug
 tags: 
 colorID: 1
 position: 168,257
@@ -287,14 +295,14 @@ Have the seas made you spring a leak, will you be seeking tar, rope, fresh sails
 << setend DialogScreen >>
 Or if you are in great need of our great stores! You'll be hiring, seeking repairs, seeking to trade, stocking up with water, and imploring our local gods for help on the way? You can make full use of anything we offer - but of course, you'll be taxed accordingly at 5%!
 
-[[What exactly will each of these taxes cost me? |tax_breakdown]]
-[[Alright, I understand. I know what I want to do. |tax_short_1]]
-[[That's far too many taxes! (leave without paying) |exit]]
+[[What exactly will each of these taxes cost me? |tax_breakdown_debug]]
+[[Alright, I understand. I know what I want to do. |tax_short_1_debug]]
+[[That's far too many taxes! (leave without paying) |exit_debug]]
 ===
-title: tax_breakdown
+title: tax_breakdown_debug
 tags: 
 colorID: 6
-position: 653,295
+position: 652,294
 ---
 << setspeaker DialogScreen Jason >>
 Okay then, what are the exact charges? I must know if you are charging me fairly!
@@ -358,49 +366,49 @@ If you want only water and brief rest, you owe {$updated_subtotal + $water_inten
 << checkafford DialogScreen $water_total >> 
 
 << if $can_afford == true >>
-    [[I would like to rest and buy water. (pay {$water_total} dr) |enter_water]]  
+    [[I would like to rest and buy water. (pay {$water_total} dr) |enter_water_debug]]  
 << else >>
     << set $total_cargos to $total_cargos + 1 >> 
-    [[I would like to rest and buy water. (pay {$water_total} worth of cargo) |enter_water_cargo]]
+    [[I would like to rest and buy water. (pay {$water_total} worth of cargo) |enter_water_cargo_debug]]
 << endif >> 
 
 << set $trading_total to ($updated_subtotal + $trade_intent) >>
 << checkafford DialogScreen $trading_total >>
 
 << if $can_afford == true >>
-    [[I would like to trade my cargo. (pay {$trading_total} dr) |enter_trading]]
+    [[I would like to trade my cargo. (pay {$trading_total} dr) |enter_trading_debug]]
 << else >>
     << set $total_cargos to $total_cargos + 1 >> 
-    [[I would like to trade my cargo. (pay {$trading_total} worth of cargo) |enter_trading_cargo]]
+    [[I would like to trade my cargo. (pay {$trading_total} worth of cargo) |enter_trading_cargo_debug]]
 << endif >> 
 
 << set $tavern_total to ($updated_subtotal + $tavern_intent) >>
 << checkafford DialogScreen $tavern_total >>
 
 << if $can_afford == true >>
-    [[I would like a long rest and to manage my crew. (pay {$tavern_total} dr) |enter_tavern]]
+    [[I would like a long rest and to manage my crew. (pay {$tavern_total} dr) |enter_tavern_debug]]
 << else >>
     << set $total_cargos to $total_cargos + 1 >> 
-    [[I would like a long rest and to manage my crew. (pay {$tavern_total} worth of cargo) |enter_tavern_cargo]]
+    [[I would like a long rest and to manage my crew. (pay {$tavern_total} worth of cargo) |enter_tavern_cargo_debug]]
 << endif >> 
 
 << set $all_total to ($updated_subtotal + $all_intent) >>
 << checkafford DialogScreen $all_total >>
 
 << if $can_afford == true >>
-    [[I would like to take full advantage of this port. (pay {$all_total} dr) |enter_full]]
+    [[I would like to take full advantage of this port. (pay {$all_total} dr) |enter_full_debug]]
 << else >>
     << set $total_cargos to $total_cargos + 1 >> 
-    [[I would like to take full advantage of this port. (pay {$all_total} worth of cargo) |enter_full_cargo]]
+    [[I would like to take full advantage of this port. (pay {$all_total} worth of cargo) |enter_full_cargo_debug]]
 << endif >> 
 
 << if $total_cargos >= 1 >>
 Your stores of cash are depleted! You must pay us in cargo - for you may not refuse to pay us just because you lack coins.
 << endif >>
 
-[[That's far too much! (exit without paying) |exit]]
+[[That's far too much! (exit without paying) |exit_debug]]
 ===
-title: tax_short_1
+title: tax_short_1_debug
 tags: 
 colorID: 6
 position: 1112,-15
@@ -424,9 +432,9 @@ I already know what I want to do.
 << roundup DialogScreen $updated_subtotal >>
 << set $updated_subtotal to $rounded_num >> 
 
-[[Continue |tax_short_2]]
+[[Continue |tax_short_2_debug]]
 ===
-title: enter_water
+title: enter_water_debug
 tags: 
 colorID: 3
 position: 473,1531
@@ -449,7 +457,7 @@ Nymphs are generous, water falls from the sky - and yet we must pay you! But pay
     Thank you for your business! That's {$demanded_resources_value}dr of value altogether - it gets rounded up, of course.
 << endif >>
 ===
-title: enter_trading
+title: enter_trading_debug
 tags: 
 colorID: 3
 position: 822,1540
@@ -467,14 +475,14 @@ Too great is the lure of your market for us to resist - even at those rates! Acc
     << pay DialogScreen $final_cost >> 
     << setend DialogScreen >> 
     Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your time in our fair city!
-    [[Continue |herald_fee]]
+    [[Continue |herald_fee_debug]]
 << else >> 
     << cargopay DialogScreen $final_cost >>
     << set $entering_city to true >>  
     Thank you for your business! That's {$demanded_resources_value}dr of value altogether - it gets rounded up, of course.
 << endif >>
 ===
-title: enter_tavern
+title: enter_tavern_debug
 tags: 
 colorID: 3
 position: 1457,1535
@@ -497,7 +505,7 @@ A weary ship, a thirsty crew, growling stomachs and empty seats - what choice do
     Thank you for your business! That's {$demanded_resources_value}dr of value altogether - it gets rounded up, of course.
 << endif >>
 ===
-title: enter_full
+title: enter_full_debug
 tags: 
 colorID: 3
 position: 1790,1526
@@ -515,14 +523,14 @@ We have much to accomplish in your town - you're a lucky man today! Take our dra
     << pay DialogScreen $final_cost >> 
     << setend DialogScreen >> 
     Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your time in our fair city!
-    [[Continue |herald_fee]]
+    [[Continue |herald_fee_debug]]
 << else >> 
     << cargopay DialogScreen $final_cost >>
     << set $entering_city to true >> 
     Thank you for your business! That's {$demanded_resources_value}dr of value altogether - it gets rounded up, of course.
 << endif >>
 ===
-title: herald_fee
+title: herald_fee_debug
 tags: 
 colorID: 0
 position: 1147,2107
@@ -534,12 +542,12 @@ If you wish to sell your goods, surely you will need to advertise them! Hire a h
 
 << checkafford DialogScreen 2 >>
 << if $can_afford is true >>
-    [[I will pay for a herald. (2 dr) |herald_pay]]
+    [[I will pay for a herald. (2 dr) |herald_pay_debug]]
 << endif >> 
 
-[[I do not need a herald. |herald_no]]
+[[I do not need a herald. |herald_no_debug]]
 ===
-title: herald_pay
+title: herald_pay_debug
 tags: 
 colorID: 3
 position: 1130,2487
@@ -551,9 +559,10 @@ Indeed I'll pay! Heralds are a noble profession and I'm wise in matters of the m
 << setspeaker DialogScreen other >>
 << setsprite Telones happy >>
 << set $entering_city to true >>
+<< set $have_herald to true >> 
 A wise decision! Enjoy your time in our fair city!
 ===
-title: herald_no
+title: herald_no_debug
 tags: 
 colorID: 3
 position: 1406,2335
@@ -564,19 +573,20 @@ My goods speak for themselves! I'll let rumors of our arrival do the work - and 
 << setspeaker DialogScreen other >>
 << setsprite Telones unhappy >>
 << set $entering_city to true >>
+<< set $have_herald to false >> 
 Your loss, my friend! Still, enjoy your time in our fair city.
 ===
-title: exit
+title: exit_debug
 tags: 
 colorID: 4
-position: -485,1283
+position: -599,1263
 ---
 << setspeaker DialogScreen Jason >>
 << setsprite Telones unhappy >>
 << set $entering_city to false >>
 Your fees are steep and your town disappoints: we'll take our profit and our chances to the next port.
 ===
-title: enter_water_cargo
+title: enter_water_cargo_debug
 tags: 
 colorID: 7
 position: 465,959
@@ -586,12 +596,13 @@ position: 465,959
 
 << if $final_cost > $cargo_value >>
     All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
-    [[ cant_afford ]]
+    [[ cant_afford_debug ]]
 << else >> 
-    [[ enter_cargo ]]
+    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
+    [[ enter_cargo_debug ]]
 << endif >>
 ===
-title: enter_trading_cargo
+title: enter_trading_cargo_debug
 tags: 
 colorID: 7
 position: 833,961
@@ -601,12 +612,13 @@ position: 833,961
 
 << if $final_cost > $cargo_value >>
     All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
-    [[ cant_afford ]]
-<< else >>
-    [[ enter_cargo ]]
+    [[ cant_afford_debug ]]
+<< else >> 
+    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
+    [[ enter_cargo_debug ]]
 << endif >>
 ===
-title: enter_tavern_cargo
+title: enter_tavern_cargo_debug
 tags: 
 colorID: 7
 position: 1439,947
@@ -616,27 +628,29 @@ position: 1439,947
 
 << if $final_cost > $cargo_value >>
     All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
-    [[ cant_afford ]]
-<< else >>
-    [[ enter_cargo ]]
+    [[ cant_afford_debug ]]
+<< else >> 
+    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
+    [[ enter_cargo_debug ]]
 << endif >>
 ===
-title: enter_full_cargo
+title: enter_full_cargo_debug
 tags: 
 colorID: 7
-position: 1750,945
+position: 1748,944
 ---
 << set $intent to "all" >>
 << set $final_cost to $all_total >> 
 
 << if $final_cost > $cargo_value >>
     All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
-    [[ cant_afford ]]
-<< else >>
-    [[ enter_cargo ]]
+    [[ cant_afford_debug ]]
+<< else >> 
+    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
+    [[ enter_cargo_debug ]]
 << endif >>
 ===
-title: enter_cargo
+title: enter_cargo_debug
 tags: 
 colorID: 0
 position: 1124,1232
@@ -653,19 +667,19 @@ Wine is also fair for trade! No port lacks eager recipients, and your bellies do
 In addition to your {$drachma} drachma, you also owe {$demanded_resources}.
 
 << if $intent == "water" >>
-    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_water]]
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_water_debug]]
 << elseif $intent == "trading" >>
-    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_trading]]
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_trading_debug]]
 << elseif $intent == "tavern" >>
-    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_tavern]]
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_tavern_debug]]
 << elseif $intent == "all" >>
-    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_full]]
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_full_debug]]
 << endif >> 
 
-[[ I want to rethink my intent. |redo_intention]]
-[[ My cargo is my own! (leave without paying) |exit]]
+[[ I want to rethink my intent. |redo_intention_debug]]
+[[ My cargo is my own! (leave without paying) |exit_debug]]
 ===
-title: tax_short_2
+title: tax_short_2_debug
 tags: 
 colorID: 6
 position: 1121,289
@@ -679,56 +693,56 @@ position: 1121,289
 	Very well then. Your total is {$updated_subtotal} Drachma plus the intent fee.
 << endif >>
 
-[[What is that money paying for? |tax_breakdown]]
+[[What is that money paying for? |tax_breakdown_debug]]
 
 << set $total_cargos to 0 >> 
 << set $water_total to ($updated_subtotal + $water_intent) >>
 << checkafford DialogScreen $water_total >> 
 
 << if $can_afford == true >>
-    [[I would like to rest and buy water. (pay {$water_total} dr) |enter_water]]  
+    [[I would like to rest and buy water. (pay {$water_total} dr) |enter_water_debug]]  
 << else >>
     << set $total_cargos to $total_cargos + 1 >> 
-    [[I would like to rest and buy water. (pay {$water_total} worth of cargo) |enter_water_cargo]]
+    [[I would like to rest and buy water. (pay {$water_total} worth of cargo) |enter_water_cargo_debug]]
 << endif >> 
 
 << set $trading_total to ($updated_subtotal + $trade_intent) >>
 << checkafford DialogScreen $trading_total >>
 
 << if $can_afford == true >>
-    [[I would like to trade my cargo. (pay {$trading_total} dr) |enter_trading]]
+    [[I would like to trade my cargo. (pay {$trading_total} dr) |enter_trading_debug]]
 << else >>
     << set $total_cargos to $total_cargos + 1 >> 
-    [[I would like to trade my cargo. (pay {$trading_total} worth of cargo) |enter_trading_cargo]]
+    [[I would like to trade my cargo. (pay {$trading_total} worth of cargo) |enter_trading_cargo_debug]]
 << endif >> 
 
 << set $tavern_total to ($updated_subtotal + $tavern_intent) >>
 << checkafford DialogScreen $tavern_total >>
 
 << if $can_afford == true >>
-    [[I would like a long rest and to manage my crew. (pay {$tavern_total} dr) |enter_tavern]]
+    [[I would like a long rest and to manage my crew. (pay {$tavern_total} dr) |enter_tavern_debug]]
 << else >>
     << set $total_cargos to $total_cargos + 1 >> 
-    [[I would like a long rest and to manage my crew. (pay {$tavern_total} worth of cargo) |enter_tavern_cargo]]
+    [[I would like a long rest and to manage my crew. (pay {$tavern_total} worth of cargo) |enter_tavern_cargo_debug]]
 << endif >> 
 
 << set $all_total to ($updated_subtotal + $all_intent) >>
 << checkafford DialogScreen $all_total >>
 
 << if $can_afford == true >>
-    [[I would like to take full advantage of this port. (pay {$all_total} dr) |enter_full]]
+    [[I would like to take full advantage of this port. (pay {$all_total} dr) |enter_full_debug]]
 << else >>
     << set $total_cargos to $total_cargos + 1 >> 
-    [[I would like to take full advantage of this port. (pay {$all_total} worth of cargo) |enter_full_cargo]]
+    [[I would like to take full advantage of this port. (pay {$all_total} worth of cargo) |enter_full_cargo_debug]]
 << endif >> 
 
 << if $total_cargos >= 1 >>
 Your stores of cash are depleted! You must pay us in cargo - for you may not refuse to pay us just because you lack coins.
 << endif >>
 
-[[That's far too much! (exit without paying) |exit]]
+[[That's far too much! (exit without paying) |exit_debug]]
 ===
-title: redo_intention
+title: redo_intention_debug
 tags: 
 colorID: 7
 position: 1515,289
@@ -737,12 +751,12 @@ position: 1515,289
 << setend DialogScreen >>
 So many fees, so little mercy, so little friendship shown to us! We will not pay. If we use fewer of your resources, would the price for entry be less?
 
-[[ Continue |tax_short_2]]
+[[ Continue |tax_short_2_debug]]
 ===
-title: cant_afford
+title: cant_afford_debug
 tags: 
 colorID: 4
-position: 1121,1551
+position: 1133,1623
 ---
 << setspeaker DialogScreen other >>
 << setsprite Telones unhappy >>

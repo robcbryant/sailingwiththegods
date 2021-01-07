@@ -135,7 +135,9 @@ public class CityViewModel : Model
 
 	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_Button_TryToLeavePort() {
-		//if (GameVars.Trade.CheckIfPlayerCanAffordToPayPortTaxes()) {
+		//If you aren't low on supplies or you've already been warned
+		if (!Globals.GameVars.playerShipVariables.CheckIfShipLeftPortStarvingOrThirsty()) {
+			//if (GameVars.Trade.CheckIfPlayerCanAffordToPayPortTaxes()) {
 			//MGV.controlsLocked = false;
 			//Start Our time passage
 			GameVars.playerShipVariables.PassTime(.25f, true);
@@ -153,13 +155,17 @@ public class CityViewModel : Model
 			GameVars.showSettlementGUI = false;
 			GameVars.runningMainGameGUI = true;
 
+			GameVars.MasterGUISystem.ClearViewModels();
+
 			Globals.UI.Hide<PortScreen>();
 			Globals.UI.Hide<TownScreen>();
 			Globals.UI.Show<Dashboard, DashboardViewModel>(new DashboardViewModel());
 
-		//}
-		//else {//Debug.Log ("Not Enough Drachma to Leave the Port!");
-		//	GameVars.ShowANotificationMessage("Not Enough Drachma to pay the port tax and leave!");
-		//}
+			//}
+			//else {//Debug.Log ("Not Enough Drachma to Leave the Port!");
+			//	GameVars.ShowANotificationMessage("Not Enough Drachma to pay the port tax and leave!");
+			//}
+		}
+
 	}
 }

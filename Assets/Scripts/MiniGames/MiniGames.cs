@@ -100,6 +100,9 @@ public class MiniGames : MonoBehaviour
 		Globals.GameVars.crewBeacon.IsTemporarilyHidden = !enabled;
 		Globals.GameVars.navigatorBeacon.IsTemporarilyHidden = !enabled;
 		Globals.GameVars.terrain.GetComponent<Terrain>().drawHeightmap = enabled;
-		GameObject.FindGameObjectWithTag("main_light_source").GetComponent<Light>().enabled = enabled;
+		GameObject mainLight = GameObject.FindGameObjectWithTag("main_light_source");
+		if (mainLight != null) {
+			mainLight.GetComponent<Light>().enabled = enabled;
+		}
 	}
 }

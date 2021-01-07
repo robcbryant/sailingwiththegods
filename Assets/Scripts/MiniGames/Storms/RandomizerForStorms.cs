@@ -59,13 +59,15 @@ public class RandomizerForStorms : MonoBehaviour
 	private bool countingDown;
 
 	private GameObject sunLight;
+	[HideInInspector]
+	public StormMGmovement move;
 
 	private void Start() 
 	{
 		h = GetComponent<ShipHealth>();
 
 		damagePerSecond = h.MaxHealth / (timeLimit * 60);
-
+		
 		sunLight = Globals.GameVars.skybox_sun;
 	}
 
@@ -77,10 +79,10 @@ public class RandomizerForStorms : MonoBehaviour
 		}
 
 		if (sunLight == null) {
-			sunLight = Globals.GameVars.skybox_sun.GetComponentInChildren<Light>().gameObject;
+			sunLight = Globals.GameVars.skybox_sun;
 		}
 
-		sunLight.SetActive(false);
+		sunLight.gameObject.SetActive(false);
 		Globals.GameVars.FPVCamera.gameObject.SetActive(false);
 
 		stormLight.gameObject.SetActive(true);
@@ -93,8 +95,17 @@ public class RandomizerForStorms : MonoBehaviour
 
 	private void OnDisable() 
 	{
-		sunLight.SetActive(true);
-		Globals.GameVars.FPVCamera.gameObject.SetActive(true);
+		if (sunLight == null) {
+			sunLight = Globals.GameVars.skybox_sun;
+		}
+		if (sunLight.gameObject != null) {
+			sunLight.gameObject.SetActive(true);
+		}
+		if (Globals.GameVars.FPVCamera.gameObject != null) 
+		{
+			Globals.GameVars.FPVCamera.gameObject.SetActive(true);
+		}
+
 		stormLight.gameObject.SetActive(false);
 
 		DestroyAllChildren(rockHolder);
@@ -111,12 +122,11 @@ public class RandomizerForStorms : MonoBehaviour
 		ship = Instantiate(shipModels[Globals.GameVars.playerShipVariables.ship.upgradeLevel]);
 		ship.tag = "StormShip";
 		ship.transform.SetParent(transform);
-		cam.transform.SetParent(ship.transform);
 		cam.transform.position = ship.transform.position + camOffset;
 		ship.transform.position = shipStartPoint.position;
 		hintArrow.transform.SetParent(ship.transform);
-		
-		GetComponent<StormMGmovement>().playerBoat = ship;
+		move = ship.GetComponent<StormMGmovement>();
+		move.ToggleMovement(false);
 	}
 
 	/// <summary>
@@ -176,6 +186,10 @@ public class RandomizerForStorms : MonoBehaviour
 			h.TakeDamage(damagePerSecond);
 		}
 
+	}
+
+	private void Update() {
+		cam.transform.position = ship.transform.position + camOffset;
 	}
 
 	/// <summary>
@@ -308,8 +322,6 @@ public class RandomizerForStorms : MonoBehaviour
 	{
 		for (int i = brackets.Length - 1; i >= 0; i--) {
 			if (find.CompareTo(brackets[i]) >= 0) {
-				string s = i + 1 < brackets.Length ? brackets[i + 1].ToString() : "maximum";
-				Debug.Log($"{find} is larger than or equal to {brackets[i]} but smaller than {s}");
 				return i;
 			}
 		}

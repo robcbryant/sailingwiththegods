@@ -30,6 +30,7 @@ public class TownScreen : ViewBehaviour<TradeViewModel>
 
 
 	public override void Bind(TradeViewModel model) {
+
 		base.Bind(model);
 
 		Available?.Bind(model.Available);
