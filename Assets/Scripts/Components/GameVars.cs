@@ -41,7 +41,6 @@ using System.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 
 
 //======================================================================================================================================================================
@@ -109,8 +108,8 @@ public class GameVars : MonoBehaviour
 	public Material mat_water;
 
 	[Header("Beacons")]
-	public GameObject navigatorBeacon;
-	public GameObject crewBeacon;
+	public Beacon navigatorBeacon;
+	public Beacon crewBeacon;
 
 	// TODO: unorganized variables
 	[HideInInspector] public GameObject mainCamera;
@@ -202,6 +201,20 @@ public class GameVars : MonoBehaviour
 
 	[HideInInspector] public List<DialogText> portDialogText = new List<DialogText>();
 
+	//Mylo's Addition
+	[HideInInspector] public List<DialogText> networkDialogText = new List<DialogText>();
+	[HideInInspector] public List<DialogText> pirateDialogText = new List<DialogText>();
+	[HideInInspector] public List<DialogText> mythDialogText = new List<DialogText>();
+	[HideInInspector] public List<DialogText> guideDialogText = new List<DialogText>(); 
+	[HideInInspector] public List<DialogText> tradingDialogText = new List<DialogText>(); // Perhaps
+	[HideInInspector] public List<FoodText> foodItemText= new List<FoodText>();
+	[HideInInspector] public List<FoodText> wineInfoText = new List<FoodText>();
+	[HideInInspector] public List<FoodText> foodDialogueText = new List<FoodText>();
+
+
+
+	// End Mylo's Addition
+
 	// high level game systems
 	public Trade Trade { get; private set; }
 	public Network Network { get; private set; }
@@ -281,6 +294,19 @@ public class GameVars : MonoBehaviour
 		CSVLoader.LoadPirateText(out pirateTitles, out pirateSubtitles, out pirateStartText, out pirateTypeIntroText, out pirateNegotiateText,
 			out pirateRunSuccessText, out pirateRunFailText, out pirateSuccessText, out pirateFailureText);
 		portDialogText = CSVLoader.LoadPortDialog();
+
+		// Mylo's Addition
+		networkDialogText = CSVLoader.LoadNetworkDialog();
+		pirateDialogText = CSVLoader.LoadPirateDialog();
+		mythDialogText = CSVLoader.LoadMythDialog();
+		guideDialogText = CSVLoader.LoadHireGuideDialog();
+		// trading goods here
+		foodItemText = CSVLoader.LoadFoodItemsList();
+		foodDialogueText = CSVLoader.LoadFoodDialogueList();
+		wineInfoText = CSVLoader.LoadWineInfoList();
+
+
+		// end Mylo's Addition
 
 		region_masterList = CSVLoader.LoadRegionList();
 		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list, region list, and crew list
@@ -450,7 +476,7 @@ public class GameVars : MonoBehaviour
 			for (int x = 0; x < settlement_masterList_parent.transform.childCount; x++)
 				if (settlement_masterList_parent.transform.GetChild(x).GetComponent<script_settlement_functions>().thisSettlement.settlementID == targetID)
 					location = settlement_masterList_parent.transform.GetChild(x).position;
-			MoveNavigatorBeacon(navigatorBeacon, location);
+			ActivateNavigatorBeacon(navigatorBeacon, location);
 		}
 		else {
 			ship.currentNavigatorTarget = -1;
@@ -486,11 +512,16 @@ public class GameVars : MonoBehaviour
 		return true;
 	}
 
-	public void MoveNavigatorBeacon(GameObject beacon, Vector3 location) {
+	public void ActivateNavigatorBeacon(Beacon beacon, Vector3 location) {
+		beacon.IsBeaconActive = true;
 		beacon.transform.position = location;
 		beacon.GetComponent<LineRenderer>().SetPosition(0, new Vector3(location.x, 0, location.z));
 		beacon.GetComponent<LineRenderer>().SetPosition(1, location + new Vector3(0, 400, 0));
 		playerShipVariables.UpdateNavigatorBeaconAppearenceBasedOnDistance(beacon);
+	}
+
+	public void DeactivateNavigatorBeacon(Beacon beacon) {
+		beacon.IsBeaconActive = false;
 	}
 
 	public void RotateCameraTowards(Vector3 target) {
