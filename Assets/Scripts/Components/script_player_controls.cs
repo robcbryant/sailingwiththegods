@@ -180,7 +180,7 @@ public class script_player_controls : MonoBehaviour
 			if (Input.GetKeyUp(KeyCode.N)) {
 				Globals.MiniGames.Enter("Storm MG/Storm Game");
 			}
-            if (Input.GetKeyUp(KeyCode.S))
+            if (Input.GetKeyUp(KeyCode.Z))
             {
                 Globals.MiniGames.EnterScene("Petteia");
             }

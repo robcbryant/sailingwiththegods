@@ -15,6 +15,22 @@ public class StormMGmovement : MonoBehaviour
 
 	private void Start() {
 		ps = GetComponentsInChildren<ParticleSystem>();
+		StartCoroutine(TurnOnParticles());
+	}
+
+	//This looks completely useless, but it's actually necessary
+	//I have no idea why, but I noticed that the game lagged pretty severely if the particles were turned on in the start
+	//If I manually turned them off and back on, however, the lag completely went away
+	//So this is needed to prevent the storm game from lagging for whatever reason
+	private IEnumerator TurnOnParticles() {
+		yield return null;
+		foreach (ParticleSystem p in ps) {
+			p.gameObject.SetActive(false);
+		}
+		yield return null;
+		foreach (ParticleSystem p in ps) {
+			p.gameObject.SetActive(true);
+		}
 	}
 
 	void Update() 
