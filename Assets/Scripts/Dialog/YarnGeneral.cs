@@ -8,7 +8,7 @@ public class YarnGeneral : MonoBehaviour
 {
 	private DialogScreen ds;
 
-	void OnValidate()
+	void Awake()
 	{
 		ds = GetComponent<DialogScreen>();
 	}

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor.Experimental.AssetImporters;
 using System.IO;
 using System.Linq;
@@ -26,7 +26,7 @@ public class YarnImporter : ScriptedImporter
     public TextAsset baseLanguage;
     public YarnTranslation[] localizations = new YarnTranslation[0];
 
-    private void OnValidate() {
+    private void Awake() {
         if (baseLanguageID == null) {
             baseLanguageID = CultureInfo.CurrentCulture.Name;
         }

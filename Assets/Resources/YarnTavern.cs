@@ -11,7 +11,7 @@ public class YarnTavern : MonoBehaviour
 
 	private DialogScreen ds;
 
-	void OnValidate() 
+	void Awake() 
 	{
 		ds = GetComponent<DialogScreen>();
 	}
