@@ -37,6 +37,7 @@ public class DialogScreen : ViewBehaviour
 	private Canvas canvas;
 
 	private YarnTaxes taxes;
+	bool set = false;
 
 	private void Awake() 
 	{
@@ -46,6 +47,7 @@ public class DialogScreen : ViewBehaviour
 		canvas = GetComponentInParent<Canvas>();
 
 		taxes = GetComponent<YarnTaxes>();
+		set = true;
 	}
 
 	private void OnEnable() 
@@ -71,9 +73,14 @@ public class DialogScreen : ViewBehaviour
 	public void StartDialog(Settlement s, string startNode) 
 	{
 		Debug.Log("StartDialog: settlement " + (s == null ? "null" : s.name));
-		if (taxes == null) {
-			Debug.Log("Taxes was null, setting...");
+		if (!set) {
+			yarnUI = GetComponent<CustomDialogUI>();
+			storage = GetComponent<InMemoryVariableStorage>();
+			runner = GetComponent<DialogueRunner>();
+			canvas = GetComponentInParent<Canvas>();
+
 			taxes = GetComponent<YarnTaxes>();
+			set = true;
 		}
 		taxes.SetPortInfo(s);
 		Clear();

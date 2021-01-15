@@ -17,7 +17,7 @@ public class YarnTaxes : MonoBehaviour
 	private Settlement city;
 	private List<Resource> owedResources = new List<Resource>();
 
-	void OnValidate()
+	void Awake()
     {
 		ds = GetComponent<DialogScreen>();
     }
