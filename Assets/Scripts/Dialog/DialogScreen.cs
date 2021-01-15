@@ -70,6 +70,7 @@ public class DialogScreen : ViewBehaviour
 
 	public void StartDialog(Settlement s, string startNode) 
 	{
+		Debug.Log("StartDialog: settlement " + (s == null ? "null" : s.name));
 		taxes.SetPortInfo(s);
 		Clear();
 		runner.startNode = startNode;
