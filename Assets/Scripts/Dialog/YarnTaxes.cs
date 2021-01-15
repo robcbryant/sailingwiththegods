@@ -69,6 +69,7 @@ public class YarnTaxes : MonoBehaviour
 	public void SetPortInfo(Settlement s) 
 	{
 		city = s;
+		Debug.Log("Taxes.SetPortInfo");
 		Debug.Log("Current settlement: " + city.name);
 		ds.Storage.SetValue("$city_name", city.name);
 		ds.Storage.SetValue("$city_description", city.description);
