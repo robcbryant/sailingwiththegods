@@ -71,6 +71,10 @@ public class DialogScreen : ViewBehaviour
 	public void StartDialog(Settlement s, string startNode) 
 	{
 		Debug.Log("StartDialog: settlement " + (s == null ? "null" : s.name));
+		if (taxes == null) {
+			Debug.Log("Taxes was null, setting...");
+			taxes = GetComponent<YarnTaxes>();
+		}
 		taxes.SetPortInfo(s);
 		Clear();
 		runner.startNode = startNode;
