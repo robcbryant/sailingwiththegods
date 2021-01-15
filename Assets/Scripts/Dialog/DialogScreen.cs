@@ -38,7 +38,7 @@ public class DialogScreen : ViewBehaviour
 
 	private YarnTaxes taxes;
 
-	private void OnValidate() 
+	private void Awake() 
 	{
 		yarnUI = GetComponent<CustomDialogUI>();
 		storage = GetComponent<InMemoryVariableStorage>();
