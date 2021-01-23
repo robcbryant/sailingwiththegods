@@ -17,7 +17,37 @@ This game is designed to:
 
 This Build uses Unity 2019.4.9f1
 
-While the main game code is open source, the game depends on a private repo for assets purchased from the Unity Asset Store. This should go in the ```Assets/_Proprietary``` folder.
+While the main game code is open source, the game depends on a private repo for assets purchased from the Unity Asset Store. This should go in the ```Assets/_Proprietary``` folder. Access to the proprietary repo is limited, but if it is missing the project will populate with open source fallback assets upon loading for the first time in Unity.
+
+## Using https authentication
+
+```
+git clone yourforkurl
+git remote add upstream https://github.com/kddressel/sailingwiththegods.git
+
+# and if you have access to the proprietary repo...
+git submodule update --init
+```
+
+## Using ssh authentication
+
+```
+git clone yourforkurl
+git remote add upstream git@github.com:kddressel/sailingwiththegods.git
+
+# and if you have access to the proprietary repo...
+git submodule update --init
+```
+
+Most of the team is using https, so the submodule is stored as https in the .gitmodules to ease that workflow. It's recommended to use https for the submodule and ssh for the main repo if you are using ssh, but if you want to use ssh for the submodule you can do this:
+
+* Edit .git/config
+* Point the Assets/_Proprietary submodule url at ```git@github.com:kddressel/sailingwiththegods-proprietary.git```
+* cd into Assets/Proprietary
+* rm -rf .git
+* git init
+* git remote add origin ```git@github.com:kddressel/sailingwiththegods-proprietary.git```
+
 
 # Documentation
 
