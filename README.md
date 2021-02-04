@@ -19,6 +19,13 @@ This Build uses Unity 2019.4.9f1
 
 While the main game code is open source, the game depends on a private repo for assets purchased from the Unity Asset Store. This should go in the ```Assets/_Proprietary``` folder. Access to the proprietary repo is limited, but if it is missing the project will populate with open source fallback assets upon loading for the first time in Unity.
 
+## Git Setup for Windows
+
+* Install [Git for Windows](https://git-scm.com/download/win) using **default settings**
+  * Make sure you pick **"Git Credential Manager Core"**
+* Check if you have / need access to the proprietary repo
+* Use https athentication steps below to clone your fork
+
 ## Using https authentication
 
 ```
@@ -28,6 +35,11 @@ git remote add upstream https://github.com/kddressel/sailingwiththegods.git
 # and if you have access to the proprietary repo...
 git submodule update --init
 ```
+
+* After running git submodule update --init, you should get a github login popup
+* Choose "Sign in with your browser"
+* Authorize GitCredentialManager to your github account
+* Wait for a while. The submodule is large and may not appear to be downloading immediately
 
 ## Using ssh authentication
 
