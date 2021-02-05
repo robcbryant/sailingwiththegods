@@ -29,7 +29,7 @@ While the main game code is open source, the game depends on a private repo for 
 ## Using https authentication
 
 ```
-git clone yourforkurl
+git clone yourforkurl --branch develop
 git remote add upstream https://github.com/kddressel/sailingwiththegods.git
 
 # and if you have access to the proprietary repo...
@@ -44,7 +44,7 @@ git submodule update --init
 ## Using ssh authentication
 
 ```
-git clone yourforkurl
+git clone yourforkurl --branch develop
 git remote add upstream git@github.com:kddressel/sailingwiththegods.git
 
 # and if you have access to the proprietary repo...
