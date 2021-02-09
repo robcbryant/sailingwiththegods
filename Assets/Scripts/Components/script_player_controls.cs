@@ -76,6 +76,7 @@ public class script_player_controls : MonoBehaviour
 	[Header("Playtesting Bools")]
 	//make sure these are false in Unity's "Inspector" tab before making builds 
 	[SerializeField] bool hotkeysOn = true;
+	[SerializeField] GameObject debugControls;
 
 
 	#region Debug Tools (keep at bottom)
@@ -140,6 +141,7 @@ public class script_player_controls : MonoBehaviour
 		GameVars = Globals.GameVars;
 		controller = gameObject.GetComponent<CharacterController>();
 		shipTransform = transform.GetChild(0);
+		debugControls.SetActive(hotkeysOn);
 
 		Reset();
 
@@ -170,30 +172,29 @@ public class script_player_controls : MonoBehaviour
 		//}
 
 		if (hotkeysOn) {
-			//TODO: Remove - this is just here as an initial test of minigames
+			//1st group minigames
 			if (Input.GetKeyUp(KeyCode.B)) {
 				Globals.MiniGames.Enter("Pirate Game/Pirate Game");
-			}
-			if (Input.GetKeyUp(KeyCode.L)) {
-				Globals.UI.Show<DialogScreen>().StartDialog("Start_Taverna");
 			}
 			if (Input.GetKeyUp(KeyCode.N)) {
 				Globals.MiniGames.Enter("Storm MG/Storm Game");
 			}
-            if (Input.GetKeyUp(KeyCode.Z))
+
+			//Taverna minigames
+
+			if (Input.GetKeyUp(KeyCode.Z)) {
+				Globals.UI.Show<DialogScreen>().StartDialog("Start_Taverna");
+			}
+            if (Input.GetKeyUp(KeyCode.X))
             {
                 Globals.MiniGames.EnterScene("Petteia");
             }
-            if (Input.GetKeyUp(KeyCode.R))
+            if (Input.GetKeyUp(KeyCode.C))
             {
                 Globals.MiniGames.EnterScene("SongCompMainMenu");
             }
-            if (Input.GetKeyUp(KeyCode.T))
-             {
-              Globals.MiniGames.EnterScene("MiniGameMainMenu");
-             }
-                if (Input.GetKeyUp(KeyCode.M)) {
-				Globals.MiniGames.Exit();
+			if (Input.GetKeyUp(KeyCode.V)) {
+				Globals.MiniGames.EnterScene("Ur");
 			}
 		}
 

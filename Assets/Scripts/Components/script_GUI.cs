@@ -391,6 +391,7 @@ public class script_GUI : MonoBehaviour
 
 		if (useDialog) {
 			port_dialog.SetActive(true);
+			Debug.Log("GameVars.CurrentSettlement: " + (GameVars.currentSettlement == null ? "null" : GameVars.currentSettlement.name));
 			port_dialog.GetComponent<DialogScreen>().StartDialog(GameVars.currentSettlement, useDebugDialog ? debugDialogNode : dialogNode);
 		}
 		else {
