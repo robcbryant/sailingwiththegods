@@ -921,6 +921,49 @@ public class script_player_controls : MonoBehaviour
 			GameVars.ShowANotificationMessage(notificationMessage);
 		}
 	}
+	//Getting the win total for board games - roughly half of what they need to not starve. 
+	public float GameResultFood() {
+		
+		float ans;
+		
+		if (ship.cargo[1].amount_kg < dailyProvisionsKG * ship.crewRoster.Count) {
+		
+			float neededCargo = (dailyProvisionsKG * ship.crewRoster.Count) - ship.cargo[1].amount_kg;
+			ship.cargo[1].amount_kg += (neededCargo / 2.0f);
+
+
+			ans = neededCargo / 2.0f;
+		}
+		else {  ship.cargo[1].amount_kg += .96f * ship.crewRoster.Count;
+			ans = .96f * ship.crewRoster.Count;
+		}
+
+		return ans;
+	}
+
+	public float GameResultWater() {
+
+		float ans;
+
+		if (ship.cargo[0].amount_kg < dailyWaterKG * ship.crewRoster.Count) {
+
+			float neededWater = (dailyWaterKG * ship.crewRoster.Count) - ship.cargo[0].amount_kg;
+			ship.cargo[0].amount_kg += (neededWater / 2.0f);
+
+
+			ans = neededWater / 2.0f;
+		}
+		else {
+			ship.cargo[0].amount_kg += .96f * ship.crewRoster.Count;
+			ans = .96f * ship.crewRoster.Count;
+		}
+
+		return ans;
+	}
+
+
+
+
 
 	public void UpdateDayNightCycle(bool restartCycle) {
 		//This Function Updates the Day and Night Cycle of the game world.
