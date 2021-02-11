@@ -35,10 +35,13 @@ public class mainMenuController : MonoBehaviour
 		MainMenuControllerDav.BackToMainMenu();
 	}
 
+	// set the menu active before unloading the song scene since that will cancel the coroutine
+	// TODO: Needs a refactor so that the context doesn't get lost on unloading the song (same issue with tavern menu)
 	IEnumerator UnloadSong() {
-		yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
-		var scene = SceneManager.GetSceneByName("SongCompMainMenu");
-		SceneManager.SetActiveScene(scene);
+		var songScene = SceneManager.GetActiveScene();
+		var songMenuScene = SceneManager.GetSceneByName("SongCompMainMenu");
+		SceneManager.SetActiveScene(songMenuScene);
+		yield return SceneManager.UnloadSceneAsync(songScene);
 	}
 
 	IEnumerator LoadSong(string sceneName) {
