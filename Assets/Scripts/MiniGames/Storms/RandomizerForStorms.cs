@@ -59,6 +59,8 @@ public class RandomizerForStorms : MonoBehaviour
 	private bool countingDown;
 
 	private GameObject sunLight;
+	[HideInInspector]
+	public StormMGmovement move;
 
 	private void Start() 
 	{
@@ -66,23 +68,33 @@ public class RandomizerForStorms : MonoBehaviour
 
 		damagePerSecond = h.MaxHealth / (timeLimit * 60);
 
+		Debug.Log("Setting SunLight in Start");
 		sunLight = Globals.GameVars.skybox_sun;
 	}
 
 	private void OnEnable() 
 	{
-		if (ship != null) 
-		{
+		if (ship != null) {
+			Debug.Log("Ship wasn't null (weird!) so destroying...");
 			Destroy(ship);
+		}
+		else {
+			Debug.Log("Ship was null as expected, no need to destroy");
 		}
 
 		if (sunLight == null) {
-			sunLight = Globals.GameVars.skybox_sun.GetComponentInChildren<Light>().gameObject;
+			Debug.Log("SunLight was null, assigning object");
+			sunLight = Globals.GameVars.skybox_sun;
+		}
+		else {
+			Debug.Log("SunLight was already assigned, good to go");
 		}
 
-		sunLight.SetActive(false);
+		Debug.Log("Turning sunLight and camera off");
+		sunLight.gameObject.SetActive(false);
 		Globals.GameVars.FPVCamera.gameObject.SetActive(false);
 
+		Debug.Log("Turning the storm lighting on");
 		stormLight.gameObject.SetActive(true);
 
 		cloutBracket = GetBracket(cloutRanges, Globals.GameVars.playerShipVariables.ship.playerClout);
@@ -93,8 +105,17 @@ public class RandomizerForStorms : MonoBehaviour
 
 	private void OnDisable() 
 	{
-		sunLight.SetActive(true);
-		Globals.GameVars.FPVCamera.gameObject.SetActive(true);
+		if (sunLight == null) {
+			sunLight = Globals.GameVars.skybox_sun;
+		}
+		if (sunLight.gameObject != null) {
+			sunLight.gameObject.SetActive(true);
+		}
+		if (Globals.GameVars.FPVCamera.gameObject != null) 
+		{
+			Globals.GameVars.FPVCamera.gameObject.SetActive(true);
+		}
+
 		stormLight.gameObject.SetActive(false);
 
 		DestroyAllChildren(rockHolder);
@@ -108,15 +129,16 @@ public class RandomizerForStorms : MonoBehaviour
 	/// </summary>
 	private void InitializeView() 
 	{
+		Debug.Log("Starting InitializeView");
+		Debug.Log("Instantiating ship");
 		ship = Instantiate(shipModels[Globals.GameVars.playerShipVariables.ship.upgradeLevel]);
 		ship.tag = "StormShip";
 		ship.transform.SetParent(transform);
-		cam.transform.SetParent(ship.transform);
 		cam.transform.position = ship.transform.position + camOffset;
 		ship.transform.position = shipStartPoint.position;
 		hintArrow.transform.SetParent(ship.transform);
-		
-		GetComponent<StormMGmovement>().playerBoat = ship;
+		move = ship.GetComponent<StormMGmovement>();
+		move.ToggleMovement(false);
 	}
 
 	/// <summary>
@@ -176,6 +198,10 @@ public class RandomizerForStorms : MonoBehaviour
 			h.TakeDamage(damagePerSecond);
 		}
 
+	}
+
+	private void Update() {
+		cam.transform.position = ship.transform.position + camOffset;
 	}
 
 	/// <summary>
@@ -308,8 +334,6 @@ public class RandomizerForStorms : MonoBehaviour
 	{
 		for (int i = brackets.Length - 1; i >= 0; i--) {
 			if (find.CompareTo(brackets[i]) >= 0) {
-				string s = i + 1 < brackets.Length ? brackets[i + 1].ToString() : "maximum";
-				Debug.Log($"{find} is larger than or equal to {brackets[i]} but smaller than {s}");
 				return i;
 			}
 		}

@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Yarn.Unity;
 
 public class YarnGeneral : MonoBehaviour
 {
 	private DialogScreen ds;
 
-	void OnValidate()
+	void Awake()
 	{
 		ds = GetComponent<DialogScreen>();
 	}
@@ -42,9 +43,31 @@ public class YarnGeneral : MonoBehaviour
 			}
 		}
 	}
+
+	[YarnCommand("setbg")]
+	public void SetBackgroundObject(string name) {
+		foreach (Yarn.Unity.Example.SpriteSwitcher p in ds.backgrounds) {
+			if (p.name == name) {
+				p.gameObject.SetActive(true);
+			}
+			else {
+				p.gameObject.SetActive(false);
+			}
+		}
+	}
 	#endregion
 
 	#region Yarn Functions - Random
+
+	//Create a random amount between inputs
+	[YarnCommand("randomcost")]
+	public void GenerateRandomAmount(string[] inputs) 
+	{
+		int amount = Random.Range(int.Parse(inputs[0]), int.Parse(inputs[1]));
+		Debug.Log("Ran Randomcost. Cost is " + amount);
+		ds.Storage.SetValue("$generated_cost", amount);
+	}
+
 	[YarnCommand("randomtext")]
 	public void GenerateRandomText(string[] inputs) 
 	{
@@ -72,6 +95,8 @@ public class YarnGeneral : MonoBehaviour
 
 		ds.Storage.SetValue("$emotion", e.ToString());
 	}
+
+	
 
 	[YarnCommand("randombool")]
 	public void TrueOrFalse(string threshold) 
@@ -148,4 +173,6 @@ public class YarnGeneral : MonoBehaviour
 		return formatted;
 	}
 	#endregion
+
+
 }

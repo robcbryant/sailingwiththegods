@@ -1,0 +1,765 @@
+title: Start_Debug
+tags: 
+colorID: 2
+position: 654,-1183
+---
+<< reset DialogScreen >>
+<< setpartner DialogScreen Telones >>
+<< setpartnername DialogScreen Telones >>
+<< setconvotitle DialogScreen Docking_at_Port >>
+<< setsprite Telones neutral >>
+
+<< set $asked_where to false >>
+<< set $asked_networks to false >>
+<< set $asked_who to false >>
+<< set $insulted to false >>
+<< set $asked_types to false >>
+<< set $cargo_pay to false >> 
+
+<< set $have_herald to false >> 
+
+<< citynetworks DialogScreen >>
+<< networkconnections DialogScreen >> 
+<< checkcitytaxes DialogScreen >> 
+
+<< setspeaker DialogScreen other >>
+I am the first and the last face you'll see here: no ordinary citizen I! You may call me Telones, 'tax man' - I have paid the state for the right to collect its taxes from you. Get set to dig deep into your pockets!
+<< randomtext DialogScreen greeting any >> 
+<< setsprite Telones $emotion >>
+<< setend DialogScreen >>
+/{$random_text}
+
+
+[[ What kind of place have I come to? |where_debug]]
+[[ What are the networks in this city? |networks_debug]]
+[[ Can I enter the city? |tax_intro_debug]]
+[[ (TESTING) TAXES SHORTCUT BUT THE TEXT HERE IS SUPER SUPER LONG FOR TESTING PURPOSES|tax_short_1_debug]]
+[[ (TESTING) ENTER WATER SHORTCUT |enter_water_debug]]
+[[ (TESTING) ENTER TRADING SHORTCUT |enter_trading_debug]]
+[[ (TESTING) ENTER TAVERN SHORTCUT |enter_tavern_debug]]
+[[ (TESTING) ENTER FULL SHORTCUT |enter_full_debug]]
+[[ (TESTING) LEAVE WITHOUT PAYING SHORTCUT |exit_debug]]
+===
+title: where_debug
+tags: 
+colorID: 2
+position: 307,-1020
+---
+<< set $asked_where to true >> 
+
+<< setspeaker DialogScreen Jason >> 
+<< randomtext DialogScreen jasonwhere neutral >> 
+/{$random_text}
+
+<< setspeaker DialogScreen other >>
+<< setsprite Telones bragging >>
+<< cityinfo DialogScreen >>
+<< setend DialogScreen >>
+No, it's {$city_name}. {$city_description}
+
+<< if $asked_networks is false >>
+    [[What are this city's networks? |networks_debug]]    
+<< endif >> 
+[[ Can I come into your city? |tax_intro_debug]]
+===
+title: networks_debug
+tags: 
+colorID: 2
+position: 972,-1025
+---
+<< set $asked_networks to true >>
+
+<< setspeaker DialogScreen Jason >> 
+<< randomtext DialogScreen jasonnetworkquestion neutral >> 
+/{$random_text}
+
+<< setspeaker DialogScreen other >> 
+
+<< if $city_networks > 1 >>
+    << randomtext DialogScreen networkhigh neutral >> 
+	<< setsprite Telones bragging >>
+<< elseif $city_networks == 1 >>
+    << randomtext DialogScreen networkmid neutral >>
+	<< setsprite Telones happy >>
+<< else >>
+    << randomtext DialogScreen networklow neutral >>
+	<< setsprite Telones unhappy >>
+<< endif >> 
+
+/{$random_text}
+
+<< setspeaker DialogScreen Jason >>
+
+<< if $connections_number > 1 >> 
+    << randomtext DialogScreen jasonnetworkhigh neutral >>
+<< elseif $connections_number == 1 >>
+    << randomtext DialogScreen jasonnetworkmid neutral >>
+<< else >>
+    << randomtext DialogScreen jasonnetworklow neutral >>
+<< endif >> 
+
+<< if $connections_number >= 1 >> 
+	<< setend DialogScreen >>
+<< endif >> 
+    /{$random_text}
+
+<< if $connections_number < 1>> 
+    << setspeaker DialogScreen other >>
+    << setsprite Telones bragging >>
+    << setend DialogScreen >> 
+    I do not know you or your people, stranger. You will pay full taxes at this port!
+<< endif >> 
+
+<<  if $connections_number >= 1 >>
+    [[ We share a connection. Do I not therefore get a discount?|tax_network_debug]]
+<< endif >>
+
+<< if $asked_where is false >>
+    [[ Where is this? |where_debug]]
+<< endif >> 
+[[Can I come into the city? |tax_intro_debug]]
+===
+title: tax_network_debug
+tags: 
+colorID: 2
+position: 976,-778
+---
+<< setspeaker DialogScreen Jason >> 
+We share connections. Does this not mean we get discounted taxes? 
+
+<< setspeaker DialogScreen other >> 
+<< setsprite DialogScreen distrustful >> 
+Harumph! Why should I believe you? You could just be making this up in order to reap the benefits of the network affiliation!
+
+<< setspeaker DialogScreen Jason >> 
+<< connectedcrew DialogScreen >> 
+Ah, but you should meet {$crew_name_1}! {$crew_description} {$crew_name_2} [select {$jason_connected} True="hail" False="hails"] from {$crew_home}, which shares in your network.
+
+<< setspeaker DialogScreen other >>
+I don't believe you. {$crew_name_3} must produce some proof!
+
+<< setspeaker DialogScreen Jason >> 
+->I offer you the desired documentation.
+    << randomtext DialogScreen jasondocumentation neutral >> 
+    I offer you the desired documentation. Here is {$random_text}
+->I'll produce a witness!
+    << randombool DialogScreen .8 >> 
+    << if $random_bool is true >> 
+        << randomtext DialogScreen jasonwitness neutral >> 
+        Producing a witness will be an easy task: in this town resides a proxenos from my country, who lives here as an honored and well-connected businessman! {$random_text}
+    << else >>
+        What a simple task you set me! The people of my country know the wine of Dionysos, the honey of Hyblaean bees, and the songs the Muses sing - and all of them can be found in the great associations of this town! Come, we will find the club of traders, where men from many lands but one occupation - sailing for the sake of gain - meet face to face.
+    << endif >> 
+->I'll take you to court!
+    << randomtext DialogScreen jasoncourt neutral >> 
+    These are the risks you face if you fail to honor the freedom from taxes that comes from our network: {$random_text}
+
+<< setspeaker DialogScreen other >> 
+<< if $connections_number > 1 >> 
+    << setsprite Telones happy >>
+    Alright, you share in our social network!
+<< else >>
+    << setsprite Telones happy >> 
+	It seems you are not a stranger to our social network!
+<< endif >>
+
+<< if $asked_where is false >>
+    [[ Where is this? |where_debug]]
+<< endif >> 
+[[ Can I come into the city? |tax_intro_debug]]
+===
+title: tax_intro_debug
+tags: 
+colorID: 2
+position: 662,-584
+---
+<< setspeaker DialogScreen Jason >>
+Can I come into the city? What are my fees?
+
+<< setspeaker DialogScreen other >>
+<< randombool DialogScreen .15 >> 
+
+<< if $random_bool is true >>
+    This is a civilized place, and in no civilized place does the state not play a role in trade. Not at our docks will you trade like the barbarians Herodotus described:
+    'There is a place in Libya, they say, where men live beyond the Pillars of Heracles; they come here and unload their cargo; then, having laid it in order along the beach, they go aboard their ships and light a smoking fire. The people of the country see the smoke, and, coming to the sea, they lay down gold to pay for the cargo, and withdraw from the wares. Then the Carthaginians disembark and examine the gold; if it seems to them a fair price for their cargo, they take it and go away; but if not, they go back aboard and wait, and the people come back and add more gold until the sailors are satisfied. In this transaction, it is said, neither party defrauds the other: the Carthaginians do not touch the gold until it equals the value of their cargo, nor do the people touch the cargo until the sailors have taken the gold.' (4.196)
+<< else >>
+    Paying taxes in an honor! To do so defines our best citizens, who know that running a city is not free.
+    << randomtext DialogScreen taxesintro neutral >> 
+    /{$random_text}
+<< endif >> 
+
+[[ Why do I pay you? |tax_why_debug]] 
+[[ What a risky way to make a living. |tax_insult_debug]]
+[[ This sounds serious! How much do I owe? |tax_explain_debug]]
+===
+title: tax_why_debug
+tags: 
+colorID: 1
+position: 349,-331
+---
+<< set $asked_who to true >> 
+
+<< setspeaker DialogScreen Jason >> 
+Why do I have to pay you? What makes you special?
+
+<< setspeaker DialogScreen other >>
+<< randomtext DialogScreen employment neutral >> 
+<< setend DialogScreen >> 
+/{$random_text}
+
+<< if $insulted is false >>
+    [[ What a risky way to make a living. |tax_insult_debug]]
+<< endif >>
+[[ How much do I owe? |tax_explain_debug]]
+===
+title: tax_insult_debug
+tags: 
+colorID: 1
+position: 990,-322
+---
+<< set $insulted to true >> 
+
+<< setspeaker DialogScreen Jason >> 
+What a risky way to make a living - and what an unpleasant kind of fellow you must be!
+<< randomtext DialogScreen jasoninsults neutral >>
+/{$random_text}
+
+<< setspeaker DialogScreen other >> 
+Say what you will, it's down to business. Quick quick then, let's get this done with, so I can get on to the next customer! If I'm going to make a profit, I need to be speedy and process as many ships as I can - because I can't charge more than the law allows, or charge you twice - if I did, I'd be taken to court, face the board of apodektai ('receivers') - a man did that once, for no more than 10 drachma! 
+<< setend DialogScreen >>
+The poorest man in the smallest boat can haul me before the magistrates! They could put me in prison, dishonor me as a public debtor, confiscate my property. That's why the city has made it easy for me to extract your taxes: all commercial transactions happen here or in the agora, and I'm not alone in keeping my eye on you: we have agoranomoi to back me up.
+
+<< if $asked_who is false >>
+    [[ Why do I pay you? |tax_why_debug]]
+<< endif >>
+[[ How much do I owe? |tax_explain_debug]]
+===
+title: tax_explain_debug
+tags: 
+colorID: 1
+position: 661,-103
+---
+<< setspeaker DialogScreen Jason >> 
+By the gods, this sounds serious. What kind of money are we talking about?
+
+<< setspeaker DialogScreen other >>
+<< randomtext DialogScreen taxesflavor neutral >>
+<< setend DialogScreen >> 
+/{$random_text}
+
+[[What types of taxes do you charge here? |tax_types_debug]]
+[[How much will I have to pay? |tax_breakdown_debug]]
+[[I already know what I want to do. |tax_short_1_debug]]
+===
+title: tax_types_debug
+tags: 
+colorID: 1
+position: 168,257
+---
+<< set $asked_types to true >>
+
+<< setspeaker DialogScreen Jason >>
+What types of taxes do you charge here? I must decide if it is worth it to enter your city!
+
+<< setspeaker DialogScreen other >>
+<< setsprite Telones happy >>
+As in all cities, we charge an ellimenion to pay for the harbor: its fine guard houses, its places for unloading, the streets that lead to the agora, the shrine where you can thank the gods you made it here! Network connections can influence how much you pay.
+
+<< if $no_taxes is false >>
+	<< setsprite Telones bragging >>
+	Here we also charge the following taxes:
+
+	<< if $god_tax is true >>
+		The god tax: the gods who watch over us, whom we praise and dance for in our festivals, whom our fathers and grandfathers and great grandfathers knew - they need funds! The roofs of their shrines are leaky, their sacrificial implements are getting rusty, and you should see the state of the costumes for the priests...
+	<< endif >>
+
+	<< if $transit_tax is true >>
+		The transit tax: founded as we are at the meeting point of river and shore, of overland highways, and indeed of paths where Hermes guards every righteous traveler - we have a special tax, so you can show us how grateful you are for these benefits! Our friends at Tisaia and Calchedon have used these: every ship, whether full of traders, of heroes, of scoundrels or priests, must pay!
+	<< endif >>
+
+	<< if $foreigner_tax is true >>
+		The foreigner's fee: guest friendship is a noble institution, but too many guests can impoverish a city. Our wise founding fathers have made provision against such a loss: foreigners in this town pay an additional fee for access to our markets, our shrines, our banks, and our marketplace.
+	<< endif >>
+<< endif >>
+
+<< if $wealth_tax is true >>
+	<< setsprite Telones flattering >>
+	And for you, a wealth tax! Democracy is founded on the noblest of notions - equality! And you, dear stranger, are far too rich.
+<< endif >> 
+
+<< setsprite Telones happy >>
+Lastly, you must pay the intent tax! What are your purposes in our dear city? The more you wish to partake in our services, the more you pay!
+Will you come through but briefly, and only to restock your water? That requires a minimum of what we offer. This is a 1% tax.
+Wise men take advantage of opportunities! If you are among them, here to sell and buy, we'll need a 2% offering from your ship's stores.
+Have the seas made you spring a leak, will you be seeking tar, rope, fresh sails, and skilled workers? Plus your men look a bit too lean and hungry - food and water are the only important items on your shopping list? This is a 3% tax.
+<< setend DialogScreen >>
+Or if you are in great need of our great stores! You'll be hiring, seeking repairs, seeking to trade, stocking up with water, and imploring our local gods for help on the way? You can make full use of anything we offer - but of course, you'll be taxed accordingly at 5%!
+
+[[What exactly will each of these taxes cost me? |tax_breakdown_debug]]
+[[Alright, I understand. I know what I want to do. |tax_short_1_debug]]
+[[That's far too many taxes! (leave without paying) |exit_debug]]
+===
+title: tax_breakdown_debug
+tags: 
+colorID: 6
+position: 652,294
+---
+<< setspeaker DialogScreen Jason >>
+Okay then, what are the exact charges? I must know if you are charging me fairly!
+
+<< setspeaker DialogScreen other >> 
+
+<< if $god_tax is true >>
+    << setsprite Telones happy >>
+    Lucky you, noble strangers, for the god tax you get to pay {$god_tax_amount} drachma.
+<< endif >>
+<< if $transit_tax is true >>
+    << setsprite Telones happy >>
+    For transit here {$transit_tax_amount * 100}% of your cargo value: {$transit_tax_amount * $cargo_value} dr.
+<< endif >>
+
+<< if $foreigner_tax is true >>
+    << setsprite Telones happy >>
+    As a foreigner here you pay {$foreigner_tax_amount * 100}% of your cargo to use the market: {$foreigner_tax_amount * $cargo_value} dr.
+<< endif >>
+<< if $wealth_tax is true >>
+    << setsprite Telones happy >>
+    Due to your great wealth, for you, {$wealth_tax_amount * 100}% of your cargo needs to be paid before you leave: {$wealth_tax * $cargo_value} dr!
+<< endif >>
+<< if $no_taxes is true and $wealth_tax is false >>
+    << setsprite Telones unhappy >>
+    Lucky you! Only the ellimenion and intent fee apply in this port.
+<< endif >> 
+
+<< calculatetaxes DialogScreen >> 
+<< calculatepercents DialogScreen >> 
+
+<< if $asked_networks is true and $connections_number >= 1 >>
+    << if $connections_number > 1 >>
+        << setsprite Telones unhappy >>
+        << set $ellimenion_percent to 0 >> 
+        << if $no_taxes is true and $wealth_tax is false >> 
+            Your ellimenion taxes are waived, which means you only owe us the fee for your intent. 
+        << else >> 
+            Your ellimenion taxes are waived! You only have to pay {$tax_subtotal} Drachma in addition to your intent.
+        << endif >>  
+    << else >>
+        << setsprite Telones happy >>
+        << set $ellimenion_percent to ($ellimenion_percent / 2)>> 
+        Your ellimenion taxes are reduced by half to only {$ellimenion_percent * 100}% of your cargo's value - a mere {$ellimenion_percent * $cargo_value} Drachma! You only have to pay {$ellimenion_percent * $cargo_value + $tax_subtotal} dr in addition to your intent.
+    << endif >> 
+
+<< else >>
+    << setsprite Telones bragging >>
+    You pay all port taxes! Our ellimenion is {$ellimenion_percent * 100}% of your cargo value, which for you is {$ellimenion_percent * $cargo_value} Drachma. In total, you owe {$ellimenion_percent * $cargo_value + $tax_subtotal} dr in addition to your intent!
+<< endif >> 
+
+<< set $updated_subtotal to ($ellimenion_percent * $cargo_value + $tax_subtotal) >>
+<< roundup DialogScreen $updated_subtotal >>
+<< set $updated_subtotal to $rounded_num >> 
+
+<< setend DialogScreen >> 
+If you want only water and brief rest, you owe {$updated_subtotal + $water_intent} Drachma. If you are here to trade, your total will be {$updated_subtotal + $trade_intent} Drachma. If you need long rest, new crew, and repairs, you have to pay {$updated_subtotal + $tavern_intent} Drachma. Or if you want to take full advantage of our port, it comes out to {$updated_subtotal + $all_intent} Drachma.
+
+<< set $total_cargos to 0 >> 
+<< set $water_total to ($updated_subtotal + $water_intent) >>
+<< checkafford DialogScreen $water_total >> 
+
+<< if $can_afford == true >>
+    [[I would like to rest and buy water. (pay {$water_total} dr) |enter_water_debug]]  
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like to rest and buy water. (pay {$water_total} worth of cargo) |enter_water_cargo_debug]]
+<< endif >> 
+
+<< set $trading_total to ($updated_subtotal + $trade_intent) >>
+<< checkafford DialogScreen $trading_total >>
+
+<< if $can_afford == true >>
+    [[I would like to trade my cargo. (pay {$trading_total} dr) |enter_trading_debug]]
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like to trade my cargo. (pay {$trading_total} worth of cargo) |enter_trading_cargo_debug]]
+<< endif >> 
+
+<< set $tavern_total to ($updated_subtotal + $tavern_intent) >>
+<< checkafford DialogScreen $tavern_total >>
+
+<< if $can_afford == true >>
+    [[I would like a long rest and to manage my crew. (pay {$tavern_total} dr) |enter_tavern_debug]]
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like a long rest and to manage my crew. (pay {$tavern_total} worth of cargo) |enter_tavern_cargo_debug]]
+<< endif >> 
+
+<< set $all_total to ($updated_subtotal + $all_intent) >>
+<< checkafford DialogScreen $all_total >>
+
+<< if $can_afford == true >>
+    [[I would like to take full advantage of this port. (pay {$all_total} dr) |enter_full_debug]]
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like to take full advantage of this port. (pay {$all_total} worth of cargo) |enter_full_cargo_debug]]
+<< endif >> 
+
+<< if $total_cargos >= 1 >>
+Your stores of cash are depleted! You must pay us in cargo - for you may not refuse to pay us just because you lack coins.
+<< endif >>
+
+[[That's far too much! (exit without paying) |exit_debug]]
+===
+title: tax_short_1_debug
+tags: 
+colorID: 6
+position: 1112,-15
+---
+<< setspeaker DialogScreen Jason >>
+<< setend DialogScreen >> 
+I already know what I want to do.
+
+<< calculatetaxes DialogScreen >> 
+<< calculatepercents DialogScreen >> 
+
+<< if $asked_networks is true >>
+    << if $connections_number > 1 >>
+        << set $ellimenion_percent to 0 >>  
+    << elseif $connections_number == 1 >>
+        << set $ellimenion_percent to ($ellimenion_percent / 2)>> 
+    << endif >> 
+<< endif >> 
+
+<< set $updated_subtotal to ($ellimenion_percent * $cargo_value + $tax_subtotal) >>
+<< roundup DialogScreen $updated_subtotal >>
+<< set $updated_subtotal to $rounded_num >> 
+
+[[Continue |tax_short_2_debug]]
+===
+title: enter_water_debug
+tags: 
+colorID: 3
+position: 473,1531
+---
+<< setspeaker DialogScreen Jason >>
+Nymphs are generous, water falls from the sky - and yet we must pay you! But pay we will, for we cannot proceed without water for our crew.
+
+<< setspeaker DialogScreen other >>
+<< setsprite Telones happy >>
+
+<< set $final_cost to ($updated_subtotal + $water_intent)>> 
+<< set $intent to "water" >>
+<< set $entering_city to true >>
+
+<< if $cargo_pay is false >> 
+    << pay DialogScreen $final_cost >> 
+    Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your time in our fair city!
+<< else >> 
+    << cargopay DialogScreen $final_cost >>
+    Thank you for your business! That's {$demanded_resources_value}dr of value altogether - it gets rounded up, of course.
+<< endif >>
+===
+title: enter_trading_debug
+tags: 
+colorID: 3
+position: 822,1540
+---
+<< setspeaker DialogScreen Jason >>
+Too great is the lure of your market for us to resist - even at those rates! Accept our money and let us in!
+
+<< setspeaker DialogScreen other >>
+<< setsprite Telones happy >>
+
+<< set $final_cost to ($updated_subtotal + $trade_intent)>> 
+<< set $intent to "trading" >>
+
+<< if $cargo_pay is false >> 
+    << pay DialogScreen $final_cost >> 
+    << setend DialogScreen >> 
+    Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your time in our fair city!
+    [[Continue |herald_fee_debug]]
+<< else >> 
+    << cargopay DialogScreen $final_cost >>
+    << set $entering_city to true >>  
+    Thank you for your business! That's {$demanded_resources_value}dr of value altogether - it gets rounded up, of course.
+<< endif >>
+===
+title: enter_tavern_debug
+tags: 
+colorID: 3
+position: 1457,1535
+---
+<< setspeaker DialogScreen Jason >>
+A weary ship, a thirsty crew, growling stomachs and empty seats - what choice do we have? We'll pay your fees, say a prayer to Ploutos the god of wealth, and come in.
+
+<< setspeaker DialogScreen other >>
+<< setsprite Telones happy >>
+
+<< set $final_cost to ($updated_subtotal + $tavern_intent)>> 
+<< set $intent to "tavern" >>
+<< set $entering_city to true >>
+
+<< if $cargo_pay is false >> 
+    << pay DialogScreen $final_cost >> 
+    Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your time in our fair city!
+<< else >> 
+    << cargopay DialogScreen $final_cost >>
+    Thank you for your business! That's {$demanded_resources_value}dr of value altogether - it gets rounded up, of course.
+<< endif >>
+===
+title: enter_full_debug
+tags: 
+colorID: 3
+position: 1790,1526
+---
+<< setspeaker DialogScreen Jason >>
+We have much to accomplish in your town - you're a lucky man today! Take our drachmae and let us in.
+
+<< setspeaker DialogScreen other >>
+<< setsprite Telones bragging >>
+
+<< set $final_cost to ($updated_subtotal + $all_intent)>> 
+<< set $intent to "all" >>
+
+<< if $cargo_pay is false >> 
+    << pay DialogScreen $final_cost >> 
+    << setend DialogScreen >> 
+    Thank you for your business! That's {$final_cost} Drachma exactly! Enjoy your time in our fair city!
+    [[Continue |herald_fee_debug]]
+<< else >> 
+    << cargopay DialogScreen $final_cost >>
+    << set $entering_city to true >> 
+    Thank you for your business! That's {$demanded_resources_value}dr of value altogether - it gets rounded up, of course.
+<< endif >>
+===
+title: herald_fee_debug
+tags: 
+colorID: 0
+position: 1147,2107
+---
+<< setspeaker DialogScreen other >>
+<< setsprite DialogScreen happy >>
+<< setend DialogScreen >> 
+If you wish to sell your goods, surely you will need to advertise them! Hire a herald, with a voice like honey, lungs like the North Wind, and a face like Hermes himself. That will cost you - but you will profit from your expense!
+
+<< checkafford DialogScreen 2 >>
+<< if $can_afford is true >>
+    [[I will pay for a herald. (2 dr) |herald_pay_debug]]
+<< endif >> 
+
+[[I do not need a herald. |herald_no_debug]]
+===
+title: herald_pay_debug
+tags: 
+colorID: 3
+position: 1130,2487
+---
+<< setspeaker DialogScreen Jason >>
+<< pay DialogScreen 2 >> 
+Indeed I'll pay! Heralds are a noble profession and I'm wise in matters of the market.
+
+<< setspeaker DialogScreen other >>
+<< setsprite Telones happy >>
+<< set $entering_city to true >>
+<< set $have_herald to true >> 
+A wise decision! Enjoy your time in our fair city!
+===
+title: herald_no_debug
+tags: 
+colorID: 3
+position: 1406,2335
+---
+<< setspeaker DialogScreen Jason >>
+My goods speak for themselves! I'll let rumors of our arrival do the work - and keep the fee in my own pocket.
+
+<< setspeaker DialogScreen other >>
+<< setsprite Telones unhappy >>
+<< set $entering_city to true >>
+<< set $have_herald to false >> 
+Your loss, my friend! Still, enjoy your time in our fair city.
+===
+title: exit_debug
+tags: 
+colorID: 4
+position: -599,1263
+---
+<< setspeaker DialogScreen Jason >>
+<< setsprite Telones unhappy >>
+<< set $entering_city to false >>
+Your fees are steep and your town disappoints: we'll take our profit and our chances to the next port.
+===
+title: enter_water_cargo_debug
+tags: 
+colorID: 7
+position: 465,959
+---
+<< set $intent to "water" >>
+<< set $final_cost to $water_total >> 
+
+<< if $final_cost > $cargo_value >>
+    All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
+    [[ cant_afford_debug ]]
+<< else >> 
+    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
+    [[ enter_cargo_debug ]]
+<< endif >>
+===
+title: enter_trading_cargo_debug
+tags: 
+colorID: 7
+position: 833,961
+---
+<< set $intent to "trading" >>
+<< set $final_cost to $trading_total >> 
+
+<< if $final_cost > $cargo_value >>
+    All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
+    [[ cant_afford_debug ]]
+<< else >> 
+    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
+    [[ enter_cargo_debug ]]
+<< endif >>
+===
+title: enter_tavern_cargo_debug
+tags: 
+colorID: 7
+position: 1439,947
+---
+<< set $intent to "tavern" >>
+<< set $final_cost to $tavern_total >> 
+
+<< if $final_cost > $cargo_value >>
+    All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
+    [[ cant_afford_debug ]]
+<< else >> 
+    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
+    [[ enter_cargo_debug ]]
+<< endif >>
+===
+title: enter_full_cargo_debug
+tags: 
+colorID: 7
+position: 1748,944
+---
+<< set $intent to "all" >>
+<< set $final_cost to $all_total >> 
+
+<< if $final_cost > $cargo_value >>
+    All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
+    [[ cant_afford_debug ]]
+<< else >> 
+    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
+    [[ enter_cargo_debug ]]
+<< endif >>
+===
+title: enter_cargo_debug
+tags: 
+colorID: 0
+position: 1124,1232
+---
+<< set $cargo_pay to true>> 
+
+<< setspeaker DialogScreen Jason >>
+I will enter your city! My ship is heavy with jars of baked earth, holding all sorts of goods, bags bulging with valuables, boxes, and barrels. But what kind of goods do you wish to extract from me?
+
+<< setspeaker DialogScreen other >>
+We will seize from your cargo hold what you lack in your pockets! We'll start with grain, fruit of the earth, maker of men; then seize your livestock, the four-footed beasts the heroes most prized; then turn to gold, torn from the ribs of earth in Pangaion or Thasos; or silver, which gleams in the veins beneath Attica itself. The prestige goods exchanged among princes are next fungible, we will happily remove your Assyrian earrings, your Scythian vessels, silks from Arabia and linen from Asia Minor, woven by the bests of slaves. 
+Wine is also fair for trade! No port lacks eager recipients, and your bellies do not deserve what our citizens would enjoy. Then bronze, fit for armour and vessels, helmets and votives, we'll seize from your stores. Timber from the heights of Ossa and Pelion, trees that touched the sky, brought now to our docks to mend our ships and speak with the waves. Copper is always welcome, mother of bronze and partner of tin. Iron, tin, and lead, cold, hard, and unyielding, serve our city well - hand over your stores! And finally obsidian, shining like glass and harder than stone, is a welcome exchange!
+<< getresources DialogScreen >> 
+In addition to your {$drachma} drachma, you also owe {$demanded_resources}.
+
+<< if $intent == "water" >>
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_water_debug]]
+<< elseif $intent == "trading" >>
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_trading_debug]]
+<< elseif $intent == "tavern" >>
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_tavern_debug]]
+<< elseif $intent == "all" >>
+    [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_full_debug]]
+<< endif >> 
+
+[[ I want to rethink my intent. |redo_intention_debug]]
+[[ My cargo is my own! (leave without paying) |exit_debug]]
+===
+title: tax_short_2_debug
+tags: 
+colorID: 6
+position: 1121,289
+---
+<< setspeaker DialogScreen other >>
+<< setend DialogScreen >> 
+
+<< if $updated_subtotal == 0 >>
+	Very well then. We charge no taxes but the ellimenion here and your network has waived that, so you owe only the intent fee.
+<< else >>
+	Very well then. Your total is {$updated_subtotal} Drachma plus the intent fee.
+<< endif >>
+
+[[What is that money paying for? |tax_breakdown_debug]]
+
+<< set $total_cargos to 0 >> 
+<< set $water_total to ($updated_subtotal + $water_intent) >>
+<< checkafford DialogScreen $water_total >> 
+
+<< if $can_afford == true >>
+    [[I would like to rest and buy water. (pay {$water_total} dr) |enter_water_debug]]  
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like to rest and buy water. (pay {$water_total} worth of cargo) |enter_water_cargo_debug]]
+<< endif >> 
+
+<< set $trading_total to ($updated_subtotal + $trade_intent) >>
+<< checkafford DialogScreen $trading_total >>
+
+<< if $can_afford == true >>
+    [[I would like to trade my cargo. (pay {$trading_total} dr) |enter_trading_debug]]
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like to trade my cargo. (pay {$trading_total} worth of cargo) |enter_trading_cargo_debug]]
+<< endif >> 
+
+<< set $tavern_total to ($updated_subtotal + $tavern_intent) >>
+<< checkafford DialogScreen $tavern_total >>
+
+<< if $can_afford == true >>
+    [[I would like a long rest and to manage my crew. (pay {$tavern_total} dr) |enter_tavern_debug]]
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like a long rest and to manage my crew. (pay {$tavern_total} worth of cargo) |enter_tavern_cargo_debug]]
+<< endif >> 
+
+<< set $all_total to ($updated_subtotal + $all_intent) >>
+<< checkafford DialogScreen $all_total >>
+
+<< if $can_afford == true >>
+    [[I would like to take full advantage of this port. (pay {$all_total} dr) |enter_full_debug]]
+<< else >>
+    << set $total_cargos to $total_cargos + 1 >> 
+    [[I would like to take full advantage of this port. (pay {$all_total} worth of cargo) |enter_full_cargo_debug]]
+<< endif >> 
+
+<< if $total_cargos >= 1 >>
+Your stores of cash are depleted! You must pay us in cargo - for you may not refuse to pay us just because you lack coins.
+<< endif >>
+
+[[That's far too much! (exit without paying) |exit_debug]]
+===
+title: redo_intention_debug
+tags: 
+colorID: 7
+position: 1515,289
+---
+<< setspeaker DialogScreen Jason >>
+<< setend DialogScreen >>
+So many fees, so little mercy, so little friendship shown to us! We will not pay. If we use fewer of your resources, would the price for entry be less?
+
+[[ Continue |tax_short_2_debug]]
+===
+title: cant_afford_debug
+tags: 
+colorID: 4
+position: 1133,1623
+---
+<< setspeaker DialogScreen other >>
+<< setsprite Telones unhappy >>
+<< set $entering_city to false>> 
+You must leave - taxes are not optional!
+===

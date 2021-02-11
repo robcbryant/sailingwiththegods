@@ -88,7 +88,7 @@ public class GameVars : MonoBehaviour
 	public List<CrewMember> currentlyAvailableCrewMembersAtPort; // updated every time ship docks at port
 
 	[Header("GUI Scene Refs")]
-	public GameObject MasterGUISystem;
+	public script_GUI MasterGUISystem;
 	public GameObject GUI_PortMenu;
 	public GameObject GUI_GameHUD;
 	public GameObject selection_ring;
@@ -114,7 +114,7 @@ public class GameVars : MonoBehaviour
 	// TODO: unorganized variables
 	[HideInInspector] public GameObject mainCamera;
 	[HideInInspector] public GameObject playerTrajectory;
-	[HideInInspector] public GameObject playerGhostRoute;
+	[HideInInspector] public LineRenderer playerGhostRoute;
 	[HideInInspector] public WindRose[,] windrose_January = new WindRose[10, 8];
 	[HideInInspector] public GameObject windZoneParent;
 	[HideInInspector] public GameObject waterSurface;
@@ -201,6 +201,20 @@ public class GameVars : MonoBehaviour
 
 	[HideInInspector] public List<DialogText> portDialogText = new List<DialogText>();
 
+	//Mylo's Addition
+	[HideInInspector] public List<DialogText> networkDialogText = new List<DialogText>();
+	[HideInInspector] public List<DialogText> pirateDialogText = new List<DialogText>();
+	[HideInInspector] public List<DialogText> mythDialogText = new List<DialogText>();
+	[HideInInspector] public List<DialogText> guideDialogText = new List<DialogText>(); 
+	[HideInInspector] public List<DialogText> tradingDialogText = new List<DialogText>(); // Perhaps
+	[HideInInspector] public List<FoodText> foodItemText= new List<FoodText>();
+	[HideInInspector] public List<FoodText> wineInfoText = new List<FoodText>();
+	[HideInInspector] public List<FoodText> foodDialogueText = new List<FoodText>();
+
+
+
+	// End Mylo's Addition
+
 	// high level game systems
 	public Trade Trade { get; private set; }
 	public Network Network { get; private set; }
@@ -260,7 +274,7 @@ public class GameVars : MonoBehaviour
 		playerShip = GameObject.FindGameObjectWithTag("playerShip");
 		camera_titleScreen = GameObject.FindGameObjectWithTag("camera_titleScreen");
 		waterSurface = GameObject.FindGameObjectWithTag("waterSurface");
-		playerGhostRoute = GameObject.FindGameObjectWithTag("playerGhostRoute");
+		playerGhostRoute = GameObject.FindGameObjectWithTag("playerGhostRoute").GetComponent<LineRenderer>();
 		playerTrajectory = GameObject.FindGameObjectWithTag("playerTrajectory");
 		mainLightSource = GameObject.FindGameObjectWithTag("main_light_source").GetComponent<Light>();
 
@@ -281,12 +295,27 @@ public class GameVars : MonoBehaviour
 			out pirateRunSuccessText, out pirateRunFailText, out pirateSuccessText, out pirateFailureText);
 		portDialogText = CSVLoader.LoadPortDialog();
 
+		// Mylo's Addition
+		networkDialogText = CSVLoader.LoadNetworkDialog();
+		pirateDialogText = CSVLoader.LoadPirateDialog();
+		mythDialogText = CSVLoader.LoadMythDialog();
+		guideDialogText = CSVLoader.LoadHireGuideDialog();
+		// trading goods here
+		foodItemText = CSVLoader.LoadFoodItemsList();
+		foodDialogueText = CSVLoader.LoadFoodDialogueList();
+		wineInfoText = CSVLoader.LoadWineInfoList();
+
+
+		// end Mylo's Addition
+
 		region_masterList = CSVLoader.LoadRegionList();
 		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list, region list, and crew list
 
 		CreateSettlementsFromList();
 		currentSettlementGameObject = settlement_masterList_parent.transform.GetChild(0).gameObject;
 		currentSettlement = currentSettlementGameObject.GetComponent<script_settlement_functions>().thisSettlement;
+		//The lights are on at the start, so turn them off or they'll be on during the first day and no other day
+		cityLightsParent.SetActive(false);
 
 		// wind and current init
 		BuildWindZoneGameObjects();
@@ -936,7 +965,7 @@ public class GameVars : MonoBehaviour
 		}
 		//now set the player ship to the origin city coordinate
 		//!TODO This is arbotrarily set to samothrace right now
-		playerShip.transform.position = new Vector3(1939.846f, .23f, 2313.506f);
+		playerShip.transform.position = new Vector3(1702.414f, .23f, 2168.358f);
 		//mainCamera.transform.position = new Vector3(originCity.transform.position.x, 30f, originCity.transform.position.z);
 	}
 
@@ -1100,10 +1129,10 @@ public class GameVars : MonoBehaviour
 
 	public void LoadSavedGhostRoute() {
 		//For the loadgame function--it just fills the ghost trail with the routes that exist
-		playerGhostRoute.GetComponent<LineRenderer>().positionCount = playerShipVariables.journey.routeLog.Count;
+		playerGhostRoute.positionCount = playerShipVariables.journey.routeLog.Count;
 		for (int routeIndex = 0; routeIndex < playerShipVariables.journey.routeLog.Count; routeIndex++) {
 			Debug.Log("GhostRoute Index: " + routeIndex);
-			playerGhostRoute.GetComponent<LineRenderer>().SetPosition(routeIndex, playerShipVariables.journey.routeLog[routeIndex].UnityXYZEndPoint - new Vector3(0, playerShip.transform.position.y, 0));
+			playerGhostRoute.SetPosition(routeIndex, playerShipVariables.journey.routeLog[routeIndex].UnityXYZEndPoint - new Vector3(0, playerShip.transform.position.y, 0));
 			//set player last origin point for next route add on
 			if (routeIndex == playerShipVariables.journey.routeLog.Count - 1) {
 				playerShipVariables.travel_lastOrigin = playerShipVariables.journey.routeLog[routeIndex].UnityXYZEndPoint - new Vector3(0, playerShip.transform.position.y);
@@ -1196,7 +1225,7 @@ public class GameVars : MonoBehaviour
 		//if the player's clout is reduced below 0 after the adjustment, then increase it to 0 again
 		if (playerShipVariables.ship.playerClout < 0)
 			playerShipVariables.ship.playerClout = 0;
-		Debug.Log(playerShipVariables.ship.playerClout);
+		Debug.Log("Clout " + playerShipVariables.ship.playerClout);
 		//First check if a player reaches a new clout level
 		//If the titles don't match after adjustment then we have a change!
 		if (GetCloutTitleEquivalency(clout) != GetCloutTitleEquivalency((int)playerShipVariables.ship.playerClout)) {
@@ -1212,7 +1241,7 @@ public class GameVars : MonoBehaviour
 				Debug.Log("Lost a level");
 				ShowANotificationMessage("Unfortunately you sunk to a new low level of respect in the world! Before this day you were Jason, " + GetCloutTitleEquivalency(clout) + ".....But now...You have become Jason " + GetCloutTitleEquivalency((int)playerShipVariables.ship.playerClout) + "!");
 			}
-			MasterGUISystem.GetComponent<script_GUI>().GUI_UpdatePlayerCloutMeter();
+			MasterGUISystem.GUI_UpdatePlayerCloutMeter();
 		}
 
 
@@ -1306,7 +1335,7 @@ public class GameVars : MonoBehaviour
 
 		//###### Now we need to determine whether or not the current city (or representative thereof) 
 		//	--is part of the player's hometown/main network(s), e.g. if the player and city is part of the Samothracian network
-		Debug.Log("DEBUG:  " + settlementID);
+		Debug.Log("DEBUG SETTLEMENT ID:  " + settlementID);
 		//If there is no city attached(settlementID == 0) then we are in open waters so return 0
 		if (settlementID != 0) {
 			foreach (int playerNetworkID in playerShipVariables.ship.networks) {

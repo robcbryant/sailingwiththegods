@@ -13,9 +13,24 @@
 # Style Conventions
 
 ## Class Names
-  * Begin with Capital letter
+  * Begin with Capital letter. Use PascalCase.
   * For MonoBehaviours, must match the filename
   * Exception for legacy classes. Should aim to clean these up later
+
+## Variable and Function Names
+  
+  * There's a lot of legacy code that does not follow this convention. Unless doing a refactor pass, we've been matching the surrounding code for the most part
+  * Follow the Microsoft guidelines: https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-type-members
+    * All static and member functions should be PascalCase
+    * Local variables should be camelCase, including local functions
+    * Local variables should use var when the type is apparent from context
+      * var makes it easier to read the structure and intent of the code at a glance
+      * This includes in Linq queries. The return type of Linq queries is always IEnumerable
+    * All public and protected fields and properties should be PascalCase
+      * This includes constants
+    * Generally, don't make public and protected fields. Use properties instead for publicly visible API.
+      * Exception for plain old data objects (this deviates from the Microsoft guidelines, but Unity's serialization system doesn't work with properties so public fields are more practical here)
+  * Use  \_camelCase for private fields
 
 ## Readability/Maintainability
 

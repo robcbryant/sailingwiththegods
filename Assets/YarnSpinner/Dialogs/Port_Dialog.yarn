@@ -31,12 +31,6 @@ I am the first and the last face you'll see here: no ordinary citizen I! You may
 [[ What kind of place have I come to? |where]]
 [[ What are the networks in this city? |networks]]
 [[ Can I enter the city? |tax_intro]]
-[[ (TESTING) TAXES SHORTCUT BUT THE TEXT HERE IS SUPER SUPER LONG FOR TESTING PURPOSES|tax_short_1]]
-[[ (TESTING) ENTER WATER SHORTCUT |enter_water]]
-[[ (TESTING) ENTER TRADING SHORTCUT |enter_trading]]
-[[ (TESTING) ENTER TAVERN SHORTCUT |enter_tavern]]
-[[ (TESTING) ENTER FULL SHORTCUT |enter_full]]
-[[ (TESTING) LEAVE WITHOUT PAYING SHORTCUT |exit]]
 ===
 title: where
 tags: 
@@ -193,7 +187,7 @@ Can I come into the city? What are my fees?
 title: tax_why
 tags: 
 colorID: 1
-position: 349,-331
+position: 349,-332
 ---
 << set $asked_who to true >> 
 
@@ -575,7 +569,7 @@ Your loss, my friend! Still, enjoy your time in our fair city.
 title: exit
 tags: 
 colorID: 4
-position: -599,1263
+position: -485,1283
 ---
 << setspeaker DialogScreen Jason >>
 << setsprite Telones unhappy >>
@@ -594,7 +588,6 @@ position: 465,959
     All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
     [[ cant_afford ]]
 << else >> 
-    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
     [[ enter_cargo ]]
 << endif >>
 ===
@@ -609,8 +602,7 @@ position: 833,961
 << if $final_cost > $cargo_value >>
     All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
     [[ cant_afford ]]
-<< else >> 
-    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
+<< else >>
     [[ enter_cargo ]]
 << endif >>
 ===
@@ -625,8 +617,7 @@ position: 1439,947
 << if $final_cost > $cargo_value >>
     All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
     [[ cant_afford ]]
-<< else >> 
-    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
+<< else >>
     [[ enter_cargo ]]
 << endif >>
 ===
@@ -641,8 +632,7 @@ position: 1750,945
 << if $final_cost > $cargo_value >>
     All your cargo put together only amounts to {$cargo_value}dr of value, and yet you owe {$final_cost}dr!
     [[ cant_afford ]]
-<< else >> 
-    (TESTING) You have {$cargo_value} value and only owe {$final_cost}
+<< else >>
     [[ enter_cargo ]]
 << endif >>
 ===
@@ -752,7 +742,7 @@ So many fees, so little mercy, so little friendship shown to us! We will not pay
 title: cant_afford
 tags: 
 colorID: 4
-position: -129,1544
+position: 1121,1551
 ---
 << setspeaker DialogScreen other >>
 << setsprite Telones unhappy >>

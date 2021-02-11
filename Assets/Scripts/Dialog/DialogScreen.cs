@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using Yarn.Unity;
 
-public class DialogScreen : MonoBehaviour
+public class DialogScreen : ViewBehaviour
 {
 	private const string ResourcePath = "dialog_images";
 
@@ -18,6 +18,7 @@ public class DialogScreen : MonoBehaviour
 	public Scrollbar conversationScroll;
 	public Transform conversationHolder;
 	public Yarn.Unity.Example.SpriteSwitcher[] convoPartners;
+	public Yarn.Unity.Example.SpriteSwitcher[] backgrounds;
 
 	[Header("Choices")]
 	public RectTransform choiceScroll;
@@ -36,8 +37,9 @@ public class DialogScreen : MonoBehaviour
 	private Canvas canvas;
 
 	private YarnTaxes taxes;
+	bool set = false;
 
-	private void OnValidate() 
+	private void Awake() 
 	{
 		yarnUI = GetComponent<CustomDialogUI>();
 		storage = GetComponent<InMemoryVariableStorage>();
@@ -45,6 +47,7 @@ public class DialogScreen : MonoBehaviour
 		canvas = GetComponentInParent<Canvas>();
 
 		taxes = GetComponent<YarnTaxes>();
+		set = true;
 	}
 
 	private void OnEnable() 
@@ -69,6 +72,16 @@ public class DialogScreen : MonoBehaviour
 
 	public void StartDialog(Settlement s, string startNode) 
 	{
+		Debug.Log("StartDialog: settlement " + (s == null ? "null" : s.name));
+		if (!set) {
+			yarnUI = GetComponent<CustomDialogUI>();
+			storage = GetComponent<InMemoryVariableStorage>();
+			runner = GetComponent<DialogueRunner>();
+			canvas = GetComponentInParent<Canvas>();
+
+			taxes = GetComponent<YarnTaxes>();
+			set = true;
+		}
 		taxes.SetPortInfo(s);
 		Clear();
 		runner.startNode = startNode;

@@ -31,9 +31,15 @@ public class TradeViewModel : CityViewModel
 
 	public bool allowPortAccess;
 	public bool monuments;
+	private Sprite noHeraldIcon;
+	private float heraldEffect;
+	private int heraldUses;
+	private CargoItemTradeViewModel heraldTarget;
 
-	public TradeViewModel(bool justWater = false, bool portAccess = true) : base(Globals.GameVars.currentSettlement, null) {
-
+	public TradeViewModel(Sprite herald = null, Sprite noHerald = null, bool justWater = false, bool portAccess = true, float heraldMod = 1.0f) : base(Globals.GameVars.currentSettlement, null) 
+	{
+		noHeraldIcon = noHerald;
+		heraldEffect = heraldMod;
 		portAccess = justWater ? false : portAccess;
 
 		Money = new BoundModel<int>(GameVars.playerShipVariables.ship, nameof(GameVars.playerShipVariables.ship.currency));
@@ -48,6 +54,13 @@ public class TradeViewModel : CityViewModel
 			.Select(r => new CargoItemTradeViewModel(TradeAction.Sell, r, this))
 		));
 
+		foreach (CargoItemTradeViewModel c in Available) {
+			c.HeraldIcon = noHeraldIcon;
+		}
+		foreach (CargoItemTradeViewModel c in Mine) {
+			c.HeraldIcon = noHeraldIcon;
+		}
+
 		if (justWater) {
 			foreach (CargoItemTradeViewModel item in Available.Value) {
 				if (item.Name != "Water" && item.Name != "Provisions") {
@@ -60,13 +73,31 @@ public class TradeViewModel : CityViewModel
 			}
 		}
 
+		if (heraldMod > 1.0f) {
+			Debug.Log($"TradeViewModel is setting herald to {(heraldMod - 1) * 100}%");
+
+			CargoItemTradeViewModel cargo = Mine.RandomElement();
+			Debug.Log($"Random cargo to boost: {cargo.Name}");
+
+			cargo.PriceMod = heraldMod;
+
+			cargo.HeraldIcon = herald;
+
+			heraldUses = cargo.AmountKg;
+
+			heraldTarget = cargo;
+		}
+		else {
+			heraldTarget = null;
+		}
+
 		allowPortAccess = portAccess;
 		monuments = !justWater;
 	}
 
 	public void BackToPort() {
 		Globals.UI.Hide<TownScreen>();
-		Globals.UI.Show<PortScreen, PortViewModel>(new PortViewModel());
+		Globals.UI.Show<PortScreen, PortViewModel>(Globals.GameVars.MasterGUISystem.Port);
 	}
 
 	public void SmallTxn() {
@@ -100,24 +131,64 @@ public class TradeViewModel : CityViewModel
 		GameVars.currentSettlement.GetCargoByName(resourceName).amount_kg += changeAmount;
 	}
 
-	void ChangeShipCargo(string resourceName, float changeAmount) {
-		float price = GameVars.Trade.GetPriceOfResource(resourceName, GameVars.currentSettlement);
+	void ChangeShipCargo(string resourceName, int changeAmount, float priceMod) 
+	{
+		float price = 0.0f;
+
+		int unitPrice = GameVars.Trade.GetPriceOfResource(resourceName, GameVars.currentSettlement);
+
+		//if you're selling and there's a herald in play and this is what's being boosted, check the price
+		if (changeAmount < 0 && heraldTarget != null && heraldTarget.Name == resourceName) 
+		{
+			Debug.Log($"Calculating herald price for {changeAmount} units");
+			//We do it one by one in case you run out of herald uses partway through selling multiples
+
+			if (heraldUses >= Mathf.Abs(changeAmount)) 
+			{
+				price = unitPrice * priceMod * changeAmount;
+				heraldUses -= Mathf.Abs(changeAmount);
+			}
+			else 
+			{
+				int numWithoutMod = Mathf.Abs(changeAmount) - heraldUses;
+				price = unitPrice * priceMod * heraldUses;
+				price += unitPrice * numWithoutMod;
+				price *= -1.0f;
+				heraldUses = 0;
+			}
+
+			if (heraldUses <= 0) {
+				Debug.Log("Out of herald uses");
+				heraldTarget.PriceMod = 1.0f;
+				heraldTarget.HeraldIcon = noHeraldIcon;
+				heraldTarget.NotifyAny();
+				heraldTarget = null;
+			}
+			Debug.Log("Price with herald mod figured in: " + price);
+		}
+		else 
+		{
+			price = unitPrice * changeAmount;
+			Debug.Log("Price without herald: " + price);
+		}
+
+		
 		Debug.Log(resourceName + "  :  " + GameVars.playerShipVariables.ship.GetCargoByName(resourceName).amount_kg + "  :  " + changeAmount);
 		GameVars.playerShipVariables.ship.GetCargoByName(resourceName).amount_kg += changeAmount;
 		//we use a (-) change amount here because the changeAmount reflects the direction of the goods
 		//e.g. if the player is selling--they are negative in cargo---but their currency is positive and vice versa.
-		GameVars.playerShipVariables.ship.currency += (int)(price * -changeAmount);
+		GameVars.playerShipVariables.ship.currency += Mathf.FloorToInt(-price);
 	}
 
 	// REFERENCED IN BUTTON CLICK UNITYEVENT
 	public void GUI_Buy_Resources(CargoItemTradeViewModel item, int amount) {
 		Debug.Log(item.Name + " : " + amount);
 
-		var amountToBuy = GameVars.Trade.AdjustBuy(amount, item.Name);
+		int amountToBuy = GameVars.Trade.AdjustBuy(amount, item.Name);
 		if (amountToBuy > 0) {
 
 			// these change the values in our model too, just need to notify
-			ChangeShipCargo(item.Name, amountToBuy);
+			ChangeShipCargo(item.Name, amountToBuy, item.PriceMod);
 			ChangeSettlementCargo(item.Name, -amountToBuy);
 
 			// update the list so the new row appears
@@ -143,11 +214,11 @@ public class TradeViewModel : CityViewModel
 	public void GUI_Sell_Resources(CargoItemTradeViewModel item, int amount) {
 		Debug.Log(item.Name + " : " + amount);
 
-		var amountToSell = GameVars.Trade.AdjustSell(amount, item.Name);
+		int amountToSell = GameVars.Trade.AdjustSell(amount, item.Name);
 		if (amountToSell > 0) {
 
 			// these change the values in our model too, just need to notify
-			ChangeShipCargo(item.Name, -amountToSell);
+			ChangeShipCargo(item.Name, -amountToSell, item.PriceMod);
 			ChangeSettlementCargo(item.Name, amountToSell);
 
 			// update the list so the new row appears

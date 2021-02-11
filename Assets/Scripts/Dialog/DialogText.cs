@@ -39,13 +39,21 @@ public class DialogText
 
 	private Type textType;
 	private Emotion textEmotion;
+	private string cityType;
 	private string text;
+	private string[] textQA;
 
 	public DialogText(Type t, Emotion e, string s) 
 	{
 		textType = t;
 		textEmotion = e;
 		text = s;
+	}
+
+	public DialogText(string c, string[] s) 
+	{
+		cityType = c;
+		textQA = s;
 	}
 
 	public DialogText(string t, string e, string s) 
@@ -68,6 +76,17 @@ public class DialogText
 	public string Text 
 	{
 		get { return text; }
+	}
+
+	public string CityType 
+	{
+		get { return cityType; }
+	}
+
+	public string[] TextQA 
+	{
+		get { return textQA;  }
+		set { textQA = value; }
 	}
 
 	/// <summary>
