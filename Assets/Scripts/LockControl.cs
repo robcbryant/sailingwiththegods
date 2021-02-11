@@ -6,13 +6,18 @@ using System.Threading.Tasks;
 
 public static class CutsceneMode
 {
+	static IEnumerable<ViewBehaviour> _restoreViews;
+
 	public static void Enter() {
 		Globals.GameVars.IsCutsceneMode = true;
+		_restoreViews = Globals.UI.GetActiveViews();
 		Globals.UI.HideAll();
 	}
 
 	public static void Exit() {
 		Globals.GameVars.IsCutsceneMode = false;
-		Globals.UI.Show<Dashboard, DashboardViewModel>(new DashboardViewModel());
+		foreach(var view in _restoreViews) {
+			Globals.UI.Show(view);
+		}
 	}
 }

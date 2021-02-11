@@ -58,12 +58,9 @@ public class enemyAI : MonoBehaviour
 		
 	}
 	public void LeaveButton() {
-		//SceneManager.UnloadSceneAsync("Petteia");
-
-		//SceneManager.SetActiveScene(SceneManager.GetSceneAt(0));
-
-		Globals.MiniGames.Exit();
+		MainMenuControllerDav.BackToMainMenu();
 	}
+
 	IEnumerator MakeMove() {
 		
 		yield return new WaitForSeconds(1f); 
