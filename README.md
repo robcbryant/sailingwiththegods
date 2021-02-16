@@ -26,7 +26,7 @@ While the main game code is open source, the game depends on a private repo for 
 * Check if you have / need access to the proprietary repo
 * Use https athentication steps below to clone your fork
 
-## Using https authentication
+## Clone the project using https authentication
 
 ```
 git clone yourforkurl --branch develop
@@ -41,25 +41,7 @@ git submodule update --init
 * Authorize GitCredentialManager to your github account
 * Wait for a while. The submodule is large and may not appear to be downloading immediately
 
-## Using ssh authentication
-
-```
-git clone yourforkurl --branch develop
-git remote add upstream git@github.com:kddressel/sailingwiththegods.git
-
-# and if you have access to the proprietary repo...
-git submodule update --init
-```
-
-Most of the team is using https, so the submodule is stored as https in the .gitmodules to ease that workflow. It's recommended to use https for the submodule and ssh for the main repo if you are using ssh, but if you want to use ssh for the submodule you can do this:
-
-* Edit .git/config
-* Point the Assets/_Proprietary submodule url at ```git@github.com:kddressel/sailingwiththegods-proprietary.git```
-* cd into Assets/Proprietary
-* rm -rf .git
-* git init
-* git remote add origin ```git@github.com:kddressel/sailingwiththegods-proprietary.git```
-
+Most of the team is using https, but if you would like to use SSH authentication, follow [this guide](docs/ssh-auth.md).
 
 # Documentation
 
