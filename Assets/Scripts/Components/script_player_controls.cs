@@ -76,7 +76,6 @@ public class script_player_controls : MonoBehaviour
 	[Header("Playtesting Bools")]
 	//make sure these are false in Unity's "Inspector" tab before making builds 
 	[SerializeField] bool hotkeysOn = true;
-	[SerializeField] GameObject debugControls;
 
 
 	#region Debug Tools (keep at bottom)
@@ -141,7 +140,6 @@ public class script_player_controls : MonoBehaviour
 		GameVars = Globals.GameVars;
 		controller = gameObject.GetComponent<CharacterController>();
 		shipTransform = transform.GetChild(0);
-		debugControls.SetActive(hotkeysOn);
 
 		Reset();
 
@@ -172,30 +170,34 @@ public class script_player_controls : MonoBehaviour
 		//}
 
 		if (hotkeysOn) {
-			//1st group minigames
+			//TODO: Remove - this is just here as an initial test of minigames
 			if (Input.GetKeyUp(KeyCode.B)) {
 				Globals.MiniGames.Enter("Pirate Game/Pirate Game");
+			}
+			if (Input.GetKeyUp(KeyCode.L)) {
+				Globals.UI.Show<DialogScreen>().StartDialog("Start_Taverna");
 			}
 			if (Input.GetKeyUp(KeyCode.N)) {
 				Globals.MiniGames.Enter("Storm MG/Storm Game");
 			}
 
-			//Taverna minigames
-
-			if (Input.GetKeyUp(KeyCode.Z)) {
-				Globals.UI.Show<DialogScreen>().StartDialog("Start_Taverna");
-			}
-            if (Input.GetKeyUp(KeyCode.X))
+            if (Input.GetKeyUp(KeyCode.Z))
             {
                 Globals.MiniGames.EnterScene("Petteia");
             }
-            if (Input.GetKeyUp(KeyCode.C))
+
+            if (Input.GetKeyUp(KeyCode.R))
             {
                 Globals.MiniGames.EnterScene("SongCompMainMenu");
             }
-			if (Input.GetKeyUp(KeyCode.V)) {
-				Globals.MiniGames.EnterScene("Ur");
-			}
+            if (Input.GetKeyUp(KeyCode.T))
+             {
+              Globals.MiniGames.EnterScene("MiniGameMainMenu");
+             }
+                if (Input.GetKeyUp(KeyCode.M)) {
+
+				Globals.MiniGames.Exit();
+			 }
 		}
 
 		// debug tool to see where you are in lat long
@@ -935,6 +937,49 @@ public class script_player_controls : MonoBehaviour
 			return false;
 		}
 	}
+	//Getting the win total for board games - roughly half of what they need to not starve. 
+	public float GameResultFood() {
+		
+		float ans;
+		
+		if (ship.cargo[1].amount_kg < dailyProvisionsKG * ship.crewRoster.Count) {
+		
+			float neededCargo = (dailyProvisionsKG * ship.crewRoster.Count) - ship.cargo[1].amount_kg;
+			ship.cargo[1].amount_kg += (neededCargo / 2.0f);
+
+
+			ans = neededCargo / 2.0f;
+		}
+		else {  ship.cargo[1].amount_kg += .96f * ship.crewRoster.Count;
+			ans = .96f * ship.crewRoster.Count;
+		}
+
+		return ans;
+	}
+
+	public float GameResultWater() {
+
+		float ans;
+
+		if (ship.cargo[0].amount_kg < dailyWaterKG * ship.crewRoster.Count) {
+
+			float neededWater = (dailyWaterKG * ship.crewRoster.Count) - ship.cargo[0].amount_kg;
+			ship.cargo[0].amount_kg += (neededWater / 2.0f);
+
+
+			ans = neededWater / 2.0f;
+		}
+		else {
+			ship.cargo[0].amount_kg += .96f * ship.crewRoster.Count;
+			ans = .96f * ship.crewRoster.Count;
+		}
+
+		return ans;
+	}
+
+
+
+
 
 	int CrewQuitsBecauseStarvingOrThirsty() {
 		int deathCount = 0;

@@ -17,7 +17,7 @@ public class PetteiaGameController : MonoBehaviour
 	public enemyAI en;
 	public GameObject menucanvas;
 	public int lastPieceMoved;
-
+	public AudioSource moveSound;
 	[TextArea(40, 10)]
 	public string boardText = "This text will appear in a text area that automatically expands";
 
@@ -62,6 +62,8 @@ public class PetteiaGameController : MonoBehaviour
 						//Debug.Log("enemyturn");
 						//mp.isMoving = true;
 						yourturn = false;
+						moveSound.pitch = Random.Range(0.7f, 1.1f);
+						moveSound.Play();
 						PrintBoard();
 						
 					} else {
@@ -142,9 +144,11 @@ public class PetteiaGameController : MonoBehaviour
 
 		if (collide && !updateOld) {
 			MoveBack(currentT);
-			
+
 			//yourturn = false;
 			//Debug.Log("MOVEBACK TRIGGERED");
+			moveSound.pitch = Random.Range(0.7f, 1.1f);
+			moveSound.Play();
 			return "mb";
 			
 			

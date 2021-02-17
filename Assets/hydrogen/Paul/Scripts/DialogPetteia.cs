@@ -9,8 +9,9 @@ public class DialogPetteia : MonoBehaviour
 	public GameObject EnemyCanvas;
 	public Text enemyName;
 	public Text dialog;
-	public Sprite enemyFaces;
-
+	public Image enemyFaces;
+	private const string ResourcePath = "crew_portraits";
+	private const string DefaultPortrait = "crew_portraits/phoenician_sailor";
 
 	public bool isWin;
     // Start is called before the first frame update
@@ -20,7 +21,12 @@ public class DialogPetteia : MonoBehaviour
 		EnemyCanvas.SetActive(false);
 		//enemyName.text = Globals.GameVars.currentSettlement.availableCrew.RandomElement<CrewMember>().name;
 		//enemyName.text = Globals.GameVars.GetSettlementFromID(0).availableCrew.RandomElement<CrewMember>().name;
-		//enemyName.text = Globals.GameVars.newGameAvailableCrew.RandomElement<CrewMember>().name;
+		//enemyFaces = Globals.GameVars.newGameAvailableCrew.RandomElement<CrewMember>()
+		//Debug.Log(Globals.GameVars.newGameAvailableCrew.RandomElement<CrewMember>().name);
+		
+		CrewMember c = Globals.GameVars.currentSettlement.availableCrew.RandomElement<CrewMember>();
+		enemyName.text = c.name;
+		enemyFaces.sprite = Resources.Load<Sprite>(ResourcePath + "/" + c.ID) ?? Resources.Load<Sprite>(DefaultPortrait);
 
 
 

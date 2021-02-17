@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class enemyAI : MonoBehaviour
 {
 	public PetteiaGameController p;
@@ -12,11 +13,18 @@ public class enemyAI : MonoBehaviour
 	public bool isMoving;
 	public GameObject currentg;
 	public int num = 0;
-	
+
+	public Text water;
+	public Text food; 
+
+	public GameObject winCanvas;
+	script_player_controls playerShip;
 	//Some variables are public for debugging and being able to be viewed in the inspector 
 	// Start is called before the first frame update
 	void Start()
     {
+		playerShip = GameObject.FindGameObjectWithTag("playerShip").GetComponent<script_player_controls>();
+		winCanvas.SetActive(false);
 		isMoving = false;
 		
 	}
@@ -25,9 +33,18 @@ public class enemyAI : MonoBehaviour
     void Update()
     {
 	//	Debug.Log("Numpieces" + pieces.Count);
-		if (pieces.Count == 0) {
+		if (pieces.Count == 0 || Input.GetKeyDown(KeyCode.W)) {
 			Debug.Log("youwin!");
-			
+			winCanvas.SetActive(true);
+
+
+
+			water.text ="+" + playerShip.GameResultWater().ToString();
+			food.text = "+" + playerShip.GameResultFood().ToString();
+
+			//	ship.cargo[1].amount_kg < dailyProvisionsKG * ship.crewRoster.Count
+
+
 		}
 		if (Input.GetKeyDown(KeyCode.W)) {
 			PrintBoard();
@@ -40,6 +57,10 @@ public class enemyAI : MonoBehaviour
 
 		
 	}
+	public void LeaveButton() {
+		MainMenuControllerDav.BackToMainMenu();
+	}
+
 	IEnumerator MakeMove() {
 		
 		yield return new WaitForSeconds(1f); 
@@ -557,10 +578,11 @@ public class enemyAI : MonoBehaviour
 		//find out which piece we want to move AND why and where it needs to go 
 
 
-
-
+		p.moveSound.pitch = Random.Range(0.7f, 1.1f);
+		p.moveSound.Play();
 		yield return new WaitForSeconds(1f);
 		p.yourturn = true;
+		
 		isMoving = false;
 	}
 	IEnumerator MovePiece(GameObject piece, string dir, int dist) 
