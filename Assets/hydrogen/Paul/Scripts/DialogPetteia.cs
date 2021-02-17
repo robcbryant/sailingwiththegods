@@ -64,18 +64,18 @@ public class DialogPetteia : MonoBehaviour
 		yield return new WaitForSeconds(1f);
 		EnemyCanvas.SetActive(true);
 		dialog.text = CaptureLines.RandomElement();
-		yield return new WaitForSeconds(8f);
+		//yield return new WaitForSeconds(8f);
 		
-		EnemyCanvas.SetActive(false);
+		//EnemyCanvas.SetActive(false);
 	}
 
 	IEnumerator PlayerCapturesFunction() {
 		yield return new WaitForSeconds(1f);
 		EnemyCanvas.SetActive(true);
 		dialog.text = getCapturedLines.RandomElement();
-		yield return new WaitForSeconds(8f);
+		//yield return new WaitForSeconds(8f);
 		
-		EnemyCanvas.SetActive(false);
+		//EnemyCanvas.SetActive(false);
 	}
 	public void ResetBoard() {
 		Scene scene = SceneManager.GetActiveScene();

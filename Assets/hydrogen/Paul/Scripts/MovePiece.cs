@@ -80,14 +80,17 @@ public class MovePiece : MonoBehaviour
 	}
 	void OnMouseDown() 
 	{
-	//	//Debug.Log(gameObject.name);
-		mouseStartPos = Input.mousePosition;
-		pieceStartPos = g.position;
-		ik.SetPiece(real.gameObject);
-		ik.SetInital(g);
-		real.enabled = false;
-		Cursor.visible = false;
-		SpawnDummy();
+		//	//Debug.Log(gameObject.name);
+		if (real != null) {
+			mouseStartPos = Input.mousePosition;
+			pieceStartPos = g.position;
+			ik.SetPiece(real.gameObject);
+			ik.SetInital(g);
+			real.enabled = false;
+			Cursor.visible = false;
+			SpawnDummy();
+		}
+
 
 	}
 	void SpawnDummy() 
@@ -104,17 +107,20 @@ public class MovePiece : MonoBehaviour
 
 	void OnMouseUp() 
 	{
-		//unlock function
-		if (isMoving) {
-			ik.SetFinal(real.gameObject.transform);
-			//ik.onThemMove = true;
+		if (real != null) {
+			//unlock function
+			if (isMoving) {
+				ik.SetFinal(real.gameObject.transform);
+				//ik.onThemMove = true;
+			}
+			lockedx = false;
+			lockedy = false;
+			mouseEndPos = mouseStartPos;
+			Cursor.visible = true;
+			real.enabled = true;
+			DelDummy();
 		}
-		lockedx = false;
-		lockedy = false;
-		mouseEndPos = mouseStartPos;
-		Cursor.visible = true;
-		real.enabled = true;
-		DelDummy();
+
 
 	}
 	private void OnMouseDrag() {

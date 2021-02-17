@@ -331,7 +331,7 @@ public class PetteiaGameController : MonoBehaviour
 	}
 	public Vector3 MovePiece(Transform g, string dir, Vector3 startPos, string tag) {
 
-		PrintBoard();
+		//PrintBoard();
 
 		moveDir = dir;
 		if (updateOld == true) {
