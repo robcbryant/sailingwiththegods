@@ -48,9 +48,10 @@ public class DialogScreen : ViewBehaviour
 
 		taxes = GetComponent<YarnTaxes>();
 		set = true;
+
 	}
 
-	private void OnEnable() 
+	protected override void OnEnable() 
 	{
 		UpdateMoney();
 	}
