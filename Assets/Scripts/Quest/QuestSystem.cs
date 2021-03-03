@@ -66,8 +66,13 @@ public class QuestSystem : MonoBehaviour
 		//Add any new crew members if the questline calls for it
 		foreach (int crewID in thisQuest.crewmembersToAdd) {
 			//Make sure the crew ID values are not -1(a null value which means no changes)
-			if (crewID != -1)
-				playerShipVariables.ship.crewRoster.Add(gameVars.GetCrewMemberFromID(crewID));
+			//Also make sure they aren't already in your crew or Jason himself
+			if (crewID != -1) {
+				CrewMember cm = gameVars.GetCrewMemberFromID(crewID);
+				if (!cm.isJason && !playerShipVariables.ship.crewRoster.Contains(cm)) {
+					playerShipVariables.ship.crewRoster.Add(cm);
+				}
+			}
 		}
 
 		//Then increment the questline to the in succession and update the player captains log with the new information for the next quest line
