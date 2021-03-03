@@ -114,7 +114,7 @@ position: 971,-1026
 title: tax_network
 tags: 
 colorID: 2
-position: 974,-781
+position: 973,-782
 ---
 << setspeaker DialogScreen Jason >> 
 We share connections. Does this not mean we get discounted taxes? 
@@ -664,10 +664,13 @@ position: 1124,1232
 I will enter your city! My ship is heavy with jars of baked earth, holding all sorts of goods, bags bulging with valuables, boxes, and barrels. But what kind of goods do you wish to extract from me?
 
 << setspeaker DialogScreen other >>
-We will seize from your cargo hold what you lack in your pockets! We'll start with grain, fruit of the earth, maker of men; then seize your livestock, the four-footed beasts the heroes most prized; then turn to gold, torn from the ribs of earth in Pangaion or Thasos; or silver, which gleams in the veins beneath Attica itself. The prestige goods exchanged among princes are next fungible, we will happily remove your Assyrian earrings, your Scythian vessels, silks from Arabia and linen from Asia Minor, woven by the bests of slaves. 
-Wine is also fair for trade! No port lacks eager recipients, and your bellies do not deserve what our citizens would enjoy. Then bronze, fit for armour and vessels, helmets and votives, we'll seize from your stores. Timber from the heights of Ossa and Pelion, trees that touched the sky, brought now to our docks to mend our ships and speak with the waves. Copper is always welcome, mother of bronze and partner of tin. Iron, tin, and lead, cold, hard, and unyielding, serve our city well - hand over your stores! And finally obsidian, shining like glass and harder than stone, is a welcome exchange!
 << getresources DialogScreen >> 
 In addition to your {$drachma} drachma, you also owe {$demanded_resources}.
+->How do you decide what to take from me?
+    We will seize from your cargo hold what you lack in your pockets! We'll start with grain, fruit of the earth, maker of men; then seize your livestock, the four-footed beasts the heroes most prized; then turn to gold, torn from the ribs of earth in Pangaion or Thasos; or silver, which gleams in the veins beneath Attica itself. The prestige goods exchanged among princes are next fungible, we will happily remove your Assyrian earrings, your Scythian vessels, silks from Arabia and linen from Asia Minor, woven by the bests of slaves. 
+    <<setend DialogScreen>>
+    Wine is also fair for trade! No port lacks eager recipients, and your bellies do not deserve what our citizens would enjoy. Then bronze, fit for armour and vessels, helmets and votives, we'll seize from your stores. Timber from the heights of Ossa and Pelion, trees that touched the sky, brought now to our docks to mend our ships and speak with the waves. Copper is always welcome, mother of bronze and partner of tin. Iron, tin, and lead, cold, hard, and unyielding, serve our city well - hand over your stores! And finally obsidian, shining like glass and harder than stone, is a welcome exchange!
+->Continue
 
 << if $intent == "water" >>
     [[I'll pay in cargo, and lighten our ship's load to fill your pockets. (pay {$final_cost} worth of cargo) |enter_water]]
