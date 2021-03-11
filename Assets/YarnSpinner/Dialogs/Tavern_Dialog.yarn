@@ -7,10 +7,9 @@ position: -673,-1563
 << set $first_time to false >> 
 
 << setpartner DialogScreen Telones>>
-<< setbg DialogScreen Backgrounds>> 
 << setpartnername DialogScreen Oineus >>
 << setconvotitle DialogScreen Taverna>> 
-<< setsprite Backgrounds tavern >> 
+<< setsprite Backgrounds taverna >> 
 << setsprite Telones neutral >>
 << setspeaker DialogScreen other>> 
 
@@ -30,7 +29,7 @@ tags:
 colorID: 0
 position: -1252,-317
 ---
-<< randomcost DialogScreen 50 100>> 
+<< randomcost DialogScreen 25 35>> 
 << randomFood DialogScreen>> 
 
 << setspeaker DialogScreen Jason>> 
@@ -55,7 +54,7 @@ tags:
 colorID: 0
 position: -256,35
 ---
-<< randomcost DialogScreen 30 120>>
+<< randomcost DialogScreen 25 35>>
 << randomFood DialogScreen>> 
 
 << setspeaker DialogScreen Jason>> 
@@ -78,7 +77,7 @@ tags:
 colorID: 0
 position: -71,-220
 ---
-<< randomcost DialogScreen 20 50>>
+<< randomcost DialogScreen 15 20>>
 << randomFood DialogScreen>> 
 
 << setspeaker DialogScreen Jason>> 
@@ -110,7 +109,7 @@ tags:
 colorID: 0
 position: -369,495
 ---
-<< randomcost DialogScreen 120 150>> 
+<< randomcost DialogScreen 75 100>> 
 << randomFood DialogScreen>> 
 << randomGuide DialogScreen>> 
 

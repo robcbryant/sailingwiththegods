@@ -192,7 +192,7 @@ public class script_player_controls : MonoBehaviour
             }
             if (Input.GetKeyUp(KeyCode.T))
              {
-              Globals.MiniGames.EnterScene("MiniGameMainMenu");
+              Globals.MiniGames.EnterScene("TavernaMenu");
              }
                 if (Input.GetKeyUp(KeyCode.M)) {
 

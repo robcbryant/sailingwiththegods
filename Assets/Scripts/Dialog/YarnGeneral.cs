@@ -43,18 +43,6 @@ public class YarnGeneral : MonoBehaviour
 			}
 		}
 	}
-
-	[YarnCommand("setbg")]
-	public void SetBackgroundObject(string name) {
-		foreach (Yarn.Unity.Example.SpriteSwitcher p in ds.backgrounds) {
-			if (p.name == name) {
-				p.gameObject.SetActive(true);
-			}
-			else {
-				p.gameObject.SetActive(false);
-			}
-		}
-	}
 	#endregion
 
 	#region Yarn Functions - Random

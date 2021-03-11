@@ -28,6 +28,7 @@ public class Dashboard : ViewBehaviour<DashboardViewModel>
 	[SerializeField] MessageBoxView CaptainsLogScreen = null;
 	[SerializeField] CargoListView CargoList = null;
 	[SerializeField] CrewListScreen CrewList = null;
+	[SerializeField] Scrollbar CrewListScroll = null;
 
 	public override void Bind(DashboardViewModel model) {
 		base.Bind(model);
@@ -41,7 +42,7 @@ public class Dashboard : ViewBehaviour<DashboardViewModel>
 		}));
 
 		CargoButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Globals.UI.Show(CargoList, Model.CargoList) }));
-		CrewButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Globals.UI.Show(CrewList, Model.CrewList) }));
+		CrewButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = CrewButtonClick }));
 
 		MainMenuButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Globals.UI.Show<MainMenuScreen, GameViewModel>(new GameViewModel()) }));
 		CloutButton.Bind(ValueModel.New(new ButtonViewModel { OnClick = () => Globals.UI.Show<CrewDetailsScreen, CrewManagementMemberViewModel>(
@@ -63,5 +64,10 @@ public class Dashboard : ViewBehaviour<DashboardViewModel>
 		}));
 
 		Objective.Bind(Model.Objective);
+	}
+
+	private void CrewButtonClick() {
+		Globals.UI.Show(CrewList, Model.CrewList);
+		CrewListScroll.value = 0;
 	}
 }
