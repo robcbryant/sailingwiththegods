@@ -37445,6 +37445,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1410413442}
   m_CullTransparentMesh: 0
+--- !u!114 &1412113660 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8918808290016928135, guid: 585b20b052d2d944995ceb2669320f48,
+    type: 3}
+  m_PrefabInstance: {fileID: 2941274827254874165}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a4db7a114972834c8e4117be1d82ba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1416865872
 GameObject:
   m_ObjectHideFlags: 0
@@ -49740,7 +49752,7 @@ MonoBehaviour:
   SFX_birdsong: {fileID: 1829480785}
   rayCheck_stopShip: 0
   zonesList: []
-  hotkeysOn: 1
+  hotkeysOn: 0
   ship:
     name: 
     speed: 0
@@ -58730,6 +58742,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2941274826778846514, guid: 585b20b052d2d944995ceb2669320f48,
+        type: 3}
+      propertyPath: CrewListScroll
+      value: 
+      objectReference: {fileID: 1412113660}
     - target: {fileID: 2941274827008635602, guid: 585b20b052d2d944995ceb2669320f48,
         type: 3}
       propertyPath: m_AnchorMin.y
