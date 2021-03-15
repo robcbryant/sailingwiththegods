@@ -122,6 +122,7 @@ We share connections. Does this not mean we get discounted taxes?
 
 << setspeaker DialogScreen other >> 
 << setsprite DialogScreen distrustful >> 
+<< setend DialogScreen >>
 Harumph! Why should I believe you? You could just be making this up in order to reap the benefits of the network affiliation!
 
 << setspeaker DialogScreen Jason >> 
@@ -164,7 +165,7 @@ I don't believe you. {$crew_name_3} must produce some proof!
 title: tax_intro
 tags: 
 colorID: 2
-position: 661,-583
+position: 661,-585
 ---
 << setspeaker DialogScreen Jason >>
 Can I come into the city? What are my fees?
@@ -209,7 +210,7 @@ Why do I have to pay you? What makes you special?
 title: tax_insult
 tags: 
 colorID: 1
-position: 988,-323
+position: 988,-325
 ---
 << set $insulted to true >> 
 
@@ -248,7 +249,7 @@ By the gods, this sounds serious. What kind of money are we talking about?
 title: tax_types
 tags: 
 colorID: 1
-position: 167,256
+position: 167,254
 ---
 << set $asked_types to true >>
 
@@ -405,9 +406,14 @@ Your stores of cash are depleted! You must pay us in cargo - for you may not ref
 title: tax_short_1
 tags: 
 colorID: 6
-position: 1104,-25
+position: 1104,-27
 ---
 << setspeaker DialogScreen Jason >>
+
+<< if $asked_networks is true or $connections_number < 1 >>
+    <<setend DialogScreen>>
+<< endif >>
+
 I already know what I want to do.
 
 << calculatetaxes DialogScreen >> 
@@ -666,6 +672,7 @@ I will enter your city! My ship is heavy with jars of baked earth, holding all s
 
 << setspeaker DialogScreen other >>
 << getresources DialogScreen >> 
+<< setend DialogScreen >>
 In addition to your {$drachma} drachma, you also owe {$demanded_resources}.
 ->How do you decide what to take from me?
     We will seize from your cargo hold what you lack in your pockets! We'll start with grain, fruit of the earth, maker of men; then seize your livestock, the four-footed beasts the heroes most prized; then turn to gold, torn from the ribs of earth in Pangaion or Thasos; or silver, which gleams in the veins beneath Attica itself. The prestige goods exchanged among princes are next fungible, we will happily remove your Assyrian earrings, your Scythian vessels, silks from Arabia and linen from Asia Minor, woven by the bests of slaves. 

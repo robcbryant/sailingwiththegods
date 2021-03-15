@@ -11,14 +11,32 @@ public class YarnTavern : MonoBehaviour
 
 	private DialogScreen ds;
 
-	void Awake() 
+	void Start() 
 	{
 		ds = GetComponent<DialogScreen>();
+		ds.Runner.AddCommandHandler("displayknownsettlements", GenerateKnownSettlementUI);
 	}
 
-	[YarnCommand("displayKnownSettlements")]
-	public void GenerateKnownSettlementUI() 
+	[YarnCommand("getcurrentsettlement")]
+	public void GetCurrentSettlement() {
+		ds.Storage.SetValue("$known_settlement", Globals.GameVars.currentSettlement.name);
+		ds.Storage.SetValue("$known_settlement_ID", Globals.GameVars.currentSettlement.settlementID);
+	}
+
+	//We need this so we can make sure not to let the player order a guide to the city they're currently at
+	[YarnCommand("checkifcurrent")]
+	public void CheckIfAskingAboutCurrentSettlement() {
+		ds.Storage.SetValue("$asking_current", ds.Storage.GetValue("$known_settlement_ID").AsNumber == Globals.GameVars.currentSettlement.settlementID);
+	}
+
+	[YarnCommand("getknownsettlementnumber")]
+	public void GetNumberOfKnownSettlements() {
+		ds.Storage.SetValue("$settlement_number", Globals.GameVars.playerShipVariables.ship.playerJournal.knownSettlements.Count);
+	}
+	
+	public void GenerateKnownSettlementUI(string [] parameters, System.Action onComplete) 
 	{
+		ds.yarnOnComplete = onComplete;
 		Globals.UI.Show<TavernView, TavernViewModel>(new TavernViewModel(ds));
 		Debug.Log("POPPING KNOWN SETLLEMTNS");
 	}
@@ -158,7 +176,7 @@ public class YarnTavern : MonoBehaviour
 				matchingType = Globals.GameVars.mythDialogText.FindAll(x => x.CityType == e);
 				break;
 			default:
-				Debug.Log("Nice going, doofus. We will now crash because one of your nodes is probably mispelling your \"input\" and matchingType is empty. Good job.");
+				Debug.Log("Error, probaby because of a misspelling");
 				break;
 		}
 

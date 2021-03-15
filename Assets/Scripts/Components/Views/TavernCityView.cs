@@ -32,6 +32,7 @@ public class TavernCityView : ViewBehaviour<CityViewModel>
 				ds.Storage.SetValue("$known_city", Model.PortName);
 				ds.Storage.SetValue("$known_city_ID", Model.City.settlementID);
 				Debug.Log("We have clicked on button.");
+				ds.yarnOnComplete();
 				Globals.UI.Hide<TavernView>();
 			}
 		})) ;

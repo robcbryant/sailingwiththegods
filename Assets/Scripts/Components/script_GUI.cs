@@ -457,6 +457,7 @@ public class script_GUI : MonoBehaviour
 		//Check if current Settlement is part of the main quest line
 		Globals.Quests.CheckCityTriggers(GameVars.currentSettlement.settlementID);
 		//Add this settlement to the player's knowledge base
+		Debug.Log("Adding known city from script_GUI: " + GameVars.currentSettlement.name);
 		GameVars.playerShipVariables.ship.playerJournal.AddNewSettlementToLog(GameVars.currentSettlement.settlementID);
 		//Determine what settlements are available to the player in the tavern
 		GameVars.showSettlementGUI = true;

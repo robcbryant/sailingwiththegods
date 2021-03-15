@@ -39,6 +39,8 @@ public class DialogScreen : ViewBehaviour
 	private YarnTaxes taxes;
 	bool set = false;
 
+	[HideInInspector] public System.Action yarnOnComplete = null;
+
 	private void Awake() 
 	{
 		yarnUI = GetComponent<CustomDialogUI>();

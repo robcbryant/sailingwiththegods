@@ -95,6 +95,7 @@ public class QuestSystem : MonoBehaviour
 
 			//Now add the city name of the next journey quest to the players known settlements
 			// this is only valid for city destinations, obviously
+			Debug.Log("Adding known city from next quest destination: " + Globals.GameVars.currentSettlement.name);
 			playerShipVariables.ship.playerJournal.AddNewSettlementToLog(cityTrigger2.DestinationId);
 			Debug.Log("next seg: " + cityTrigger2.DestinationId);
 		}
@@ -107,8 +108,11 @@ public class QuestSystem : MonoBehaviour
 		foreach (int i in nextSegment.mentionedPlaces) {
 			Debug.Log("mentioning: " + i);
 			//Make sure we don't add any null values--a -1 represents no mentions of any settlements
-			if (i != -1)
+			if (i != -1) {
+				Debug.Log("Adding known city from quest: " + Globals.GameVars.currentSettlement.name);
 				playerShipVariables.ship.playerJournal.AddNewSettlementToLog(i);
+			}
+
 		}
 
 		playerShipVariables.ship.objective = nextSegment.objective;
