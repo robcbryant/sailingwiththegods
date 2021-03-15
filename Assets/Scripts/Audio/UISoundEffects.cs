@@ -4,37 +4,20 @@ using UnityEngine;
 
 public class UISoundEffects : MonoBehaviour
 {
-	[SerializeField]
-	private AudioSource coinPurse;
-
-	[SerializeField]
-	private AudioSource tradeSwap;
-
-	[SerializeField]
-	private AudioSource shipRepair;
-
-	// Start is called before the first frame update
-	void Start() {
-
-	}
-
-	// Update is called once per frame
-	void Update() {
-
-	}
+	//THIS CLASS IS FOR EXECUTING THE SOUND OF THE UI
 
 	public void CoinPurseSound() 
 	{
-		coinPurse.Play();
+		FindObjectOfType<AudioManager>().PlaySound("Coin Purse");
 	}
 
 	public void TradeSwapSound() 
 	{
-		tradeSwap.Play();
+		FindObjectOfType<AudioManager>().PlaySound("Trade Swap");
 	}
 
 	public void ShipRepairSound()
 	{
-		shipRepair.Play();
+		FindObjectOfType<AudioManager>().PlaySound("Ship Repair");
 	}
 }
