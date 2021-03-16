@@ -18,7 +18,7 @@ public class FoodText
 
 	public string GetQuote 
 	{
-		get { return string.Format("{0} ({1} {2})", quote, source, chapter); }
+		get { return quote + "\n(" + source + " " + chapter + ")"; }
 	}
 
 	public int FoodCost 

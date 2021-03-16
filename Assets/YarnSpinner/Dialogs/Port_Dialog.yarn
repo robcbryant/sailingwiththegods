@@ -7,7 +7,7 @@ position: 654,-1183
 << setpartner DialogScreen Telones >>
 << setpartnername DialogScreen Telones >>
 << setconvotitle DialogScreen Docking_at_Port >>
-<< setsprite Backgrounds port >>
+//<< setsprite Backgrounds port >>
 << setsprite Telones neutral >>
 
 << set $asked_where to false >>
@@ -32,6 +32,7 @@ I am the first and the last face you'll see here: no ordinary citizen I! You may
 [[ I know what I want to do already. |tax_short_1]]
 [[ What kind of place have I come to? |where]]
 [[ What are the networks in this city? |networks]]
+[[ Goodbye. |exit_early]]
 ===
 title: where
 tags: 
@@ -696,7 +697,7 @@ In addition to your {$drachma} drachma, you also owe {$demanded_resources}.
 title: tax_short_2
 tags: 
 colorID: 6
-position: 1115,284
+position: 1116,284
 ---
 << setspeaker DialogScreen other >>
 << setend DialogScreen >> 
@@ -734,10 +735,10 @@ position: 1115,284
 << checkafford DialogScreen $tavern_total >>
 
 << if $can_afford == true >>
-    [[I would like a long rest and to manage my crew. (pay {$tavern_total} dr) |enter_tavern]]
+    [[I would like to visit the taverna and manage my crew. (pay {$tavern_total} dr) |enter_tavern]]
 << else >>
     << set $total_cargos to $total_cargos + 1 >> 
-    [[I would like a long rest and to manage my crew. (pay {$tavern_total} worth of cargo) |enter_tavern_cargo]]
+    [[I would like to visit the taverna and manage my crew. (pay {$tavern_total} worth of cargo) |enter_tavern_cargo]]
 << endif >> 
 
 << set $all_total to ($updated_subtotal + $all_intent) >>
@@ -776,4 +777,13 @@ position: 1121,1551
 << setsprite Telones unhappy >>
 << set $entering_city to false>> 
 You must leave - taxes are not optional!
+===
+title: exit_early
+tags: 
+colorID: 4
+position: -709,1282
+---
+<< setspeaker DialogScreen Jason >>
+<< set $entering_city to false >>
+Goodbye.
 ===

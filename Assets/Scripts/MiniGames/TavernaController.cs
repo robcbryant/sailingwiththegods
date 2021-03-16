@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 // used for tavern minigame menu
-// TODO: Rename
 public class TavernaController : MonoBehaviour
 {
 	public GameObject menuUI;
@@ -23,7 +22,7 @@ public class TavernaController : MonoBehaviour
 
 	public void StartTavernaConvo() {
 		LeaveTavernaGame();
-		Globals.UI.Show<DialogScreen>().StartDialog("Start_Taverna");
+		Globals.UI.Show<DialogScreen>().StartDialog("Start_Taverna", "taverna");
 	}
 
 	// can't use static methods in unityevent inspector
@@ -45,6 +44,7 @@ public class TavernaController : MonoBehaviour
 		yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
 		Scene scene = SceneManager.GetSceneByName("MiniGameMainMenu");
 		SceneManager.SetActiveScene(scene);
+
 	}
 
 	// can just call minigames.exit because MiniGames system kept track of minigamemainmenu and will unload it for us
