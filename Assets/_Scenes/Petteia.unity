@@ -1818,7 +1818,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &263302928
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4816,7 +4816,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 685686255}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &685686257
 Camera:
   m_ObjectHideFlags: 0
@@ -15752,6 +15752,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5220106614793693988, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.7499987
+      objectReference: {fileID: 0}
+    - target: {fileID: 5220106614793693988, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5220106614793693988, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.9999988
+      objectReference: {fileID: 0}
     - target: {fileID: 5220106614934368417, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
       propertyPath: m_Name
@@ -15822,6 +15837,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI Elements
       objectReference: {fileID: 0}
+    - target: {fileID: 5220106615039641139, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5220106615222859197, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
       propertyPath: m_Text
@@ -15858,6 +15878,21 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 685686257}
+    - target: {fileID: 5220106615955425941, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5220106615955425941, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5220106615955425941, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -17
+      objectReference: {fileID: 0}
     - target: {fileID: 5220106615970413220, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
       propertyPath: m_IsActive
@@ -15886,12 +15921,12 @@ PrefabInstance:
     - target: {fileID: 7398002513987589330, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 175
       objectReference: {fileID: 0}
     - target: {fileID: 7398002513987589330, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -383.3333
       objectReference: {fileID: 0}
     - target: {fileID: 7398002513987589330, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
@@ -15906,12 +15941,12 @@ PrefabInstance:
     - target: {fileID: 7398002515270448461, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 175
       objectReference: {fileID: 0}
     - target: {fileID: 7398002515270448461, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -150
       objectReference: {fileID: 0}
     - target: {fileID: 7398002515270448461, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
@@ -15926,12 +15961,12 @@ PrefabInstance:
     - target: {fileID: 7398002515349210960, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 175
       objectReference: {fileID: 0}
     - target: {fileID: 7398002515349210960, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -616.6666
       objectReference: {fileID: 0}
     - target: {fileID: 7398002515349210960, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}

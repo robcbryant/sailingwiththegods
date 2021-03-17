@@ -12,7 +12,6 @@ public class UrGameController : MonoBehaviour
 	public List<UrCounter> eCounters;
 	public DiceRoller dice;
 	public Text dvText;
-	public Text edvText;
 	private int diceValue = 0;
 	public int countersOffBoard = 7;
 	public int countersOnBoard = 0;
@@ -57,6 +56,7 @@ public class UrGameController : MonoBehaviour
 				}
 
 			}
+			//Does this need to be in update or can it be called less frequently?
 			if (selectingBoardPosition) {
 				Debug.Log("Selecting Board Position");
 				if (Input.GetMouseButtonDown(0)) {
@@ -104,11 +104,26 @@ public class UrGameController : MonoBehaviour
 			selectedCounter = c;
 			int bIndex = boardPositions.IndexOf(c.currentTile);
 			//for (int i = 0; i < diceValue; i++) {
-			if (!IsSpaceOccupied(boardPositions[bIndex + diceValue])) { boardPositions[bIndex + diceValue].ShowAvailable(); selectingBoardPosition = !selectingBoardPosition; }
-			else { Debug.Log("This tile cannot move."); }
-				//bIndex++;
+			//need to figure this out - what if bIndex + diceValue is out of range?
+			if (bIndex + diceValue < boardPositions.Count) {
+				if (!IsSpaceOccupied(boardPositions[bIndex + diceValue])) 
+				{
+					boardPositions[bIndex + diceValue].ShowAvailable();
+					selectingBoardPosition = !selectingBoardPosition;
+				}
+				else 
+				{
+					Debug.Log("This tile cannot move.");
+				}
+			}
+			else 
+			{
+				Debug.Log("This tile cannot move.");
+			}
+
+			//bIndex++;
 			//}
-			
+
 			//selectingObject = !selectingObject;
 		}
 		else {
@@ -231,7 +246,7 @@ public class UrGameController : MonoBehaviour
 		int[] i = { 0, 1, 4, 5 };
 		int sel = Random.Range(0, 4);
 		int ediceValue = i[sel];
-		edvText.text = "" + ediceValue;
+		dvText.text = "" + ediceValue;
 		if(ediceValue == 1 && enemyCountersOnBoard == 0) {
 			eCounters[0].PlaceOnBoard(eBoardPositions[0], false, true, false); enemyCountersOnBoard++;
 		}
