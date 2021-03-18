@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PetteiaMovePiece : MonoBehaviour
 {
+	public float mouseThreshold = 50f;
+
 	public Vector3 mouseStartPos,mouseEndPos;
 	public Vector3 pieceStartPos;
 	public Camera cam;
@@ -40,7 +42,7 @@ public class PetteiaMovePiece : MonoBehaviour
 	void FixedUpdate()
     {
 		if (p.yourturn) {
-			if (Mathf.Abs(mouseStartPos.x - mouseEndPos.x) > 50 && lockedy == false) {
+			if (Mathf.Abs(mouseStartPos.x - mouseEndPos.x) > mouseThreshold && lockedy == false) {
 				if (mouseEndPos.x < mouseStartPos.x) {
 					////Debug.Log("moving left");
 
@@ -58,7 +60,7 @@ public class PetteiaMovePiece : MonoBehaviour
 				}
 			}
 
-			if (Mathf.Abs(mouseStartPos.y - mouseEndPos.y) > 60 && lockedx == false) {
+			if (Mathf.Abs(mouseStartPos.y - mouseEndPos.y) > mouseThreshold && lockedx == false) {
 
 				if (mouseEndPos.y > mouseStartPos.y) {
 					////Debug.Log("moving up");
@@ -87,7 +89,7 @@ public class PetteiaMovePiece : MonoBehaviour
 			ik.SetPiece(real.gameObject);
 			ik.SetInital(g);
 			real.enabled = false;
-			Cursor.visible = false;
+			//Cursor.visible = false;
 			SpawnDummy();
 		}
 
