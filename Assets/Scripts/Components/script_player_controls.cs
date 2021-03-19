@@ -175,7 +175,7 @@ public class script_player_controls : MonoBehaviour
 				Globals.MiniGames.Enter("Pirate Game/Pirate Game");
 			}
 			if (Input.GetKeyUp(KeyCode.L)) {
-				Globals.UI.Show<DialogScreen>().StartDialog("Start_Taverna");
+				Globals.UI.Show<DialogScreen>().StartDialog("Start_Taverna", "taverna");
 			}
 			if (Input.GetKeyUp(KeyCode.N)) {
 				Globals.MiniGames.Enter("Storm MG/Storm Game");
@@ -672,6 +672,7 @@ public class script_player_controls : MonoBehaviour
 				getSettlementDockButtonReady = true;
 				GameVars.currentSettlement = trigger.transform.parent.gameObject.GetComponent<script_settlement_functions>().thisSettlement;
 				GameVars.currentSettlementGameObject = trigger.transform.parent.gameObject;
+				Debug.Log("Adding known city from script_player_controls: " + GameVars.currentSettlement.name);
 				GameVars.playerShipVariables.ship.playerJournal.AddNewSettlementToLog(GameVars.currentSettlement.settlementID);
 				//If it is a point of interest then run quest functions but don't allow settlement resource access
 			}

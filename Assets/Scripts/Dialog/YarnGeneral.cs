@@ -52,7 +52,7 @@ public class YarnGeneral : MonoBehaviour
 	public void GenerateRandomAmount(string[] inputs) 
 	{
 		int amount = Random.Range(int.Parse(inputs[0]), int.Parse(inputs[1]));
-		Debug.Log("Ran Randomcost. Cost is " + amount);
+		//Debug.Log("Ran Randomcost. Cost is " + amount);
 		ds.Storage.SetValue("$generated_cost", amount);
 	}
 

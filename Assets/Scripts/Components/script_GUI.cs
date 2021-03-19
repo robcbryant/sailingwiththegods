@@ -124,7 +124,7 @@ public class script_GUI : MonoBehaviour
 	//-----------------------------------------------------------
 	// Port Menu TAB Content Panel Variables
 	//-----------------------------------------------------------
-	
+
 
 	//****************************************************************
 	//GUI INFORMATION PANEL VARIABLES
@@ -322,6 +322,18 @@ public class script_GUI : MonoBehaviour
 	//======================================================================================================================================================================
 	//======================================================================================================================================================================
 
+	//This is here because if we put it on DialogScreen it breaks
+	//Either the taverna loads - which automatically shuts off DialogScreen and stops it from turning itself off
+	//Or DialogScreen shuts itself off and can't load back the taverna
+	//And we *need* DialogScreen to be off when we switch to taverna, because unloading the minigames
+	//restores all the screens that were open when it was loaded
+	//So we get an empty DialogScreen loading in and locking the game, because it has no buttons to close it
+	//Doing it this way *does* leave a split second of black screen during the transition, but it's the best I can figure out right now
+	public void CloseTavernDialog() {
+		Globals.UI.Hide<DialogScreen>();
+		Globals.MiniGames.EnterScene("TavernaMenu");
+	}
+
 	//=====================================================================================================================================	
 	//  GUI Interaction Functions are the remaining code below. All of these functions control some aspect of the GUI based on state changes
 	//=====================================================================================================================================	
@@ -392,7 +404,7 @@ public class script_GUI : MonoBehaviour
 		if (useDialog) {
 			port_dialog.SetActive(true);
 			Debug.Log("GameVars.CurrentSettlement: " + (GameVars.currentSettlement == null ? "null" : GameVars.currentSettlement.name));
-			port_dialog.GetComponent<DialogScreen>().StartDialog(GameVars.currentSettlement, useDebugDialog ? debugDialogNode : dialogNode);
+			port_dialog.GetComponent<DialogScreen>().StartDialog(GameVars.currentSettlement, useDebugDialog ? debugDialogNode : dialogNode, "port");
 		}
 		else {
 			//Show the port notification pop up
@@ -457,6 +469,7 @@ public class script_GUI : MonoBehaviour
 		//Check if current Settlement is part of the main quest line
 		Globals.Quests.CheckCityTriggers(GameVars.currentSettlement.settlementID);
 		//Add this settlement to the player's knowledge base
+		Debug.Log("Adding known city from script_GUI: " + GameVars.currentSettlement.name);
 		GameVars.playerShipVariables.ship.playerJournal.AddNewSettlementToLog(GameVars.currentSettlement.settlementID);
 		//Determine what settlements are available to the player in the tavern
 		GameVars.showSettlementGUI = true;

@@ -39,6 +39,8 @@ public class DialogScreen : ViewBehaviour
 	private YarnTaxes taxes;
 	bool set = false;
 
+	[HideInInspector] public System.Action yarnOnComplete = null;
+
 	private void Awake() 
 	{
 		yarnUI = GetComponent<CustomDialogUI>();
@@ -54,6 +56,7 @@ public class DialogScreen : ViewBehaviour
 	protected override void OnEnable() 
 	{
 		UpdateMoney();
+		Debug.Log("DialogScreen enabled");
 	}
 
 	public void UpdateMoney() 
@@ -71,7 +74,7 @@ public class DialogScreen : ViewBehaviour
 		StartCoroutine(DoAddImage(imgName));
 	}
 
-	public void StartDialog(Settlement s, string startNode) 
+	public void StartDialog(Settlement s, string startNode, string backgroundName) 
 	{
 		Debug.Log("StartDialog: settlement " + (s == null ? "null" : s.name));
 		if (!set) {
@@ -86,13 +89,15 @@ public class DialogScreen : ViewBehaviour
 		taxes.SetPortInfo(s);
 		Clear();
 		runner.startNode = startNode;
+		backgrounds.UseSprite(backgroundName);
 		StartCoroutine(DoStartDialog());
 	}
 
-	public void StartDialog(string startNode) 
+	public void StartDialog(string startNode, string backgroundName) 
 	{
 		Clear();
 		runner.startNode = startNode;
+		backgrounds.UseSprite(backgroundName);
 		StartCoroutine(DoStartDialog());
 	}
 
@@ -197,6 +202,8 @@ public class DialogScreen : ViewBehaviour
 
 	public void ExitConversation() 
 	{
+
+
 		StartCoroutine(DeactivateSelf());
 	}
 
@@ -204,7 +211,8 @@ public class DialogScreen : ViewBehaviour
 	{
 		Clear();
 		yield return null;
-		gameObject.SetActive(false);
+		yield return null;
+		Globals.UI.Hide<DialogScreen>();
 	}
 	
 	public InMemoryVariableStorage Storage {

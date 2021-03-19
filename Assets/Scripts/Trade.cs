@@ -66,13 +66,13 @@ public class Trade
 			totalPriceOfGoods += totalResourcePrice;
 			//Debug.Log (MGV.currentSettlement.cargo[setIndex].name + totalPriceOfGoods)
 
-			if (GameVars.playerShipVariables.ship.cargo[setIndex].amount_kg > 0) {
-				Debug.Log($"You have {GameVars.playerShipVariables.ship.cargo[setIndex].amount_kg}kg of {GameVars.currentSettlement.cargo[setIndex].name}, which sells for {currentResourcePrice} each for a total of {totalResourcePrice}.");
-			}
+			////if (GameVars.playerShipVariables.ship.cargo[setIndex].amount_kg > 0) {
+			////	Debug.Log($"You have {GameVars.playerShipVariables.ship.cargo[setIndex].amount_kg}kg of {GameVars.currentSettlement.cargo[setIndex].name}, which sells for {currentResourcePrice} each for a total of {totalResourcePrice}.");
+			////}
 			
 		}
 
-		Debug.Log($"Altogether, your cargo is worth {totalPriceOfGoods}");
+		//Debug.Log($"Altogether, your cargo is worth {totalPriceOfGoods}");
 
 		return totalPriceOfGoods;
 	}
