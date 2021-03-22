@@ -60,6 +60,11 @@ Most of the team is using https, so the submodule is stored as https in the .git
 * git init
 * git remote add origin ```git@github.com:kddressel/sailingwiththegods-proprietary.git```
 
+# Unzip the Navmesh
+
+The Main Scene has a NavMesh that's over 100 MB so we have it committed to git as a ZIP file and the actual NavMesh asset is gitignored. After pulling for the first time, you need to manually unzip:
+
+```Assets/Main Scene/NavMesh.zip```.
 
 # Documentation
 
