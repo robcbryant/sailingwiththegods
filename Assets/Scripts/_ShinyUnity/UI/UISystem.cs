@@ -78,6 +78,10 @@ public abstract class UISystem : MonoBehaviour
 
 	Dictionary<Type, ViewBehaviour> _Views = new Dictionary<Type, ViewBehaviour>();
 
+	public IEnumerable<ViewBehaviour> GetActiveViews() => _Views.Values
+		.Where(v => v != null && v.gameObject.activeSelf)
+		.ToArray();
+
 	public T Show<T>() where T : ViewBehaviour 
 	{
 		var view = Get<T>();

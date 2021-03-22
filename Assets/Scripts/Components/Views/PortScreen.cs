@@ -60,7 +60,7 @@ public class PortScreen : ViewBehaviour<PortViewModel>
 
 		Tavern?.Bind(ValueModel.New(new ButtonViewModel {
 			Label = "Tavern",
-			//OnClick = () => Globals.UI.Show<TavernView, TavernViewModel>(new TavernViewModel())
+			OnClick = () => Globals.MiniGames.EnterScene("TavernaMenu")
 		}));
 
 		Repairs?.Bind(ValueModel.New(new ButtonViewModel {

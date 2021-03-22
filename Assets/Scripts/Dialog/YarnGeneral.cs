@@ -43,18 +43,6 @@ public class YarnGeneral : MonoBehaviour
 			}
 		}
 	}
-
-	[YarnCommand("setbg")]
-	public void SetBackgroundObject(string name) {
-		foreach (Yarn.Unity.Example.SpriteSwitcher p in ds.backgrounds) {
-			if (p.name == name) {
-				p.gameObject.SetActive(true);
-			}
-			else {
-				p.gameObject.SetActive(false);
-			}
-		}
-	}
 	#endregion
 
 	#region Yarn Functions - Random
@@ -64,7 +52,7 @@ public class YarnGeneral : MonoBehaviour
 	public void GenerateRandomAmount(string[] inputs) 
 	{
 		int amount = Random.Range(int.Parse(inputs[0]), int.Parse(inputs[1]));
-		Debug.Log("Ran Randomcost. Cost is " + amount);
+		//Debug.Log("Ran Randomcost. Cost is " + amount);
 		ds.Storage.SetValue("$generated_cost", amount);
 	}
 
