@@ -22,9 +22,12 @@ public class UnzipAssets : AssetPostprocessor
 		
 		if (!toProcess.Any()) return;
 
-		// ask first in case you just rebaked the navmesh and don't want to overwrite your chnages
+		// ask first in case you just rebaked the navmesh and don't want to overwrite your changes, but always do it from cloud builds (batch mode)
 		var strList = string.Join("\n", toProcess.Select(tuple => tuple.Item1));
-		if(EditorUtility.DisplayDialog("Unzip Assets", "Zipped assets have been updated, extract them?\n\n" + strList, "Yes (recommended)", "No")) {
+		var shouldUnzip = Application.isBatchMode ||
+			EditorUtility.DisplayDialog("Unzip Assets", "Zipped assets have been updated, extract them?\n\n" + strList, "Yes (recommended)", "No");
+
+		if(shouldUnzip) {
 			UnzipAll(toProcess);
 		}
 	}
