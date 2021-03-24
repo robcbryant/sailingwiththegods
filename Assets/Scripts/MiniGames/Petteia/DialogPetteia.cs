@@ -24,9 +24,9 @@ public class DialogPetteia : MonoBehaviour
 		//enemyFaces = Globals.GameVars.newGameAvailableCrew.RandomElement<CrewMember>()
 		//Debug.Log(Globals.GameVars.newGameAvailableCrew.RandomElement<CrewMember>().name);
 		
-		CrewMember c = Globals.GameVars.currentSettlement.availableCrew.RandomElement<CrewMember>();
-		enemyName.text = c.name;
-		enemyFaces.sprite = Resources.Load<Sprite>(ResourcePath + "/" + c.ID) ?? Resources.Load<Sprite>(DefaultPortrait);
+		//CrewMember c = Globals.GameVars.currentSettlement.availableCrew.RandomElement<CrewMember>();
+		//enemyName.text = c.name;
+		//enemyFaces.sprite = Resources.Load<Sprite>(ResourcePath + "/" + c.ID) ?? Resources.Load<Sprite>(DefaultPortrait);
 
 
 

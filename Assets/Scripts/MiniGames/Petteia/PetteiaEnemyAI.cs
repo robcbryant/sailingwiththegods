@@ -23,7 +23,7 @@ public class PetteiaEnemyAI : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
-		playerShip = GameObject.FindGameObjectWithTag("playerShip").GetComponent<script_player_controls>();
+		//playerShip = GameObject.FindGameObjectWithTag("playerShip").GetComponent<script_player_controls>();
 		winCanvas.SetActive(false);
 		isMoving = false;
 		

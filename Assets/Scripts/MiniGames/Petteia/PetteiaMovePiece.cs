@@ -19,7 +19,8 @@ public class PetteiaMovePiece : MonoBehaviour
 	public GameObject dummy,dummySpawned;
 
 	public PetteiaIKHelper ik;
-	// Start is called before the first frame update
+	private int mask;
+
 	void Start()
     {
 		empty = GameObject.Find("empty");
@@ -29,9 +30,10 @@ public class PetteiaMovePiece : MonoBehaviour
 		lockedx = false;
 		lockedy = false;
 		pieceStartPos = g.position;
-	}
 
-	// Update is called once per frame
+		mask = LayerMask.GetMask("GameSquare");
+	}
+	
 	void Update() {
 		timer += Time.deltaTime;
 		if (!Input.GetKey(KeyCode.Mouse0)) {
@@ -39,9 +41,17 @@ public class PetteiaMovePiece : MonoBehaviour
 			mouseEndPos = Input.mousePosition;
 		}
 	}
+
 	void FixedUpdate()
     {
 		if (p.yourturn) {
+			//RaycastHit hit;
+			//Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+			//if (Physics.Raycast(ray, out hit, 100f, mask, QueryTriggerInteraction.Collide)) {
+			//	transform.position = hit.transform.position;
+			//}
+
 			if (Mathf.Abs(mouseStartPos.x - mouseEndPos.x) > mouseThreshold && lockedy == false) {
 				if (mouseEndPos.x < mouseStartPos.x) {
 					////Debug.Log("moving left");
@@ -78,11 +88,12 @@ public class PetteiaMovePiece : MonoBehaviour
 					lockedy = true;
 				}
 			}
+
 		}
 	}
 	void OnMouseDown() 
 	{
-		//	//Debug.Log(gameObject.name);
+		Debug.Log(gameObject.name);
 		if (real != null) {
 			mouseStartPos = Input.mousePosition;
 			pieceStartPos = g.position;
@@ -92,17 +103,14 @@ public class PetteiaMovePiece : MonoBehaviour
 			//Cursor.visible = false;
 			SpawnDummy();
 		}
-
-
 	}
+
 	void SpawnDummy() 
 	{
-		
 		dummySpawned = Instantiate(dummy, empty.transform);
-
 		dummySpawned.transform.position = g.transform.position;
-
 	}
+
 	void DelDummy() {
 		Destroy(dummySpawned);
 	}
@@ -122,14 +130,11 @@ public class PetteiaMovePiece : MonoBehaviour
 			real.enabled = true;
 			DelDummy();
 		}
-
-
 	}
+
 	private void OnMouseDrag() {
 		////Debug.Log("DHAWJLREGHaljsdhflaksjdfh");
 		mouseEndPos = Input.mousePosition;
 	}
 	
-
-
 }

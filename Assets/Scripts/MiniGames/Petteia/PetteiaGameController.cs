@@ -37,7 +37,7 @@ public class PetteiaGameController : MonoBehaviour
 
 			for (int j = 0; j < 8; j++) {
 				colliders[i, j] = GameObject.Find(i.ToString() + j.ToString());
-				colliders[i, j].SetActive(false);
+				//colliders[i, j].SetActive(false);
 			}
 		}
 	}
@@ -98,6 +98,7 @@ public class PetteiaGameController : MonoBehaviour
 
 		}
 	}
+
 	string SetPiecePosition() {
 		bool collide = false;
 		//See if piece is off board - interviewer said my code was hard to read so I made it shorter
@@ -136,11 +137,6 @@ public class PetteiaGameController : MonoBehaviour
 				}
 			}
 		}
-		
-
-
-
-
 
 		if (collide && !updateOld) {
 			MoveBack(currentT);
@@ -150,8 +146,6 @@ public class PetteiaGameController : MonoBehaviour
 			moveSound.pitch = Random.Range(0.7f, 1.1f);
 			moveSound.Play();
 			return "mb";
-			
-			
 		}
 		else {
 			try {
@@ -177,6 +171,7 @@ public class PetteiaGameController : MonoBehaviour
 
 		}
 	}
+
 	void CheckCaputre() {
 
 		for (int y = 0; y < 8; y++) {
@@ -329,6 +324,7 @@ public class PetteiaGameController : MonoBehaviour
 		Debug.Log(s);
 		boardText = s;
 	}
+
 	public Vector3 MovePiece(Transform g, string dir, Vector3 startPos, string tag) {
 
 		//PrintBoard();
