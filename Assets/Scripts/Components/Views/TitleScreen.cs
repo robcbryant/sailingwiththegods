@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using TMPro;
 
 public class TitleScreen : ViewBehaviour<GameViewModel>
 {
@@ -13,7 +14,7 @@ public class TitleScreen : ViewBehaviour<GameViewModel>
 
 	[SerializeField] Button title_credits_button = null;
 	[SerializeField] Button title_credits_exit = null;
-	[SerializeField] Text title_credits_text = null;
+	[SerializeField] TextMeshProUGUI title_credits_text = null;
 	[SerializeField] GameObject title_credits_screen = null;
 
 	[Header("Resolutions Settings Buttons")]
