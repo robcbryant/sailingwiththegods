@@ -56,7 +56,7 @@ public class PetteiaGameController : MonoBehaviour
 	void Update() {
 		
 		if (!menuCanvas.activeSelf) {
-			CheckCaputre();
+			CheckCapture();
 
 			if (yourTurn) {
 				lastPieceMoved = 1;
@@ -182,7 +182,7 @@ public class PetteiaGameController : MonoBehaviour
 		}
 	}
 
-	void CheckCaputre() {
+	void CheckCapture() {
 
 		for (int y = 0; y < 8; y++) {
 
@@ -194,7 +194,7 @@ public class PetteiaGameController : MonoBehaviour
 						&& positions[x + 1, y] == 2
 						&& positions[x - 1, y] == 2) {
 							Debug.Log("CAPTURE1");
-							StartCoroutine(CapturePiece(x, y));
+							CapturePiece(x, y);
 							//Debug.Log(x.ToString() + y.ToString());
 						}
 					
@@ -203,7 +203,7 @@ public class PetteiaGameController : MonoBehaviour
 					&& positions[x + 1, y] == 1
 					&& positions[x - 1, y] == 1) {
 							Debug.Log("CAPTURE2");
-							StartCoroutine(CapturePiece(x, y));
+							CapturePiece(x, y);
 							//Debug.Log(x.ToString() + y.ToString());
 						}
 					
@@ -214,7 +214,7 @@ public class PetteiaGameController : MonoBehaviour
 					&& positions[x, y + 1] == 2
 					&& positions[x, y - 1] == 2) {
 							Debug.Log("CAPTURE3");
-							StartCoroutine(CapturePiece(x, y));
+							CapturePiece(x, y);
 							//Debug.Log(x.ToString() + y.ToString());
 						}
 					
@@ -223,7 +223,7 @@ public class PetteiaGameController : MonoBehaviour
 						&& positions[x, y + 1] == 1
 						&& positions[x, y - 1] == 1) {
 							Debug.Log("CAPTURE4");
-							StartCoroutine(CapturePiece(x, y));
+							CapturePiece(x, y);
 							//Debug.Log(x.ToString() + y.ToString());
 						
 					}
@@ -296,13 +296,14 @@ public class PetteiaGameController : MonoBehaviour
 		//}
 	}
 
-	IEnumerator CapturePiece(int i, int j) {
+	private void CapturePiece(int i, int j) {
 		positions[i, j] = 0;
+		BoardSquares[i, j].DestroyPiece();
 		PrintBoard();
 		//colliders[i, j].GetComponent<PetteiaColliderMover>().destroy = true;
 		//colliders[i, j].SetActive(true);
 		//Collider needs time to check for collisions
-		yield return new WaitForSeconds(0.2f);
+		//yield return new WaitForSeconds(0.2f);
 		//colliders[i, j].SetActive(false);
 
 
@@ -335,77 +336,86 @@ public class PetteiaGameController : MonoBehaviour
 		boardText = s;
 	}
 
-	public Vector3 MovePiece(Transform g, string dir, Vector3 startPos, string tag) {
-
-		//PrintBoard();
-
-		moveDir = dir;
-		if (updateOld == true) {
-			currentT = g;
-			oldPos = new Vector2(startPos.z, startPos.x);
-
-			updateOld = false;
-		}
-		if (dir == "up") {
-			g.position = startPos + Vector3.forward * 6.25f;
-			//SetPiecePosition();
-			curPos = new Vector2(g.position.z, g.position.x);
-
-			if (tag == "PetteiaW") {
-				currentPiece = 2;
-			}
-			else {
-				currentPiece = 1;
-			}
-			return startPos + Vector3.forward * 6.25f;
-		}
-		if (dir == "down") {
-			g.position = startPos + Vector3.forward * -6.25f;
-			//SetPiecePosition();
-			curPos = new Vector2(g.position.z, g.position.x);
-
-			if (tag == "PetteiaW") {
-				currentPiece = 2;
-			}
-			else {
-				currentPiece = 1;
-			}
-			return startPos + Vector3.forward * -6.25f;
-		}
-		if (dir == "left") {
-			g.position = startPos + Vector3.right * -6.25f;
-			//SetPiecePosition();
-			curPos = new Vector2(g.position.z, g.position.x);
-
-			if (tag == "PetteiaW") {
-				currentPiece = 2;
-			}
-			else {
-				currentPiece = 1;
-			}
-			return startPos + Vector3.right * -6.25f;
-		}
-		if (dir == "right") {
-			g.position = startPos + Vector3.right * 6.25f;
-			//SetPiecePosition();
-			curPos = new Vector2(g.position.z, g.position.x);
-
-			if (tag == "PetteiaW") {
-				currentPiece = 2;
-			}
-			else {
-				currentPiece = 1;
-			}
-			return startPos + Vector3.right * 6.25f;
-		}
-
-		else {
-			//Debug.Log("SOMETHING HORRIBLE HAS HAPPENED \n Just kidding. Probably a typo(use right/left/up/down only");
-			return startPos;
-
-		}
-
+	public void MovePiece(Vector2Int oldPos, Vector2Int newPos, string tag) 
+	{
+		positions[oldPos.x, oldPos.y] = 0;
+		positions[newPos.x, newPos.y] = tag == "PetteiaW" ? 2 : 1;
+		currentPiece = tag == "PetteiaW" ? 2 : 1;
 	}
+
+	//public Vector3 MovePiece(Transform piece, string dir, Vector3 startPos, string tag) {
+
+	//	//PrintBoard();
+
+	//	moveDir = dir;
+	//	if (updateOld == true) {
+	//		currentT = piece;
+	//		oldPos = new Vector2(startPos.z, startPos.x);
+
+	//		updateOld = false;
+	//	}
+	//	if (dir == "up") {
+	//		piece.position = startPos + Vector3.forward * 6.25f;
+	//		//SetPiecePosition();
+	//		curPos = new Vector2(piece.position.z, piece.position.x);
+
+	//		if (tag == "PetteiaW") {
+	//			currentPiece = 2;
+	//		}
+	//		else {
+	//			currentPiece = 1;
+	//		}
+	//		return startPos + Vector3.forward * 6.25f;
+	//	}
+	//	if (dir == "down") {
+	//		piece.position = startPos + Vector3.forward * -6.25f;
+	//		//SetPiecePosition();
+	//		curPos = new Vector2(piece.position.z, piece.position.x);
+
+	//		if (tag == "PetteiaW") {
+	//			currentPiece = 2;
+	//		}
+	//		else {
+	//			currentPiece = 1;
+	//		}
+	//		return startPos + Vector3.forward * -6.25f;
+	//	}
+	//	if (dir == "left") {
+	//		piece.position = startPos + Vector3.right * -6.25f;
+	//		//SetPiecePosition();
+	//		curPos = new Vector2(piece.position.z, piece.position.x);
+
+	//		if (tag == "PetteiaW") {
+	//			currentPiece = 2;
+	//		}
+	//		else {
+	//			currentPiece = 1;
+	//		}
+	//		return startPos + Vector3.right * -6.25f;
+	//	}
+	//	if (dir == "right") {
+	//		piece.position = startPos + Vector3.right * 6.25f;
+	//		//SetPiecePosition();
+	//		curPos = new Vector2(piece.position.z, piece.position.x);
+
+	//		if (tag == "PetteiaW") {
+	//			currentPiece = 2;
+	//		}
+	//		else {
+	//			currentPiece = 1;
+	//		}
+	//		return startPos + Vector3.right * 6.25f;
+	//	}
+
+	//	else {
+	//		//Debug.Log("SOMETHING HORRIBLE HAS HAPPENED \n Just kidding. Probably a typo(use right/left/up/down only");
+	//		return startPos;
+
+	//	}
+
+	//}
+
+
 	public Vector2 PosToArray(int y, int x) {
 		return new Vector2(Mathf.Round(((y + 3.25f) / -6.25f) - 0), Mathf.Round(((x - 3) / 6.25f)) - 0);
 		//converts the real world cordinates of the pieces to the value of the array that stores where the pieces are

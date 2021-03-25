@@ -10,6 +10,8 @@ public class PetteiaColliderMover : MonoBehaviour
 	//public PetteiaGameController p;
 	public bool occupied;
 
+	private GameObject currentPiece;
+
     void Start()
     {
 		//p = GameObject.Find("board").GetComponent<PetteiaGameController>();
@@ -21,6 +23,7 @@ public class PetteiaColliderMover : MonoBehaviour
 		if (other.CompareTag("PetteiaB") || other.CompareTag("PetteiaW")) 
 		{
 			occupied = true;
+			currentPiece = other.gameObject;
 		}
 	}
 
@@ -28,6 +31,15 @@ public class PetteiaColliderMover : MonoBehaviour
 	{
 		if (other.CompareTag("PetteiaB") || other.CompareTag("PetteiaW")) 
 		{
+			occupied = false;
+			currentPiece = null;
+		}
+	}
+
+	public void DestroyPiece() {
+		if (currentPiece != null) {
+			Destroy(currentPiece);
+			currentPiece = null;
 			occupied = false;
 		}
 	}

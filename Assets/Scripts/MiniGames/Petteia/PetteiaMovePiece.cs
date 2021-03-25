@@ -11,7 +11,7 @@ public class PetteiaMovePiece : MonoBehaviour
 	public float timer;
 	public PetteiaGameController pController;
 	public MeshRenderer real;
-	public GameObject empty;
+	public GameObject dummyParent;
 
 	public GameObject dummy,dummySpawned;
 
@@ -24,7 +24,6 @@ public class PetteiaMovePiece : MonoBehaviour
 
 	void Start()
     {
-		empty = GameObject.Find("empty");
 		//real = GameObject.Find("Sphere").GetComponent<MeshRenderer>();
 		real.enabled = true;
 		lockedx = false;
@@ -113,7 +112,7 @@ public class PetteiaMovePiece : MonoBehaviour
 
 	void SpawnDummy() 
 	{
-		dummySpawned = Instantiate(dummy, empty.transform);
+		dummySpawned = Instantiate(dummy, dummyParent.transform);
 		dummySpawned.transform.position = transform.position;
 	}
 
@@ -135,6 +134,7 @@ public class PetteiaMovePiece : MonoBehaviour
 			//mouseEndPos = mouseStartPos;
 			if (pieceStartPos.x != potentialPos.x || pieceStartPos.y != potentialPos.y) 
 			{
+				pController.MovePiece(pieceStartPos, potentialPos, "PetteiaW");
 				pController.yourTurn = false;
 			}
 			pieceStartPos = potentialPos;

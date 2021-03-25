@@ -19,6 +19,7 @@ public class PetteiaEnemyAI : MonoBehaviour
 
 	public GameObject winCanvas;
 	script_player_controls playerShip;
+	private bool gameOver = false;
 	//Some variables are public for debugging and being able to be viewed in the inspector 
 	// Start is called before the first frame update
 	void Start()
@@ -35,6 +36,7 @@ public class PetteiaEnemyAI : MonoBehaviour
 	//	Debug.Log("Numpieces" + pieces.Count);
 		if (pieces.Count == 0 || Input.GetKeyDown(KeyCode.W)) {
 			Debug.Log("youwin!");
+			gameOver = true;
 			winCanvas.SetActive(true);
 
 
@@ -49,7 +51,7 @@ public class PetteiaEnemyAI : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.W)) {
 			PrintBoard();
 		}
-		if(pController.yourTurn == false && isMoving == false) {
+		if(!gameOver && pController.yourTurn == false && isMoving == false) {
 			isMoving = true;
 			StartCoroutine(MakeMove()); //Checks if the user has made a move and runs the enemy move command is so
 			pController.lastPieceMoved = 2;
@@ -59,6 +61,14 @@ public class PetteiaEnemyAI : MonoBehaviour
 	}
 	public void LeaveButton() {
 		TavernaController.BackToTavernaMenu();
+	}
+
+	public void CheckPieces() {
+		foreach (GameObject p in pieces) {
+			if (p == null) {
+				pieces.Remove(p);
+			}
+		}
 	}
 
 	IEnumerator MakeMove() {
@@ -71,7 +81,11 @@ public class PetteiaEnemyAI : MonoBehaviour
 		
 		GameObject pieceToMove = null;
 		foreach (GameObject p in pieces) { //Runs through each available enemy piece and sees if it can capture another piece.
-			
+
+			if (p == null) {
+				break;
+			}
+
 			currentPiece = p;
 
 
@@ -315,7 +329,7 @@ public class PetteiaEnemyAI : MonoBehaviour
 			while (trying == false && tries < 50) {
 
 				tries++;
-				Debug.Log(tries);
+				//Debug.Log(tries);
 				int direction = Random.Range(0, 4);
 				pieceToMove = pieces.RandomElement();
 				currentPiece = pieceToMove;
@@ -585,6 +599,7 @@ public class PetteiaEnemyAI : MonoBehaviour
 		
 		isMoving = false;
 	}
+
 	IEnumerator MovePiece(GameObject piece, string dir, int dist) 
 		{
 		
