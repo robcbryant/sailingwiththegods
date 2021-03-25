@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6886506424855428056}
   - component: {fileID: 6886506424855428057}
   - component: {fileID: 6886506424855428060}
-  - component: {fileID: 6886506424855428061}
   m_Layer: 23
   m_Name: Board Square
   m_TagString: Untagged
@@ -93,7 +92,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5, y: 5, z: 5}
+  m_Size: {x: 3, y: 3, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6886506424855428060
 MonoBehaviour:
@@ -107,21 +106,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 191bef81da70d40489ca3d36b95d9b2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destory: 0
+  position: {x: 0, y: 0}
+  destroy: 0
   p: {fileID: 0}
-  go: {fileID: 0}
---- !u!114 &6886506424855428061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6886506424855428058}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 191bef81da70d40489ca3d36b95d9b2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destory: 0
-  p: {fileID: 0}
-  go: {fileID: 0}

@@ -7,18 +7,25 @@ public class PetteiaGameController : MonoBehaviour
 {
 	public int currentPiece;
 	public int[,] positions = new int[8, 8];
-	GameObject[,] colliders = new GameObject[8, 8];
+	public PetteiaColliderMover[] squaresRow0 = new PetteiaColliderMover[8];
+	public PetteiaColliderMover[] squaresRow1 = new PetteiaColliderMover[8];
+	public PetteiaColliderMover[] squaresRow2 = new PetteiaColliderMover[8];
+	public PetteiaColliderMover[] squaresRow3 = new PetteiaColliderMover[8];
+	public PetteiaColliderMover[] squaresRow4 = new PetteiaColliderMover[8];
+	public PetteiaColliderMover[] squaresRow5 = new PetteiaColliderMover[8];
+	public PetteiaColliderMover[] squaresRow6 = new PetteiaColliderMover[8];
+	public PetteiaColliderMover[] squaresRow7 = new PetteiaColliderMover[8];
 	public Vector2 oldPos, curPos;
 	public Vector2 curPosArray, oldPosArray;
 	public bool updateOld;
 	Transform currentT;
 	string moveDir;
-	public bool yourturn;
-	public PetteiaEnemyAI en;
-	public GameObject menucanvas;
+	public bool yourTurn;
+	public PetteiaEnemyAI enemyAI;
+	public GameObject menuCanvas;
 	public int lastPieceMoved;
 	public AudioSource moveSound;
-	[TextArea(40, 10)]
+	[TextArea(3, 40)]
 	public string boardText = "This text will appear in a text area that automatically expands";
 
 	//public MovePiece mp;
@@ -27,28 +34,31 @@ public class PetteiaGameController : MonoBehaviour
 	// Start is called before the first frame update
 	void Start() {
 		lastPieceMoved = 2;
-		en = GetComponent<PetteiaEnemyAI>();
+		enemyAI = GetComponent<PetteiaEnemyAI>();
 		moveDir = "";
 		InitalStateSetup();
 		updateOld = true;
-		yourturn = true;
+		yourTurn = true;
 
 		for (int i = 0; i < 8; i++) {
-
-			for (int j = 0; j < 8; j++) {
-				colliders[i, j] = GameObject.Find(i.ToString() + j.ToString());
-				//colliders[i, j].SetActive(false);
-			}
+			BoardSquares[0, i] = squaresRow0[i];
+			BoardSquares[1, i] = squaresRow1[i];
+			BoardSquares[2, i] = squaresRow2[i];
+			BoardSquares[3, i] = squaresRow3[i];
+			BoardSquares[4, i] = squaresRow4[i];
+			BoardSquares[5, i] = squaresRow5[i];
+			BoardSquares[6, i] = squaresRow6[i];
+			BoardSquares[7, i] = squaresRow7[i];
 		}
 	}
 
 	// Update is called once per frame
 	void Update() {
 		
-		if (!menucanvas.activeSelf) {
+		if (!menuCanvas.activeSelf) {
 			CheckCaputre();
 
-			if (yourturn) {
+			if (yourTurn) {
 				lastPieceMoved = 1;
 				curPosArray = PosToArray((int)curPos.x, (int)curPos.y);
 				oldPosArray = PosToArray((int)oldPos.x, (int)oldPos.y);
@@ -61,7 +71,7 @@ public class PetteiaGameController : MonoBehaviour
 
 						//Debug.Log("enemyturn");
 						//mp.isMoving = true;
-						yourturn = false;
+						yourTurn = false;
 						moveSound.pitch = Random.Range(0.7f, 1.1f);
 						moveSound.Play();
 						PrintBoard();
@@ -141,7 +151,7 @@ public class PetteiaGameController : MonoBehaviour
 		if (collide && !updateOld) {
 			MoveBack(currentT);
 
-			//yourturn = false;
+			//yourTurn = false;
 			//Debug.Log("MOVEBACK TRIGGERED");
 			moveSound.pitch = Random.Range(0.7f, 1.1f);
 			moveSound.Play();
@@ -289,17 +299,17 @@ public class PetteiaGameController : MonoBehaviour
 	IEnumerator CapturePiece(int i, int j) {
 		positions[i, j] = 0;
 		PrintBoard();
-		colliders[i, j].GetComponent<PetteiaColliderMover>().destory = true;
-		colliders[i, j].SetActive(true);
+		//colliders[i, j].GetComponent<PetteiaColliderMover>().destroy = true;
+		//colliders[i, j].SetActive(true);
 		//Collider needs time to check for collisions
 		yield return new WaitForSeconds(0.2f);
-		colliders[i, j].SetActive(false);
+		//colliders[i, j].SetActive(false);
 
 
 	}
 	//IEnumerator GetPiece(int i, int j) {
 	//	positions[i, j] = 0;
-	//	colliders[i, j].GetComponent<colliderMover>().destory = false;
+	//	colliders[i, j].GetComponent<colliderMover>().destroy = false;
 	//	colliders[i, j].SetActive(true);
 		
 
@@ -307,7 +317,7 @@ public class PetteiaGameController : MonoBehaviour
 	//	g = colliders[i, j].GetComponent<colliderMover>().go.transform;
 	//	colliders[i, j].SetActive(false);
 	//	MovePiece(g, "down", gpos, g.tag);
-	//	yourturn = true;
+	//	yourTurn = true;
 
 
 	//}
@@ -405,4 +415,6 @@ public class PetteiaGameController : MonoBehaviour
 		g.position = new Vector3(oldPos.y, 1, oldPos.x);
 	}
 
+
+    public PetteiaColliderMover[,] BoardSquares { get; } = new PetteiaColliderMover[8, 8];
 }

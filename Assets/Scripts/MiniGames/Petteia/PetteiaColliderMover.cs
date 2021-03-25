@@ -4,23 +4,32 @@ using UnityEngine;
 
 public class PetteiaColliderMover : MonoBehaviour
 {
-	public bool destory;
-	public PetteiaGameController p;
-	public GameObject go;
+	public Vector2Int position;
+
+	public bool destroy;
+	//public PetteiaGameController p;
+	public bool occupied;
 
     void Start()
     {
-		p = GameObject.Find("board").GetComponent<PetteiaGameController>();
-		destory = false;
+		//p = GameObject.Find("board").GetComponent<PetteiaGameController>();
+		destroy = false;
     }
 
-	//void OnTriggerEnter(Collider other) {
-	//	if (other.CompareTag("PetteiaB")) {
-	//		p.en.pieces.Remove(other.gameObject);
-	//		p.en.d.PlayerCaptures();
-	//	}
+	void OnTriggerEnter(Collider other) 
+	{
+		if (other.CompareTag("PetteiaB") || other.CompareTag("PetteiaW")) 
+		{
+			occupied = true;
+		}
+	}
 
-	//	Destroy(other.gameObject);
-	//}
+	private void OnTriggerExit(Collider other) 
+	{
+		if (other.CompareTag("PetteiaB") || other.CompareTag("PetteiaW")) 
+		{
+			occupied = false;
+		}
+	}
 }
 
