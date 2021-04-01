@@ -4,22 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class SoundsForMenus : MonoBehaviour
+public class AudioManager : MonoBehaviour
 {
-	[SerializeField]
-	private GameObject playerHUD, titleScreen, agoroScene, tavernScene, loanScene, dialogScene, pauseMenu, portScene;
-
-	[SerializeField]
-	private AudioSource ambientSound;
-
-	public Sound[] menuSounds;
-	public static SoundsForMenus instance;
+	public Sound[] sounds;
+	public static AudioManager instance;
 
 	// Start is called before the first frame update
 	void Awake() {
 		///////////////////////////////////////////////////////////////////////////
 		///To make sure that the game doesn't create two audio managers by mistake.
-		if (instance == null) {
+		if(instance == null) {
 			instance = this;
 		}
 		else {
@@ -34,7 +28,7 @@ public class SoundsForMenus : MonoBehaviour
 
 
 		//This foreach loop is for adding all the variables to the audio source
-		foreach (Sound s in menuSounds) {
+		foreach (Sound s in sounds) {
 			s.source = gameObject.AddComponent<AudioSource>();
 
 			s.source.clip = s.clip;
@@ -47,7 +41,7 @@ public class SoundsForMenus : MonoBehaviour
 
 	//This function plays a sound
 	public void PlaySound(string name) {
-		Sound s = Array.Find(menuSounds, sound => sound.name == name);
+		Sound s = Array.Find(sounds, sound => sound.name == name);
 
 		s.source.Play();
 	}
@@ -55,27 +49,13 @@ public class SoundsForMenus : MonoBehaviour
 
 	//this function is to stop a sound from playing
 	public void StopSound(string name) {
-		Sound s = Array.Find(menuSounds, sound => sound.name == name);
+		Sound s = Array.Find(sounds, sound => sound.name == name);
 
-		if (s == null) {
+		if(s == null) {
 			Debug.LogWarning("Sound:  " + name + " not found!");
 			return;
 		}
 
 		s.source.Stop();
-	}
-
-	public void ScreenSwitcher() {
-		if (playerHUD.activeSelf) {
-			PlaySound("Dashboard");
-			StopSound("Agora Scene");
-			StopSound("Title Screen");
-		}
-		else if (agoroScene.activeSelf) {
-			PlaySound("Agora Scene");
-		}
-		else if (titleScreen.activeSelf) {
-			PlaySound("Title Screen");
-		}
 	}
 }
