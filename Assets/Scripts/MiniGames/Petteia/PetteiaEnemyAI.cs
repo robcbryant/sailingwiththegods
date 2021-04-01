@@ -34,29 +34,24 @@ public class PetteiaEnemyAI : MonoBehaviour
     void Update()
     {
 	//	Debug.Log("Numpieces" + pieces.Count);
-		if (pieces.Count == 0 || Input.GetKeyDown(KeyCode.W)) {
-			Debug.Log("youwin!");
-			gameOver = true;
-			winCanvas.SetActive(true);
+		//if (pieces.Count == 0 || Input.GetKeyDown(KeyCode.W)) {
+		//	Debug.Log("youwin!");
+		//	gameOver = true;
+		//	winCanvas.SetActive(true);
+			
+		//	water.text ="+" + playerShip.GameResultWater().ToString();
+		//	food.text = "+" + playerShip.GameResultFood().ToString();
 
-
-
-			water.text ="+" + playerShip.GameResultWater().ToString();
-			food.text = "+" + playerShip.GameResultFood().ToString();
-
-			//	ship.cargo[1].amount_kg < dailyProvisionsKG * ship.crewRoster.Count
-
-
-		}
-		if (Input.GetKeyDown(KeyCode.W)) {
-			PrintBoard();
-		}
+		//	//	ship.cargo[1].amount_kg < dailyProvisionsKG * ship.crewRoster.Count
+			
+		//}
+		//if (Input.GetKeyDown(KeyCode.W)) {
+		//	PrintBoard();
+		//}
 		if(!gameOver && pController.yourTurn == false && isMoving == false) {
 			isMoving = true;
 			StartCoroutine(MakeMove()); //Checks if the user has made a move and runs the enemy move command is so
-			pController.lastPieceMoved = 2;
 		}
-
 		
 	}
 	public void LeaveButton() {
@@ -64,20 +59,19 @@ public class PetteiaEnemyAI : MonoBehaviour
 	}
 
 	public void CheckPieces() {
-		foreach (GameObject p in pieces) {
-			if (p == null) {
-				pieces.Remove(p);
+		for (int i = pieces.Count - 1; i >= 0; i--) {
+			if (pieces[i] == null) {
+				pieces.RemoveAt(i);
 			}
 		}
 	}
 
 	IEnumerator MakeMove() {
 		
-		yield return new WaitForSeconds(1f); 
+		yield return new WaitForSeconds(1f);
+		CheckPieces();
 
 		string s = "";
-
-		
 		
 		GameObject pieceToMove = null;
 		foreach (GameObject p in pieces) { //Runs through each available enemy piece and sees if it can capture another piece.
@@ -87,9 +81,7 @@ public class PetteiaEnemyAI : MonoBehaviour
 			}
 
 			currentPiece = p;
-
-
-
+			
 			//moving up loop
 			for (int x = (int)p.GetComponent<Positions>().pos.x; x > 2; x--) {
 				//Debug.Log("looking up");
@@ -139,11 +131,9 @@ public class PetteiaEnemyAI : MonoBehaviour
 
 				}
 			}
-
-
+			
 			//////////////////////////////////////////////////////////////////////////////////////////
-
-
+			
 			//moving down loop
 			for (int x = (int)p.GetComponent<Positions>().pos.x; x < 5; x++) {
 				//Debug.Log("looking down");
@@ -243,10 +233,6 @@ public class PetteiaEnemyAI : MonoBehaviour
 				}
 			}
 
-
-
-
-
 			////////////////////////////////////////////////////////////////////////////////////////
 
 			//moving left loop
@@ -296,26 +282,12 @@ public class PetteiaEnemyAI : MonoBehaviour
 				}
 			}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		}
 		End:
 		if (pieceToMove != null) {
 			//Debug.Log("capture called with these params:");
 			//Debug.Log(go.name + " " + s + " " + num);
-			StartCoroutine(MovePiece(pieceToMove, s, movementDistance));
+			yield return StartCoroutine(MovePiece(pieceToMove, s, movementDistance));
 			dialog.EnemyCaptures();
 		} else {
 			// Moves the piece randomly 1-3 spaces if it cannot find a capture. 
@@ -572,7 +544,7 @@ public class PetteiaEnemyAI : MonoBehaviour
 			}
 			if (movementDistance == 0) {
 				if (tries >= 50) {
-					StartCoroutine(MovePiece(pieceToMove, s, movementDistance)); //Move cant be found - pass turn
+					yield return StartCoroutine(MovePiece(pieceToMove, s, movementDistance)); //Move cant be found - pass turn
 					Debug.Log("passing my turn");
 					//Need some dialouge here like "I pass my turn TODO"
 				}
@@ -583,19 +555,24 @@ public class PetteiaEnemyAI : MonoBehaviour
 			else {
 				//Debug.Log("random called with these params:");
 				//Debug.Log(go.name + " " + s + " " + num);
-				StartCoroutine(MovePiece(pieceToMove, s, movementDistance));
-				Debug.Log(tries);
+				yield return StartCoroutine(MovePiece(pieceToMove, s, movementDistance));
+				//Debug.Log("Tries to find a move: " + tries);
 			}
 		}
 
 
 		//find out which piece we want to move AND why and where it needs to go 
 
-
+		//Ending turn
+		//Debug.Log("End of PetteiaEnemyAI turn");
 		pController.moveSound.pitch = Random.Range(0.7f, 1.1f);
 		pController.moveSound.Play();
-		yield return new WaitForSeconds(1f);
-		pController.yourTurn = true;
+		yield return new WaitForSeconds(0.25f);
+		//pController.CheckCapture();
+		//Debug.Log("Preparing to switch turn off of enemy turn");
+
+
+		pController.SwitchTurn();
 		
 		isMoving = false;
 	}
@@ -625,13 +602,7 @@ public class PetteiaEnemyAI : MonoBehaviour
 		if (dir == "down") {
 			piece.transform.Translate(Vector3.back * 6.25f * dist);
 		}
-
-
-
-
-
-
-
+		
 		yield return new WaitForSeconds(0.5f);
 
 
@@ -641,7 +612,8 @@ public class PetteiaEnemyAI : MonoBehaviour
 		//Debug.Log((int)piece.GetComponent<Positions>().pos.x);
 		//Debug.Log((int)piece.GetComponent<Positions>().pos.y);
 		//Debug.Log(currentg.name);
-		PrintBoard();
+		//PrintBoard();		
+
 	}
 
 
