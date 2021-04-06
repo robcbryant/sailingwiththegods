@@ -52,6 +52,9 @@ public class PetteiaColliderMover : MonoBehaviour
 			currentPiece = null;
 			occupied = false;
 		}
+		else {
+			Debug.Log("CurrentPiece null");
+		}
 	}
 
 	public void HighlightSpace(bool toggle) 

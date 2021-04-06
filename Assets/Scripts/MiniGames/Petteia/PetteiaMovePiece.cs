@@ -105,24 +105,26 @@ public class PetteiaMovePiece : MonoBehaviour
 
 		}
 	}
+
 	void OnMouseDown() 
 	{
-		if (pController.yourTurn) 
-		{
-			showHighlight = false;
-			active = true;
-			if (real != null) {
-				mouseStartPos = Input.mousePosition;
-				validMoves = PopulateValidMovesList(pieceStartPos);
-				//pieceStartPos = g.position;
-				//ik.SetPiece(real.gameObject);
-				//ik.SetInital(g);
-				real.enabled = false;
-				//Cursor.visible = false;
-				SpawnDummy();
+		if (enabled) {
+			if (pController.yourTurn) 
+			{
+				showHighlight = false;
+				active = true;
+				if (real != null) {
+					mouseStartPos = Input.mousePosition;
+					validMoves = PopulateValidMovesList(pieceStartPos);
+					//pieceStartPos = g.position;
+					//ik.SetPiece(real.gameObject);
+					//ik.SetInital(g);
+					real.enabled = false;
+					//Cursor.visible = false;
+					SpawnDummy();
+				}
 			}
 		}
-
 	}
 
 	void SpawnDummy() 
@@ -137,43 +139,44 @@ public class PetteiaMovePiece : MonoBehaviour
 
 	void OnMouseUp() 
 	{
-		//Debug.Log("PetteiaMovePiece OnMouseUp: " + name);
-		active = false;
-		if (real != null) {
-			//Debug.Log("Starting the ending function");
-			//unlock function
-			if (isMoving) {
-				ik.SetFinal(real.gameObject.transform);
-				//ik.onThemMove = true;
-			}
-			lockedx = false;
-			lockedy = false;
-			//mouseEndPos = mouseStartPos;
-			//Debug.Log("Checking if the piece was moved or just dropped");
-			//end of turn
-			if (pieceStartPos.x != potentialPos.x || pieceStartPos.y != potentialPos.y) {
-				//Debug.Log("Dropped piece after moving it, preparing to change turn");
-				pController.MovePiece(pieceStartPos, potentialPos, "PetteiaW");
-				pieceStartPos = potentialPos;
-				//pController.CheckCapture();
-				//Debug.Log("Preparing to switch turn off of player");
-				pController.SwitchTurn();
-				pController.PlayMoveSound();
-			}
-			else {
-				//Debug.Log("Dropped piece without moving it");
-				showHighlight = true;
-			}
+		if (enabled) 
+		{
+			//Debug.Log("PetteiaMovePiece OnMouseUp: " + name);
+			active = false;
+			if (real != null) {
+				//Debug.Log("Starting the ending function");
+				//unlock function
+				if (isMoving) {
+					ik.SetFinal(real.gameObject.transform);
+					//ik.onThemMove = true;
+				}
+				lockedx = false;
+				lockedy = false;
+				//mouseEndPos = mouseStartPos;
+				//Debug.Log("Checking if the piece was moved or just dropped");
+				//end of turn
+				if (pieceStartPos.x != potentialPos.x || pieceStartPos.y != potentialPos.y) {
+					//Debug.Log("Dropped piece after moving it, preparing to change turn");
+					pController.MovePiece(pieceStartPos, potentialPos, "PetteiaW");
+					pieceStartPos = potentialPos;
+					//pController.CheckCapture();
+					//Debug.Log("Preparing to switch turn off of player");
+					pController.SwitchTurn();
+					pController.PlayMoveSound();
+				}
+				else {
+					//Debug.Log("Dropped piece without moving it");
+					showHighlight = true;
+				}
 
-			foreach (PetteiaColliderMover p in validMoves) {
-				p.HighlightSpace(false);
+				foreach (PetteiaColliderMover p in validMoves) {
+					p.HighlightSpace(false);
+				}
+				real.enabled = true;
+				DelDummy();
 			}
-			real.enabled = true;
-			DelDummy();
 		}
-		else {
-			Debug.Log("Real is null");
-		}
+
 	}
 
 	private void OnMouseDrag() {

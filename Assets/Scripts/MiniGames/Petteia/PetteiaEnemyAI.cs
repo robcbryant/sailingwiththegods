@@ -59,8 +59,10 @@ public class PetteiaEnemyAI : MonoBehaviour
 	}
 
 	public void CheckPieces() {
+		Debug.Log("Checking enemy pieces");
 		for (int i = pieces.Count - 1; i >= 0; i--) {
 			if (pieces[i] == null) {
+				Debug.Log($"Enemy piece {i} null, removing");
 				pieces.RemoveAt(i);
 			}
 		}
@@ -612,27 +614,8 @@ public class PetteiaEnemyAI : MonoBehaviour
 		//Debug.Log((int)piece.GetComponent<Positions>().pos.x);
 		//Debug.Log((int)piece.GetComponent<Positions>().pos.y);
 		//Debug.Log(currentg.name);
-		//PrintBoard();		
+		//pController.PrintBoard();		
 
 	}
-
-
-
-
-	void PrintBoard() {
-		string s = "  ";
-		for (int i = 0; i < 8; i++) {
-			s += "\n\n";
-			for (int j = 0; j < 8; j++) {
-				s += "  ";
-				s += pController.positions[i, j];
-			}
-		}
-
-		Debug.Log(s);
-		pController.boardText = s;
-	}
-
-
 
 }

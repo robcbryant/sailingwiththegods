@@ -110,6 +110,7 @@ public class PetteiaGameController : MonoBehaviour
 
 	public void SwitchTurn() 
 	{
+		PrintBoard();
 		//Debug.Log("Switching turn");
 		if (yourTurn) {
 			Debug.Log("Ending player turn");
@@ -336,14 +337,13 @@ public class PetteiaGameController : MonoBehaviour
 	}
 
 	public void CheckGameOver() {
+		Debug.Log($"Players: {playerPieces.Count} | Enemies: {enemyAI.pieces.Count}");
 		if (yourTurn) {
-			Debug.Log("Enemies remaining: " + enemyAI.pieces.Count);
 			if (enemyAI.pieces.Count <= 1) {
 				endCanvas.SetActive(true);
 			}
 		}
 		else {
-			Debug.Log("Players remaining: " + playerPieces.Count);
 			if (playerPieces.Count <= 1) {
 				endCanvas.SetActive(true);
 			}
@@ -376,17 +376,28 @@ public class PetteiaGameController : MonoBehaviour
 
 	//}
 
-	void PrintBoard() {
+	public void PrintBoard() {
 		string s = "  ";
 		for (int i = 0; i < 8; i++) {
 			s += "\n\n";
 			for (int j = 0; j < 8; j++) {
 				s += "  ";
-				s += positions[i, j];
+				switch (positions[i, j]) {
+					case 0:
+						s += "-";
+						break;
+					case 1:
+						s += "X";
+						break;
+					case 2:
+						s += "O";
+						break;
+				}
+				//s += positions[i, j];
 			}
 		}
 
-		Debug.Log(s);
+		//Debug.Log(s);
 		boardText = s;
 	}
 
