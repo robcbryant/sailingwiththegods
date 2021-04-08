@@ -65,7 +65,7 @@ public class SoundsForMenus : MonoBehaviour
 		s.source.Stop();
 	}
 
-	public void ScreenSwitcher() {
+	private  void ScreenSwitcher() {
 		if (playerHUD.activeSelf) {
 			PlaySound("Dashboard");
 			StopSound("Agora Scene");
