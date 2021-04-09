@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PetteiaMovePiece : MonoBehaviour
 {
@@ -109,6 +110,11 @@ public class PetteiaMovePiece : MonoBehaviour
 	void OnMouseDown() 
 	{
 		if (enabled) {
+
+			if (EventSystem.current.IsPointerOverGameObject()) {
+				return;
+			}
+
 			if (pController.yourTurn) 
 			{
 				showHighlight = false;
@@ -116,6 +122,9 @@ public class PetteiaMovePiece : MonoBehaviour
 				if (real != null) {
 					mouseStartPos = Input.mousePosition;
 					validMoves = PopulateValidMovesList(pieceStartPos);
+					foreach (PetteiaColliderMover p in validMoves) {
+						p.HighlightSpace(true);
+					}
 					//pieceStartPos = g.position;
 					//ik.SetPiece(real.gameObject);
 					//ik.SetInital(g);
@@ -141,6 +150,10 @@ public class PetteiaMovePiece : MonoBehaviour
 	{
 		if (enabled) 
 		{
+			if (EventSystem.current.IsPointerOverGameObject()) {
+				return;
+			}
+
 			//Debug.Log("PetteiaMovePiece OnMouseUp: " + name);
 			active = false;
 			if (real != null) {
@@ -155,7 +168,7 @@ public class PetteiaMovePiece : MonoBehaviour
 				//mouseEndPos = mouseStartPos;
 				//Debug.Log("Checking if the piece was moved or just dropped");
 				//end of turn
-				if (pieceStartPos.x != potentialPos.x || pieceStartPos.y != potentialPos.y) {
+				if (!(pieceStartPos.x == potentialPos.x && pieceStartPos.y == potentialPos.y)) {
 					//Debug.Log("Dropped piece after moving it, preparing to change turn");
 					pController.MovePiece(pieceStartPos, potentialPos, "PetteiaW");
 					pieceStartPos = potentialPos;
@@ -194,7 +207,6 @@ public class PetteiaMovePiece : MonoBehaviour
 		for (int y = startPos.y - 1; y >= 0; y--) {
 			if (!pController.BoardSquares[startPos.x, y].occupied) {
 				possibleMoves.Add(pController.BoardSquares[startPos.x, y]);
-				pController.BoardSquares[startPos.x, y].HighlightSpace(true);
 			}
 			else {
 				break;
@@ -204,7 +216,6 @@ public class PetteiaMovePiece : MonoBehaviour
 		for (int y = startPos.y + 1; y < pController.BoardSquares.GetLength(1); y++) {
 			if (!pController.BoardSquares[startPos.x, y].occupied) {
 				possibleMoves.Add(pController.BoardSquares[startPos.x, y]);
-				pController.BoardSquares[startPos.x, y].HighlightSpace(true);
 			}
 			else {
 				break;
@@ -214,7 +225,6 @@ public class PetteiaMovePiece : MonoBehaviour
 		for (int x = startPos.x - 1; x >= 0; x--) {
 			if (!pController.BoardSquares[x, startPos.y].occupied) {
 				possibleMoves.Add(pController.BoardSquares[x, startPos.y]);
-				pController.BoardSquares[x, startPos.y].HighlightSpace(true);
 			}
 			else {
 				break;
@@ -224,7 +234,6 @@ public class PetteiaMovePiece : MonoBehaviour
 		for (int x = startPos.x + 1; x < pController.BoardSquares.GetLength(0); x++) {
 			if (!pController.BoardSquares[x, startPos.y].occupied) {
 				possibleMoves.Add(pController.BoardSquares[x, startPos.y]);
-				pController.BoardSquares[x, startPos.y].HighlightSpace(true);
 			}
 			else {
 				break;

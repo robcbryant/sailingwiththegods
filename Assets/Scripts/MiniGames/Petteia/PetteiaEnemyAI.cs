@@ -6,27 +6,23 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public class PetteiaEnemyAI : MonoBehaviour
 {
-	public PetteiaGameController pController;
-	public DialogPetteia dialog;
+	
 	//public int[,] positions = new int[8, 8];
 	public List<GameObject> pieces;
-	public bool isMoving;
-	public GameObject currentPiece;
-	public int movementDistance = 0;
+	private bool isMoving;
+	private GameObject currentPiece;
+	private int movementDistance = 0;
+	
+	private PetteiaGameController pController;
 
-	public Text water;
-	public Text food; 
 
-	public GameObject winCanvas;
-	script_player_controls playerShip;
-	private bool gameOver = false;
 	//Some variables are public for debugging and being able to be viewed in the inspector 
 	// Start is called before the first frame update
 	void Start()
     {
 		//playerShip = GameObject.FindGameObjectWithTag("playerShip").GetComponent<script_player_controls>();
-		winCanvas.SetActive(false);
 		isMoving = false;
+		pController = GetComponent<PetteiaGameController>();
 		
 	}
 
@@ -48,14 +44,18 @@ public class PetteiaEnemyAI : MonoBehaviour
 		//if (Input.GetKeyDown(KeyCode.W)) {
 		//	PrintBoard();
 		//}
-		if(!gameOver && pController.yourTurn == false && isMoving == false) {
-			isMoving = true;
-			StartCoroutine(MakeMove()); //Checks if the user has made a move and runs the enemy move command is so
-		}
+		//if(!pController.GameOver && pController.yourTurn == false && isMoving == false) {
+		//	isMoving = true;
+		//	StartCoroutine(MakeMove()); //Checks if the user has made a move and runs the enemy move command is so
+		//}
 		
 	}
-	public void LeaveButton() {
-		TavernaController.BackToTavernaMenu();
+
+	public void StartEnemyTurn() {
+		if (!pController.GameOver) 
+		{
+			StartCoroutine(MakeMove());
+		}
 	}
 
 	public void CheckPieces() {
@@ -290,7 +290,6 @@ public class PetteiaEnemyAI : MonoBehaviour
 			//Debug.Log("capture called with these params:");
 			//Debug.Log(go.name + " " + s + " " + num);
 			yield return StartCoroutine(MovePiece(pieceToMove, s, movementDistance));
-			dialog.EnemyCaptures();
 		} else {
 			// Moves the piece randomly 1-3 spaces if it cannot find a capture. 
 			int tries = 0;
@@ -566,13 +565,7 @@ public class PetteiaEnemyAI : MonoBehaviour
 		//find out which piece we want to move AND why and where it needs to go 
 
 		//Ending turn
-		//Debug.Log("End of PetteiaEnemyAI turn");
-		pController.moveSound.pitch = Random.Range(0.7f, 1.1f);
-		pController.moveSound.Play();
 		yield return new WaitForSeconds(0.25f);
-		//pController.CheckCapture();
-		//Debug.Log("Preparing to switch turn off of enemy turn");
-
 
 		pController.SwitchTurn();
 		
@@ -580,13 +573,14 @@ public class PetteiaEnemyAI : MonoBehaviour
 	}
 
 	IEnumerator MovePiece(GameObject piece, string dir, int dist) 
-		{
-		
+	{
 		int x, y;
 		////Debug test
 		x = (int)piece.GetComponent<Positions>().pos.x;
 		y = (int)piece.GetComponent<Positions>().pos.y;
+		Debug.Log($"Setting {x}, {y} to 0");
 		pController.positions[x, y] = 0;
+		Debug.Log($"{x}, {y} should be 0, is {pController.positions[x, y]}");
 		//Debug.Log((int)piece.GetComponent<Positions>().pos.x);
 		//Debug.Log((int)piece.GetComponent<Positions>().pos.y);
 
@@ -594,23 +588,28 @@ public class PetteiaEnemyAI : MonoBehaviour
 
 		if (dir == "up") {
 			piece.transform.Translate(Vector3.forward * 6.25f * dist);
+			x -= dist;
 		}
-		if (dir == "left") {
+		else if (dir == "left") {
 			piece.transform.Translate(Vector3.left * 6.25f * dist);
+			y -= dist;
 		}
-		if (dir == "right") {
+		else if (dir == "right") {
 			piece.transform.Translate(Vector3.right * 6.25f * dist);
+			y += dist;
 		}
-		if (dir == "down") {
+		else if (dir == "down") {
 			piece.transform.Translate(Vector3.back * 6.25f * dist);
+			x += dist;
 		}
 		
 		yield return new WaitForSeconds(0.5f);
 
 
-		x = (int)piece.GetComponent<Positions>().pos.x;
-		y = (int)piece.GetComponent<Positions>().pos.y;
+		pController.PlayMoveSound();
+		Debug.Log($"Moving to {x}, {y}");
 		pController.positions[x, y] = 1;
+
 		//Debug.Log((int)piece.GetComponent<Positions>().pos.x);
 		//Debug.Log((int)piece.GetComponent<Positions>().pos.y);
 		//Debug.Log(currentg.name);

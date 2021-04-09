@@ -6,7 +6,7 @@ using TMPro;
 
 public class MiniGameInfoScreen : MonoBehaviour
 {
-	public enum MiniGame { Pirates, StormStart, Storm, Start, Finish, Negotiation }
+	public enum MiniGame { Pirates, StormStart, Storm, Start, Finish, Negotiation, TavernaStart, TavernaPause }
 
 	public TextMeshProUGUI titleText;
 	public TextMeshProUGUI subtitleText;

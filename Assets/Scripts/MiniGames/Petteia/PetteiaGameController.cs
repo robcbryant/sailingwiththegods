@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PetteiaGameController : MonoBehaviour
 {
 	[Header("Game Pieces")]
 	public List<PetteiaMovePiece> playerPieces;
 	public PetteiaEnemyAI enemyAI;
+
 	public AudioSource moveSound;
 
 	[Header("Board Positions")]
@@ -24,10 +26,14 @@ public class PetteiaGameController : MonoBehaviour
 	public int[,] positions = new int[8, 8];
 
 	[Header("UI")]
-	public GameObject menuCanvas;
-	public GameObject endCanvas;
-	public Text waterText;
-	public Text foodText;
+	//public GameObject menuCanvas;
+	//public GameObject endCanvas;
+	//public Text waterText;
+	//public Text foodText;
+	public MiniGameInfoScreen mgScreen;
+	public TavernaMiniGameDialog gameBarks;
+	public Sprite gameIcon;
+	public float barkChance = 0.25f;
 
 
 	[TextArea(3, 40)]
@@ -40,8 +46,7 @@ public class PetteiaGameController : MonoBehaviour
 	private Vector2 oldPos, curPos;
 	private Vector2 curPosArray, oldPosArray;
 	private bool updateOld;
-	private int lastPieceMoved;
-
+	private bool gameOver = false;
 
 	//private Transform currentT;
 	//public MovePiece mp;
@@ -49,9 +54,12 @@ public class PetteiaGameController : MonoBehaviour
 	//Some variables are public for debugging and being able to be viewed in the inspector 
 	// Start is called before the first frame update
 	void Start() {
-		menuCanvas.SetActive(false);
-		endCanvas.SetActive(false);
-		lastPieceMoved = 2;
+		//menuCanvas.SetActive(false);
+		//endCanvas.SetActive(false);
+		Debug.Log("PETTEIA START");
+		Debug.Log($"Active scene {SceneManager.GetActiveScene().name}");
+		mgScreen.gameObject.SetActive(true);
+		mgScreen.DisplayText("Petteia", "Taverna game", "Petteia is started, here's where stuff will go", gameIcon, MiniGameInfoScreen.MiniGame.TavernaStart);
 		enemyAI = GetComponent<PetteiaEnemyAI>();
 		moveDir = "";
 		InitalStateSetup();
@@ -108,6 +116,40 @@ public class PetteiaGameController : MonoBehaviour
 		//}
 	}
 
+	public void PauseMinigame() 
+	{
+		mgScreen.gameObject.SetActive(true);
+		Time.timeScale = 0;
+		mgScreen.DisplayText("Petteia", "Taverna game", "Petteia is paused, here's where the controls will go", gameIcon, MiniGameInfoScreen.MiniGame.TavernaPause);
+	}
+
+	public void UnpauseMinigame() {
+		mgScreen.gameObject.SetActive(false);
+		Time.timeScale = 1;
+	}
+
+	public void ExitMinigame() 
+	{
+		TavernaController.BackToTavernaMenu();
+	}
+
+	public void RestartMinigame() 
+	{
+		StartCoroutine(ReloadMinigame());
+	}
+
+	//TODO: no more reloading, we'll have to just reset everything's position and state
+	//so delete all pieces and respawn them in their base positions?
+	//and if needed mark given squares as occupied
+	//and show the ui again
+	private IEnumerator ReloadMinigame() {
+		Scene current = SceneManager.GetActiveScene();
+		string name = current.name;
+		yield return SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
+		yield return SceneManager.UnloadSceneAsync(current);
+		SceneManager.SetActiveScene(SceneManager.GetSceneByName(name));
+	}
+
 	public void SwitchTurn() 
 	{
 		PrintBoard();
@@ -115,16 +157,16 @@ public class PetteiaGameController : MonoBehaviour
 		if (yourTurn) {
 			Debug.Log("Ending player turn");
 			yourTurn = false;
-			lastPieceMoved = 1;
 			CheckCapture();
 			curPosArray = PosToArray((int)curPos.x, (int)curPos.y);
 			oldPosArray = PosToArray((int)oldPos.x, (int)oldPos.y);
 			updateOld = true;
+
+			enemyAI.StartEnemyTurn();
 		}
 		else {
 			Debug.Log("Ending enemy turn");
 			yourTurn = true;
-			lastPieceMoved = 2;
 			CheckCapture();
 			oldPosArray = Vector2.up;
 			curPosArray = Vector2.up;
@@ -140,12 +182,6 @@ public class PetteiaGameController : MonoBehaviour
 		moveSound.Play();
 	}
 
-	void EnemyMove() {
-		//i,j
-		//StartCoroutine(GetPiece(0, 2));
-
-
-	}
 	void InitalStateSetup() {
 		for (int i = 0; i < 8; i++) {
 
@@ -340,17 +376,31 @@ public class PetteiaGameController : MonoBehaviour
 		Debug.Log($"Players: {playerPieces.Count} | Enemies: {enemyAI.pieces.Count}");
 		if (yourTurn) {
 			if (enemyAI.pieces.Count <= 1) {
-				endCanvas.SetActive(true);
+				//endCanvas.SetActive(true);
+				gameOver = true;
 			}
 		}
 		else {
 			if (playerPieces.Count <= 1) {
-				endCanvas.SetActive(true);
+				//endCanvas.SetActive(true);
+				gameOver = true;
 			}
 		}
 	}
 
 	private void CapturePiece(int i, int j) {
+
+		if (Random.Range(0f, 1f) < barkChance) {
+			//player captures enemy
+			if (positions[i, j] == 1) {
+				gameBarks.DisplayInsult();
+			}
+			//enemy captures player
+			else if (positions[i, j] == 2) {
+				gameBarks.DisplayBragging();
+			}
+		}
+		
 		positions[i, j] = 0;
 		BoardSquares[i, j].DestroyPiece();
 		PrintBoard();
@@ -486,10 +536,15 @@ public class PetteiaGameController : MonoBehaviour
 		//converts the real world cordinates of the pieces to the value of the array that stores where the pieces are
 
 	}
+
 	void MoveBack(Transform g) {
 		g.position = new Vector3(oldPos.y, 1, oldPos.x);
 	}
 
-
     public PetteiaColliderMover[,] BoardSquares { get; } = new PetteiaColliderMover[8, 8];
+
+	public bool GameOver 
+	{
+		get { return gameOver; }
+	}
 }

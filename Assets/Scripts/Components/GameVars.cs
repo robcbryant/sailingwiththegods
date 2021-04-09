@@ -201,7 +201,7 @@ public class GameVars : MonoBehaviour
 
 	[HideInInspector] public List<DialogText> portDialogText = new List<DialogText>();
 
-	//Mylo's Addition
+	//Taverna
 	[HideInInspector] public List<DialogText> networkDialogText = new List<DialogText>();
 	[HideInInspector] public List<DialogText> pirateDialogText = new List<DialogText>();
 	[HideInInspector] public List<DialogText> mythDialogText = new List<DialogText>();
@@ -210,10 +210,9 @@ public class GameVars : MonoBehaviour
 	[HideInInspector] public List<FoodText> foodItemText= new List<FoodText>();
 	[HideInInspector] public List<FoodText> wineInfoText = new List<FoodText>();
 	[HideInInspector] public List<FoodText> foodDialogueText = new List<FoodText>();
+	[HideInInspector] public List<string> tavernaGameInsults;
+	[HideInInspector] public List<string> tavernaGameBragging;
 
-
-
-	// End Mylo's Addition
 
 	// high level game systems
 	public Trade Trade { get; private set; }
@@ -294,6 +293,8 @@ public class GameVars : MonoBehaviour
 		CSVLoader.LoadPirateText(out pirateTitles, out pirateSubtitles, out pirateStartText, out pirateTypeIntroText, out pirateNegotiateText,
 			out pirateRunSuccessText, out pirateRunFailText, out pirateSuccessText, out pirateFailureText);
 		portDialogText = CSVLoader.LoadPortDialog();
+
+		CSVLoader.LoadTavernaGameBarks(out tavernaGameInsults, out tavernaGameBragging);
 
 		// Mylo's Addition
 		networkDialogText = CSVLoader.LoadNetworkDialog();

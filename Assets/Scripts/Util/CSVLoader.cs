@@ -520,6 +520,33 @@ public static class CSVLoader
 		return textList;
 	}
 
+	public static void LoadTavernaGameBarks(out List<string> insults, out List<string> bragging) {
+
+		insults = new List<string>();
+		bragging = new List<string>();
+
+		char[] lineDelimiter = new char[] { '@' };
+		char newline = '%';
+		string filename = "taverna_game_barks";
+
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		for (int i = 0; i < fileByLine.Length; i++) {
+			string[] texts = fileByLine[i].Split(lineDelimiter);
+			string content = StripAndAddNewlines(texts[0], newline);
+			if (texts[1] == "insult") {
+				insults.Add(content);
+			}
+			else if (texts[1] == "bragging") {
+				bragging.Add(content);
+			}
+			else {
+				Debug.Log($"Taverna bark line {i} not marked insult or bragging");
+			}
+		}
+
+	}
+
 	//Mylo's Addition
 	public static List<DialogText> LoadNetworkDialog() 
 	{
