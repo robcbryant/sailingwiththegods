@@ -735,7 +735,7 @@ public static class CSVLoader
 	static string TryLoadFromGameFolder(string filename) {
 		try {
 			var localFile = "";
-			var filePath = Application.dataPath + "/" + filename + ".txt";
+			var filePath = Application.dataPath + "/Resources/" + filename + ".txt";
 			if (File.Exists(filePath)) {
 				localFile = File.ReadAllText(filePath);
 			}
