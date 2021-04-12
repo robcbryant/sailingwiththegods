@@ -288,12 +288,12 @@ position: -534,-1018
 ---
 << if $first_time is false >> 
     << setspeaker DialogScreen Jason >>
-    I want to ask about a city I've visited.
+    I want to ask about somewhere in the area.
     << setspeaker DialogScreen other >>
-    Of course! Which city do you want to ask about?
+    Of course! Where do you want to ask about?
 << else >>
      << setspeaker DialogScreen Jason >>
-    I want to ask about another city.
+    I want to ask about another place.
     << setspeaker DialogScreen other >>
     Certainly! Where does your curiosity take you?
 << endif >>   

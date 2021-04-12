@@ -292,9 +292,9 @@ GameObject:
   - component: {fileID: 8984249838823038216}
   - component: {fileID: 8984249838823038217}
   - component: {fileID: 8984249838823038218}
-  - component: {fileID: 1502249819}
   - component: {fileID: 169868454}
   - component: {fileID: 1068143706}
+  - component: {fileID: 6504750698868062273}
   m_Layer: 0
   m_Name: Enemy Piece
   m_TagString: PetteiaB
@@ -378,33 +378,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 5, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1502249819
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8984249838823038219}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1552bee69a25e5148bb7ec58664db521, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouseStartPos: {x: 0, y: 0, z: 0}
-  mouseEndPos: {x: 0, y: 0, z: 0}
-  pieceStartPos: {x: 0, y: 0, z: 0}
-  cam: {fileID: 0}
-  g: {fileID: 8984249838823038231}
-  lockedx: 0
-  lockedy: 0
-  isMoving: 0
-  timer: 0
-  p: {fileID: 0}
-  real: {fileID: 0}
-  empty: {fileID: 0}
-  dummy: {fileID: 7666413527833223381, guid: f4269311302f83e4d891a2a4544f1a76, type: 3}
-  dummySpawned: {fileID: 0}
-  ik: {fileID: 0}
 --- !u!54 &169868454
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -434,3 +407,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pos: {x: 0, y: 0}
+--- !u!114 &6504750698868062273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8984249838823038219}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1552bee69a25e5148bb7ec58664db521, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseStartPos: {x: 0, y: 0, z: 0}
+  mouseEndPos: {x: 0, y: 0, z: 0}
+  pieceStartPos: {x: 0, y: 0}
+  cam: {fileID: 0}
+  lockedx: 0
+  lockedy: 0
+  isMoving: 0
+  timer: 0
+  pController: {fileID: 0}
+  real: {fileID: 0}
+  dummyParent: {fileID: 0}
+  highlight: {fileID: 0}
+  dummy: {fileID: 0}
+  dummySpawned: {fileID: 0}
+  ik: {fileID: 0}

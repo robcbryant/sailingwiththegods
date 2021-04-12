@@ -10,7 +10,6 @@ public class Positions : MonoBehaviour
     void Update()
     {
 		pos = PosToArray((int)transform.position.z, (int)transform.position.x);
-		
     }
 
 	public Vector2 PosToArray(int y, int x) 
