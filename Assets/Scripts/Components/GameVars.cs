@@ -73,6 +73,7 @@ public class GameVars : MonoBehaviour
 	public IEnumerable<CrewMember> StandardCrew => masterCrewList.Where(c => !c.isPirate);
 	public IEnumerable<CrewMember> Pirates => masterCrewList.Where(c => c.isPirate);
 	public IEnumerable<PirateType> PirateTypes => masterPirateTypeList;
+	public IEnumerable<CrewMember> AllNonCrew => StandardCrew.Where(c => !playerShipVariables.ship.crewRoster.Contains(c));
 
 	[Header("World Scene Refs")]
 	public GameObject FPVCamera;

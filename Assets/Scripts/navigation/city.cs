@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace nav
+namespace Nav
 {
 	public class city
 	{
@@ -10,8 +10,8 @@ namespace nav
 		private GameObject tmp;
 		// Start is called before the first frame update
 		public city() {
+			var tmp = GameObject.Find("Settlement Master List");
 			do {
-				tmp = GameObject.Find("Settlement Master List");
 				if (tmp == null) {
 					Debug.Log("Can't find the object");
 				}
@@ -21,7 +21,7 @@ namespace nav
 						DictCity[child.name] = child.transform.position;
 					}
 					Debug.Log(DictCity.Count);
-					
+					break;
 				}
 			} while (tmp = null);
 			
