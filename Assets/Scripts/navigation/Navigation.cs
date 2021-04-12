@@ -6,39 +6,44 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 using TMPro;
 
-namespace nav {
+namespace Nav {
 	public class Navigation : MonoBehaviour
 	{
-		public GameObject TitleScreen;
+		[SerializeField] private GameObject _TitleScreen;
 		Transform player;
 		private city cities;
-		[SerializeField]
-		private NavMeshAgent AI;
-		[SerializeField]
-		//private LineRenderer lineRenderer;
-		public TMP_Text text;
-		public Image ImageSlot;
-		private const string ResourcePath = "crew_portraits";
-		private const string DefaultPortrait = "crew_portraits/phoenician_sailor";
-		public GameObject menu;
-		public GameObject Navgater;
-		private bool StartNavigation = false;
+		[SerializeField] private NavMeshAgent AI;
+		private LineRenderer lineRenderer;
+		[SerializeField] private TMP_Text _Text;
+		[SerializeField] private Image _imageSlot;
+		private const string _ResourcePath = "crew_portraits";
+		private const string _DefaultPortrait = "crew_portraits/phoenician_sailor";
+		[SerializeField] private GameObject _menu;
+		[SerializeField] private GameObject _Navgater;
+		[SerializeField] private bool _lineRendererON;
+		private bool _startNavigation = false;
+		bool _CoroutineOn = false;
 		Vector3 nexPoint;
+		String postion;
+		int? _crewID;
 		private void Start() {
 			cities = new city();
-			menu.SetActive(false);
-			Navgater.SetActive(false);
+			_menu.SetActive(false);
+			_Navgater.SetActive(false);
 			if (AI == null) {
 				AI = GetComponent<NavMeshAgent>();
 			}
-			//if(lineRenderer == null) {
-			//	lineRenderer = GetComponent<LineRenderer>();
-			//}
+			if (lineRenderer == null) {
+				lineRenderer = GetComponent<LineRenderer>();
+			}
 		}
 		private void Update() {
 
-			if(!TitleScreen.activeSelf && StartNavigation) {
-				ShowMenu(StartNavigation);
+			if(!_TitleScreen.activeSelf && _startNavigation) {
+				ShowMenu(_startNavigation);
+			}
+			if(postion != null) {
+				SetDestination(postion, _crewID.Value);
 			}
 		}
 		public static float CalcAngle(Vector3 from, Vector3 to) {
@@ -50,84 +55,132 @@ namespace nav {
 			while (angle > 180) angle -= 360;
 			return angle;
 		}
-		public void Setdestination(string target, int ID) {
+		public void SetDestination(string target, int ID) {
 			if (target == null) {
 				Debug.LogError("Didn't find the city");
 				return;
+			}
+			//check the target id if the id is save, save the id to postion
+			if (postion != null || _crewID != null) {
+				target = postion;
+				ID = _crewID.Value;
+			}
+			if (postion == null || _crewID == null) {
+				postion = target;
+				_crewID = ID;
 			}
 			Vector3 targetlocaion = cities.GetCityLocation(target);
 			if (targetlocaion == null) {
 				Debug.LogError("Unable to find city location");
 				return;
 			}
-			//assign image
-			ImageSlot.sprite = Resources.Load<Sprite>(ResourcePath + "/" + ID) ?? Resources.Load<Sprite>(DefaultPortrait);
-			StartNavigation = true;
-			//find player
 			player = GameObject.Find("playerShip").transform.Find("ShipParent").transform.Find("kyrenia_parent").transform;
 			this.transform.position = player.position;
+			//assign image
+			_imageSlot.sprite = Resources.Load<Sprite>(_ResourcePath + "/" + ID) ?? Resources.Load<Sprite>(_DefaultPortrait);
+			//find player
 			float distance = Vector3.Distance(targetlocaion, player.position);
 			float radius = 2;
 			if (distance >= radius) {
-				string Saildirecation = FindPlayerDirection(player); // find what angle is player faceing
-				string Citydirecation = FindCityDirection(targetlocaion,player); // find city angle by the world
-				string WhereToSail = getAIPath(targetlocaion, radius); // find the path
-				text.text = Citydirecation +Saildirecation + WhereToSail; // assign text
+				_startNavigation = true;
+				string saiDirection = FindPlayerDirection(player); // find what angle is player faceing
+				//string cityDirecation = FindCityDirection(targetlocaion, this.transform); // find city angle/direaction by player is faceing
+				string whereToSail = getAIPath(targetlocaion, radius); // find the path
+				_Text.text = whereToSail + " "+saiDirection; // assign text
+
 			}
 			if (distance < radius) {
-				text.text = "You have arrive to " + target + ".";
+				_Text.text = "You have arrive to " + target + ".";
+				_startNavigation =false;
+				postion = null;
+				_crewID = null;
+				if (!_CoroutineOn) {
+					StartCoroutine(CompeteNavgation());
+				}
 			}
 		}
+		IEnumerator CompeteNavgation() {
+			_CoroutineOn = true;
+			yield return new WaitForSeconds(3);
+			_Text.text = "";
+			_Navgater.SetActive(false);
+			_CoroutineOn = false;
+		}
 		string FindCityDirection(Vector3 targetlocaion, Transform current) {
+			//float angle = CalcAngle(current.position + -current.up, targetlocaion);    // target angle relative to world
 			float angle = CalcAngle(current.position + -current.up, targetlocaion);    // target angle relative to world
-			angle -= 180;
+			 //angle -= 180;
 			string citydirecation = "The city is in the "+ FindDirection(angle)+".";
 			return citydirecation;
 		}
 		string FindPlayerDirection(Transform current) {
 			float angle2 = CalcAngle(current.position, current.position + current.up); // player angle relative to world
-			string Saildirecation = "The Ship is sail to the " + FindDirection(angle2) + ".";
+			//float angle2 = CalcAngle(Vector3.forward, current.position ); // player angle relative to world
+			string Saildirecation = "Current direction of the ship is sail to the " + FindDirection(angle2) + ".";
 			return Saildirecation;
 		}
 		string getAIPath(Vector3 target,float radius) {
 			AI.stoppingDistance = radius;
 			AI.SetDestination(target);
 			Vector3[] path = AI.path.corners;
-			//lineRenderer.positionCount = AI.path.corners.Length;
+			lineRenderer.positionCount = AI.path.corners.Length;
+			//NavMeshAgent.SetDestination is asynchronous, so "the path may not become available until after a few frames later" so check if there is a path first 
 			if (path.Length <= 1) {
 				return "";
 			}
-			//for (int i = 0; i < path.Length; i++) {
-			//	lineRenderer.SetPosition(i, path[i]);
-			//}
+			if(_lineRendererON){
+				for (int i = 0; i < path.Length; i++) {
+				lineRenderer.SetPosition(i, path[i]);
+			}
+			}
 			//get next point
-			if(path.Length > 3) {
-				for (int i = 1; i < AI.path.corners.Length; i++) {
-					float dis = Vector3.Distance(player.position, AI.path.corners[i]);
-					if (dis < 6) {
-						int z = (i + 1) <= AI.path.corners.Length ? i + 1 : (AI.path.corners.Length - 1);
-						for (int j = i; j <= AI.path.corners.Length - 1; j++) {
-							var tmp = (j + 1) <= (AI.path.corners.Length - 1) ? Vector3.Distance(AI.path.corners[j], AI.path.corners[j + 1]) : Vector3.Distance(AI.path.corners[j], AI.path.corners[AI.path.corners.Length - 1]);
-							if (tmp > 5) {
-								z = (j + 1) <= AI.path.corners.Length ? j + 1 : (AI.path.corners.Length - 1);
-								break;
-							}
-						}
-						nexPoint = AI.path.corners[z];
-						break;
-					}
-					nexPoint = AI.path.corners[i];
-					break;
-				}
+			if (path.Length > 3) {
+				nexPoint = path[ProcessNearbyPathSegment()];
 			}
 			else {
-				nexPoint = AI.path.corners[1];
+				nexPoint =path[1];
 			}
 			//assign angle by the dircation
-			Vector3 dir = (nexPoint - transform.position).normalized;
+			Vector3 dir = (nexPoint - (player.position + player.up)).normalized;
+			//Vector3 dir = (nexPoint - Vector3.forward).normalized;
 			//Debug.DrawRay(transform.position, dir, Color.red);
 			float angle = GetAngleFromVectorToFloat(dir);
-			return "The ship should sail to the " + FindDirection(angle) + ".";
+			return "In order to reach the destination the ship should sail to the " + FindDirection(angle) + ".";
+		}
+
+		//Find the price by distance
+		public int FindPrice(string cityName) {
+			Vector3 targetLocaion = cities.GetCityLocation(cityName);
+			int price = 50;
+			float distance = 0;
+			int mile = 10;
+			//check if city exist
+			if (targetLocaion == null) {
+				Debug.LogError("Unable to find city location");
+				return 50;
+			}
+			//set the AI to the location then store the corners into path
+			AI.SetDestination(targetLocaion);
+			Vector3[] path = AI.path.corners;
+			if (path.Length <= 1) {
+				return price;
+			}
+			//loop the ever croners find the total distance
+			for (int i = 0; i < path.Length - 1; i++) {
+				if (distance <= 0) {
+					distance = Vector3.Distance(path[i], path[i + 1]);
+				}
+				if (distance > 0) {
+					distance += Vector3.Distance(path[i], path[i + 1]);
+				}
+			}
+			//for ever mile the price increase
+			if(distance > 10) {
+				price *= Mathf.RoundToInt(distance / mile);
+				if (price >= 2000)
+					price = 2000;
+			}
+			return price;
 		}
 		public static float GetAngleFromVectorToFloat(Vector3 dir) {
 			dir = dir.normalized;
@@ -135,7 +188,16 @@ namespace nav {
 			EulerNormalize(n);
 			return n;
 		}
-
+		private int ProcessNearbyPathSegment() {
+			for (int index = 1; index < AI.path.corners.Length; index++) { 
+				float Distance = Vector3.Distance(player.position, AI.path.corners[index]);
+				if (Distance < 6) {
+					int TemSegment = (index + 1) <= AI.path.corners.Length ? index + 1 : (AI.path.corners.Length - 1);
+					return TemSegment;
+				}
+			}
+			return 1;
+		}
 		//Compasss
 		String FindDirection(float angle) {
 			EulerNormalize(angle);
@@ -167,18 +229,17 @@ namespace nav {
 		}
 
 		void ShowMenu(bool show) {
-			if (text.text.Length > 1 || text != null ) {
-				Navgater.SetActive(show);
+			if (_Text.text.Length > 2 || _Text != null ) {
+				_Navgater.SetActive(show);
 			}
 		}
-
-
+		
 		// Buttom code
 		public void ActiveText() {
-			menu.SetActive(true);
+			_menu.SetActive(true);
 		}
 		public void DeactiveText() {
-			menu.SetActive(false);
+			_menu.SetActive(false);
 		}
 	}
 
