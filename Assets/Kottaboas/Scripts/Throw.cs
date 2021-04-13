@@ -1,28 +1,26 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//Controls the way liquad drips are thrown and animation
+//Controls the way liquid drips are thrown and animation
 public class Throw : MonoBehaviour
 {
     private Vector3 pointToTravel;
-    private Rigidbody rb;
-    private ThrowRadius tr;
+	private ThrowRadius tr;
 
     public Animator animate;
 
-    //Controls how far the liquad drips will be thrown
+    //Controls how far the liquid drips will be thrown
     public float power = 1.0f;
 
-    private bool launch = false;
-    public bool Launch { get => launch; set => launch = value; }
-    public Rigidbody Rb { get => rb; set => rb = value; }
+	public bool Launch { get; set; } = false;
+	public Rigidbody Rb { get; set; }
 
-    // Start is called before the first frame update
-    void Start()
+	// Start is called before the first frame update
+	void Start()
     {
         tr = gameObject.GetComponent<ThrowRadius>();
-        rb = gameObject.GetComponent<Rigidbody>();
+        Rb = gameObject.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -34,12 +32,12 @@ public class Throw : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            launch = true;
+            Launch = true;
             animate.SetBool("isFlinged", true);
 
             for (int i = 0; i < transform.childCount; i++)
             {
-                if (transform.GetChild(i).gameObject.CompareTag("TragjectSystem"))
+                if (transform.GetChild(i).gameObject.CompareTag("TrajectSystem"))
                     transform.GetChild(i).gameObject.SetActive(false);
             }
         }
@@ -55,10 +53,10 @@ public class Throw : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (launch)
+        if (Launch)
         {
-            rb.useGravity = true;
-            rb.MovePosition(transform.position + pointToTravel * Time.fixedDeltaTime);
+            Rb.useGravity = true;
+            Rb.MovePosition(transform.position + pointToTravel * Time.fixedDeltaTime);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,10 +9,13 @@ public class GameManager : MonoBehaviour
     private Rigidbody playerRb;
     private Vector3 playerStartPos;
 
-    public GameObject randomPlacement;
+	//Used to reset the targets on kottaboas stand
+	public GameObject randomPlacement;
     public Transform[] childPos;
-    public Vector3 startPos;
-    public Quaternion startRot;
+
+	//Used to reset the top target on kottaboas stand because of rigidbody attachment
+    private Vector3 topTargetStartPos;
+    private Quaternion topTargetStartRot;
 
     public bool isHit = false;
 
@@ -22,9 +25,8 @@ public class GameManager : MonoBehaviour
     public bool scored = false;
 
     private static int tries = 5;
-    private bool continueRound = false;
 
-    public bool ContinueRound { get => continueRound; set => continueRound = value; }
+    public bool ContinueRound { get; set; }
 
     // Start is called before the first frame update
     void Start()
@@ -32,8 +34,8 @@ public class GameManager : MonoBehaviour
         playerStartPos = playerPos.transform.position;
         playerRb = playerPos.GetComponent<Rigidbody>();
 
-        startPos = childPos[3].position;
-        startRot = childPos[3].rotation;
+        topTargetStartPos = childPos[3].position;
+        topTargetStartRot = childPos[3].rotation;
         
         tr = playerPos.GetComponent<Throw>();
     }
@@ -41,7 +43,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (continueRound)
+        if (ContinueRound)
         {            
             Debug.Log("C or B");
             if (Input.GetKey(KeyCode.C))
@@ -51,7 +53,7 @@ public class GameManager : MonoBehaviour
                 //Reset
                 ResetRound();
                 Debug.Log("reset");
-                continueRound = false;
+				ContinueRound = false;
             }
             else if (Input.GetKey(KeyCode.B) || score >= 7 || tries == 0)
             {
@@ -69,21 +71,22 @@ public class GameManager : MonoBehaviour
 
                 //Get Reward and return to tavern
                 Debug.Log("End game");
-                continueRound = false;
+				ContinueRound = false;
             }
         }
     }
 
-    public void addScore()
+    public void SCORE_TO_ADD()
     {
         score += 1;
     }
+
     /// <summary>
     /// Currently ends game when you hit c after 5 misses
     /// </summary>
-    public void subTries()
+    public void SubtractTries()
     {
-        tries -= 1;
+        tries--;
     }
 
     
@@ -107,8 +110,8 @@ public class GameManager : MonoBehaviour
     {
         randomPlacement.GetComponent<RandomPlacement>().PlaceRandomPosition();
 
-        childPos[3].localPosition = startPos;
-        childPos[3].rotation = startRot;
+        childPos[3].localPosition = topTargetStartPos;
+        childPos[3].rotation = topTargetStartRot;
         //childPos[3].localRotation = startRot;
 
         /*
@@ -134,7 +137,7 @@ public class GameManager : MonoBehaviour
         }
         else 
         {
-            subTries();
+            SubtractTries();
         }
     }
 }
