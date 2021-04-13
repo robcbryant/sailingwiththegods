@@ -6,9 +6,6 @@ using TMPro;
 
 public class CrewCard : MonoBehaviour
 {
-	private const string ResourcePath = "crew_portraits";
-	private const string DefaultPortrait = "crew_portraits/phoenician_sailor";
-
 #pragma warning disable 0649
 	[SerializeField] ButtonView infoButton;
 #pragma warning restore 0649
@@ -124,7 +121,7 @@ public class CrewCard : MonoBehaviour
 	{
 		nameText.text = crew.name;
 		powerText.text = power.ToString();
-		crewImage.sprite = Resources.Load<Sprite>(ResourcePath + "/" + crew.ID) ?? Resources.Load<Sprite>(DefaultPortrait);
+		crewImage.sprite = crew.PortraitSprite();
 	}
 
 	public void Bind() 
