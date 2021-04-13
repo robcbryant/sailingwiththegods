@@ -34,6 +34,10 @@ namespace nav {
 			//if(lineRenderer == null) {
 			//	lineRenderer = GetComponent<LineRenderer>();
 			//}
+
+			// KD HACK: Hacked off the UI to disable for taverna release
+			// Need to delete this on develop
+			Navgater.transform.parent.gameObject.SetActive(false);
 		}
 		private void Update() {
 
