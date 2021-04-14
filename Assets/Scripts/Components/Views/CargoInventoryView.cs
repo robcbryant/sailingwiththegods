@@ -9,8 +9,6 @@ using UnityEngine.UI;
 
 public class CargoInventoryViewModel : ListenerModel
 {
-	private const string ResourcePath = "resource_icons";
-
 	private Resource Resource;
 
 	public int AmountKg {
@@ -28,8 +26,7 @@ public class CargoInventoryViewModel : ListenerModel
 		Resource = resource;
 		Listen(Resource);
 
-		var iconFilename = Globals.GameVars.masterResourceList.FirstOrDefault(r => r.name == Name).icon;
-		Icon = Resources.Load<Sprite>(ResourcePath + "/" + iconFilename);
+		Icon = Resource.IconSprite();
 	}
 }
 

@@ -1,16 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CargoItemTradeViewModel : Model
 {
-	private const string ResourcePath = "resource_icons";
-
 	private Resource Resource;
 	private GameVars GameVars => Globals.GameVars;
 
@@ -82,8 +73,7 @@ public class CargoItemTradeViewModel : Model
 		TradeAction = action;
 		AllowSelection = true;
 
-		var iconFilename = Globals.GameVars.masterResourceList.FirstOrDefault(r => r.name == Name).icon;
-		Icon = Resources.Load<Sprite>(ResourcePath + "/" + iconFilename);
+		Icon = Resource.IconSprite();
 	}
 
 	public void Select() {

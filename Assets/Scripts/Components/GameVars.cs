@@ -69,10 +69,12 @@ public class GameVars : MonoBehaviour
 	public const string TD_minute = "0";
 	public const string TD_second = "0";
 
-	public CrewMember Jason => masterCrewList.FirstOrDefault(c => c.isJason);
-	public IEnumerable<CrewMember> StandardCrew => masterCrewList.Where(c => !c.isPirate);
-	public IEnumerable<CrewMember> Pirates => masterCrewList.Where(c => c.isPirate);
-	public IEnumerable<PirateType> PirateTypes => masterPirateTypeList;
+	// TODO: These should be removed eventually in favor of using Globals.GameVars.Crew.Jason, so that GameVars isn't so overloaded with util functions
+	public CrewMember Jason => Crew.Jason;
+	public IEnumerable<CrewMember> StandardCrew => Crew.StandardCrew;
+	public IEnumerable<CrewMember> Pirates => Crew.Pirates;
+	public IEnumerable<PirateType> PirateTypes => Crew.PirateTypes;
+	public IEnumerable<CrewMember> AllNonCrew => Crew.AllNonCrew;
 
 	[Header("World Scene Refs")]
 	public GameObject FPVCamera;
@@ -217,6 +219,8 @@ public class GameVars : MonoBehaviour
 	// high level game systems
 	public Trade Trade { get; private set; }
 	public Network Network { get; private set; }
+	public Icons Icons { get; private set; }
+	public Crew Crew { get; private set; }
 	public bool isInNetwork => Network.CheckIfCityIDIsPartOfNetwork(currentSettlement.settlementID);
 
 	//###################################
@@ -279,9 +283,6 @@ public class GameVars : MonoBehaviour
 
 		playerShipVariables = playerShip.GetComponent<script_player_controls>();
 
-		Network = new Network(this);
-		Trade = new Trade(this);
-
 		//Load all txt database files
 		masterPirateTypeList = CSVLoader.LoadMasterPirateTypes();
 		masterCrewList = CSVLoader.LoadMasterCrewRoster(masterPirateTypeList);
@@ -310,7 +311,13 @@ public class GameVars : MonoBehaviour
 		// end Mylo's Addition
 
 		region_masterList = CSVLoader.LoadRegionList();
-		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list, region list, and crew list
+		settlement_masterList = CSVLoader.LoadSettlementList();     // depends on resource list, region list, and crew list
+
+		// must be after csv are loaded
+		Network = new Network(this);
+		Trade = new Trade(this);
+		Icons = new Icons(masterResourceList);
+		Crew = new Crew(masterCrewList, masterPirateTypeList, playerShipVariables.ship);
 
 		CreateSettlementsFromList();
 		currentSettlementGameObject = settlement_masterList_parent.transform.GetChild(0).gameObject;
@@ -1054,7 +1061,7 @@ public class GameVars : MonoBehaviour
 		}
 
 		//Now let's add all the possible non-quest historical people for hire
-		foreach (CrewMember thisMember in StandardCrew) {
+		foreach (CrewMember thisMember in Crew.StandardCrew) {
 			//make sure we don't go over 40 listings
 			if (newGameAvailableCrew.Count == 40)
 				break;
@@ -1100,9 +1107,9 @@ public class GameVars : MonoBehaviour
 		//	--the most it has available
 		List<CrewMember> availableCrew = new List<CrewMember>();
 		int numOfIterations = 0;
-		int numStandardCrew = StandardCrew.Count();
+		int numStandardCrew = Crew.StandardCrew.Count();
 		while (numberOfCrewmanNeeded != availableCrew.Count) {
-			CrewMember thisMember = StandardCrew.RandomElement();
+			CrewMember thisMember = Crew.StandardCrew.RandomElement();
 			if (!thisMember.isPartOfMainQuest) {
 				//Now make sure this crewmember isn't already in the current crew
 				if(!playerShipVariables.ship.crewRoster.Contains(thisMember)) {

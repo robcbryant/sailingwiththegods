@@ -17,7 +17,7 @@ public class DashboardViewModel : Model
 	public readonly ICollectionModel<CrewManagementMemberViewModel> CrewList;
 
 	public BoundModel<float> Clout;
-	public CrewMember Jason => Globals.GameVars.Jason;
+	public CrewMember Jason => Globals.GameVars.Crew.Jason;
 
 	public BoundModel<bool> SailsAreUnfurled { get; private set; }
 

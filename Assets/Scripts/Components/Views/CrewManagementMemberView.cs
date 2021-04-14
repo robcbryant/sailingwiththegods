@@ -10,9 +10,6 @@ using UnityEngine.UI;
 
 public class CrewManagementMemberViewModel : Model
 {
-	private const string ResourcePath = "crew_portraits";
-	private const string DefaultPortrait = "crew_portraits/phoenician_sailor";
-
 	public CrewMember Member { get; private set; }
 	
 	public Sprite Portrait { get; private set; }
@@ -42,7 +39,7 @@ public class CrewManagementMemberViewModel : Model
 	public CrewManagementMemberViewModel(CrewMember member, Action<CrewManagementMemberViewModel> onClick, Action<CityViewModel> onClickCity) {
 		Member = member;
 		OnClick = onClick;
-		Portrait = Resources.Load<Sprite>(ResourcePath + "/" + member.ID) ?? Resources.Load<Sprite>(DefaultPortrait);
+		Portrait = member.PortraitSprite();
 		
 		// don't bother building the network list if we're being created for a view that doesn't need it
 		// sort by port name so you can easily look up a port in the list
