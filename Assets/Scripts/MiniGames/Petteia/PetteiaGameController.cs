@@ -56,8 +56,6 @@ public class PetteiaGameController : MonoBehaviour
 	void Start() {
 		//menuCanvas.SetActive(false);
 		//endCanvas.SetActive(false);
-		Debug.Log("PETTEIA START");
-		Debug.Log($"Active scene {SceneManager.GetActiveScene().name}");
 		mgScreen.gameObject.SetActive(true);
 		mgScreen.DisplayText("Petteia", "Taverna game", "Petteia is started, here's where stuff will go", gameIcon, MiniGameInfoScreen.MiniGame.TavernaStart);
 		enemyAI = GetComponent<PetteiaEnemyAI>();
@@ -135,7 +133,7 @@ public class PetteiaGameController : MonoBehaviour
 
 	public void RestartMinigame() 
 	{
-		StartCoroutine(ReloadMinigame());
+		TavernaController.ReloadTavernaGame("Petteia");
 	}
 
 	//TODO: no more reloading, we'll have to just reset everything's position and state
