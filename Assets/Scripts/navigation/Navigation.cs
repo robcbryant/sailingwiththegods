@@ -9,18 +9,19 @@ using TMPro;
 namespace Nav {
 	public class Navigation : MonoBehaviour
 	{
-		[SerializeField] private GameObject _TitleScreen;
+
+		[SerializeField] private GameObject _TitleScreen = null;
 		Transform player;
 		private city cities;
-		[SerializeField] private NavMeshAgent AI;
+		[SerializeField] private NavMeshAgent AI = null;
 		private LineRenderer lineRenderer;
-		[SerializeField] private TMP_Text _Text;
-		[SerializeField] private Image _imageSlot;
+		[SerializeField] private TMP_Text _Text = null;
+		[SerializeField] private Image _imageSlot = null;
 		private const string _ResourcePath = "crew_portraits";
 		private const string _DefaultPortrait = "crew_portraits/phoenician_sailor";
-		[SerializeField] private GameObject _menu;
-		[SerializeField] private GameObject _Navgater;
-		[SerializeField] private bool _lineRendererON;
+		[SerializeField] private GameObject _menu = null;
+		[SerializeField] private GameObject _Navgater = null;
+		[SerializeField] private bool _lineRendererON = false;
 		private bool _startNavigation = false;
 		bool _CoroutineOn = false;
 		Vector3 nexPoint;

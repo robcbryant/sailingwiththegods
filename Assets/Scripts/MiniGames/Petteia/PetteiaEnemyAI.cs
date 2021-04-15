@@ -6,27 +6,18 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public class PetteiaEnemyAI : MonoBehaviour
 {
-	
-	//public int[,] positions = new int[8, 8];
 	public List<GameObject> pieces;
-	private bool isMoving;
 	private GameObject currentPiece;
 	private int movementDistance = 0;
 	
 	private PetteiaGameController pController;
 
-
-	//Some variables are public for debugging and being able to be viewed in the inspector 
-	// Start is called before the first frame update
 	void Start()
     {
-		//playerShip = GameObject.FindGameObjectWithTag("playerShip").GetComponent<script_player_controls>();
-		isMoving = false;
 		pController = GetComponent<PetteiaGameController>();
 		
 	}
 
-    // Update is called once per frame
     void Update()
     {
 	//	Debug.Log("Numpieces" + pieces.Count);
@@ -58,20 +49,21 @@ public class PetteiaEnemyAI : MonoBehaviour
 		}
 	}
 
-	public void CheckPieces() {
-		Debug.Log("Checking enemy pieces");
+	public IEnumerator CheckPieces() {
+		Debug.Log("Enemy CheckPieces");
 		for (int i = pieces.Count - 1; i >= 0; i--) {
 			if (pieces[i] == null) {
-				Debug.Log($"Enemy piece {i} null, removing");
 				pieces.RemoveAt(i);
 			}
 		}
+		Debug.Log("Done with Enemy CheckPieces");
+		yield return null;
 	}
 
 	IEnumerator MakeMove() {
 		
 		yield return new WaitForSeconds(1f);
-		CheckPieces();
+		//CheckPieces();
 
 		string s = "";
 		
@@ -565,11 +557,10 @@ public class PetteiaEnemyAI : MonoBehaviour
 		//find out which piece we want to move AND why and where it needs to go 
 
 		//Ending turn
-		yield return new WaitForSeconds(0.25f);
+		yield return null;
 
-		pController.SwitchTurn();
+		StartCoroutine(pController.SwitchTurn());
 		
-		isMoving = false;
 	}
 
 	IEnumerator MovePiece(GameObject piece, string dir, int dist) 
@@ -578,36 +569,35 @@ public class PetteiaEnemyAI : MonoBehaviour
 		////Debug test
 		x = (int)piece.GetComponent<Positions>().pos.x;
 		y = (int)piece.GetComponent<Positions>().pos.y;
-		Debug.Log($"Setting {x}, {y} to 0");
 		pController.positions[x, y] = 0;
-		Debug.Log($"{x}, {y} should be 0, is {pController.positions[x, y]}");
 		//Debug.Log((int)piece.GetComponent<Positions>().pos.x);
 		//Debug.Log((int)piece.GetComponent<Positions>().pos.y);
 
 		//piece.transform.Translate(Vector3.back * 6.25f);
 
 		if (dir == "up") {
-			piece.transform.Translate(Vector3.forward * 6.25f * dist);
+			//piece.transform.Translate(Vector3.forward * 6.25f * dist);
 			x -= dist;
 		}
 		else if (dir == "left") {
-			piece.transform.Translate(Vector3.left * 6.25f * dist);
+			//piece.transform.Translate(Vector3.left * 6.25f * dist);
 			y -= dist;
+
 		}
 		else if (dir == "right") {
-			piece.transform.Translate(Vector3.right * 6.25f * dist);
+			//piece.transform.Translate(Vector3.right * 6.25f * dist);
 			y += dist;
 		}
 		else if (dir == "down") {
-			piece.transform.Translate(Vector3.back * 6.25f * dist);
+			//piece.transform.Translate(Vector3.back * 6.25f * dist);
 			x += dist;
 		}
-		
+
+		piece.transform.position = pController.BoardSquares[x, y].transform.position;
 		yield return new WaitForSeconds(0.5f);
 
 
 		pController.PlayMoveSound();
-		Debug.Log($"Moving to {x}, {y}");
 		pController.positions[x, y] = 1;
 
 		//Debug.Log((int)piece.GetComponent<Positions>().pos.x);

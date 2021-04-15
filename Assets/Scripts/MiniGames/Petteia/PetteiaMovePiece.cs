@@ -174,7 +174,7 @@ public class PetteiaMovePiece : MonoBehaviour
 					pieceStartPos = potentialPos;
 					//pController.CheckCapture();
 					//Debug.Log("Preparing to switch turn off of player");
-					pController.SwitchTurn();
+					StartCoroutine(pController.SwitchTurn());
 					pController.PlayMoveSound();
 				}
 				else {

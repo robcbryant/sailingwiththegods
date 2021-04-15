@@ -148,14 +148,16 @@ public class PetteiaGameController : MonoBehaviour
 		SceneManager.SetActiveScene(SceneManager.GetSceneByName(name));
 	}
 
-	public void SwitchTurn() 
+	public IEnumerator SwitchTurn() 
 	{
 		PrintBoard();
 		//Debug.Log("Switching turn");
 		if (yourTurn) {
 			Debug.Log("Ending player turn");
 			yourTurn = false;
-			CheckCapture();
+			yield return CheckCapture();
+			Debug.Log("Done CheckCapture");
+			CheckGameOver();
 			curPosArray = PosToArray((int)curPos.x, (int)curPos.y);
 			oldPosArray = PosToArray((int)oldPos.x, (int)oldPos.y);
 			updateOld = true;
@@ -165,7 +167,9 @@ public class PetteiaGameController : MonoBehaviour
 		else {
 			Debug.Log("Ending enemy turn");
 			yourTurn = true;
-			CheckCapture();
+			yield return CheckCapture();
+			Debug.Log("Done CheckCapture");
+			CheckGameOver();
 			oldPosArray = Vector2.up;
 			curPosArray = Vector2.up;
 			oldPos = Vector2.up;
@@ -257,8 +261,7 @@ public class PetteiaGameController : MonoBehaviour
 		}
 	}
 
-	public void CheckCapture() {
-
+	public IEnumerator CheckCapture() {
 		for (int y = 0; y < 8; y++) {
 
 			for (int x = 0; x < 8; x++) {
@@ -269,7 +272,7 @@ public class PetteiaGameController : MonoBehaviour
 						&& positions[x + 1, y] == 2
 						&& positions[x - 1, y] == 2) {
 							Debug.Log("CAPTURE1");
-							CapturePiece(x, y);
+							yield return DoCapturePiece(x, y);
 							//Debug.Log(x.ToString() + y.ToString());
 						}
 					
@@ -278,7 +281,7 @@ public class PetteiaGameController : MonoBehaviour
 					&& positions[x + 1, y] == 1
 					&& positions[x - 1, y] == 1) {
 							Debug.Log("CAPTURE2");
-							CapturePiece(x, y);
+							yield return DoCapturePiece(x, y);
 							//Debug.Log(x.ToString() + y.ToString());
 						}
 					
@@ -289,7 +292,7 @@ public class PetteiaGameController : MonoBehaviour
 					&& positions[x, y + 1] == 2
 					&& positions[x, y - 1] == 2) {
 							Debug.Log("CAPTURE3");
-							CapturePiece(x, y);
+							yield return DoCapturePiece(x, y);
 							//Debug.Log(x.ToString() + y.ToString());
 						}
 					
@@ -298,7 +301,7 @@ public class PetteiaGameController : MonoBehaviour
 						&& positions[x, y + 1] == 1
 						&& positions[x, y - 1] == 1) {
 							Debug.Log("CAPTURE4");
-							CapturePiece(x, y);
+							yield return DoCapturePiece(x, y);
 							//Debug.Log(x.ToString() + y.ToString());
 						
 					}
@@ -307,7 +310,7 @@ public class PetteiaGameController : MonoBehaviour
 
 			}
 		}
-		CheckGameOver();
+		//CheckGameOver();
 		#region old code
 		//Older function with semantics errors
 
@@ -372,21 +375,43 @@ public class PetteiaGameController : MonoBehaviour
 
 	public void CheckGameOver() {
 		Debug.Log($"Players: {playerPieces.Count} | Enemies: {enemyAI.pieces.Count}");
-		if (yourTurn) {
-			if (enemyAI.pieces.Count <= 1) {
-				//endCanvas.SetActive(true);
-				gameOver = true;
-			}
+		if (enemyAI.pieces.Count <= 1) {
+			mgScreen.gameObject.SetActive(true);
+			mgScreen.DisplayText("Petteia Victory", "Taverna Game", "You won the game and now you get a reward.", gameIcon, MiniGameInfoScreen.MiniGame.TavernaEnd);
+			gameOver = true;
 		}
-		else {
-			if (playerPieces.Count <= 1) {
-				//endCanvas.SetActive(true);
-				gameOver = true;
-			}
+
+		if (playerPieces.Count <= 1) {
+			mgScreen.gameObject.SetActive(true);
+			mgScreen.DisplayText("Petteia Loss", "Taverna Game", "You lost the game and now you get nothing.", gameIcon, MiniGameInfoScreen.MiniGame.TavernaEnd);
+			gameOver = true;
 		}
 	}
 
 	private void CapturePiece(int i, int j) {
+		StartCoroutine(DoCapturePiece(i, j));
+	}
+
+	private IEnumerator DoCapturePiece(int i, int j) 
+	{
+		Debug.Log("DoCapturePiece");
+		Debug.Log("Line after DoCapturePiece");
+		positions[i, j] = 0;
+		Debug.Log("Set positions to 0");
+		BoardSquares[i, j].DestroyPiece();
+		Debug.Log("Destroyed piece");
+		Debug.Log("enemyAI.CheckPieces");
+		yield return StartCoroutine(enemyAI.CheckPieces());
+		Debug.Log("Finished with enemyAI.CheckPieces");
+		yield return null;
+
+		//CheckGameOver();
+		PrintBoard();
+		//colliders[i, j].GetComponent<PetteiaColliderMover>().destroy = true;
+		//colliders[i, j].SetActive(true);
+		//Collider needs time to check for collisions
+		//yield return new WaitForSeconds(0.2f);
+		//colliders[i, j].SetActive(false);
 
 		if (Random.Range(0f, 1f) < barkChance) {
 			//player captures enemy
@@ -398,15 +423,6 @@ public class PetteiaGameController : MonoBehaviour
 				gameBarks.DisplayBragging();
 			}
 		}
-		
-		positions[i, j] = 0;
-		BoardSquares[i, j].DestroyPiece();
-		PrintBoard();
-		//colliders[i, j].GetComponent<PetteiaColliderMover>().destroy = true;
-		//colliders[i, j].SetActive(true);
-		//Collider needs time to check for collisions
-		//yield return new WaitForSeconds(0.2f);
-		//colliders[i, j].SetActive(false);
 	}
 
 	//IEnumerator GetPiece(int i, int j) {
