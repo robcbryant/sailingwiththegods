@@ -37,6 +37,7 @@ public class TavernaMiniGameDialog : MonoBehaviour
 	}
 
 	public void DisplayInsult() {
+		Time.timeScale = 0;
 		textBackground.SetActive(true);
 		if (Globals.GameVars != null) {
 			dialog.text = Globals.GameVars.tavernaGameInsults.RandomElement();
@@ -47,6 +48,7 @@ public class TavernaMiniGameDialog : MonoBehaviour
 	}
 
 	public void DisplayBragging() {
+		Time.timeScale = 0;
 		textBackground.SetActive(true);
 		if (Globals.GameVars != null) {
 			dialog.text = Globals.GameVars.tavernaGameBragging.RandomElement();
@@ -54,6 +56,11 @@ public class TavernaMiniGameDialog : MonoBehaviour
 		else {
 			dialog.text = "Bragging goes here";
 		}
+	}
+
+	public void CloseDialog() {
+		Time.timeScale = 1;
+		textBackground.SetActive(false);
 	}
 
 	//public void EnemyCaptures() {

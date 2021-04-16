@@ -42,11 +42,7 @@ public class PetteiaColliderMover : MonoBehaviour
 	public void DestroyPiece() {
 		if (currentPiece != null) {
 			if (pController.playerPieces.Contains(currentPiece)) {
-				Debug.Log("Player piece being destroyed, removing it from the list...");
 				pController.playerPieces.Remove(currentPiece);
-			}
-			else {
-				Debug.Log("Not a player piece");
 			}
 			Destroy(currentPiece.gameObject);
 			currentPiece = null;
