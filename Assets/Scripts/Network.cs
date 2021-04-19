@@ -47,8 +47,8 @@ public class Network
 
 	public IEnumerable<CrewMember> CrewMembersWithNetwork(Settlement settlement, bool includeJason = false) {
 		var list = Ship.crewRoster.Where(crew => GetCrewMemberNetwork(crew).Contains(settlement));
-		if (includeJason && GetCrewMemberNetwork(GameVars.Jason).Contains(settlement)) {
-			list = list.Concat(new[] { GameVars.Jason });
+		if (includeJason && GetCrewMemberNetwork(GameVars.Crew.Jason).Contains(settlement)) {
+			list = list.Concat(new[] { GameVars.Crew.Jason });
 		}
 		return list;
 	}

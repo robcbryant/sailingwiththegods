@@ -1,5 +1,6 @@
 // Mylo Gonzalez
 
+using Nav;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,13 @@ public class YarnTavern : MonoBehaviour
 {
 
 	private DialogScreen ds;
+	private Navigation _Nav;
 
 	void Start() 
 	{
 		ds = GetComponent<DialogScreen>();
 		ds.Runner.AddCommandHandler("displayknownsettlements", GenerateKnownSettlementUI);
+		_Nav = GameObject.Find("Nav").GetComponent<Navigation>();
 	}
 
 	[YarnCommand("settaverninfo")]
@@ -59,7 +62,7 @@ public class YarnTavern : MonoBehaviour
 		{
 			guideText[i].TextQA = guideText[1].TextQA;
 			//Debug.Log("WAS EMPT E");
-
+			
 		}
 		if (guideText[i].TextQA[1].Equals("")) {
 			guideText[i].TextQA = guideText[1].TextQA;
@@ -80,13 +83,14 @@ public class YarnTavern : MonoBehaviour
 	[YarnCommand("setbeacon")]
 	public void SetSettlementWaypoint()
 	{
-		int cityID = (int)ds.Storage.GetValue("$known_city_ID").AsNumber;
-		Vector3 location = Vector3.zero;
-		for (int x = 0; x < Globals.GameVars.settlement_masterList_parent.transform.childCount; x++)
-			if (Globals.GameVars.settlement_masterList_parent.transform.GetChild(x).GetComponent<script_settlement_functions>().thisSettlement.settlementID == cityID)
-				location = Globals.GameVars.settlement_masterList_parent.transform.GetChild(x).position;
-		Globals.GameVars.ActivateNavigatorBeacon(Globals.GameVars.navigatorBeacon, location);
-		Globals.GameVars.playerShipVariables.ship.currentNavigatorTarget = cityID;
+		_Nav.SetDestination(ds.Storage.GetValue("$known_city").AsString,Globals.GameVars.AllNonCrew.RandomElement().ID);
+		//int cityID = (int)ds.Storage.GetValue("$known_city_ID").AsNumber;
+		//Vector3 location = Vector3.zero;
+		//for (int x = 0; x < Globals.GameVars.settlement_masterList_parent.transform.childCount; x++)
+		//	if (Globals.GameVars.settlement_masterList_parent.transform.GetChild(x).GetComponent<script_settlement_functions>().thisSettlement.settlementID == cityID)
+		//		location = Globals.GameVars.settlement_masterList_parent.transform.GetChild(x).position;
+		//Globals.GameVars.ActivateNavigatorBeacon(Globals.GameVars.navigatorBeacon, location);
+		//Globals.GameVars.playerShipVariables.ship.currentNavigatorTarget = cityID;
 		//Globals.GameVars.ShowANotificationMessage("You hired a navigator to " + City.name + " for " + CostToHire + " drachma.");
 		
 	}
