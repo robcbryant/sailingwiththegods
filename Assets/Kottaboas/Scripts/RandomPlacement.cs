@@ -8,19 +8,19 @@ public class RandomPlacement : MonoBehaviour
 	public KottaboasManager gm;
 
 	public Transform[] pos;
-	private Vector3 startPosLekane, startPosKottaboaStand;
+	private Vector3 startPosLekane, startPosKottabosStand;
 
 	//Limit the how far the table and kottaboas stand will be displaced
-	private float xMaxRange = 4f;
-	private float xMinRange = -4.0f;
-	private float zMaxRange = 4f;
-	private float zMinRange = -1.0f;
+	private float xMaxRange = 4.25f;
+	private float xMinRange = -4.25f;
+	private float zMaxRange = 4.25f;
+	private float zMinRange = -0.75f;
 
 	private static float percent = 50.0f;
 	// Start is called before the first frame update
 	void Start() {
 		startPosLekane = new Vector3(pos[0].position.x - 1.0f, pos[0].position.y, pos[0].position.z);
-		startPosKottaboaStand = new Vector3(pos[1].position.x + 1.0f, pos[1].position.y, pos[1].position.z);
+		startPosKottabosStand = new Vector3(pos[1].position.x + 1.0f, pos[1].position.y, pos[1].position.z);
 
 		PlacementChances();
 
@@ -72,7 +72,7 @@ public class RandomPlacement : MonoBehaviour
 			zMinRange = -1.5f;
 		}
 		else if (percent >= 10 && percent < rangeInt) {
-			zMaxRange = 4.5f;
+			zMaxRange = 4.25f;
 			zMinRange = 0.0f;
 		}
 	}
@@ -86,17 +86,6 @@ public class RandomPlacement : MonoBehaviour
 		placmentCount++;
 		for (int i = 0; i < pos.Length; i++) {
 			pos[i].transform.position = new Vector3(Random.Range(xMinRange, xMaxRange), pos[i].position.y, Random.Range(zMinRange, zMaxRange));
-			/*if (i < pos.Length - 1 && Vector3.Distance(pos[i].transform.position, pos[i + 1].transform.position) < 3.0f)
-			if (Vector3.Distance(pos[0].transform.position, pos[1].transform.position) < 3.0f)
-            {
-				placmentCount++;
-				Debug.Log(placmentCount);
-				if (pos[i].name == "Lekane")
-                {
-                    PlaceRandomPosition();
-                }
-            }
-			*/
 		}
 	}
 
@@ -104,7 +93,7 @@ public class RandomPlacement : MonoBehaviour
 	/// If PlaceRandomPosition's placementCount is to high the objects will just be placed in there default positions
 	/// </summary>
 	public void DefaultPositioning() {
-		pos[0].position = startPosKottaboaStand;
+		pos[0].position = startPosKottabosStand;
 		pos[1].position = startPosLekane;
 		placmentCount = 0;
 	}

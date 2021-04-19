@@ -27,7 +27,7 @@ public class Throw : MonoBehaviour
     void Update()
     {
         pointToTravel = new Vector3(tr.trajectory.GetPosition(0).x, tr.trajectory.GetPosition(0).y, tr.trajectory.GetPosition(0).z);
-        power = Mathf.Clamp(power, 0.5f, 2.0f);
+        power = Mathf.Clamp(power, 0.5f, 4.0f);
         pointToTravel = (pointToTravel * power);
 
         if (Input.GetKeyUp(KeyCode.Space))

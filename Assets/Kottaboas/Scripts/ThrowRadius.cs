@@ -18,7 +18,6 @@ public class ThrowRadius : MonoBehaviour
     //Controls the point of where droplets will go
     public int posHorizontal = 90;
     public int posVertical = 45;
-    public int posZ = 90;
 
 
     // Start is called before the first frame update
@@ -97,23 +96,19 @@ public class ThrowRadius : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
         {
             posVertical++;
-            posZ++;
         }
         else if (Input.GetKey(KeyCode.S))
         {
             posVertical--;
-			posZ++;
 		}
 
         posHorizontal = Mathf.Clamp(posHorizontal, 0, 180);
         posVertical = Mathf.Clamp(posVertical, 0, 180);
-        posZ = Mathf.Clamp(posVertical, 0, 360);
 
         var radh = Mathf.Deg2Rad * (posHorizontal * 180.0f / segments);
         var radv = Mathf.Deg2Rad * (posVertical * 90.0f / segments);
-        var radz = Mathf.Deg2Rad * (posZ * 180.0f / segments);
-        //pointa = new Vector3(Mathf.Cos(radh) * radius, Mathf.Sin(radv) * radius, Mathf.Sin(radz) * radius);
-        pointa = new Vector3(Mathf.Cos(radh) * radius, Mathf.Sin(radv) * radius, Mathf.Sin(radh) * radius);
+        pointa = new Vector3(Mathf.Cos(radh) * radius, Mathf.Sin(radv) * radius, (Mathf.Sin(radh) * radius));
+        //pointa = new Vector3(Mathf.Cos(radh) * radius, Mathf.Sin(radv) * radius, Mathf.Clamp((Mathf.Sin(radh) * radius) - (Mathf.Sin(radv) * radius),0,5));
         
         trajectory.SetPosition(0, pointa);        
     }
