@@ -8,10 +8,12 @@ public class CamSway : MonoBehaviour
     //amplitude that controls the rate at which camera bobs
 	[SerializeField]
     private float ampX = 0.01f;
+	[SerializeField]
 	private float ampY = 0.01f;
 
 	[SerializeField]
 	private float pX = 40.0f;
+	[SerializeField]
 	private float pY = 40.0f;
 
     //x and y are the formulas for a sine(y) and cos(x) wave for which the camera will follow

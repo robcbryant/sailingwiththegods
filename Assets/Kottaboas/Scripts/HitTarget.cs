@@ -13,7 +13,7 @@ public class HitTarget : MonoBehaviour
 	/// <param name="collision"></param>
 	private void OnCollisionEnter(Collision collision) {
 		if (collision.collider.gameObject.CompareTag("Target")) {
-			if (collision.collider.gameObject.name == "TopTargetCol" || collision.collider.gameObject.name == "TopTargetCol2") {
+			if (collision.collider.gameObject.name == "TopTarget" || collision.collider.gameObject.name == "TopTargetCol" || collision.collider.gameObject.name == "TopTargetCol2") {
 				gm.SCORE_PER_HIT(3);
 				//gameObject.SetActive(false);				
 				collision.collider.gameObject.GetComponent<AudioSource>().Play();
@@ -36,9 +36,7 @@ public class HitTarget : MonoBehaviour
 			}
 			gm.Scored = true;
 			gm.IsHit = true;
-		}
-		if (collision.collider.gameObject.CompareTag("Wine")) 
-		{
+		}else if (collision.collider.gameObject.CompareTag("Wine")) {
 			gameObject.SetActive(false);
 			collision.collider.gameObject.GetComponent<AudioSource>().Play();
 		}

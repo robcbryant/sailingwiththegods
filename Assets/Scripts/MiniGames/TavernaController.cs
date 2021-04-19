@@ -27,6 +27,10 @@ public class TavernaController : MonoBehaviour
 	public void StartSong() {
 		StartCoroutine(LoadTavernaGame("SongCompMainMenu"));
 	}
+	
+	public void StartKottaboas() {
+		StartCoroutine(LoadTavernaGame("Kottaboas_Game"));
+	}
 
 	public void StartTavernaConvo() {
 		LeaveTavernaGame();
