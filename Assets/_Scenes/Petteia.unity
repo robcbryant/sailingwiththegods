@@ -365,7 +365,7 @@ MonoBehaviour:
   - {fileID: 195082817}
   mgScreen: {fileID: 5220106615405182564}
   gameBarks: {fileID: 5220106615405182563}
-  gameIcon: {fileID: 21300000, guid: af7165ae6ebb98e40aad82fd50969672, type: 3}
+  gameIcon: {fileID: 21300000, guid: bc1b4e5108619994fb400220fb761c71, type: 3}
   barkChance: 0.25
   boardText: 
   yourTurn: 1
@@ -13951,6 +13951,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 53686427298755361, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4099227}
+    - target: {fileID: 53686427298755361, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ExitMinigame
+      objectReference: {fileID: 0}
     - target: {fileID: 212346317799614982, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -15097,6 +15107,21 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8527801525367743957, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5220106615405182563}
+    - target: {fileID: 8527801525367743957, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseDialog
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527801525367743957, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8527801525468624221, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -15161,6 +15186,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8766738322052494194, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4099227}
+    - target: {fileID: 8766738322052494194, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RestartMinigame
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7bddbb20614417b4d982059e874b4a90, type: 3}
