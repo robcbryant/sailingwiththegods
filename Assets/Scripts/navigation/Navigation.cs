@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 namespace Nav {
-	public class Navigation : MonoBehaviour
-	{
-		[SerializeField] private GameObject _TitleScreen;
+	public class Navigation : MonoBehaviour {
+		[SerializeField] private GameObject[] _UIScreen;
 		Transform player;
 		private city cities;
 		[SerializeField] private NavMeshAgent AI;
@@ -39,22 +39,34 @@ namespace Nav {
 		}
 		private void Update() {
 
-			if(!_TitleScreen.activeSelf && _startNavigation) {
+			//check if those screen is active if not make the Navigation UI appear
+			var canShowNavigation = Globals.GameVars.IsSailingMode;
+			Debug.Log(canShowNavigation);
+			if(canShowNavigation && _startNavigation) {
 				ShowMenu(_startNavigation);
 			}
+			if (!canShowNavigation) {
+				_Navgater.SetActive(false);
+			}
+			//re-assgin the target loction will the navgation is not end
 			if(postion != null) {
 				SetDestination(postion, _crewID.Value);
 			}
 		}
+		//find world angle method
 		public static float CalcAngle(Vector3 from, Vector3 to) {
 			Vector3 delta = from - to;
 			return Mathf.Atan2(delta.x, delta.z) * 180 / Mathf.PI;
 		}
+
+		//rest the angle if is too big or too small
 		public static float EulerNormalize(float angle) {
 			while (angle < -180) angle += 360;
 			while (angle > 180) angle -= 360;
 			return angle;
 		}
+
+		//The navgation function call this fucntion to use navgation
 		public void SetDestination(string target, int ID) {
 			if (target == null) {
 				Debug.LogError("Didn't find the city");
@@ -99,6 +111,10 @@ namespace Nav {
 				}
 			}
 		}
+		/// <summary>
+		/// when player arrive the city after 3 second UI will be disappear
+		/// </summary>
+		/// <returns></returns>
 		IEnumerator CompeteNavgation() {
 			_CoroutineOn = true;
 			yield return new WaitForSeconds(3);
@@ -106,19 +122,31 @@ namespace Nav {
 			_Navgater.SetActive(false);
 			_CoroutineOn = false;
 		}
-		string FindCityDirection(Vector3 targetlocaion, Transform current) {
-			//float angle = CalcAngle(current.position + -current.up, targetlocaion);    // target angle relative to world
-			float angle = CalcAngle(current.position + -current.up, targetlocaion);    // target angle relative to world
-			 //angle -= 180;
-			string citydirecation = "The city is in the "+ FindDirection(angle)+".";
-			return citydirecation;
-		}
+		/// <summary>
+		/// It will find the city path and the direction basic on current ship faceing
+		/// </summary>
+		/// <param name="targetlocaion"></param>
+		/// <param name="current"></param>
+		/// <returns></returns>
+		//string FindCityDirection(Vector3 targetlocaion, Transform current) {
+		//	//float angle = CalcAngle(current.position + -current.up, targetlocaion);    // target angle relative to world
+		//	float angle = CalcAngle(current.position + -current.up, targetlocaion);    // target angle relative to world
+		//	 //angle -= 180;
+		//	string citydirecation = "The city is in the "+ FindDirection(angle)+".";
+		//	return citydirecation;
+		//}
+		
+		///Find the ship sailing direction
 		string FindPlayerDirection(Transform current) {
 			float angle2 = CalcAngle(current.position, current.position + current.up); // player angle relative to world
 			//float angle2 = CalcAngle(Vector3.forward, current.position ); // player angle relative to world
 			string Saildirecation = "Current direction of the ship is sail to the " + FindDirection(angle2) + ".";
 			return Saildirecation;
 		}
+
+		/// <summary>
+		/// Use the Navemesh agent find the path
+		/// </summary>
 		string getAIPath(Vector3 target,float radius) {
 			AI.stoppingDistance = radius;
 			AI.SetDestination(target);
@@ -142,8 +170,6 @@ namespace Nav {
 			}
 			//assign angle by the dircation
 			Vector3 dir = (nexPoint - (player.position + player.up)).normalized;
-			//Vector3 dir = (nexPoint - Vector3.forward).normalized;
-			//Debug.DrawRay(transform.position, dir, Color.red);
 			float angle = GetAngleFromVectorToFloat(dir);
 			return "In order to reach the destination the ship should sail to the " + FindDirection(angle) + ".";
 		}
@@ -151,9 +177,9 @@ namespace Nav {
 		//Find the price by distance
 		public int FindPrice(string cityName) {
 			Vector3 targetLocaion = cities.GetCityLocation(cityName);
-			int price = 50;
-			float distance = 0;
-			int mile = 10;
+			int price = 50; // set the price for one mile
+			float distance = 0; 
+			int mile = 10; // how much distance is one mile 
 			//check if city exist
 			if (targetLocaion == null) {
 				Debug.LogError("Unable to find city location");
@@ -174,11 +200,11 @@ namespace Nav {
 					distance += Vector3.Distance(path[i], path[i + 1]);
 				}
 			}
-			//for ever mile the price increase
-			if(distance > 10) {
+			//if there is distance then slove the price
+			if(distance > 1) {
 				price *= Mathf.RoundToInt(distance / mile);
-				if (price >= 2000)
-					price = 2000;
+				if (price >= 2000) price = 2000;
+				if (price <= 50) price =50;
 			}
 			return price;
 		}
