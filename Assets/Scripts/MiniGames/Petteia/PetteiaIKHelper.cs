@@ -30,7 +30,7 @@ public class PetteiaIKHelper : MonoBehaviour
 			}
 		}
 		if(Input.GetKeyUp(KeyCode.Mouse0)) {
-			armIK.gameObject.GetComponent<Animator>().SetTrigger("MovementIsDone"); onTheMove = false;
+			//armIK.gameObject.GetComponent<Animator>().SetTrigger("MovementIsDone"); onTheMove = false;
 		}
     }
 	public void SetInital(Transform t) 

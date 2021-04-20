@@ -43,11 +43,13 @@ git submodule update --init
 
 Most of the team is using https, but if you would like to use SSH authentication, follow [this guide](docs/ssh-auth.md).
 
-# Unzip the Navmesh
+## Unzip the Navmesh
 
-The Main Scene has a NavMesh that's over 100 MB so we have it committed to git as a ZIP file and the actual NavMesh asset is gitignored. After pulling for the first time, you need to manually unzip:
+The Main Scene has a NavMesh that's over 100 MB so we have it committed to git as a ZIP file and the actual NavMesh asset is gitignored. After pulling for the first time, you need to unzip. You should see a "Zipped assets have been updated, extract them?" popup. Choose "Yes (recommended)" to automatically extract the zip file.
 
-```Assets/Main Scene/NavMesh.zip```.
+If you do not see this popup or need to manually unzip, you can either use the SWTG -> Unzip Assets menu, or you can unzip the file manually:
+
+```Assets/_Scenes/Main Scene/NavMesh.zip```
 
 # Documentation
 

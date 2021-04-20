@@ -95,25 +95,8 @@ public class CityViewModel : Model
 	private Action<CityViewModel> _OnClick;
 	public Action<CityViewModel> OnClick { get => _OnClick; set { _OnClick = value; Notify(); } }
 
-	public Sprite PortIcon {
-		get {
-			Sprite currentBGTex = Resources.Load<Sprite>("settlement_portraits/" + City.settlementID);
-
-			//Now test if it exists, if the settlement does not have a matching texture, then default to a basic one
-			if (currentBGTex) return currentBGTex;
-			else return Resources.Load<Sprite>("settlement_portraits/gui_port_portrait_default");
-		}
-	}
-
-	public Sprite PortCoin {
-		get {
-			Sprite currentCoinTex = Resources.Load<Sprite>("settlement_coins/" + City.settlementID);
-
-			//Now test if it exists, if the settlement does not have a matching texture, then default to a basic one
-			if (currentCoinTex) return currentCoinTex;
-			else return Resources.Load<Sprite>("settlement_coins/default_coin_texture");
-		}
-	}
+	public Sprite PortIcon => City.PortIcon();
+	public Sprite PortCoin => City.PortCoinIcon();
 
 	public string PortPopulationRank {
 		get {

@@ -4,30 +4,58 @@ using UnityEngine;
 
 public class PetteiaColliderMover : MonoBehaviour
 {
-	public bool destory;
-	public PetteiaGameController p;
-	public GameObject go;
-    // Start is called before the first frame update
+	public Vector2Int position;
+	public GameObject highlight;
+	public PetteiaGameController pController;
+
+	//public bool destroy;
+	//public PetteiaGameController p;
+	public bool occupied;
+
+	private PetteiaMovePiece currentPiece;
+
     void Start()
     {
-		p = GameObject.Find("board").GetComponent<PetteiaGameController>();
-		destory = false;
+		//p = GameObject.Find("board").GetComponent<PetteiaGameController>();
+		//destroy = false;
+		highlight.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-	void OnTriggerEnter(Collider other) {
-
-
-		if (other.CompareTag("PetteiaB")) {
-			p.en.pieces.Remove(other.gameObject);
-			p.en.d.PlayerCaptures();
+	void OnTriggerEnter(Collider other) 
+	{
+		if (other.CompareTag("PetteiaB") || other.CompareTag("PetteiaW")) 
+		{
+			occupied = true;
+			currentPiece = other.GetComponent<PetteiaMovePiece>();
 		}
-		
-		Destroy(other.gameObject);
+	}
+
+	private void OnTriggerExit(Collider other) 
+	{
+		if (other.CompareTag("PetteiaB") || other.CompareTag("PetteiaW")) 
+		{
+			occupied = false;
+			currentPiece = null;
+		}
+	}
+
+	public void DestroyPiece() {
+		if (currentPiece != null) {
+			if (pController.playerPieces.Contains(currentPiece)) {
+				pController.playerPieces.Remove(currentPiece);
+			}
+			Destroy(currentPiece.gameObject);
+			currentPiece = null;
+			occupied = false;
+		}
+		else {
+			Debug.Log("CurrentPiece null");
+		}
+	}
+
+	public void HighlightSpace(bool toggle) 
+	{
+		highlight.SetActive(toggle);
 	}
 }
 

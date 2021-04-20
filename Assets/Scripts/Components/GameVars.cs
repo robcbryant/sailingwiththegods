@@ -69,11 +69,12 @@ public class GameVars : MonoBehaviour
 	public const string TD_minute = "0";
 	public const string TD_second = "0";
 
-	public CrewMember Jason => masterCrewList.FirstOrDefault(c => c.isJason);
-	public IEnumerable<CrewMember> StandardCrew => masterCrewList.Where(c => !c.isPirate);
-	public IEnumerable<CrewMember> Pirates => masterCrewList.Where(c => c.isPirate);
-	public IEnumerable<PirateType> PirateTypes => masterPirateTypeList;
-	public IEnumerable<CrewMember> AllNonCrew => StandardCrew.Where(c => !playerShipVariables.ship.crewRoster.Contains(c));
+	// TODO: These should be removed eventually in favor of using Globals.GameVars.Crew.Jason, so that GameVars isn't so overloaded with util functions
+	public CrewMember Jason => Crew.Jason;
+	public IEnumerable<CrewMember> StandardCrew => Crew.StandardCrew;
+	public IEnumerable<CrewMember> Pirates => Crew.Pirates;
+	public IEnumerable<PirateType> PirateTypes => Crew.PirateTypes;
+	public IEnumerable<CrewMember> AllNonCrew => Crew.AllNonCrew;
 
 	[Header("World Scene Refs")]
 	public GameObject FPVCamera;
@@ -202,7 +203,7 @@ public class GameVars : MonoBehaviour
 
 	[HideInInspector] public List<DialogText> portDialogText = new List<DialogText>();
 
-	//Mylo's Addition
+	//Taverna
 	[HideInInspector] public List<DialogText> networkDialogText = new List<DialogText>();
 	[HideInInspector] public List<DialogText> pirateDialogText = new List<DialogText>();
 	[HideInInspector] public List<DialogText> mythDialogText = new List<DialogText>();
@@ -211,19 +212,22 @@ public class GameVars : MonoBehaviour
 	[HideInInspector] public List<FoodText> foodItemText= new List<FoodText>();
 	[HideInInspector] public List<FoodText> wineInfoText = new List<FoodText>();
 	[HideInInspector] public List<FoodText> foodDialogueText = new List<FoodText>();
+	[HideInInspector] public List<string> tavernaGameInsults;
+	[HideInInspector] public List<string> tavernaGameBragging;
 
-
-
-	// End Mylo's Addition
 
 	// high level game systems
 	public Trade Trade { get; private set; }
 	public Network Network { get; private set; }
+	public Icons Icons { get; private set; }
+	public Crew Crew { get; private set; }
 	public bool isInNetwork => Network.CheckIfCityIDIsPartOfNetwork(currentSettlement.settlementID);
 
 	// TODO: Move into a subsystem. See Trade and Network example above.
-	public bool IsOnlyShowingAllowedUIs {
-		get {
+	public bool IsOnlyShowingAllowedUIs
+	{
+		get
+		{
 			var views = Globals.UI.GetActiveViews();
 			//var allowed = new[] { typeof(Dashboard), typeof(CrewListScreen), typeof(CargoInventoryView), typeof(CityView), typeof(MessageBoxView), typeof(InfoScreen), typeof(QuestScreen), typeof(CrewDetailsScreen)};
 			//bool result = !views.Any() || views.All(screen => allowed.Any(allow => screen.GetType().IsAssignableFrom(allow)));
@@ -232,7 +236,8 @@ public class GameVars : MonoBehaviour
 			return result;
 		}
 	}
-	public bool IsSailingMode => !isGameOver  && !IsCutsceneMode && IsOnlyShowingAllowedUIs;
+	public bool IsSailingMode => !isGameOver && !IsCutsceneMode && IsOnlyShowingAllowedUIs;
+
 
 	//###################################
 	//	RANDOM EVENT VARIABLES
@@ -294,9 +299,6 @@ public class GameVars : MonoBehaviour
 
 		playerShipVariables = playerShip.GetComponent<script_player_controls>();
 
-		Network = new Network(this);
-		Trade = new Trade(this);
-
 		//Load all txt database files
 		masterPirateTypeList = CSVLoader.LoadMasterPirateTypes();
 		masterCrewList = CSVLoader.LoadMasterCrewRoster(masterPirateTypeList);
@@ -308,6 +310,8 @@ public class GameVars : MonoBehaviour
 		CSVLoader.LoadPirateText(out pirateTitles, out pirateSubtitles, out pirateStartText, out pirateTypeIntroText, out pirateNegotiateText,
 			out pirateRunSuccessText, out pirateRunFailText, out pirateSuccessText, out pirateFailureText);
 		portDialogText = CSVLoader.LoadPortDialog();
+
+		CSVLoader.LoadTavernaGameBarks(out tavernaGameInsults, out tavernaGameBragging);
 
 		// Mylo's Addition
 		networkDialogText = CSVLoader.LoadNetworkDialog();
@@ -323,7 +327,13 @@ public class GameVars : MonoBehaviour
 		// end Mylo's Addition
 
 		region_masterList = CSVLoader.LoadRegionList();
-		settlement_masterList = CSVLoader.LoadSettlementList();		// depends on resource list, region list, and crew list
+		settlement_masterList = CSVLoader.LoadSettlementList();     // depends on resource list, region list, and crew list
+
+		// must be after csv are loaded
+		Network = new Network(this);
+		Trade = new Trade(this);
+		Icons = new Icons(masterResourceList);
+		Crew = new Crew(masterCrewList, masterPirateTypeList, playerShipVariables.ship);
 
 		CreateSettlementsFromList();
 		currentSettlementGameObject = settlement_masterList_parent.transform.GetChild(0).gameObject;
@@ -1067,7 +1077,7 @@ public class GameVars : MonoBehaviour
 		}
 
 		//Now let's add all the possible non-quest historical people for hire
-		foreach (CrewMember thisMember in StandardCrew) {
+		foreach (CrewMember thisMember in Crew.StandardCrew) {
 			//make sure we don't go over 40 listings
 			if (newGameAvailableCrew.Count == 40)
 				break;
@@ -1113,9 +1123,9 @@ public class GameVars : MonoBehaviour
 		//	--the most it has available
 		List<CrewMember> availableCrew = new List<CrewMember>();
 		int numOfIterations = 0;
-		int numStandardCrew = StandardCrew.Count();
+		int numStandardCrew = Crew.StandardCrew.Count();
 		while (numberOfCrewmanNeeded != availableCrew.Count) {
-			CrewMember thisMember = StandardCrew.RandomElement();
+			CrewMember thisMember = Crew.StandardCrew.RandomElement();
 			if (!thisMember.isPartOfMainQuest) {
 				//Now make sure this crewmember isn't already in the current crew
 				if(!playerShipVariables.ship.crewRoster.Contains(thisMember)) {
