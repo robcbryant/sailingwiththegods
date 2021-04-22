@@ -563,7 +563,7 @@ public class GameVars : MonoBehaviour
 
 	private void Update() {
 		UpdateCameraRotation();
-		DebugHotkeys();
+		//DebugHotkeys();
 	}
 
 	void DebugHotkeys() {

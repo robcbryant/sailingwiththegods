@@ -11,7 +11,7 @@ public class Throw : MonoBehaviour
     public Animator animate;
 
     //Controls how far the liquid drips will be thrown
-    public float power = 1.0f;
+    public float power = 1.5f;
 
 	public bool Launch { get; set; } = false;
 	public Rigidbody Rb { get; set; }

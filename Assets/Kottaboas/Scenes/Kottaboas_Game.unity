@@ -6794,8 +6794,8 @@ MonoBehaviour:
   - {fileID: 1629509764}
   - {fileID: 2022293380}
   - {fileID: 2036143186}
-  posHorizontal: 90
-  posVertical: 45
+  Yaw: 0
+  Pitch: -45
 --- !u!114 &1951047704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7312,7 +7312,7 @@ PrefabInstance:
     - target: {fileID: 865746767865399678, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: UnPauseMenu
+      value: KottabosUnPauseMenu
       objectReference: {fileID: 0}
     - target: {fileID: 865746767865399678, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
@@ -7732,12 +7732,12 @@ PrefabInstance:
     - target: {fileID: 5574293400811807695, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.00012207031
+      value: 0.000061035156
       objectReference: {fileID: 0}
     - target: {fileID: 7026477302407210515, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7049865012232007509, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
@@ -7748,6 +7748,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191196735708758109, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1024077446}
+    - target: {fileID: 7191196735708758109, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RestartKottabos
       objectReference: {fileID: 0}
     - target: {fileID: 7398002513987589330, guid: 7bddbb20614417b4d982059e874b4a90,
         type: 3}
@@ -7863,6 +7873,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8766738322052494194, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1024077446}
+    - target: {fileID: 8766738322052494194, guid: 7bddbb20614417b4d982059e874b4a90,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RestartKottabos
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7bddbb20614417b4d982059e874b4a90, type: 3}
