@@ -41,8 +41,10 @@ public class HitTarget : MonoBehaviour
 			collision.collider.gameObject.GetComponent<AudioSource>().Play();
 		}
 		gameObject.SetActive(false);
-		//Debug.Log(collision.collider.gameObject.GetComponent<AudioSource>());
-		collision.collider.gameObject.GetComponent<AudioSource>().Play();
+		//Debug.Log("Collied" +collision.collider.gameObject.GetComponent<AudioSource>());
+		if (collision.collider.gameObject.GetComponent<AudioSource>() != null) {
+			collision.collider.gameObject.GetComponent<AudioSource>().Play();
+		}
 		gm.ContinueRound = true;
 	}
 }

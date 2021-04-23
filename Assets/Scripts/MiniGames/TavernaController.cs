@@ -87,6 +87,7 @@ public class TavernaController : MonoBehaviour
 		yield return null;
 		SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
 		c.ToggleTavernaObjects(false);
+		Time.timeScale = 1;
 	}
 
 	static IEnumerator UnloadTavernaGame() {

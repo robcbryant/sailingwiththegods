@@ -15,9 +15,11 @@ public class ThrowRadius : MonoBehaviour
 
     private float radius = 5.0f;
 
-    //Controls the point of where droplets will go
-    public int posHorizontal = 90;
-    public int posVertical = 45;
+	//Controls the point of where droplets will go
+	//public int posHorizontal = 90;
+	//public int posVertical = 45;
+	public int Yaw = 0;    
+    public int Pitch = -45;
 
 
     // Start is called before the first frame update
@@ -84,6 +86,7 @@ public class ThrowRadius : MonoBehaviour
         //Sets first position of aiming line in correct spot
         Vector3 pointa = Vector3.zero;
 
+		/*
         if (Input.GetKey(KeyCode.A))
         {
             posHorizontal++;
@@ -101,15 +104,36 @@ public class ThrowRadius : MonoBehaviour
         {
             posVertical--;
 		}
+		*/
+		if (Input.GetKey(KeyCode.A)) {
+			Yaw--;
+		}
+		else if (Input.GetKey(KeyCode.D)) {
+			Yaw++;
+		}
 
-        posHorizontal = Mathf.Clamp(posHorizontal, 0, 180);
-        posVertical = Mathf.Clamp(posVertical, 0, 180);
+		if (Input.GetKey(KeyCode.W)) {
+			Pitch--;
+		}
+		else if (Input.GetKey(KeyCode.S)) {
+			Pitch++;
+		}
 
-        var radh = Mathf.Deg2Rad * (posHorizontal * 180.0f / segments);
-        var radv = Mathf.Deg2Rad * (posVertical * 90.0f / segments);
-        pointa = new Vector3(Mathf.Cos(radh) * radius, Mathf.Sin(radv) * radius, (Mathf.Sin(radh) * radius));
-        //pointa = new Vector3(Mathf.Cos(radh) * radius, Mathf.Sin(radv) * radius, Mathf.Clamp((Mathf.Sin(radh) * radius) - (Mathf.Sin(radv) * radius),0,5));
-        
-        trajectory.SetPosition(0, pointa);        
+		//posHorizontal = Mathf.Clamp(posHorizontal, 0, 180);
+		//posVertical = Mathf.Clamp(posVertical, 0, 180);
+		Yaw = Mathf.Clamp(Yaw, -180, 180);
+		Pitch = Mathf.Clamp(Pitch, -90, 0);
+
+        //var radh = Mathf.Deg2Rad * (Yaw * 180.0f / segments);
+        //var radv = Mathf.Deg2Rad * (Pitch * 90.0f / segments);
+		Vector3 dir = (Vector3.forward * radius) - trajectory.GetPosition(1);
+		Vector3 angle = new Vector3(Pitch * 180.0f / segments, (Yaw * 90.0f / segments), 0);
+		dir = Quaternion.Euler(angle) * dir;
+		pointa = dir + trajectory.GetPosition(1);
+		//pointa += Vector3.forward * Quaternion.Euler(posHorizontal * 180.0f / segments, (posVertical * 90.0f / segments),0); 
+		//pointa = new Vector3(Mathf.Cos(radh) * radius, Mathf.Sin(radv) * radius, Mathf.Sin(radh) * radius);
+		//pointa = new Vector3(Mathf.Cos(radh) * radius, Mathf.Sin(radv) * radius, Mathf.Clamp((Mathf.Sin(radh) * radius) - (Mathf.Sin(radv) * radius),0, 3.75f));
+
+		trajectory.SetPosition(0, pointa);        
     }
 }

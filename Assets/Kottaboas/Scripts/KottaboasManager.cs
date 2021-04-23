@@ -45,7 +45,7 @@ public class KottaboasManager : MonoBehaviour
 	// Start is called before the first frame update
 	void Start() {
 		
-		mgscreen.DisplayText("Kottabos", "Wine throwing game", "Try and hit targets with the doplet of wine.", null, MiniGameInfoScreen.MiniGame.TavernaStart);
+		mgscreen.DisplayText("Kottabos", "Wine throwing game", "Try and hit targets with the fig droplet. Power, controlled by the E and Q Keys, will determine how far your figs will go. The pointer between the axis will determine the direction of the fig. You will be given 5 tries to estimate the trajectory to hit the targets. If you succeed in hitting a target in the bowl or on the Kottabos Stand, you will be allowed to play another round with increasing difficulty. The top target on the Kottaboas stand will give the most points. Targets will be randomly placed on each hit.", null, MiniGameInfoScreen.MiniGame.TavernaStart);
 
 		playerStartPos = playerPos.transform.position;
 		playerRb = playerPos.GetComponent<Rigidbody>();
@@ -155,6 +155,11 @@ public class KottaboasManager : MonoBehaviour
 	public void LeaveKottaboas() {
 		KottabosReset();
 		TavernaController.BackToTavernaMenu();
+	}
+
+	public void RestartKottabos()	{
+		KottabosReset();
+		TavernaController.ReloadTavernaGame("Kottaboas_Game");
 	}
 
 	public void KottabosPauseMenu() {
