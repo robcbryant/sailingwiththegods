@@ -14,7 +14,7 @@ public class Sound
 	[Range(0,1)]
 	public float volume, pitch;
 
-	public bool loop;
+	public bool loop, soundIsPlaying, onAwake;
 
 	[HideInInspector]
 	public AudioSource source;

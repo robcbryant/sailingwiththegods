@@ -6,19 +6,15 @@ using UnityEngine.Audio;
 
 public class SoundSettings : MonoBehaviour
 {
+	//Game objects
 	[SerializeField] private GameObject audioSettings;
+	[SerializeField] private SettingsPanel settingsPanel;
 
 	//Sliders
-	[SerializeField] private Slider masterSlider;
-	[SerializeField] private Slider soundEffectsSlider;
-	[SerializeField] private Slider backgroundAudioSlider;
-	[SerializeField] private Slider musicSlider;
+	[SerializeField] private Slider masterSlider, soundEffectsSlider, backgroundAudioSlider, musicSlider;
 
 	//Audio Mixer Groups
-	[SerializeField] private AudioMixer masterMixer;
-	[SerializeField] private AudioMixer soundEffectsMixer;
-	[SerializeField] private AudioMixer backgroundMixer;
-	[SerializeField] private AudioMixer musicMixer;
+	[SerializeField] private AudioMixer masterMixer, soundEffectsMixer, backgroundMixer, musicMixer;
 
 	// Start is called before the first frame update
 	void Awake()
@@ -26,18 +22,14 @@ public class SoundSettings : MonoBehaviour
 		audioSettings.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-		//print("Master slider value is: " + masterSlider.value);
-    }
-
 	public void OpenSettings() {
 		audioSettings.SetActive(true);
+		settingsPanel.CloseSettings();
 	}
 
 	public void CloseSettings() {
 		audioSettings.SetActive(false);
+		settingsPanel.OpenSettings();
 	}
 
 	public void MasterSldier(float vol) {
