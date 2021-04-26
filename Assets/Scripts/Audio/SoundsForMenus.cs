@@ -8,7 +8,7 @@ public class SoundsForMenus : MonoBehaviour
 {
 	[SerializeField] private AudioMixerGroup mixer;
 
-	public Sound[] menuSounds;
+	[SerializeField] private Sound[] menuSounds;
 	public static SoundsForMenus instance;
 
 	// Start is called before the first frame update

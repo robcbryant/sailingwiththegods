@@ -6,9 +6,9 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-	public Sound[] sounds;
-	public static AudioManager instance;
-	public AudioMixerGroup mixer;
+	[SerializeField] private Sound[] sounds;
+	[SerializeField] private static AudioManager instance;
+	[SerializeField] private AudioMixerGroup mixer;
 
 	// Start is called before the first frame update
 	void Awake() {
