@@ -14,7 +14,7 @@ public class SoundSettings : MonoBehaviour
 	[SerializeField] private Slider masterSlider, soundEffectsSlider, backgroundAudioSlider, musicSlider;
 
 	//Audio Mixer Groups
-	[SerializeField] private AudioMixer masterMixer, soundEffectsMixer, backgroundMixer, musicMixer;
+	[SerializeField] private AudioMixer masterMixer;
 
 	// Start is called before the first frame update
 	void Awake()
@@ -42,19 +42,19 @@ public class SoundSettings : MonoBehaviour
 
 	public void SoundEffectsSldier(float vol) {
 		vol = soundEffectsSlider.value;
-		soundEffectsMixer.SetFloat("soundEffectsVolume", vol);
+		masterMixer.SetFloat("soundEffectsVolume", vol);
 		//controls for the sound effects slider
 	}
 
 	public void BackgroundSldier(float vol) {
 		vol = backgroundAudioSlider.value;
-		backgroundMixer.SetFloat("backgroundVolume", vol);
+		masterMixer.SetFloat("backgroundVolume", vol);
 		//controls for the backgorund audio slider
 	}
 
 	public void MusicSldier(float vol) {
 		vol = musicSlider.value;
-		musicMixer.SetFloat("musicVolume", vol);
+		masterMixer.SetFloat("musicVolume", vol);
 		//controls for the music slider
 	}
 }

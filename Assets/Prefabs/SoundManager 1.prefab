@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4548287859531078571
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4548287859531078569}
+  - component: {fileID: 4548287859531078572}
+  - component: {fileID: 4548287859531078574}
+  - component: {fileID: 4548287859531078568}
+  - component: {fileID: 4548287859531078575}
+  - component: {fileID: 4548287859531078573}
+  m_Layer: 0
+  m_Name: SoundManager 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4548287859531078569
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4548287859531078571}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 358.8396, y: 459.97427, z: -84.31061}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4548287859531078572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4548287859531078571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749c4d418b706b64ba221f73031fed49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Trade Swap
+    clip: {fileID: 8300000, guid: 92b99949cfa8378439aed3621106a044, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    soundIsPlaying: 0
+    onAwake: 0
+    source: {fileID: 0}
+  - name: Coin Purse
+    clip: {fileID: 8300000, guid: f29ac318d05feb144858729593e458ec, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    soundIsPlaying: 0
+    onAwake: 0
+    source: {fileID: 0}
+  - name: Ship Repair
+    clip: {fileID: 8300000, guid: 9e7d700007b3bcb4389b51be22fd9843, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    soundIsPlaying: 0
+    onAwake: 0
+    source: {fileID: 0}
+  mixer: {fileID: -4416321429550571014, guid: c8043255cc41cc34f8d806d19e62018a, type: 2}
+--- !u!114 &4548287859531078574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4548287859531078571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1064102c7694a34a8fe9a6d3b0aa551, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mixer: {fileID: 4464424677660615808, guid: c8043255cc41cc34f8d806d19e62018a, type: 2}
+  menuSounds:
+  - name: Dashboard
+    clip: {fileID: 8300000, guid: 0ff17e9e74a340c42a99bb2f07545c7c, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 1
+    soundIsPlaying: 0
+    onAwake: 0
+    source: {fileID: 0}
+  - name: Agora
+    clip: {fileID: 8300000, guid: 15ce1f40fe7c50a4099aa11d1f7cf0a3, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 1
+    soundIsPlaying: 0
+    onAwake: 0
+    source: {fileID: 0}
+--- !u!114 &4548287859531078568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4548287859531078571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff445fe497c993b4094d4a920c8588b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSettings: {fileID: 0}
+  settingsPanel: {fileID: 0}
+  masterSlider: {fileID: 0}
+  soundEffectsSlider: {fileID: 0}
+  backgroundAudioSlider: {fileID: 0}
+  musicSlider: {fileID: 0}
+  masterMixer: {fileID: 24100000, guid: c8043255cc41cc34f8d806d19e62018a, type: 2}
+--- !u!114 &4548287859531078575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4548287859531078571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d949d56b4d692940ad9574283f949c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds: {fileID: 4548287859531078574}
+--- !u!114 &4548287859531078573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4548287859531078571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 857165a0a5f658645922cdf9c8e2f1bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

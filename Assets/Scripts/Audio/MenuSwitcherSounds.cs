@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MenuSwitcherSounds : MonoBehaviour
 {
-	[SerializeField] private GameObject playerHUD, agoraScene;
-
 	[SerializeField] private SoundsForMenus sounds;
 
     // Update is called once per frame
@@ -18,6 +16,7 @@ public class MenuSwitcherSounds : MonoBehaviour
 
 
 	public void PlayDashboardSound() {
+		print("Playing dashboard sfx");
 		sounds.PlaySound("Dashboard");
 	}
 
