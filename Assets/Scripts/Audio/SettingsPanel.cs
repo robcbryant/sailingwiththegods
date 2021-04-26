@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SettingsPanel : MonoBehaviour
 {
+	//A script for the settings panel in the main menu
 	[SerializeField] private GameObject settingsPanel;
 	[SerializeField] private GameObject audioSettings;
 	[SerializeField] private GameObject videoSettings;

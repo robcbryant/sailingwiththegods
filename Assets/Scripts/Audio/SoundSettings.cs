@@ -23,11 +23,13 @@ public class SoundSettings : MonoBehaviour
     }
 
 	public void OpenSettings() {
+		//opens the settings for the audio setitngs
 		audioSettings.SetActive(true);
 		settingsPanel.CloseSettings();
 	}
 
 	public void CloseSettings() {
+		//closes the audio setitngs
 		audioSettings.SetActive(false);
 		settingsPanel.OpenSettings();
 	}
@@ -35,20 +37,24 @@ public class SoundSettings : MonoBehaviour
 	public void MasterSldier(float vol) {
 		vol = masterSlider.value;
 		masterMixer.SetFloat("masterVolume", vol);
+		//controls for the master slider
 	}
 
 	public void SoundEffectsSldier(float vol) {
 		vol = soundEffectsSlider.value;
 		soundEffectsMixer.SetFloat("soundEffectsVolume", vol);
+		//controls for the sound effects slider
 	}
 
 	public void BackgroundSldier(float vol) {
 		vol = backgroundAudioSlider.value;
 		backgroundMixer.SetFloat("backgroundVolume", vol);
+		//controls for the backgorund audio slider
 	}
 
 	public void MusicSldier(float vol) {
 		vol = musicSlider.value;
 		musicMixer.SetFloat("musicVolume", vol);
+		//controls for the music slider
 	}
 }

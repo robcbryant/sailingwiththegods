@@ -31,7 +31,7 @@ public class AudioManager : MonoBehaviour
 		//This foreach loop is for adding all the variables to the audio source
 		foreach (Sound s in sounds) {
 			s.source = gameObject.AddComponent<AudioSource>();
-			s.source.outputAudioMixerGroup = mixer;
+			s.source.outputAudioMixerGroup = mixer; //this is to output the audio to the mixer
 
 			s.source.clip = s.clip;
 			s.source.volume = s.volume;
