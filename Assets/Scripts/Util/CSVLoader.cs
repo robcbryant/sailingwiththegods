@@ -520,6 +520,33 @@ public static class CSVLoader
 		return textList;
 	}
 
+	public static void LoadTavernaGameBarks(out List<string> insults, out List<string> bragging) {
+
+		insults = new List<string>();
+		bragging = new List<string>();
+
+		char[] lineDelimiter = new char[] { '@' };
+		char newline = '%';
+		string filename = "taverna_game_barks";
+
+		string[] fileByLine = TryLoadListFromGameFolder(filename);
+
+		for (int i = 0; i < fileByLine.Length; i++) {
+			string[] texts = fileByLine[i].Split(lineDelimiter);
+			string content = StripAndAddNewlines(texts[0], newline);
+			if (texts[1] == "insult") {
+				insults.Add(content);
+			}
+			else if (texts[1] == "bragging") {
+				bragging.Add(content);
+			}
+			else {
+				Debug.Log($"Taverna bark line {i} not marked insult or bragging");
+			}
+		}
+
+	}
+
 	//Mylo's Addition
 	public static List<DialogText> LoadNetworkDialog() 
 	{
@@ -527,7 +554,7 @@ public static class CSVLoader
 
 		char[] lineDelimeter = new char[] { '@' };
 		char newline = '%';
-		string filename = "network_qa_list";
+		string filename = "taverna_network_questions";
 
 		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
@@ -539,9 +566,9 @@ public static class CSVLoader
 			textList.Add(t);
 		}
 
-		Debug.Log("CITY: " + textList[2].CityType);
-		Debug.Log("Q " + textList[2].TextQA[0]);
-		Debug.Log("A " + textList[2].TextQA[1]);
+		//Debug.Log("CITY: " + textList[2].CityType);
+		//Debug.Log("Q " + textList[2].TextQA[0]);
+		//Debug.Log("A " + textList[2].TextQA[1]);
 
 		return textList;
 
@@ -552,7 +579,7 @@ public static class CSVLoader
 
 		char[] lineDelimeter = new char[] { '@' };
 		char newline = '%';
-		string filename = "pirate_qa_list";
+		string filename = "taverna_pirate_questions";
 
 		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
@@ -563,9 +590,9 @@ public static class CSVLoader
 			textList.Add(t);
 		}
 
-		Debug.Log("Pirate: " + textList[2].CityType);
-		Debug.Log("Q " + textList[2].TextQA[0]);
-		Debug.Log("A " + textList[2].TextQA[1]);
+		//Debug.Log("Pirate: " + textList[2].CityType);
+		//Debug.Log("Q " + textList[2].TextQA[0]);
+		//Debug.Log("A " + textList[2].TextQA[1]);
 
 		return textList;
 
@@ -576,7 +603,7 @@ public static class CSVLoader
 
 		char[] lineDelimeter = new char[] { '@' };
 		char newline = '%';
-		string filename = "myth_qa_list";
+		string filename = "taverna_myth_questions";
 
 		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
@@ -587,9 +614,9 @@ public static class CSVLoader
 			textList.Add(t);
 		}
 
-		Debug.Log("Myth: " + textList[2].CityType);
-		Debug.Log("Q " + textList[2].TextQA[0]);
-		Debug.Log("A " + textList[2].TextQA[1]);
+		//Debug.Log("Myth: " + textList[2].CityType);
+		//Debug.Log("Q " + textList[2].TextQA[0]);
+		//Debug.Log("A " + textList[2].TextQA[1]);
 
 		return textList;
 
@@ -600,7 +627,7 @@ public static class CSVLoader
 
 		char[] lineDelimeter = new char[] { '@' };
 		char newline = '%';
-		string filename = "hire_guide_text";
+		string filename = "taverna_guide_hire";
 
 		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
@@ -621,7 +648,7 @@ public static class CSVLoader
 
 		char[] lineDelimeter = new char[] { '@' };
 		char newline = '%';
-		string filename = "food_list";
+		string filename = "taverna_food_list";
 
 		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
@@ -651,7 +678,7 @@ public static class CSVLoader
 
 		char[] lineDelimeter = new char[] { '@' };
 		char newline = '%';
-		string filename = "food_dialogue_list";
+		string filename = "taverna_food_dialog";
 
 		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
@@ -681,7 +708,7 @@ public static class CSVLoader
 
 		char[] lineDelimeter = new char[] { '@' };
 		char newline = '%';
-		string filename = "wine_list";
+		string filename = "taverna_wine_list";
 
 		string[] fileByLine = TryLoadListFromGameFolder(filename);
 
@@ -708,9 +735,12 @@ public static class CSVLoader
 	static string TryLoadFromGameFolder(string filename) {
 		try {
 			var localFile = "";
-			var filePath = Application.dataPath + "/" + filename + ".txt";
+			var filePath = Application.dataPath + "/Resources/" + filename + ".txt";
 			if (File.Exists(filePath)) {
 				localFile = File.ReadAllText(filePath);
+			}
+			else {
+				Debug.Log(filename + " does not exist!");
 			}
 
 			//Debug.Log(Application.dataPath + "/" + filename + ".txt");

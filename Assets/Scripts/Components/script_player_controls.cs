@@ -175,26 +175,29 @@ public class script_player_controls : MonoBehaviour
 				Globals.MiniGames.Enter("Pirate Game/Pirate Game");
 			}
 			if (Input.GetKeyUp(KeyCode.L)) {
-				Globals.UI.Show<DialogScreen>().StartDialog("Start_Taverna");
+				Globals.UI.Show<DialogScreen>().StartDialog("Start_Taverna", "taverna");
 			}
 			if (Input.GetKeyUp(KeyCode.N)) {
 				Globals.MiniGames.Enter("Storm MG/Storm Game");
 			}
+
             if (Input.GetKeyUp(KeyCode.Z))
             {
                 Globals.MiniGames.EnterScene("Petteia");
             }
+
             if (Input.GetKeyUp(KeyCode.R))
             {
                 Globals.MiniGames.EnterScene("SongCompMainMenu");
             }
             if (Input.GetKeyUp(KeyCode.T))
              {
-              Globals.MiniGames.EnterScene("MiniGameMainMenu");
+              Globals.MiniGames.EnterScene("TavernaMenu");
              }
                 if (Input.GetKeyUp(KeyCode.M)) {
+
 				Globals.MiniGames.Exit();
-			}
+			 }
 		}
 
 		// debug tool to see where you are in lat long
@@ -669,6 +672,7 @@ public class script_player_controls : MonoBehaviour
 				getSettlementDockButtonReady = true;
 				GameVars.currentSettlement = trigger.transform.parent.gameObject.GetComponent<script_settlement_functions>().thisSettlement;
 				GameVars.currentSettlementGameObject = trigger.transform.parent.gameObject;
+				Debug.Log("Adding known city from script_player_controls: " + GameVars.currentSettlement.name);
 				GameVars.playerShipVariables.ship.playerJournal.AddNewSettlementToLog(GameVars.currentSettlement.settlementID);
 				//If it is a point of interest then run quest functions but don't allow settlement resource access
 			}
@@ -934,6 +938,49 @@ public class script_player_controls : MonoBehaviour
 			return false;
 		}
 	}
+	//Getting the win total for board games - roughly half of what they need to not starve. 
+	public float GameResultFood() {
+		
+		float ans;
+		
+		if (ship.cargo[1].amount_kg < dailyProvisionsKG * ship.crewRoster.Count) {
+		
+			float neededCargo = (dailyProvisionsKG * ship.crewRoster.Count) - ship.cargo[1].amount_kg;
+			ship.cargo[1].amount_kg += (neededCargo / 2.0f);
+
+
+			ans = neededCargo / 2.0f;
+		}
+		else {  ship.cargo[1].amount_kg += .96f * ship.crewRoster.Count;
+			ans = .96f * ship.crewRoster.Count;
+		}
+
+		return ans;
+	}
+
+	public float GameResultWater() {
+
+		float ans;
+
+		if (ship.cargo[0].amount_kg < dailyWaterKG * ship.crewRoster.Count) {
+
+			float neededWater = (dailyWaterKG * ship.crewRoster.Count) - ship.cargo[0].amount_kg;
+			ship.cargo[0].amount_kg += (neededWater / 2.0f);
+
+
+			ans = neededWater / 2.0f;
+		}
+		else {
+			ship.cargo[0].amount_kg += .96f * ship.crewRoster.Count;
+			ans = .96f * ship.crewRoster.Count;
+		}
+
+		return ans;
+	}
+
+
+
+
 
 	int CrewQuitsBecauseStarvingOrThirsty() {
 		int deathCount = 0;

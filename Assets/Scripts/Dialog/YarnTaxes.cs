@@ -71,14 +71,12 @@ public class YarnTaxes : MonoBehaviour
 		city = s;
 		Debug.Log("Taxes.SetPortInfo");
 		Debug.Log("Current settlement: " + city.name);
-		Debug.Log("ds " + (ds == null ? "null" : "good"));
 		Debug.Log("ds.Storage " + (ds.Storage == null ? "null" : "good"));
 		ds.Storage.SetValue("$city_name", city.name);
 		ds.Storage.SetValue("$city_description", city.description);
 		ds.Storage.SetValue("$jason_connected", false);
 		ds.Storage.SetValue("$crew_name", "Bob IV");
-
-		Debug.Log("ds.YarnUI " + (ds.YarnUI == null ? "null" : "good"));
+		
 		ds.YarnUI.onDialogueEnd.RemoveAllListeners();
 		ds.YarnUI.onDialogueEnd.AddListener(ExitPortConversation);
 	}

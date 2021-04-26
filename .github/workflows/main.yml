@@ -4,7 +4,10 @@ name: CI
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
+# added new workflow_dispatch trigger so you can run builds manually on any branch: 
+# https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/
 on:
+  workflow_dispatch:
   push:
     branches: [ develop ]
 
