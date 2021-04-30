@@ -236,7 +236,7 @@ public class GameVars : MonoBehaviour
 			return result;
 		}
 	}
-	public bool IsSailingMode => !isGameOver && !IsCutsceneMode && IsOnlyShowingAllowedUIs;
+	public bool IsSailingMode => !isTitleScreen && !isGameOver && !IsCutsceneMode && IsOnlyShowingAllowedUIs;
 
 
 	//###################################

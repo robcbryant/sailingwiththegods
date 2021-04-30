@@ -41,7 +41,7 @@ namespace Nav {
 
 			//check if those screen is active if not make the Navigation UI appear
 			var canShowNavigation = Globals.GameVars.IsSailingMode;
-			Debug.Log(canShowNavigation);
+			//Debug.Log(canShowNavigation);
 			if(canShowNavigation && _startNavigation) {
 				ShowMenu(_startNavigation);
 			}
