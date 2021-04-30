@@ -62,3 +62,9 @@ The game's MVVM system has built in support for these Views, which have their ow
   * Binds to a title and message string, and an OK and Cancel ButtonViewModel (each having a label string and OnClick action)
 * [SliderView](/Assets/Scripts/_ShinyUnity/UI/Views/SliderView.cs)
   * Binds to a float value to drive the UGUI slider component
+
+# Standard Canvas Scaler Settings
+
+We're using the following standard canvas scaler settings for most of our UIs:
+
+![image](https://user-images.githubusercontent.com/1981666/116751789-8be1f600-a9d2-11eb-9b81-6b2c69a6868c.png)
