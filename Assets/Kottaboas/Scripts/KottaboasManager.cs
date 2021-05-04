@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-
+//ISSUE: PowerIndiacator when activated stops the Menu buttons from being pressed
 public class KottaboasManager : MonoBehaviour
 {
 	GameVars GameVars => Globals.GameVars;
@@ -22,7 +23,8 @@ public class KottaboasManager : MonoBehaviour
 	private Throw tr;
 
 	private static int score = 0;
-	private static int tries = 5;
+	[SerializeField]
+	private static int tries = 50;
 
 	public bool ContinueRound { get; set; } = false;
 	public bool Scored { get; set; } = false;
@@ -31,7 +33,7 @@ public class KottaboasManager : MonoBehaviour
 	/// <summary>
 	/// Reset Kotaboas varibles after a game is played
 	/// </summary>
-	private void KottabosReset() {
+	private void KotabosReset() {
 		score = 0;
 		tries = 5;
 
@@ -43,9 +45,9 @@ public class KottaboasManager : MonoBehaviour
 	}
 
 	// Start is called before the first frame update
-	void Start() {
-		
-		mgscreen.DisplayText("Kottabos", "Wine throwing game", "Try and hit targets with the fig droplet. Power, controlled by the E and Q Keys, will determine how far your figs will go. The pointer between the axis will determine the direction of the fig. You will be given 5 tries to estimate the trajectory to hit the targets. If you succeed in hitting a target in the bowl or on the Kottabos Stand, you will be allowed to play another round with increasing difficulty. The top target on the Kottaboas stand will give the most points. Targets will be randomly placed on each hit.", null, MiniGameInfoScreen.MiniGame.TavernaStart);
+	void Start() {		
+
+		mgscreen.DisplayText("Kottabos", "Wine throwing game", "Try and hit targets with the fig droplet. Power, controlled by the E and Q Keys, will determine how far your figs will go. The pointer between the axis will determine the direction of the fig, controlled by the ASWD Keys, moving it in your desired direction. You will be given 5 tries to estimate the trajectory to hit the targets. If you succeed in hitting a target in the bowl or on the Kottabos Stand, you will be allowed to play another round with the C key. The top target on the Kottabos stand will give the most points. Targets will be randomly placed on each hit.", null, MiniGameInfoScreen.MiniGame.TavernaStart);
 
 		playerStartPos = playerPos.transform.position;
 		playerRb = playerPos.GetComponent<Rigidbody>();
@@ -59,7 +61,7 @@ public class KottaboasManager : MonoBehaviour
 	// Update is called once per frame
 	void Update() {
 
-		KottabosPauseAndUnPause();
+		KotabosPauseAndUnPause();
 
 		if (ContinueRound) {
 			Debug.Log("C or B");
@@ -67,6 +69,7 @@ public class KottaboasManager : MonoBehaviour
 			//Debug.Log(tries);
 			if (Input.GetKeyDown(KeyCode.C)) {
 				tr.animate.SetBool("isFlinged", false);
+				gameObject.GetComponent<ArmController>().ArmReset();
 				playerPos.SetActive(true);
 				//Reset
 				ResetRound();
@@ -82,11 +85,13 @@ public class KottaboasManager : MonoBehaviour
 					//Here's your reward end game
 					//KottabosReset();
 					//GameVars.AdjustPlayerClout(15 * score, false);
+					//Globals.GameVars.playerShipVariables.ship.currency += Random.Range(5, 7);
 					mgscreen.DisplayText("Perfect", "Perfection absolute – desired but dangerous!", "You have reached it, but now beware\n Lest Envy drive the god of War\n To take aim at you as you have at these cups!", null, MiniGameInfoScreen.MiniGame.TavernaEnd);
 				}
 				else if (score >= 10) {
 					//KottabosReset();
 					//GameVars.AdjustPlayerClout(Random.Range(10, 14) * score, false);
+					//Globals.GameVars.playerShipVariables.ship.currency += Random.Range(3,4);
 					mgscreen.DisplayText("Great", "Zeus himself could not have thrown better!", "Your hand was neither too stiff , nor too crooked; a master of the javelin, a god of the sling, a hero of missiles must you be on  the battlefield!", null, MiniGameInfoScreen.MiniGame.TavernaEnd);
 				}
 				else if (score >= 5) {
@@ -152,35 +157,35 @@ public class KottaboasManager : MonoBehaviour
 		SubtractTries();
 	}
 
-	public void LeaveKottaboas() {
-		KottabosReset();
+	public void LeaveKotaboas() {
+		KotabosReset();
 		TavernaController.BackToTavernaMenu();
 	}
 
-	public void RestartKottabos()	{
-		KottabosReset();
+	public void RestartKotabos()	{
+		KotabosReset();
 		TavernaController.ReloadTavernaGame("Kottaboas_Game");
 	}
 
-	public void KottabosPauseMenu() {
+	public void KotabosPauseMenu() {
 		mgscreen.gameObject.SetActive(true);
 		Time.timeScale = 0;
-		mgscreen.DisplayText("Kottabos", "Taverna Game", "Kottaboas is paused, here's where the controls will go", null, MiniGameInfoScreen.MiniGame.TavernaPause);
+		mgscreen.DisplayText("Kotabos", "Taverna Game", "Kotaboas is paused, here's where the controls will go", null, MiniGameInfoScreen.MiniGame.TavernaPause);
 	}
 
-	public void KottabosUnPauseMenu() {
+	public void KotabosUnPauseMenu() {
 		mgscreen.gameObject.SetActive(false);
 		Time.timeScale = 1;
 		mgscreen.CloseDialog();
 	}
 
-	private void KottabosPauseAndUnPause() {
+	private void KotabosPauseAndUnPause() {
 		if (Input.GetKeyDown(KeyCode.Escape)) {
 			if (Time.timeScale == 1) {
-				KottabosPauseMenu();
+				KotabosPauseMenu();
 			}
 			else {
-				KottabosUnPauseMenu();
+				KotabosUnPauseMenu();
 			}
 		}
 	}

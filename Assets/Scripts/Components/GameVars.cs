@@ -223,22 +223,6 @@ public class GameVars : MonoBehaviour
 	public Crew Crew { get; private set; }
 	public bool isInNetwork => Network.CheckIfCityIDIsPartOfNetwork(currentSettlement.settlementID);
 
-	// TODO: Move into a subsystem. See Trade and Network example above.
-	public bool IsOnlyShowingAllowedUIs
-	{
-		get
-		{
-			var views = Globals.UI.GetActiveViews();
-			//var allowed = new[] { typeof(Dashboard), typeof(CrewListScreen), typeof(CargoInventoryView), typeof(CityView), typeof(MessageBoxView), typeof(InfoScreen), typeof(QuestScreen), typeof(CrewDetailsScreen)};
-			//bool result = !views.Any() || views.All(screen => allowed.Any(allow => screen.GetType().IsAssignableFrom(allow)));
-			var disallowed = new[] { typeof(PortScreen), typeof(TownScreen), typeof(TitleScreen) };
-			bool result = !views.Any(v => disallowed.Any(dis => v.GetType().IsAssignableFrom(dis)));
-			return result;
-		}
-	}
-	public bool IsSailingMode => !isTitleScreen && !isGameOver && !IsCutsceneMode && IsOnlyShowingAllowedUIs;
-
-
 	//###################################
 	//	RANDOM EVENT VARIABLES
 	//###################################
