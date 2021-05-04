@@ -1,0 +1,13 @@
+to use the arm control its motions 
+to use the and animations for Petteia set the Petteia bool to ture 
+this is in place to keep the hand motions from inyerfering with cotobos
+
+to routate the arm use animamator.getfloat(name) or animamator.setfloat(name,vale)
+animamator.getfloat(Upper_arm_angle_UP_Down); (-1=down, 1=UP)
+animamator.getfloat(Upper_arm_angle_Forward); (0=nutral, 1=forward)
+animamator.getfloat(lower_arm_angle); (0=nutral, 1=forward)//dose not work right now
+
+// each animation on the arm as a mask on it other than the cotobos clips 
+the mask was set up in the fbx inport settings 
+this was needed as the mask cant be set for non-human clips other waise
+I added the second arm to bing in the arms movement clips that the origanal did not have
